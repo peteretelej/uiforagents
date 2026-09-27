@@ -1,0 +1,31 @@
+# CI: validate the kit on every push to main and every PR.
+# Generated files (llms.txt, docs/, themes/tokens.css) are committed and the
+# generators are deterministic, so a stale tree fails the freshness check.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Build agent surfaces
+        run: npm run build
+
+      - name: Adherence linter self-test
+        run: node validation/check.mjs --self-test
+
+      - name: Generated files are fresh
+        run: git diff --exit-code

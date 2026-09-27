@@ -99,7 +99,12 @@ for (const category of categories) {
   }
   lines.push("");
 }
-writeFileSync(join(ROOT, "llms.txt"), lines.join("\n").trimEnd() + "\n");
+const llms = lines.join("\n").trimEnd() + "\n";
+if (Buffer.byteLength(llms) >= LLMS_MAX_BYTES) {
+  console.error(`build-index: llms.txt would be ${Buffer.byteLength(llms)} bytes; must stay under ${LLMS_MAX_BYTES}`);
+  process.exit(1);
+}
+writeFileSync(join(ROOT, "llms.txt"), llms);
 
 // docs/components/<name>.md: the component tier.
 mkdirSync(join(ROOT, "docs", "components"), { recursive: true });
@@ -162,10 +167,6 @@ for (const { name, manifest } of items) {
   writeFileSync(join(ROOT, "docs", "components", `${name}.md`), doc);
 }
 
-const size = readFileSync(join(ROOT, "llms.txt")).length;
-if (size >= LLMS_MAX_BYTES) {
-  console.error(`build-index: llms.txt is ${size} bytes; must stay under ${LLMS_MAX_BYTES}`);
-  process.exit(1);
-}
+const size = Buffer.byteLength(llms);
 
 console.log(`build-index: ${items.length} items valid; llms.txt ${size} bytes; docs/components/ regenerated`);

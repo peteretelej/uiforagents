@@ -13,7 +13,7 @@
 import { readFileSync, statSync } from "node:fs";
 import { join, relative, resolve, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { findConfig, loadConfig, globToRegExp, walkFiles, resolveInRoot, resolveDirectionsFile } from "../scripts/lib/config.mjs";
+import { findConfig, loadConfig, globToRegExp, walkFiles, resolveInRoot, resolveDirectionsFile, configFlagValue } from "../scripts/lib/config.mjs";
 
 const KIT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PLANTED_DIR = join(KIT_ROOT, "validation", "fixtures", "planted");
@@ -148,19 +148,28 @@ function lint(config) {
   if (files.length === 0) {
     throw new Error(`check: no files match the lint globs (${config.lint.join(", ")})`);
   }
-  const violations = [];
+  const lintable = [];
+  const skipped = [];
   for (const file of files) {
-    if (!SUPPORTED_EXTENSIONS.some((ext) => file.endsWith(ext))) {
-      throw new Error(`check: unsupported file type "${relative(config.root, file)}" (lint ${SUPPORTED_EXTENSIONS.join(" ")})`);
-    }
+    if (SUPPORTED_EXTENSIONS.some((ext) => file.endsWith(ext))) lintable.push(file);
+    else skipped.push(file);
+  }
+  if (lintable.length === 0) {
+    throw new Error(`check: every file matched by the lint globs is unsupported (${SUPPORTED_EXTENSIONS.join(" ")} only)`);
+  }
+  const violations = [];
+  for (const file of lintable) {
     lintFile(file, config.root, context, violations);
   }
-  return { files, violations };
+  return { files: lintable, skipped, violations };
 }
 
-function report(config, { files, violations }) {
+function report(config, { files, skipped, violations }) {
   for (const violation of violations) {
     console.error(`${violation.file}:${violation.line}: ${violation.message}`);
+  }
+  if (skipped.length > 0) {
+    console.error(`check: skipped ${skipped.length} unsupported file${skipped.length === 1 ? "" : "s"} (${SUPPORTED_EXTENSIONS.join(" ")} only): ${skipped.map((file) => relative(config.root, file)).join(", ")}`);
   }
   const summary = violations.length === 0
     ? `check: no violations (${files.length} files)`
@@ -210,8 +219,14 @@ async function selfTest() {
 
 const args = process.argv.slice(2);
 const selfTestRequested = args.includes("--self-test");
+let configFlag;
+try {
+  configFlag = configFlagValue(args, "check");
+} catch (err) {
+  console.error(err.message);
+  process.exit(1);
+}
 const configFlagIndex = args.indexOf("--config");
-const configFlag = configFlagIndex === -1 ? null : args[configFlagIndex + 1];
 const stray = args.filter((arg, index) => arg !== "--self-test" && arg !== "--config" && index !== configFlagIndex && index !== configFlagIndex + 1);
 if (stray.length > 0) {
   console.error(`usage: node validation/check.mjs [--config <path>] | --self-test (unexpected "${stray[0]}")`);

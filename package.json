@@ -7,7 +7,7 @@
   "homepage": "https://github.com/peteretelej/uiforagents#readme",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/peteretelej/uiforagents.git"
+    "url": "git+https://github.com/peteretelej/uiforagents.git"
   },
   "files": [
     "AGENTS.md",
@@ -20,6 +20,7 @@
     "items/",
     "themes/",
     "scripts/",
+    "validation/",
     "docs/",
     "llms.txt"
   ],

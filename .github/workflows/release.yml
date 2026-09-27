@@ -1,0 +1,47 @@
+# Release: publish to npm when a v* tag is pushed.
+#
+# Uses npm trusted publishing (OIDC + provenance) - no NPM_TOKEN secret.
+# One-time setup before the first tagged push (repo owner, on npmjs.com):
+#   1. Push the repo to GitHub (it goes public at that push).
+#   2. Bump package.json + changelog.json versions, commit, then tag v<version>.
+#   3. At https://www.npmjs.com/package/uiforagents/access configure the
+#      trusted publisher: repository peteretelej/uiforagents, workflow
+#      filename release.yml, no environment.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Node 22 ships npm 10.x, which cannot do trusted publishing; the
+      # two-step upgrade works around npm/cli#9151 (direct 10 -> 11.12+
+      # jumps fail with MODULE_NOT_FOUND).
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@11.11.0 && npm install -g npm@latest
+
+      - name: Tag matches package.json version
+        run: node -e "const v = require('./package.json').version; const t = process.env.GITHUB_REF_NAME.slice(1); if (v !== t) { console.error('tag v' + t + ' does not match package.json version ' + v); process.exit(1); }"
+
+      - name: Validate
+        run: |
+          npm run build
+          node validation/check.mjs --self-test
+          git diff --exit-code
+
+      - name: Publish
+        run: npm publish --provenance --access public

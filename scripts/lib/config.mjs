@@ -21,6 +21,17 @@ export function findConfig(startDir) {
   }
 }
 
+// Exported so both CLIs share the "--config must carry a value" rule.
+export function configFlagValue(args, label) {
+  const index = args.indexOf("--config");
+  if (index === -1) return null;
+  const value = args[index + 1];
+  if (value === undefined || value.startsWith("--")) {
+    throw new Error(`${label}: --config requires a path`);
+  }
+  return value;
+}
+
 // Every write/lint path in uiforagents.json resolves against the config
 // file's repo root; a destination that escapes that root is refused.
 export function resolveInRoot(root, value, label) {
@@ -109,13 +120,23 @@ export function globToRegExp(pattern) {
   return new RegExp(`^${escaped}$`);
 }
 
+// Directories the walk never descends into: dependency/vendor trees, VCS
+// internals, and common build output. Lint globs are explicit, but the walk
+// itself should not pay for or trip over trees it will never lint.
+const PRUNE_DIRS = new Set([
+  "node_modules", ".git", "dist", "build", "out", "output",
+  ".next", ".nuxt", ".astro", ".svelte-kit", ".output", ".turbo",
+  ".cache", "coverage", ".venv", "venv", "__pycache__",
+]);
+
 export function walkFiles(root) {
   const out = [];
   const visit = (dir) => {
     for (const entry of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
       const path = join(dir, entry.name);
-      if (entry.isDirectory()) visit(path);
-      else if (entry.isFile()) out.push(path);
+      if (entry.isDirectory()) {
+        if (!PRUNE_DIRS.has(entry.name)) visit(path);
+      } else if (entry.isFile()) out.push(path);
     }
   };
   visit(root);

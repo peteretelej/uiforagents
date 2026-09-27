@@ -8,13 +8,19 @@
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { findConfig, loadConfig, resolveInRoot, resolveDirectionsFile } from "./lib/config.mjs";
+import { findConfig, loadConfig, resolveInRoot, resolveDirectionsFile, configFlagValue } from "./lib/config.mjs";
 
 const USAGE = "usage: node scripts/uifa.mjs add | tokens | scaffold [--config <path>]";
 
 const args = process.argv.slice(2);
+let configFlag;
+try {
+  configFlag = configFlagValue(args, "uifa");
+} catch (err) {
+  console.error(err.message);
+  process.exit(1);
+}
 const configFlagIndex = args.indexOf("--config");
-const configFlag = configFlagIndex === -1 ? null : args[configFlagIndex + 1];
 const command = args.filter((arg, index) => arg !== "--config" && index !== configFlagIndex && (configFlagIndex === -1 || index !== configFlagIndex + 1))[0];
 if (!command || !["add", "tokens", "scaffold"].includes(command)) {
   console.error(USAGE);
@@ -116,7 +122,9 @@ async function scaffold() {
       return `| ${manifest.title} | ${manifest.description} |`;
     })
     .join("\n");
-  const kitBin = (script) => `node ${kitRoot}/${script}`;
+  // Print the kit path as the config declares it (relative paths keep the
+  // doc portable; they resolve from the project root where the commands run).
+  const kitBin = (script) => `node ${config.kit}/${script}`;
   const docs = `# Design system
 
 Direction: **${direction.name}** (\`${direction.slug}\`) - ${direction.mood}. ${direction.notes}

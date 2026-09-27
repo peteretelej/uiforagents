@@ -16,6 +16,14 @@ Zero runtime dependencies.
 - `docs/components/*.md` - per-component docs twins
 - `docs/arena.html` - rendered catalog across example directions
 
+Each `item.json` declares the manifest contract: `name`, `title`,
+`description`, `category` (closed enum from the schema; drives the `llms.txt`
+grouping), `behavior` (`none` | `css-only` | `js-inline`), `variants` (closed
+`[data-variant]` tables with a default), `cssVars` (the tokens the item
+reads), `files`, `docs`, and `schemaVersion`. The build validates every
+manifest against `schema/registry.schema.json` and keeps `registry.json` in
+lockstep.
+
 ## For agents
 
 1. Read `llms.txt` and pick a component and variant from its lines.

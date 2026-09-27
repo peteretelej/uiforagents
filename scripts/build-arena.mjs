@@ -140,10 +140,24 @@ const sampleUi = `
     </tbody>
   </table>
   <button type="button" class="uif-toast-trigger" data-slot="sample-toast-open">Show toast</button>
+  <p class="arena-status-label">Status roles: ok, warn, danger, scrim</p>
+  <div class="arena-scrim-demo">Content under the scrim</div>
 </div>
 <div class="uif-toast-region">
   <div class="uif-toast" data-variant="info" data-state="visible" role="status">
     <span data-slot="message">Sample workspace ready</span>
+    <button type="button" data-slot="close">Dismiss</button>
+  </div>
+  <div class="uif-toast" data-variant="ok" data-state="visible" role="status">
+    <span data-slot="message">Delivery queued</span>
+    <button type="button" data-slot="close">Dismiss</button>
+  </div>
+  <div class="uif-toast" data-variant="warn" data-state="visible" role="status">
+    <span data-slot="message">Storage almost full</span>
+    <button type="button" data-slot="close">Dismiss</button>
+  </div>
+  <div class="uif-toast" data-variant="danger" data-state="visible" role="status">
+    <span data-slot="message">Connection lost</span>
     <button type="button" data-slot="close">Dismiss</button>
   </div>
 </div>
@@ -171,6 +185,24 @@ const iframeChrome = `
   .arena-stack { display: grid; gap: calc(var(--space) * 3); justify-items: start; }
   .arena-rows { display: grid; gap: calc(var(--space) * 1); }
   .arena-badges { margin: calc(var(--space) * 1) 0 0; display: flex; gap: calc(var(--space) * 2); flex-wrap: wrap; }
+  .arena-status-label { margin: 0; font-family: var(--font-display); color: var(--text-muted); }
+  .arena-scrim-demo {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: calc(var(--space) * 2);
+    min-height: calc(var(--space) * 10);
+    display: grid;
+    place-items: center;
+    color: var(--text-muted);
+  }
+  .arena-scrim-demo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--scrim);
+    border-radius: inherit;
+  }
   /* The catalog renders in flow: fixed regions would paint over the last item. */
   .uif-toast-region { position: static; justify-items: start; }
   .arena-sample .uif-toast-trigger { justify-self: start; }
