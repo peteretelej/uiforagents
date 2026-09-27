@@ -66,5 +66,8 @@ to verify the linter itself against its planted violations.
 
 - Touch targets hold a 44px minimum; spacing derives from `--space` via
   `calc()`, so density follows the direction.
+- To ship every direction and switch at runtime, set `"direction": "all"`
+  in the config (`tokens` emits a `[data-theme]` block per direction); the
+  README's direction-switcher recipe covers the ~10-line runtime script.
 - `schemaVersion` in each manifest anchors the contract; check it when items
   and kit versions drift apart.

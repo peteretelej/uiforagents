@@ -65,6 +65,12 @@ escape it are refused):
 }
 ```
 
+- `direction` (required): a direction slug from the directions module, or
+  `"all"` to ship every direction: `tokens` then writes the first
+  direction's tokens to `:root` plus a `[data-theme="slug"]` block per
+  direction (same shape as the kit's `themes/tokens.css`), and `scaffold`
+  lists all directions in the design-system doc.
+
 - `directionsFile` (optional): a directions module, same shape as
   `themes/directions.mjs`; without it the kit's example directions are used.
   It is read-only input, so it may live outside the project: relative paths
@@ -93,6 +99,34 @@ A direction is a complete visual identity as a token set (see
 Components read tokens only - no component-local colors. Sizes derive from
 `--space` and `--text-base` via `calc()`; touch targets stay at 44px
 minimum. Restyling the kit is swapping the token set.
+
+### Switching directions at runtime
+
+Generate every direction (`"direction": "all"`), ship `themes/tokens.css`,
+and let users flip between them. A direction switcher is site chrome, not a
+component - a ~10-line script reading a persisted choice and applying it
+before first paint:
+
+```html
+<select data-direction-switcher>
+  <option value="paper">Paper</option>
+  <option value="graphite">Graphite</option>
+  <option value="citrus">Citrus</option>
+</select>
+<script>
+  // Persisted direction, applied before first paint (no flash).
+  document.documentElement.dataset.theme = localStorage.getItem("direction") || "paper";
+  const switcher = document.querySelector("[data-direction-switcher]");
+  switcher.value = document.documentElement.dataset.theme;
+  switcher.addEventListener("change", () => {
+    document.documentElement.dataset.theme = switcher.value;
+    localStorage.setItem("direction", switcher.value);
+  });
+</script>
+```
+
+`document.documentElement.dataset.theme` sets `data-theme` on `<html>`;
+tokens.css maps each `[data-theme="slug"]` block to its token set.
 
 ## How it works
 
