@@ -2,9 +2,9 @@
 
 **An open-source, agent-first frontend UI kit and design system for AI agents.**
 
-uiforagents is a library of plain HTML/CSS components that AI coding agents can pick, copy into your project, and wire up. No framework, no build step, no runtime dependencies - the components are just files, so they work in any stack.
+uiforagents is a library of vanilla HTML/CSS/JS components that AI coding agents can pick, copy into your project, and wire up. No framework, no build step, no runtime dependencies - the components are just files, so they work in any stack.
 
-It is built for the workflow where your agent does the building and you review and own the output. Every component ships with machine-readable manifests, agent-readable docs, and a rendered catalog, so an agent can go from "I need a modal" to working, on-system markup without guessing. And because the result is small readable HTML/CSS in your own repo - not a dependency you have to look inside - reviewing what your agent built stays easy.
+It is built for the workflow where your agent does the building and you review and own the output. Every component ships with machine-readable manifests, agent-readable docs, and a rendered catalog, so an agent can go from "I need a modal" to working, on-system markup without guessing. And because the result is small readable HTML/CSS/JS in your own repo - not a dependency you have to look inside - reviewing what your agent built stays easy.
 
 ## Why agents work well with it
 

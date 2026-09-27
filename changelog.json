@@ -20,5 +20,27 @@
       "toggle",
       "top-nav"
     ]
+  },
+  {
+    "version": "0.0.2",
+    "date": "2026-09-28",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ]
   }
 ]
