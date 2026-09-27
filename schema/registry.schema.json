@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://raw.githubusercontent.com/peteretelej/uiforagents/main/schema/registry.schema.json",
+  "$id": "https://uiforagents.com/schema/registry.schema.json",
   "title": "uiforagents registry item",
   "description": "Manifest for one uiforagents component item: a shadcn registry-item dialect superset for a vanilla HTML/CSS kit.",
   "type": "object",
