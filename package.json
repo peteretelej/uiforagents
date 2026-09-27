@@ -1,6 +1,6 @@
 {
   "name": "uiforagents",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Registry-shaped, agent-first vanilla HTML/CSS/JS kit. The primary consumer is the AI agent building the UI.",
   "author": "Peter Etelej <peter@etelej.com>",
   "license": "Apache-2.0",

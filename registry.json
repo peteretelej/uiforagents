@@ -88,6 +88,13 @@
       "description": "Wordmark, links with an active pill, and a right-aligned actions cluster."
     },
     {
+      "name": "sidebar",
+      "category": "navigation",
+      "behavior": "none",
+      "title": "Sidebar",
+      "description": "Vertical section nav with an active pill and grouped links; panel or flat placement."
+    },
+    {
       "name": "filter-bar",
       "category": "forms",
       "behavior": "none",

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sidebar · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: start;
+    }
+    .uif-sidebar { min-width: 240px; }
+  </style>
+</head>
+<body>
+  <nav class="uif-sidebar" data-variant="panel" aria-label="Sections">
+    <a data-slot="link" href="#" aria-current="page">Overview</a>
+    <a data-slot="link" href="#">Episodes</a>
+    <div data-slot="group">
+      <span data-slot="heading">Library</span>
+      <a data-slot="link" href="#">Clips</a>
+      <a data-slot="link" href="#">Assets</a>
+    </div>
+  </nav>
+  <nav class="uif-sidebar" data-variant="flat" aria-label="Library sections">
+    <a data-slot="link" href="#" aria-current="page">Season 4</a>
+    <a data-slot="link" href="#">Season 3</a>
+    <a data-slot="link" href="#">Season 2</a>
+  </nav>
+</body>
+</html>
