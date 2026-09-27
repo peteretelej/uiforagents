@@ -1,67 +1,44 @@
 # uiforagents
 
-An open-source, registry-shaped, agent-first vanilla UI kit. The primary
-consumer is the AI agent building the UI; humans review and own the output.
+**An open-source, agent-first frontend UI kit and design system for AI agents.**
 
-Every component is a manifest item that generates the agent index, docs, and
-(later) a CLI - one source, three surfaces. Distribution is copy-in: plain
-HTML/CSS files with closed `[data-variant]` tables and semantic token pairs.
-Zero runtime dependencies.
+uiforagents is a library of plain HTML/CSS components that AI coding agents can pick, copy into your project, and wire up. No framework, no build step, no runtime dependencies - the components are just files, so they work in any stack.
 
-## How it works
+It is built for the workflow where your agent does the building and you review and own the output. Every component ships with machine-readable manifests, agent-readable docs, and a rendered catalog, so an agent can go from "I need a modal" to working, on-system markup without guessing. And because the result is small readable HTML/CSS in your own repo - not a dependency you have to look inside - reviewing what your agent built stays easy.
 
-`registry.json` + `items/*/item.json` (one source) generate three surfaces:
+## Why agents work well with it
 
-- `llms.txt` - compact agent index, pickable from the index lines alone
-- `docs/components/*.md` - per-component docs twins
-- `docs/arena.html` - rendered catalog across example directions
+- **Pickable index**: [`llms.txt`](llms.txt) lists every component and its variants; an agent can choose from the index lines alone.
+- **Copy-in distribution**: components live under `items/<name>/`; the agent copies markup + CSS into your project. You own the code.
+- **Built-in verification**: every item ships an executable example and an ARIA fixture; the agent renders the example and diffs it against the fixture with Playwright's ariaSnapshot.
+- **Adherence linting**: [`validation/check.mjs`](validation/check.mjs) catches drift in generated UI - raw hex colors, off-table variants, undeclared tokens.
+- **Theming by tokens**: swap a design "direction" (a token set) and the whole kit restyles. Colors are semantic roles (bg/fg pairs plus status triplets), contrast-checked by construction.
 
-Each `item.json` declares the manifest contract: `name`, `title`,
-`description`, `category` (closed enum from the schema; drives the `llms.txt`
-grouping), `behavior` (`none` | `css-only` | `js-inline`), `variants` (closed
-`[data-variant]` tables with a default), `cssVars` (the tokens the item
-reads), `files`, `docs`, and `schemaVersion`. The build validates every
-manifest against `schema/registry.schema.json` and keeps `registry.json` in
-lockstep.
+## Components
 
-## For agents
+16 items, each a folder with markup, CSS, an executable example, and an ARIA fixture:
 
-1. Read `llms.txt` and pick a component and variant from its lines.
-2. Copy the item's files (`items/<name>/`): markup + CSS, plus a script when
-   `behavior` is `js-inline`.
-3. Wire tokens: copy `themes/tokens.css`, or write your own stylesheet
-   declaring the same semantic roles.
-4. Validate: open the item's `*.example.html` and diff the rendered tree
-   against `fixture.aria.yml` with Playwright's ariaSnapshot.
+| | | | |
+| --- | --- | --- | --- |
+| Button | Segmented control | Toggle switch | Form field |
+| Filter bar | Badge | Chip | Card |
+| Link row | Toast | Dead states | Audio player |
+| Top nav | Tabs | Modal | Data table |
 
-`SKILL.md` is the full adapter; `AGENTS.md` maps the repo for agents working
-on the kit itself.
+Browse the [rendered catalog](docs/arena.html) (self-contained page - open it locally), or read [`llms.txt`](llms.txt) the way an agent would.
 
-## Token contract
+## Quick start
 
-Directions declare the base scale as CSS custom properties (see
-`themes/directions.mjs`): semantic bg/fg pairs (`--bg`/`--text`,
-`--surface`/`--text`, `--accent`/`--accent-fg` + `--accent-soft`, and the
-`--ok`/`--warn`/`--danger` status triplets), `--border`, `--scrim`, tone
-(`--radius`, `--shadow-char`), type (`--font-display`, `--font-body`,
-`--text-base`), density (`--space`), and `color-scheme`. Components read
-tokens only; sizes derive from `--space` and `--text-base` via `calc()`;
-touch targets stay at 44px minimum. Restyling the kit = swapping the token
-set.
+Give your agent the [`SKILL.md`](SKILL.md) - it is the full adapter - or just point it at this repo. The loop:
 
-## Regenerating
+1. Read [`llms.txt`](llms.txt) and pick a component and variant from its lines.
+2. Copy the item's files from `items/<name>/`: markup + CSS, plus a script when its `behavior` is `js-inline`.
+3. Wire tokens: copy `themes/tokens.css`, or write your own stylesheet declaring the same semantic roles.
+4. Validate: open the item's `*.example.html` and diff the rendered tree against `fixture.aria.yml` with Playwright's ariaSnapshot.
 
-```sh
-node scripts/build-index.mjs   # validates items; writes llms.txt + docs/components/
-node scripts/build-arena.mjs   # writes themes/tokens.css + docs/arena.html
-```
+## Use it across a project
 
-Generated files are committed. The build fails loudly on schema violations,
-undeclared tokens, or index drift.
-
-## Per-project flow
-
-Projects consume the kit through a `uiforagents.json` config and one CLI:
+For ongoing work, a project consumes the kit through a `uiforagents.json` config and one CLI. Point `kit` at a checkout of this repo (or `node_modules/uiforagents` after `npm install uiforagents`):
 
 ```sh
 node <kit>/scripts/uifa.mjs tokens    # write the project's tokens.css from the chosen direction
@@ -104,6 +81,47 @@ escape it are refused):
 - `node <kit>/validation/check.mjs --self-test` runs the linter over its
   planted-violation fixtures and exits nonzero on any miss.
 
+## Theming: directions and tokens
+
+A direction is a complete visual identity as a token set (see
+`themes/directions.mjs`): semantic bg/fg pairs (`--bg`/`--text`,
+`--surface`/`--text`, `--accent`/`--accent-fg` + `--accent-soft`, and the
+`--ok`/`--warn`/`--danger` status triplets), `--border`, `--scrim`, tone
+(`--radius`, `--shadow-char`), type (`--font-display`, `--font-body`,
+`--text-base`), density (`--space`), and `color-scheme`.
+
+Components read tokens only - no component-local colors. Sizes derive from
+`--space` and `--text-base` via `calc()`; touch targets stay at 44px
+minimum. Restyling the kit is swapping the token set.
+
+## How it works
+
+`registry.json` + `items/*/item.json` (one source) generate three surfaces:
+
+- `llms.txt` - compact agent index
+- `docs/components/*.md` - per-component docs twins
+- `docs/arena.html` - rendered catalog across example directions
+
+Each `item.json` declares the manifest contract: `name`, `title`,
+`description`, `category` (closed enum from the schema; drives the `llms.txt`
+grouping), `behavior` (`none` | `css-only` | `js-inline`), `variants` (closed
+`[data-variant]` tables with a default), `cssVars` (the tokens the item
+reads), `files`, `docs`, and `schemaVersion`. The build validates every
+manifest against [`schema/registry.schema.json`](schema/registry.schema.json)
+and keeps `registry.json` in lockstep.
+
+Regenerate after changing items or manifests:
+
+```sh
+node scripts/build-index.mjs   # validates items; writes llms.txt + docs/components/
+node scripts/build-arena.mjs   # writes themes/tokens.css + docs/arena.html
+```
+
+Generated files are committed. The build fails loudly on schema violations,
+undeclared tokens, or index drift. [`AGENTS.md`](AGENTS.md) maps the repo for
+agents working on the kit itself; [`changelog.json`](changelog.json) is the
+machine-readable changelog.
+
 ## License
 
-Apache-2.0
+[Apache-2.0](LICENSE)
