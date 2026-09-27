@@ -95,6 +95,13 @@
       "description": "Vertical section nav with an active pill and grouped links; panel or flat placement."
     },
     {
+      "name": "footer",
+      "category": "navigation",
+      "behavior": "none",
+      "title": "Footer",
+      "description": "Site footer with brand block, link groups, and a legal line; columned or single-row."
+    },
+    {
       "name": "filter-bar",
       "category": "forms",
       "behavior": "none",

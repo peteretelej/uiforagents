@@ -243,6 +243,8 @@ const iframeChrome = `
   }
   /* The catalog renders in flow: fixed regions would paint over the last item. */
   .uif-toast-region { position: static; justify-items: start; }
+  /* Columned footers need width to show their columns; the catalog shrink-wraps items. */
+  .arena-item .uif-footer { min-width: min(640px, 100%); }
   .arena-item {
     border-top: 1px solid var(--border);
     padding: calc(var(--space) * 4);

@@ -40,6 +40,7 @@ Components read tokens only - no component-local colors. Variants are closed [da
 
 ## Navigation
 
+- footer | Footer | Site footer with brand block, link groups, and a legal line; columned or single-row. | data-variant: columns* / simple | behavior: none | docs: docs/components/footer.md | src: items/footer/
 - sidebar | Sidebar | Vertical section nav with an active pill and grouped links; panel or flat placement. | data-variant: panel* / flat | behavior: none | docs: docs/components/sidebar.md | src: items/sidebar/
 - tabs | Tabs | Tab selector with underline (default) and pill styles per direction; panels switch via CSS. | data-variant: underline* / pill | behavior: css-only | docs: docs/components/tabs.md | src: items/tabs/
 - top-nav | Top nav | Wordmark, links with an active pill, and a right-aligned actions cluster. | data-variant: none | behavior: none | docs: docs/components/top-nav.md | src: items/top-nav/
