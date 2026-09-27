@@ -1,6 +1,6 @@
 .uif-field {
   display: grid;
-  gap: calc(var(--space) * 1);
+  gap: calc(var(--space) * 1.5);
   font-family: var(--font-body);
   font-size: calc(var(--text-base) * 0.875);
   color: var(--text);
@@ -13,9 +13,9 @@
 .uif-field-input {
   box-sizing: border-box;
   width: 100%;
-  padding: 0 calc(var(--space) * 2);
-  /* 44px minimum touch target */
-  min-height: max(44px, calc(var(--space) * 5.5));
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  /* 44px minimum touch target, scaling with the type size */
+  min-height: max(44px, calc(var(--space) * 5.5), calc(var(--text-base) * 2.75));
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -42,6 +42,5 @@
 
 .uif-field-input[data-variant="textarea"] {
   min-height: calc(var(--space) * 8);
-  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
   resize: vertical;
 }

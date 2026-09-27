@@ -60,6 +60,10 @@ const sampleUi = `
   <div data-slot="actions"><a href="#">Sign out</a></div>
 </header>
 <div class="arena-sample">
+  <div class="arena-page-head">
+    <h2>Season overview</h2>
+    <p>Plan, record, and ship every episode from one workspace.</p>
+  </div>
   <form class="uif-filter-bar" role="search" aria-label="Sample filter">
     <input data-slot="search" type="search" placeholder="Search projects" aria-label="Search projects">
     <div data-slot="chips">
@@ -99,31 +103,30 @@ const sampleUi = `
         <p class="arena-badges"><span class="uif-badge" data-variant="ok">Open</span> <span class="uif-badge" data-variant="warn">Due soon</span> <span class="uif-badge" data-variant="muted">Closed</span></p>
       </div>
     </article>
-    <article class="uif-card">
-      <h3 data-slot="title">Playback</h3>
-      <div data-slot="body" class="arena-stack">
-        <div class="uif-player">
-          <button type="button" data-slot="play" aria-label="Play">▶</button>
-          <div data-slot="meta">
-            <span data-slot="title">Episode 12: Designing for agents</span>
-            <span data-slot="time">12:04 / 35:00</span>
-          </div>
-          <div data-slot="progress" role="progressbar" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="35">
-            <span data-slot="progress-fill" style="width: 35%"></span>
-          </div>
-        </div>
-        <div class="uif-segmented" role="radiogroup" aria-label="Sample range">
-          <label class="uif-segmented-option"><input type="radio" name="sample-range" value="day" checked><span data-slot="segment">Day</span></label>
-          <label class="uif-segmented-option"><input type="radio" name="sample-range" value="week"><span data-slot="segment">Week</span></label>
-        </div>
-        <label class="uif-toggle">
-          <input class="uif-toggle-input" type="checkbox" role="switch" checked>
-          <span data-slot="label">Autoplay next episode</span>
-        </label>
-        <button type="button" class="uif-modal-trigger" data-slot="sample-modal-open">Delete workspace</button>
-      </div>
-    </article>
   </div>
+  <article class="uif-card">
+    <h3 data-slot="title">Playback</h3>
+    <div class="arena-player-row">
+      <div class="uif-player">
+        <button type="button" data-slot="play" aria-label="Play">▶</button>
+        <div data-slot="meta">
+          <span data-slot="title">Episode 12: Designing for agents</span>
+          <span data-slot="time">12:04 / 35:00</span>
+        </div>
+        <div data-slot="progress" role="progressbar" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="35">
+          <span data-slot="progress-fill" style="width: 35%"></span>
+        </div>
+      </div>
+      <div class="uif-segmented" role="radiogroup" aria-label="Sample range">
+        <label class="uif-segmented-option"><input type="radio" name="sample-range" value="day" checked><span data-slot="segment">Day</span></label>
+        <label class="uif-segmented-option"><input type="radio" name="sample-range" value="week"><span data-slot="segment">Week</span></label>
+      </div>
+      <label class="uif-toggle">
+        <input class="uif-toggle-input" type="checkbox" role="switch" checked>
+        <span data-slot="label">Autoplay next episode</span>
+      </label>
+    </div>
+  </article>
   <table class="uif-table" data-sortable>
     <thead>
       <tr>
@@ -139,8 +142,11 @@ const sampleUi = `
       <tr><td><input data-slot="select" type="checkbox" aria-label="Select Compass"></td><td>Compass</td><td><span data-slot="status" data-variant="danger">Expired</span></td><td>2026-09-12</td></tr>
     </tbody>
   </table>
-  <button type="button" class="uif-toast-trigger" data-slot="sample-toast-open">Show toast</button>
-  <p class="arena-status-label">Status roles: ok, warn, danger, scrim</p>
+  <div class="arena-controls">
+    <p class="arena-status-label">Status roles: ok, warn, danger, scrim</p>
+    <button type="button" class="uif-toast-trigger" data-slot="sample-toast-open">Show toast</button>
+    <button type="button" class="uif-modal-trigger" data-slot="sample-modal-open">Delete workspace</button>
+  </div>
   <div class="arena-scrim-demo">Content under the scrim</div>
 </div>
 <div class="uif-toast-region">
@@ -177,15 +183,47 @@ const iframeChrome = `
     display: grid;
     gap: calc(var(--space) * 4);
   }
+  .arena-page-head {
+    display: grid;
+    gap: calc(var(--space) * 1);
+  }
+  .arena-page-head h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: calc(var(--text-base) * 1.5);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .arena-page-head p {
+    margin: 0;
+    max-width: 60ch;
+    color: var(--text-muted);
+  }
   .arena-columns {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: calc(var(--space) * 4);
   }
-  .arena-stack { display: grid; gap: calc(var(--space) * 3); justify-items: start; }
+  .arena-player-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(var(--space) * 4);
+  }
+  .arena-player-row .uif-player { flex: 1 1 320px; }
   .arena-rows { display: grid; gap: calc(var(--space) * 1); }
   .arena-badges { margin: calc(var(--space) * 1) 0 0; display: flex; gap: calc(var(--space) * 2); flex-wrap: wrap; }
-  .arena-status-label { margin: 0; font-family: var(--font-display); color: var(--text-muted); }
+  .arena-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calc(var(--space) * 3);
+  }
+  .arena-status-label {
+    margin: 0 auto 0 0;
+    font-family: var(--font-display);
+    color: var(--text-muted);
+  }
   .arena-scrim-demo {
     position: relative;
     border: 1px solid var(--border);
@@ -205,7 +243,6 @@ const iframeChrome = `
   }
   /* The catalog renders in flow: fixed regions would paint over the last item. */
   .uif-toast-region { position: static; justify-items: start; }
-  .arena-sample .uif-toast-trigger { justify-self: start; }
   .arena-item {
     border-top: 1px solid var(--border);
     padding: calc(var(--space) * 4);
@@ -265,13 +302,13 @@ const arena = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>uiforagents arena</title>
 <style>
-  body { margin: 0; padding: 24px; font-family: system-ui, sans-serif; background: #eceae6; color: #26221e; }
-  header { max-width: 1100px; margin: 0 auto 16px; }
+  body { margin: 0; padding: 24px; font-family: system-ui, sans-serif; background: #f4f2ee; color: #26221e; }
+  header { max-width: 1100px; margin: 0 auto 20px; }
   h1 { font-size: 20px; margin: 0 0 4px; }
   p { margin: 0; color: #6b645c; font-size: 13px; }
-  main { max-width: 1100px; margin: 0 auto; display: grid; gap: 24px; }
-  section h2 { font-size: 15px; margin: 0 0 8px; }
-  iframe { width: 100%; border: 1px solid #d4d0c9; border-radius: 8px; background: #fff; }
+  main { max-width: 1100px; margin: 0 auto; display: grid; gap: 28px; }
+  section h2 { font-size: 13px; font-weight: 600; margin: 0 0 8px; }
+  iframe { width: 100%; border: 1px solid #d4d0c9; border-radius: 10px; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 12px 32px rgb(0 0 0 / 0.06); }
 </style>
 </head>
 <body>
