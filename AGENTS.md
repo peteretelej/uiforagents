@@ -15,6 +15,10 @@ references.
 | `themes/tokens.css` | GENERATED from directions.mjs by build-arena |
 | `scripts/build-index.mjs` | Validates items; generates `llms.txt` + `docs/components/*.md` |
 | `scripts/build-arena.mjs` | Generates `themes/tokens.css` + `docs/arena.html` |
+| `scripts/lib/` | Shared kit loaders: item/schema loading (`items.mjs`), consumer-config loading (`config.mjs`) |
+| `scripts/uifa.mjs` | Per-project flow CLI over a consumer's `uiforagents.json`: `add \| tokens \| scaffold` |
+| `validation/check.mjs` | Adherence linter: raw hex, invalid/missing `data-variant`, undeclared tokens; `--self-test` |
+| `validation/fixtures/planted/` | Planted-violation inputs for the linter's self-test |
 | `llms.txt`, `docs/` | GENERATED agent surfaces |
 | `changelog.json` | Machine-readable `[{version, date, items[]}]`; latest entry matches package.json version |
 
@@ -23,6 +27,8 @@ references.
 ```sh
 node scripts/build-index.mjs
 node scripts/build-arena.mjs
+node scripts/uifa.mjs add | tokens | scaffold   # against a consumer config
+node validation/check.mjs --self-test
 ```
 
 ## Rules

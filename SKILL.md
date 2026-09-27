@@ -35,6 +35,32 @@ artifacts, prototypes.
 6. **Stay on-system.** No component-local colors: every visual value comes
    from a token. Hand-rolled extras must be justified in build notes.
 
+## Per-project flow
+
+Projects adopt the kit through a `uiforagents.json` config at their root and
+run the kit CLI from the project directory:
+
+```sh
+node <kit>/scripts/uifa.mjs tokens    # tokens.css from the chosen direction
+node <kit>/scripts/uifa.mjs add       # copy the configured subset into dest.itemsDir
+node <kit>/scripts/uifa.mjs scaffold  # docs/design-system.md from tokens + config
+node <kit>/validation/check.mjs       # adherence linter (reports, never fixes)
+```
+
+Config keys: `kit` (path to this kit), `direction` (slug),
+`directionsFile` (optional project-owned directions module), `items`
+(subset list), `dest` (`itemsDir`, `tokensCss`, `docs`), `lint` (globs the
+linter covers). Paths resolve against the config file's directory and may
+not escape it. `add` copies markup, CSS, script, example, and ARIA fixture
+per item, and points the copied examples' token stylesheet at the project's
+`tokens.css`.
+
+`check` reports raw hex colors, invalid or missing `data-variant` (closed
+tables; elements map to items by their `uif-<name>` class), and tokens used
+via `var()` but declared by neither the copied items' `cssVars` nor the
+project's `tokens.css`. Run `node <kit>/validation/check.mjs --self-test`
+to verify the linter itself against its planted violations.
+
 ## Notes
 
 - Touch targets hold a 44px minimum; spacing derives from `--space` via
