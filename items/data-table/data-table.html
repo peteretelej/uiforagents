@@ -1,0 +1,27 @@
+<!-- Sortable headers: th[aria-sort] + button. Selection: native checkboxes.
+     Empty state: a table with data-state="empty" and one empty row. -->
+<table class="uif-table" data-sortable>
+  <thead>
+    <tr>
+      <th><input data-slot="select" type="checkbox" aria-label="Select all rows"></th>
+      <th aria-sort="ascending"><button type="button">Name</button></th>
+      <th>Status</th>
+      <th><button type="button">Updated</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input data-slot="select" type="checkbox" aria-label="Select row"></td>
+      <td>Cell</td>
+      <td><span data-slot="status">Active</span></td>
+      <td>2026-01-01</td>
+    </tr>
+  </tbody>
+</table>
+<table class="uif-table" data-state="empty">
+  <tbody>
+    <tr>
+      <td data-slot="empty" colspan="4">Nothing to show</td>
+    </tr>
+  </tbody>
+</table>

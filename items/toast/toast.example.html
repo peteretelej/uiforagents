@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Toast · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="toast.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: start;
+    }
+  </style>
+</head>
+<body>
+  <div class="uif-toast-region">
+    <div class="uif-toast" data-variant="info" data-state="visible" role="status">
+      <span data-slot="message">Draft saved</span>
+      <button type="button" data-slot="close">Dismiss</button>
+    </div>
+  </div>
+  <button type="button" class="uif-toast-trigger" data-slot="trigger">Show toast</button>
+  <script src="toast.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+.uif-tabs {
+  display: grid;
+  gap: calc(var(--space) * 2);
+  font-family: var(--font-body);
+  font-size: calc(var(--text-base) * 0.875);
+}
+
+.uif-tabs-list {
+  display: flex;
+  gap: calc(var(--space) * 1);
+  border-bottom: 1px solid var(--border);
+}
+
+.uif-tab {
+  position: relative;
+  display: inline-flex;
+}
+
+.uif-tab input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.uif-tab [data-slot="tab"] {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 calc(var(--space) * 2);
+  /* 44px minimum touch target */
+  min-height: max(44px, calc(var(--space) * 5.5));
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  color: var(--text-muted);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.uif-tab:has(input:checked) [data-slot="tab"] {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.uif-tab:has(input:focus-visible) [data-slot="tab"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.uif-tabs-panel {
+  padding: calc(var(--space) * 1) 0;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.uif-tabs[data-variant="pill"] .uif-tabs-list {
+  border-bottom: 0;
+}
+
+.uif-tabs[data-variant="pill"] .uif-tab [data-slot="tab"] {
+  border-bottom: 0;
+  border-radius: calc(var(--radius) * 10);
+}
+
+.uif-tabs[data-variant="pill"] .uif-tab:has(input:checked) [data-slot="tab"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Panel switching: each tab value maps to the panel with the same data-panel. */
+.uif-tabs:has(input[value="preview"]:checked) .uif-tabs-panel:not([data-panel="preview"]),
+.uif-tabs:has(input[value="history"]:checked) .uif-tabs-panel:not([data-panel="history"]) {
+  display: none;
+}

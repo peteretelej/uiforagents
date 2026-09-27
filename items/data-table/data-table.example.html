@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data table · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="data-table.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: stretch;
+    }
+  </style>
+</head>
+<body>
+  <table class="uif-table" data-sortable>
+    <thead>
+      <tr>
+        <th><input class="uif-select" data-slot="select" type="checkbox" aria-label="Select all rows"></th>
+        <th aria-sort="ascending"><button type="button">Name</button></th>
+        <th>Status</th>
+        <th><button type="button">Updated</button></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input data-slot="select" type="checkbox" aria-label="Select Atlas"></td>
+        <td>Atlas</td>
+        <td><span data-slot="status">Active</span></td>
+        <td>2026-09-21</td>
+      </tr>
+      <tr>
+        <td><input data-slot="select" type="checkbox" aria-label="Select Beacon"></td>
+        <td>Beacon</td>
+        <td><span data-slot="status" data-variant="warn">Due soon</span></td>
+        <td>2026-09-24</td>
+      </tr>
+      <tr>
+        <td><input data-slot="select" type="checkbox" aria-label="Select Compass"></td>
+        <td>Compass</td>
+        <td><span data-slot="status" data-variant="danger">Expired</span></td>
+        <td>2026-09-12</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="uif-table" data-state="empty">
+    <tbody>
+      <tr>
+        <td data-slot="empty" colspan="4">No issues match the current filters</td>
+      </tr>
+    </tbody>
+  </table>
+  <script src="data-table.js"></script>
+</body>
+</html>

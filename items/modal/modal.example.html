@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modal · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="modal.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: start;
+    }
+  </style>
+</head>
+<body>
+  <button type="button" class="uif-modal-trigger" data-slot="open">Delete project</button>
+  <dialog class="uif-modal" open aria-label="Delete project">
+    <h2 data-slot="title">Delete project?</h2>
+    <p data-slot="body">This permanently removes the project and all of its data. This action cannot be undone.</p>
+    <div data-slot="actions">
+      <button type="button" class="uif-modal-action" data-variant="secondary" data-slot="cancel">Cancel</button>
+      <button type="button" class="uif-modal-action" data-variant="danger" data-slot="confirm">Delete</button>
+    </div>
+  </dialog>
+  <script src="modal.js"></script>
+</body>
+</html>

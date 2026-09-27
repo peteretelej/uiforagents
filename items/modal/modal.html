@@ -1,0 +1,10 @@
+<!-- Native <dialog>: showModal() gives focus trap, Esc, and scrim for free. -->
+<button type="button" class="uif-modal-trigger" data-slot="open">Open modal</button>
+<dialog class="uif-modal" aria-label="Title">
+  <h2 data-slot="title">Title</h2>
+  <p data-slot="body">Body text.</p>
+  <div data-slot="actions">
+    <button type="button" class="uif-modal-action" data-variant="secondary" data-slot="cancel">Cancel</button>
+    <button type="button" class="uif-modal-action" data-variant="danger" data-slot="confirm">Confirm</button>
+  </div>
+</dialog>

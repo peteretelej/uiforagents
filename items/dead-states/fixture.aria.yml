@@ -1,0 +1,16 @@
+- heading "Page not found" [level=2]
+- paragraph: The page you are looking for does not exist or has moved. Check the address, or head back home.
+- link "Back home":
+  - /url: "#"
+- heading "This project was deleted" [level=2]
+- paragraph: The owner removed this project and its contents. You can restore it from trash within 30 days.
+- link "Open trash":
+  - /url: "#"
+- heading "This link has expired" [level=2]
+- paragraph: Sharing links stay active for 7 days. Ask the owner for a fresh link to continue.
+- link "Request access":
+  - /url: "#"
+- heading "This workspace is closed" [level=2]
+- paragraph: Billing for this workspace ended, so its content is read-only. Contact the workspace owner to reopen it.
+- link "Billing details":
+  - /url: "#"

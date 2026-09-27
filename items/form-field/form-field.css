@@ -1,0 +1,47 @@
+.uif-field {
+  display: grid;
+  gap: calc(var(--space) * 1);
+  font-family: var(--font-body);
+  font-size: calc(var(--text-base) * 0.875);
+  color: var(--text);
+}
+
+.uif-field [data-slot="label"] {
+  font-weight: 600;
+}
+
+.uif-field-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 calc(var(--space) * 2);
+  /* 44px minimum touch target */
+  min-height: max(44px, calc(var(--space) * 5.5));
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  transition: border-color 120ms ease;
+}
+
+.uif-field-input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.uif-field-input:hover {
+  border-color: var(--text-muted);
+}
+
+.uif-field-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+  border-color: var(--accent);
+}
+
+.uif-field-input[data-variant="textarea"] {
+  min-height: calc(var(--space) * 8);
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  resize: vertical;
+}

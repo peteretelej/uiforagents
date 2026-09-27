@@ -1,0 +1,80 @@
+.uif-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--space) * 2);
+  font-family: var(--font-body);
+  font-size: calc(var(--text-base) * 0.875);
+}
+
+.uif-filter-bar [data-slot="search"] {
+  box-sizing: border-box;
+  flex: 1 1 200px;
+  padding: 0 calc(var(--space) * 2);
+  /* 44px minimum touch target */
+  min-height: max(44px, calc(var(--space) * 5.5));
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: calc(var(--text-base) * 0.875);
+}
+
+.uif-filter-bar [data-slot="search"]::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.uif-filter-bar [data-slot="search"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+  border-color: var(--accent);
+}
+
+.uif-filter-bar [data-slot="chips"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--space) * 1);
+}
+
+.uif-filter-bar [data-slot="chip"] {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 calc(var(--space) * 2.5);
+  /* 44px minimum touch target */
+  min-height: max(44px, calc(var(--space) * 5.5));
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 10);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.uif-filter-bar [data-slot="chip"]:hover {
+  background: color-mix(in oklch, var(--surface), var(--text) 6%);
+}
+
+.uif-filter-bar [data-slot="chip"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.uif-filter-bar [data-slot="chip"][aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+
+.uif-filter-bar [data-slot="chip"][data-variant="warn"] {
+  color: var(--warn);
+}
+
+.uif-filter-bar [data-slot="chip"][data-variant="warn"][aria-pressed="true"] {
+  background: var(--warn);
+  border-color: var(--warn);
+  color: var(--warn-fg);
+}

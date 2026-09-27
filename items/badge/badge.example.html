@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Badge · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="badge.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: start;
+    }
+  </style>
+</head>
+<body>
+  <span class="uif-badge" data-variant="accent">In review</span>
+  <span class="uif-badge" data-variant="ok">Open</span>
+  <span class="uif-badge" data-variant="warn">Due soon</span>
+  <span class="uif-badge" data-variant="danger">Expired</span>
+  <span class="uif-badge" data-variant="muted">Closed</span>
+</body>
+</html>

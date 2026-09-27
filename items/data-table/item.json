@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "data-table",
+  "type": "registry:component",
+  "category": "data",
+  "title": "Data table",
+  "description": "Table with sortable headers, row selection, status cells, and an empty state.",
+  "keywords": ["table", "grid", "sortable", "rows", "empty-state"],
+  "behavior": "js-inline",
+  "cssVars": [
+    "--surface",
+    "--border",
+    "--text",
+    "--text-muted",
+    "--accent",
+    "--ok-soft",
+    "--ok",
+    "--warn-soft",
+    "--warn",
+    "--danger-soft",
+    "--danger",
+    "--radius",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [],
+  "files": [
+    { "path": "data-table.html", "type": "kit:markup" },
+    { "path": "data-table.css", "type": "kit:style" },
+    { "path": "data-table.js", "type": "kit:behavior" },
+    { "path": "data-table.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Mark the table `data-sortable` to wire header buttons; they set `aria-sort` on the `th` and re-order rows in place. Status cells are `[data-slot=\"status\"]` spans mapping to the ok/warn/danger roles. For an empty table, use `data-state=\"empty\"` with a single `[data-slot=\"empty\"]` row.",
+  "meta": { "source": "original" }
+}

@@ -1,0 +1,33 @@
+- table:
+  - rowgroup:
+    - row "Select all rows Name ↑ Status Updated":
+      - columnheader "Select all rows":
+        - checkbox "Select all rows"
+      - columnheader "Name ↑":
+        - button "Name ↑"
+      - columnheader "Status"
+      - columnheader "Updated":
+        - button "Updated"
+  - rowgroup:
+    - row "Select Atlas Atlas Active 2026-09-21":
+      - cell "Select Atlas":
+        - checkbox "Select Atlas"
+      - cell "Atlas"
+      - cell "Active"
+      - cell "2026-09-21"
+    - row "Select Beacon Beacon Due soon 2026-09-24":
+      - cell "Select Beacon":
+        - checkbox "Select Beacon"
+      - cell "Beacon"
+      - cell "Due soon"
+      - cell "2026-09-24"
+    - row "Select Compass Compass Expired 2026-09-12":
+      - cell "Select Compass":
+        - checkbox "Select Compass"
+      - cell "Compass"
+      - cell "Expired"
+      - cell "2026-09-12"
+- table:
+  - rowgroup:
+    - row "No issues match the current filters":
+      - cell "No issues match the current filters"

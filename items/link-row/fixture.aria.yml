@@ -1,0 +1,10 @@
+- 'link "Episode 12: Designing for agents"':
+  - /url: https://example.com/reader
+- text: example.com/reader/12 podcast 35 min
+- link "Open reader":
+  - /url: https://example.com/reader
+- link "Registry schema reference":
+  - /url: https://example.com/docs
+- text: example.com/docs/schema docs
+- link "Read":
+  - /url: https://example.com/docs

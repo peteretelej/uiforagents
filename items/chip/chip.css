@@ -1,0 +1,26 @@
+.uif-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space) * 1);
+  padding: calc(var(--space) * 0.375) calc(var(--space) * 2);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 10);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: calc(var(--text-base) * 0.8125);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.uif-chip[data-variant="accent"] {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent);
+}
+
+.uif-chip[data-variant="warn"] {
+  background: var(--warn-soft);
+  border-color: transparent;
+  color: var(--warn);
+}

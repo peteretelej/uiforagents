@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Toggle switch · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="toggle.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: start;
+    }
+  </style>
+</head>
+<body>
+  <label class="uif-toggle">
+    <input class="uif-toggle-input" type="checkbox" role="switch">
+    <span data-slot="label">Email notifications</span>
+  </label>
+  <label class="uif-toggle">
+    <input class="uif-toggle-input" type="checkbox" role="switch" checked>
+    <span data-slot="label">Compact mode</span>
+  </label>
+  <label class="uif-toggle">
+    <input class="uif-toggle-input" type="checkbox" role="switch" disabled>
+    <span data-slot="label">Legacy export</span>
+  </label>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "toggle",
+  "type": "registry:component",
+  "category": "forms",
+  "title": "Toggle switch",
+  "description": "Switch-style checkbox with on, off, and disabled states.",
+  "keywords": ["switch", "toggle", "checkbox", "setting", "on-off"],
+  "behavior": "css-only",
+  "cssVars": [
+    "--border",
+    "--accent",
+    "--surface",
+    "--faint",
+    "--text",
+    "--radius",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [],
+  "files": [
+    { "path": "toggle.html", "type": "kit:markup" },
+    { "path": "toggle.css", "type": "kit:style" },
+    { "path": "toggle.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Wrap the input and label text in a `.uif-toggle` label so the whole row is the click target. `role=\"switch\"` turns the native checkbox into switch semantics; `checked` is on, `disabled` is locked.",
+  "meta": { "source": "original" }
+}

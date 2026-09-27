@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "dead-states",
+  "type": "registry:component",
+  "category": "feedback",
+  "title": "Dead states",
+  "description": "Page-level empty states for not-found, deleted, expired, and closed content.",
+  "keywords": ["empty-state", "404", "not-found", "expired", "deleted"],
+  "behavior": "none",
+  "cssVars": [
+    "--surface",
+    "--border",
+    "--text",
+    "--text-muted",
+    "--accent",
+    "--accent-fg",
+    "--radius",
+    "--font-display",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [
+    { "name": "not-found", "default": true, "description": "Missing or moved content; primary recovery action." },
+    { "name": "deleted", "description": "Content removed by its owner; offer restore when possible." },
+    { "name": "expired", "description": "Time-limited access ended; secondary-weighted action." },
+    { "name": "closed", "description": "Account or workspace is closed; secondary-weighted action." }
+  ],
+  "files": [
+    { "path": "dead-states.html", "type": "kit:markup" },
+    { "path": "dead-states.css", "type": "kit:style" },
+    { "path": "dead-states.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Use as the page-level state when content cannot be shown. Variants set copy intent; expired and closed weight the action as secondary (outlined) since recovery is less direct. Replace the copy; keep the title plus one or two sentences.",
+  "meta": { "source": "original" }
+}

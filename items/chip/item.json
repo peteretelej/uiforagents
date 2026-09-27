@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "chip",
+  "type": "registry:component",
+  "category": "content",
+  "title": "Chip",
+  "description": "Pill-radius tag for filters and metadata: neutral, accent, and warn variants.",
+  "keywords": ["chip", "tag", "pill", "metadata", "category"],
+  "behavior": "none",
+  "cssVars": [
+    "--surface",
+    "--border",
+    "--text",
+    "--accent-soft",
+    "--accent",
+    "--warn-soft",
+    "--warn",
+    "--radius",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [
+    { "name": "neutral", "default": true, "description": "Outlined surface tag." },
+    { "name": "accent", "description": "Soft accent fill for highlighted tags." },
+    { "name": "warn", "description": "Soft warning fill for tags that need attention." }
+  ],
+  "files": [
+    { "path": "chip.html", "type": "kit:markup" },
+    { "path": "chip.css", "type": "kit:style" },
+    { "path": "chip.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Static tag for metadata. For interactive filter chips with pressed states use the `filter-bar` item. Radius derives from `--radius` so pill roundness tracks the direction.",
+  "meta": { "source": "original" }
+}

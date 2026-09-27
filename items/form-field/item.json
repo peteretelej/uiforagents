@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "form-field",
+  "type": "registry:component",
+  "category": "forms",
+  "title": "Form field",
+  "description": "Label, text input, and textarea with an accent focus ring.",
+  "keywords": ["input", "textarea", "text", "form", "field", "label"],
+  "behavior": "none",
+  "cssVars": [
+    "--surface",
+    "--border",
+    "--text",
+    "--text-muted",
+    "--accent",
+    "--radius",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [
+    { "name": "text", "default": true, "description": "Single-line input; omit data-variant." },
+    { "name": "textarea", "description": "Multi-line input via `data-variant=\"textarea\"` on the textarea." }
+  ],
+  "files": [
+    { "path": "form-field.html", "type": "kit:markup" },
+    { "path": "form-field.css", "type": "kit:style" },
+    { "path": "form-field.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "A wrapping `<label class=\"uif-field\">` binds the visible label to its control without ids. The focus ring uses the accent role; hover deepens the border. Keep `min-height` at the 44px touch floor on inputs.",
+  "meta": { "source": "original" }
+}

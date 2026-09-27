@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Segmented control · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="segmented-control.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: start;
+    }
+  </style>
+</head>
+<body>
+  <div class="uif-segmented" role="radiogroup" aria-label="Range">
+    <label class="uif-segmented-option">
+      <input type="radio" name="range-demo" value="day" checked>
+      <span data-slot="segment">Day</span>
+    </label>
+    <label class="uif-segmented-option">
+      <input type="radio" name="range-demo" value="week">
+      <span data-slot="segment">Week</span>
+    </label>
+    <label class="uif-segmented-option">
+      <input type="radio" name="range-demo" value="month">
+      <span data-slot="segment">Month</span>
+    </label>
+  </div>
+</body>
+</html>

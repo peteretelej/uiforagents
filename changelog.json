@@ -1,0 +1,24 @@
+[
+  {
+    "version": "0.0.1",
+    "date": "2026-09-27",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ]
+  }
+]

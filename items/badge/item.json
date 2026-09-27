@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "badge",
+  "type": "registry:component",
+  "category": "content",
+  "title": "Badge",
+  "description": "Small status label: accent, ok, warn, danger, and muted outline variants.",
+  "keywords": ["badge", "status", "label", "pill", "tag"],
+  "behavior": "none",
+  "cssVars": [
+    "--accent-soft",
+    "--accent",
+    "--ok-soft",
+    "--ok",
+    "--warn-soft",
+    "--warn",
+    "--danger-soft",
+    "--danger",
+    "--border",
+    "--text-muted",
+    "--radius",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [
+    { "name": "accent", "default": true, "description": "Neutral-highlight state such as in review or open work." },
+    { "name": "ok", "description": "Success or healthy state." },
+    { "name": "warn", "description": "Attention state such as due soon." },
+    { "name": "danger", "description": "Failed or expired state." },
+    { "name": "muted", "description": "Muted outline for closed or archived; the only outlined variant." }
+  ],
+  "files": [
+    { "path": "badge.html", "type": "kit:markup" },
+    { "path": "badge.css", "type": "kit:style" },
+    { "path": "badge.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "A plain span with `data-variant`; no role so it reads as text in the accessibility tree. Keep the copy to one or two words. Pairs with the `status` roles `--ok`, `--warn`, `--danger` from the direction tokens.",
+  "meta": { "source": "original" }
+}

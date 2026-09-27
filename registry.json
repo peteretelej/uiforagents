@@ -1,0 +1,119 @@
+{
+  "name": "uiforagents",
+  "homepage": "https://github.com/peteretelej/uiforagents",
+  "schemaVersion": "1.0.0",
+  "items": [
+    {
+      "name": "button",
+      "category": "actions",
+      "behavior": "none",
+      "title": "Button",
+      "description": "Primary, secondary, danger, and compact action buttons with disabled, hover, and focus states."
+    },
+    {
+      "name": "segmented-control",
+      "category": "forms",
+      "behavior": "css-only",
+      "title": "Segmented control",
+      "description": "Radio-group segment selector with selected and unselected states; keyboard navigable without JavaScript."
+    },
+    {
+      "name": "toggle",
+      "category": "forms",
+      "behavior": "css-only",
+      "title": "Toggle switch",
+      "description": "Switch-style checkbox with on, off, and disabled states."
+    },
+    {
+      "name": "badge",
+      "category": "content",
+      "behavior": "none",
+      "title": "Badge",
+      "description": "Small status label: accent, ok, warn, danger, and muted outline variants."
+    },
+    {
+      "name": "chip",
+      "category": "content",
+      "behavior": "none",
+      "title": "Chip",
+      "description": "Pill-radius tag for filters and metadata: neutral, accent, and warn variants."
+    },
+    {
+      "name": "card",
+      "category": "content",
+      "behavior": "none",
+      "title": "Card",
+      "description": "Flat surface card with one radius and direction-defined shadow character."
+    },
+    {
+      "name": "link-row",
+      "category": "content",
+      "behavior": "none",
+      "title": "Link row",
+      "description": "Title link with url line, chips, and an actions cluster; hover state on the row."
+    },
+    {
+      "name": "form-field",
+      "category": "forms",
+      "behavior": "none",
+      "title": "Form field",
+      "description": "Label, text input, and textarea with an accent focus ring."
+    },
+    {
+      "name": "toast",
+      "category": "feedback",
+      "behavior": "js-inline",
+      "title": "Toast",
+      "description": "Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors."
+    },
+    {
+      "name": "audio-player",
+      "category": "media",
+      "behavior": "js-inline",
+      "title": "Audio player bar",
+      "description": "Playback bar with play toggle, meta, and a token-styled progress track."
+    },
+    {
+      "name": "dead-states",
+      "category": "feedback",
+      "behavior": "none",
+      "title": "Dead states",
+      "description": "Page-level empty states for not-found, deleted, expired, and closed content."
+    },
+    {
+      "name": "top-nav",
+      "category": "navigation",
+      "behavior": "none",
+      "title": "Top nav",
+      "description": "Wordmark, links with an active pill, and a right-aligned actions cluster."
+    },
+    {
+      "name": "filter-bar",
+      "category": "forms",
+      "behavior": "none",
+      "title": "Filter bar",
+      "description": "Search input plus toggleable filter chips with pressed states."
+    },
+    {
+      "name": "tabs",
+      "category": "navigation",
+      "behavior": "css-only",
+      "title": "Tabs",
+      "description": "Tab selector with underline (default) and pill styles per direction; panels switch via CSS."
+    },
+    {
+      "name": "modal",
+      "category": "overlay",
+      "behavior": "js-inline",
+      "title": "Modal",
+      "description": "Native dialog: centered card on desktop, bottom sheet on small screens, scrim via token."
+    },
+    {
+      "name": "data-table",
+      "category": "data",
+      "behavior": "js-inline",
+      "title": "Data table",
+      "description": "Table with sortable headers, row selection, status cells, and an empty state."
+    }
+  ]
+}

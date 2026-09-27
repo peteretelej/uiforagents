@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Button · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="button.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: start;
+    }
+  </style>
+</head>
+<body>
+  <button class="uif-button" data-variant="primary">Save changes</button>
+  <button class="uif-button" data-variant="secondary">Preview</button>
+  <button class="uif-button" data-variant="danger">Delete project</button>
+  <button class="uif-button" data-variant="small">Compact action</button>
+  <button class="uif-button" data-variant="primary" disabled>Saved</button>
+</body>
+</html>

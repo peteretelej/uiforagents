@@ -1,0 +1,6 @@
+- button "Delete project"
+- dialog "Delete project":
+  - heading "Delete project?" [level=2]
+  - paragraph: This permanently removes the project and all of its data. This action cannot be undone.
+  - button "Cancel"
+  - button "Delete"

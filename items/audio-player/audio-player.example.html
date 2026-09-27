@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio player bar · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="audio-player.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: start;
+    }
+  </style>
+</head>
+<body>
+  <div class="uif-player">
+    <button type="button" data-slot="play" aria-label="Play">▶</button>
+    <div data-slot="meta">
+      <span data-slot="title">Episode 12: Designing for agents</span>
+      <span data-slot="time">12:04 / 35:00</span>
+    </div>
+    <div data-slot="progress" role="progressbar" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="35">
+      <span data-slot="progress-fill" style="width: 35%"></span>
+    </div>
+  </div>
+  <script src="audio-player.js"></script>
+</body>
+</html>

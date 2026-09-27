@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "link-row",
+  "type": "registry:component",
+  "category": "content",
+  "title": "Link row",
+  "description": "Title link with url line, chips, and an actions cluster; hover state on the row.",
+  "keywords": ["link", "row", "list-item", "bookmark", "result"],
+  "behavior": "none",
+  "cssVars": [
+    "--accent",
+    "--accent-soft",
+    "--text",
+    "--text-muted",
+    "--radius",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [],
+  "files": [
+    { "path": "link-row.html", "type": "kit:markup" },
+    { "path": "link-row.css", "type": "kit:style" },
+    { "path": "link-row.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Use for lists of destinations: search results, recent files, reading queues. Parts: `[data-slot=\"title\"]` (the link), `url`, `chips` (contains `[data-slot=\"chip\"]` spans), `actions`. Hovering anywhere in the row underlines the title.",
+  "meta": { "source": "original" }
+}

@@ -1,0 +1,7 @@
+- radiogroup "Range":
+  - radio "Day" [checked]
+  - text: Day
+  - radio "Week"
+  - text: Week
+  - radio "Month"
+  - text: Month

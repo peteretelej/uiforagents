@@ -1,0 +1,6 @@
+- switch "Email notifications"
+- text: Email notifications
+- switch "Compact mode" [checked]
+- text: Compact mode
+- switch "Legacy export" [disabled]
+- text: Legacy export

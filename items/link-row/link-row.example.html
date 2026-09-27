@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Link row · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="link-row.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 2);
+      justify-items: stretch;
+    }
+  </style>
+</head>
+<body>
+  <div class="uif-link-row">
+    <a data-slot="title" href="https://example.com/reader">Episode 12: Designing for agents</a>
+    <span data-slot="url">example.com/reader/12</span>
+    <div data-slot="chips">
+      <span data-slot="chip">podcast</span>
+      <span data-slot="chip">35 min</span>
+    </div>
+    <div data-slot="actions">
+      <a href="https://example.com/reader">Open reader</a>
+    </div>
+  </div>
+  <div class="uif-link-row">
+    <a data-slot="title" href="https://example.com/docs">Registry schema reference</a>
+    <span data-slot="url">example.com/docs/schema</span>
+    <div data-slot="chips">
+      <span data-slot="chip">docs</span>
+    </div>
+    <div data-slot="actions">
+      <a href="https://example.com/docs">Read</a>
+    </div>
+  </div>
+</body>
+</html>

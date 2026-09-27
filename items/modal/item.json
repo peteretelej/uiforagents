@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "modal",
+  "type": "registry:component",
+  "category": "overlay",
+  "title": "Modal",
+  "description": "Native dialog: centered card on desktop, bottom sheet on small screens, scrim via token.",
+  "keywords": ["modal", "dialog", "overlay", "confirm", "sheet"],
+  "behavior": "js-inline",
+  "cssVars": [
+    "--surface",
+    "--border",
+    "--text",
+    "--text-muted",
+    "--accent",
+    "--danger",
+    "--danger-fg",
+    "--radius",
+    "--shadow-char",
+    "--scrim",
+    "--font-display",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [],
+  "files": [
+    { "path": "modal.html", "type": "kit:markup" },
+    { "path": "modal.css", "type": "kit:style" },
+    { "path": "modal.js", "type": "kit:behavior" },
+    { "path": "modal.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Built on the native `<dialog>`: `showModal()` provides the focus trap, Esc to close, and the top layer; `::backdrop` reads `--scrim`. Confirm actions use `data-variant=\"danger\"` for destructive flows. Below 480px the card docks to a bottom sheet.",
+  "meta": { "source": "original" }
+}

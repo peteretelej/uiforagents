@@ -1,0 +1,56 @@
+# uiforagents
+
+Agent-first vanilla UI kit: registry-shaped, copy-in HTML/CSS, zero runtime dependencies. The primary consumer is the AI agent building the UI; humans review and own the output.
+
+## How to use
+
+- Pick an item below; each line is enough to choose a component and a variant without opening other files.
+- Copy the files from items/<name>/: markup + CSS, plus a script when behavior is js-inline.
+- Wire direction tokens: themes/tokens.css, or your own stylesheet declaring the same roles.
+- Validate: open the item's example page and diff the rendered tree against its fixture.aria.yml with Playwright's ariaSnapshot.
+
+## Token vocabulary
+
+Semantic bg/fg pairs and the base scale: --bg --surface --border --text --text-muted --faint --accent --accent-soft --accent-fg --ok --ok-soft --ok-fg --warn --warn-soft --warn-fg --danger --danger-soft --danger-fg --scrim --radius --shadow-char --font-display --font-body --space --text-base.
+Pairs read as background -> foreground: --bg/--text, --surface/--text, --accent/--accent-fg, --accent-soft/--accent, and the same shape for --ok, --warn, --danger. --scrim dims overlays. --radius and --shadow-char set tone; --font-display, --font-body, --text-base set type; --space is the density unit for calc() scales.
+Components read tokens only - no component-local colors. Variants are closed [data-variant] tables; parts are [data-slot] hooks.
+
+## Actions
+
+- button | Button | Primary, secondary, danger, and compact action buttons with disabled, hover, and focus states. | data-variant: primary* / secondary / danger / small | behavior: none | docs: docs/components/button.md | src: items/button/
+
+## Forms
+
+- filter-bar | Filter bar | Search input plus toggleable filter chips with pressed states. | data-variant: none | behavior: none | docs: docs/components/filter-bar.md | src: items/filter-bar/
+- form-field | Form field | Label, text input, and textarea with an accent focus ring. | data-variant: text* / textarea | behavior: none | docs: docs/components/form-field.md | src: items/form-field/
+- segmented-control | Segmented control | Radio-group segment selector with selected and unselected states; keyboard navigable without JavaScript. | data-variant: none | behavior: css-only | docs: docs/components/segmented-control.md | src: items/segmented-control/
+- toggle | Toggle switch | Switch-style checkbox with on, off, and disabled states. | data-variant: none | behavior: css-only | docs: docs/components/toggle.md | src: items/toggle/
+
+## Content
+
+- badge | Badge | Small status label: accent, ok, warn, danger, and muted outline variants. | data-variant: accent* / ok / warn / danger / muted | behavior: none | docs: docs/components/badge.md | src: items/badge/
+- card | Card | Flat surface card with one radius and direction-defined shadow character. | data-variant: none | behavior: none | docs: docs/components/card.md | src: items/card/
+- chip | Chip | Pill-radius tag for filters and metadata: neutral, accent, and warn variants. | data-variant: neutral* / accent / warn | behavior: none | docs: docs/components/chip.md | src: items/chip/
+- link-row | Link row | Title link with url line, chips, and an actions cluster; hover state on the row. | data-variant: none | behavior: none | docs: docs/components/link-row.md | src: items/link-row/
+
+## Feedback
+
+- dead-states | Dead states | Page-level empty states for not-found, deleted, expired, and closed content. | data-variant: not-found* / deleted / expired / closed | behavior: none | docs: docs/components/dead-states.md | src: items/dead-states/
+- toast | Toast | Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors. | data-variant: info* / ok / warn / danger | behavior: js-inline | docs: docs/components/toast.md | src: items/toast/
+
+## Navigation
+
+- tabs | Tabs | Tab selector with underline (default) and pill styles per direction; panels switch via CSS. | data-variant: underline* / pill | behavior: css-only | docs: docs/components/tabs.md | src: items/tabs/
+- top-nav | Top nav | Wordmark, links with an active pill, and a right-aligned actions cluster. | data-variant: none | behavior: none | docs: docs/components/top-nav.md | src: items/top-nav/
+
+## Data
+
+- data-table | Data table | Table with sortable headers, row selection, status cells, and an empty state. | data-variant: none | behavior: js-inline | docs: docs/components/data-table.md | src: items/data-table/
+
+## Overlay
+
+- modal | Modal | Native dialog: centered card on desktop, bottom sheet on small screens, scrim via token. | data-variant: none | behavior: js-inline | docs: docs/components/modal.md | src: items/modal/
+
+## Media
+
+- audio-player | Audio player bar | Playback bar with play toggle, meta, and a token-styled progress track. | data-variant: none | behavior: js-inline | docs: docs/components/audio-player.md | src: items/audio-player/

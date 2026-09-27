@@ -1,0 +1,16 @@
+<!-- Radio-based tabs: native inputs keep keyboard navigation; panels switch via CSS.
+     data-panel values must match the input value attributes. -->
+<div class="uif-tabs">
+  <div class="uif-tabs-list">
+    <label class="uif-tab">
+      <input type="radio" name="tabs" value="preview" checked>
+      <span data-slot="tab">Tab</span>
+    </label>
+    <label class="uif-tab">
+      <input type="radio" name="tabs" value="history">
+      <span data-slot="tab">Tab</span>
+    </label>
+  </div>
+  <div class="uif-tabs-panel" data-panel="preview">Panel one</div>
+  <div class="uif-tabs-panel" data-panel="history" hidden>Panel two</div>
+</div>

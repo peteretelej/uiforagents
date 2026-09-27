@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Filter bar · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="filter-bar.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: stretch;
+    }
+  </style>
+</head>
+<body>
+  <form class="uif-filter-bar" role="search" aria-label="Filter issues">
+    <input data-slot="search" type="search" name="q" placeholder="Search issues" aria-label="Search issues">
+    <div data-slot="chips">
+      <button type="button" data-slot="chip" aria-pressed="true">Open</button>
+      <button type="button" data-slot="chip" aria-pressed="false">Assigned to me</button>
+      <button type="button" data-slot="chip" data-variant="warn" aria-pressed="false">Overdue</button>
+    </div>
+  </form>
+</body>
+</html>

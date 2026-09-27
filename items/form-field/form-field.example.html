@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form field · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="form-field.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: stretch;
+    }
+  </style>
+</head>
+<body>
+  <label class="uif-field">
+    <span data-slot="label">Project name</span>
+    <input class="uif-field-input" type="text" name="project" placeholder="Acme Inc">
+  </label>
+  <label class="uif-field">
+    <span data-slot="label">Description</span>
+    <textarea class="uif-field-input" data-variant="textarea" name="description" rows="4" placeholder="What is this project for?"></textarea>
+  </label>
+</body>
+</html>

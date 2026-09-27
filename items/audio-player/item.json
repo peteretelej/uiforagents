@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "audio-player",
+  "type": "registry:component",
+  "category": "media",
+  "title": "Audio player bar",
+  "description": "Playback bar with play toggle, meta, and a token-styled progress track.",
+  "keywords": ["audio", "player", "playback", "progress", "media"],
+  "behavior": "js-inline",
+  "cssVars": [
+    "--surface",
+    "--border",
+    "--text",
+    "--text-muted",
+    "--accent",
+    "--accent-fg",
+    "--radius",
+    "--shadow-char",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [],
+  "files": [
+    { "path": "audio-player.html", "type": "kit:markup" },
+    { "path": "audio-player.css", "type": "kit:style" },
+    { "path": "audio-player.js", "type": "kit:behavior" },
+    { "path": "audio-player.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Reader-style player bar. The play control announces Play/Pause via `aria-label`; position lives on the `[data-slot=\"progress\"]` element (`role=\"progressbar\"` with value attributes) and its fill width mirrors `aria-valuenow`. The example script simulates playback; point the same hooks at a real `<audio>` element to consume it.",
+  "meta": { "source": "original" }
+}

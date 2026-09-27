@@ -1,0 +1,33 @@
+.uif-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: calc(var(--space) * 0.25) calc(var(--space) * 1.5);
+  border-radius: calc(var(--radius) * 10);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: calc(var(--text-base) * 0.75);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.uif-badge[data-variant="ok"] {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+
+.uif-badge[data-variant="warn"] {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.uif-badge[data-variant="danger"] {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.uif-badge[data-variant="muted"] {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}

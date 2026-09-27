@@ -1,0 +1,5 @@
+- search "Filter issues":
+  - searchbox "Search issues"
+  - button "Open" [pressed]
+  - button "Assigned to me"
+  - button "Overdue"

@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/peteretelej/uiforagents/main/schema/registry.schema.json",
+  "title": "uiforagents registry item",
+  "description": "Manifest for one uiforagents component item: a shadcn registry-item dialect superset for a vanilla HTML/CSS kit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "name",
+    "type",
+    "category",
+    "title",
+    "description",
+    "keywords",
+    "behavior",
+    "cssVars",
+    "variants",
+    "files",
+    "docs"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "description": "Manifest schema version this item conforms to. Anchors cross-repo schema alignment.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Unique item name, kebab-case. Matches the items/<name>/ folder.",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "type": {
+      "const": "registry:component"
+    },
+    "category": {
+      "type": "string",
+      "description": "Index grouping used by the agent index and docs.",
+      "enum": ["actions", "forms", "content", "feedback", "navigation", "data", "overlay", "media"]
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable short title."
+    },
+    "description": {
+      "type": "string",
+      "description": "One-line summary for the agent index; readable without opening any other file."
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Free-form search terms.",
+      "items": { "type": "string" }
+    },
+    "behavior": {
+      "description": "none: static markup. css-only: state via native inputs and CSS. js-inline: ships a dependency-free script file.",
+      "enum": ["none", "css-only", "js-inline"]
+    },
+    "cssVars": {
+      "type": "array",
+      "description": "Semantic token roles this item's CSS reads. The kit token vocabulary is the union of cssVars across items plus the base scale declared by themes/directions.mjs.",
+      "items": {
+        "type": "string",
+        "pattern": "^--[a-z][a-z0-9-]*$"
+      }
+    },
+    "variants": {
+      "type": "array",
+      "description": "Closed [data-variant] table. Empty when the item has no variants.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The data-variant attribute value.",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "default": {
+            "type": "boolean",
+            "description": "Exactly one variant may set this when the table has a default."
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "description": "Paths relative to the item folder.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "type"],
+        "properties": {
+          "path": { "type": "string" },
+          "type": {
+            "enum": ["kit:markup", "kit:style", "kit:behavior", "kit:example", "kit:fixture"]
+          }
+        }
+      }
+    },
+    "docs": {
+      "type": "string",
+      "description": "Usage guidance: when to reach for the item, data attributes, token roles."
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": ["string", "null"],
+          "description": "Upstream provenance when an item ports third-party work; null for original items."
+        }
+      }
+    }
+  }
+}

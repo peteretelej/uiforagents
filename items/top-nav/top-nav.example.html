@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Top nav · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="top-nav.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: stretch;
+    }
+  </style>
+</head>
+<body>
+  <header class="uif-top-nav">
+    <a data-slot="wordmark" href="#">Acme</a>
+    <nav data-slot="links" aria-label="Main">
+      <a href="#" aria-current="page">Overview</a>
+      <a href="#">Projects</a>
+      <a href="#">Reports</a>
+      <a href="#">Settings</a>
+    </nav>
+    <div data-slot="actions">
+      <a href="#">Sign out</a>
+    </div>
+  </header>
+</body>
+</html>

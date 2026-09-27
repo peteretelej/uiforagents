@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "top-nav",
+  "type": "registry:component",
+  "category": "navigation",
+  "title": "Top nav",
+  "description": "Wordmark, links with an active pill, and a right-aligned actions cluster.",
+  "keywords": ["nav", "header", "navigation", "app-bar", "menu"],
+  "behavior": "none",
+  "cssVars": [
+    "--surface",
+    "--border",
+    "--text",
+    "--text-muted",
+    "--accent",
+    "--accent-soft",
+    "--radius",
+    "--font-display",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [],
+  "files": [
+    { "path": "top-nav.html", "type": "kit:markup" },
+    { "path": "top-nav.css", "type": "kit:style" },
+    { "path": "top-nav.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Mark the current section with `aria-current=\"page\"`; CSS renders the active pill from the accent roles. The nav needs `aria-label=\"Main\"`. Parts: `wordmark`, `links`, `actions` (pushed right).",
+  "meta": { "source": "original" }
+}

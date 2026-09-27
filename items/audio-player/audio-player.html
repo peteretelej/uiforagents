@@ -1,0 +1,11 @@
+<!-- Player bar: play toggle, meta, progress. Fill width and aria-valuenow track position. -->
+<div class="uif-player">
+  <button type="button" data-slot="play" aria-label="Play">▶</button>
+  <div data-slot="meta">
+    <span data-slot="title">Episode title</span>
+    <span data-slot="time">0:00 / 35:00</span>
+  </div>
+  <div data-slot="progress" role="progressbar" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <span data-slot="progress-fill" style="width: 0%"></span>
+  </div>
+</div>
