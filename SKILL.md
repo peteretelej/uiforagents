@@ -48,12 +48,13 @@ node <kit>/validation/check.mjs       # adherence linter (reports, never fixes)
 ```
 
 Config keys: `kit` (path to this kit), `direction` (slug),
-`directionsFile` (optional project-owned directions module), `items`
-(subset list), `dest` (`itemsDir`, `tokensCss`, `docs`), `lint` (globs the
-linter covers). Paths resolve against the config file's directory and may
-not escape it. `add` copies markup, CSS, script, example, and ARIA fixture
-per item, and points the copied examples' token stylesheet at the project's
-`tokens.css`.
+`directionsFile` (optional directions module; read-only input, so it may
+live outside the project), `items` (subset list), `dest` (`itemsDir`,
+`tokensCss`, `docs`), `lint` (globs the linter covers). Paths resolve
+against the config file's directory and may not escape it; `directionsFile`
+is the exception since it is read-only input. `add` copies markup, CSS,
+script, example, and ARIA fixture per item, and points the copied examples'
+token stylesheet at the project's `tokens.css`.
 
 `check` reports raw hex colors, invalid or missing `data-variant` (closed
 tables; elements map to items by their `uif-<name>` class), and tokens used

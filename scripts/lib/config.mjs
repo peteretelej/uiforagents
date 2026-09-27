@@ -21,8 +21,8 @@ export function findConfig(startDir) {
   }
 }
 
-// Every path in uiforagents.json resolves against the config file's repo
-// root; a destination that escapes that root is refused.
+// Every write/lint path in uiforagents.json resolves against the config
+// file's repo root; a destination that escapes that root is refused.
 export function resolveInRoot(root, value, label) {
   if (typeof value !== "string" || !value.trim()) {
     throw new Error(`config: ${label} must be a path`);
@@ -33,6 +33,16 @@ export function resolveInRoot(root, value, label) {
     throw new Error(`config: ${label} "${value}" escapes the config root (${root})`);
   }
   return resolved;
+}
+
+// `directionsFile` is read-only input, not a write destination: the module
+// may live anywhere, so absolute paths are allowed and relative paths
+// resolve against the config file's directory without root confinement.
+export function resolveDirectionsFile(root, value) {
+  if (typeof value !== "string" || !value.trim()) {
+    throw new Error(`config: directionsFile must be a path`);
+  }
+  return resolve(root, value);
 }
 
 export function loadConfig(configPath) {

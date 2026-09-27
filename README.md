@@ -80,9 +80,11 @@ escape it are refused):
 }
 ```
 
-- `directionsFile` (optional): a directions module the project owns, same
-  shape as `themes/directions.mjs`; without it the kit's example directions
-  are used.
+- `directionsFile` (optional): a directions module, same shape as
+  `themes/directions.mjs`; without it the kit's example directions are used.
+  It is read-only input, so it may live outside the project: relative paths
+  resolve against the config file's directory and absolute paths are kept.
+  Unlike `dest.*` it is not confined to the project root.
 - `add` copies each item's markup, CSS, script, example, and ARIA fixture
   into `dest.itemsDir/<name>/`, rewriting the examples' token stylesheet
   link to the project's `tokens.css`.

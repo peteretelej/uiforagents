@@ -8,7 +8,7 @@
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { findConfig, loadConfig, resolveInRoot } from "./lib/config.mjs";
+import { findConfig, loadConfig, resolveInRoot, resolveDirectionsFile } from "./lib/config.mjs";
 
 const USAGE = "usage: node scripts/uifa.mjs add | tokens | scaffold [--config <path>]";
 
@@ -52,7 +52,7 @@ function loadManifest(name) {
 
 async function loadDirection() {
   const source = config.directionsFile
-    ? resolveInRoot(config.root, config.directionsFile, "directionsFile")
+    ? resolveDirectionsFile(config.root, config.directionsFile)
     : join(kitRoot, "themes", "directions.mjs");
   if (!statSync(source, { throwIfNoEntry: false })) {
     throw new Error(`uifa: directions module not found: ${source}`);

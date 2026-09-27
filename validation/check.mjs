@@ -12,11 +12,12 @@
 //   node validation/check.mjs --self-test
 import { readFileSync, statSync } from "node:fs";
 import { join, relative, resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { findConfig, loadConfig, globToRegExp, walkFiles, resolveInRoot } from "../scripts/lib/config.mjs";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { findConfig, loadConfig, globToRegExp, walkFiles, resolveInRoot, resolveDirectionsFile } from "../scripts/lib/config.mjs";
 
 const KIT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PLANTED_DIR = join(KIT_ROOT, "validation", "fixtures", "planted");
+const DIRECTIONS_FILE_DIR = join(KIT_ROOT, "validation", "fixtures", "directions-file");
 const SUPPORTED_EXTENSIONS = [".html", ".htm", ".css"];
 const HEX_COLOR = /#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b/g;
 const VAR_USE = /var\(\s*(--[a-zA-Z0-9-]+)/g;
@@ -168,7 +169,7 @@ function report(config, { files, violations }) {
   return violations.length === 0 ? 0 : 1;
 }
 
-function selfTest() {
+async function selfTest() {
   const config = loadConfig(join(PLANTED_DIR, "uiforagents.json"));
   const { violations } = lint(config);
   const expected = { "clean.html": [], "hex.html": ["hex"], "variant.html": ["variant"], "token.html": ["token"] };
@@ -182,6 +183,22 @@ function selfTest() {
       failures++;
       console.error(`self-test: ${file} FAIL - expected [${classes.join(", ")}], got [${got.join(", ")}]`);
     }
+  }
+  try {
+    const outside = loadConfig(join(DIRECTIONS_FILE_DIR, "uiforagents.json"));
+    const source = resolveDirectionsFile(outside.root, outside.directionsFile);
+    if (!statSync(source, { throwIfNoEntry: false })) {
+      throw new Error(`directions module not found: ${source}`);
+    }
+    const { directions } = await import(pathToFileURL(source).href);
+    const direction = directions.find((d) => d.slug === outside.direction);
+    if (!direction || Object.keys(direction.tokens ?? {}).length === 0) {
+      throw new Error(`direction "${outside.direction}" without tokens in ${source}`);
+    }
+    console.error("self-test: outside directionsFile resolves and yields tokens");
+  } catch (err) {
+    failures++;
+    console.error(`self-test: directionsFile FAIL - ${err.message}`);
   }
   if (failures > 0) {
     console.error(`self-test: ${failures} miss${failures === 1 ? "" : "es"}`);
@@ -201,7 +218,7 @@ if (stray.length > 0) {
   process.exit(1);
 }
 if (selfTestRequested) {
-  process.exit(selfTest());
+  process.exit(await selfTest());
 }
 
 const configPath = configFlag ? resolve(process.cwd(), configFlag) : findConfig(process.cwd());
