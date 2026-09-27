@@ -53,6 +53,13 @@
       "description": "Title link with url line, chips, and an actions cluster; hover state on the row."
     },
     {
+      "name": "code-block",
+      "category": "content",
+      "behavior": "js-inline",
+      "title": "Code block",
+      "description": "Snippet surface with an optional filename header and a copy-to-clipboard button."
+    },
+    {
       "name": "form-field",
       "category": "forms",
       "behavior": "none",

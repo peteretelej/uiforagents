@@ -31,6 +31,7 @@ Components read tokens only - no component-local colors. Variants are closed [da
 - badge | Badge | Small status label: accent, ok, warn, danger, and muted outline variants. | data-variant: accent* / ok / warn / danger / muted | behavior: none | docs: docs/components/badge.md | src: items/badge/
 - card | Card | Flat surface card with one radius and direction-defined shadow character. | data-variant: none | behavior: none | docs: docs/components/card.md | src: items/card/
 - chip | Chip | Pill-radius tag for filters and metadata: neutral, accent, and warn variants. | data-variant: neutral* / accent / warn | behavior: none | docs: docs/components/chip.md | src: items/chip/
+- code-block | Code block | Snippet surface with an optional filename header and a copy-to-clipboard button. | data-variant: labeled* / bare | behavior: js-inline | docs: docs/components/code-block.md | src: items/code-block/
 - link-row | Link row | Title link with url line, chips, and an actions cluster; hover state on the row. | data-variant: none | behavior: none | docs: docs/components/link-row.md | src: items/link-row/
 
 ## Feedback

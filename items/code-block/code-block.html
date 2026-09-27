@@ -1,0 +1,11 @@
+<!-- Labeled variant (default): header bar with a filename label and copy button.
+     Bare variant: data-variant="bare" with no header; the copy button floats top-right. -->
+<div class="uif-code-block">
+  <div data-slot="header">
+    <span data-slot="label">install.sh</span>
+    <button type="button" data-slot="copy">Copy</button>
+  </div>
+  <pre data-slot="code"><code>node kit/scripts/uifa.mjs tokens
+node kit/scripts/uifa.mjs add
+node kit/validation/check.mjs</code></pre>
+</div>

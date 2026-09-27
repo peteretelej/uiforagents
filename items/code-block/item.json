@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "code-block",
+  "type": "registry:component",
+  "category": "content",
+  "title": "Code block",
+  "description": "Snippet surface with an optional filename header and a copy-to-clipboard button.",
+  "keywords": ["code", "snippet", "pre", "copy", "clipboard"],
+  "behavior": "js-inline",
+  "cssVars": [
+    "--surface",
+    "--border",
+    "--text",
+    "--text-muted",
+    "--accent",
+    "--radius",
+    "--font-body",
+    "--text-base",
+    "--space"
+  ],
+  "variants": [
+    { "name": "labeled", "default": true, "description": "Header bar with a filename label and the copy button; omit data-variant." },
+    { "name": "bare", "description": "No header; the copy button floats top-right via `data-variant=\"bare\"`." }
+  ],
+  "files": [
+    { "path": "code-block.html", "type": "kit:markup" },
+    { "path": "code-block.css", "type": "kit:style" },
+    { "path": "code-block.js", "type": "kit:behavior" },
+    { "path": "code-block.example.html", "type": "kit:example" },
+    { "path": "fixture.aria.yml", "type": "kit:fixture" }
+  ],
+  "docs": "Wrap a `<pre data-slot=\"code\">` in `.uif-code-block`; escape HTML entities in the snippet. The labeled variant (default) shows a `data-slot=\"label\"` filename beside the copy button; `data-variant=\"bare\"` drops the header and floats the button top-right. The script copies the snippet's text and flashes \"Copied!\" on the button.",
+  "meta": { "source": "original" }
+}

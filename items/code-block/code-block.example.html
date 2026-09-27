@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" data-theme="paper">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code block · uiforagents example</title>
+  <link rel="stylesheet" href="../../themes/tokens.css">
+  <link rel="stylesheet" href="code-block.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: calc(var(--space) * 4);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      display: grid;
+      gap: calc(var(--space) * 3);
+      justify-items: stretch;
+    }
+  </style>
+</head>
+<body>
+  <div class="uif-code-block">
+    <div data-slot="header">
+      <span data-slot="label">install.sh</span>
+      <button type="button" data-slot="copy">Copy</button>
+    </div>
+    <pre data-slot="code"><code>node kit/scripts/uifa.mjs tokens
+node kit/scripts/uifa.mjs add
+node kit/validation/check.mjs</code></pre>
+  </div>
+  <div class="uif-code-block" data-variant="bare">
+    <button type="button" data-slot="copy">Copy</button>
+    <pre data-slot="code"><code>&lt;button class="uif-button" data-variant="primary"&gt;
+  Save draft
+&lt;/button&gt;</code></pre>
+  </div>
+  <script src="code-block.js"></script>
+</body>
+</html>

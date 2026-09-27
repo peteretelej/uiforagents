@@ -1,0 +1,53 @@
+# Code block
+
+Snippet surface with an optional filename header and a copy-to-clipboard button.
+
+Category: content · Behavior: js-inline · Schema: 1.0.0 · Source: original
+
+## Variants
+
+| `data-variant` | Description |
+| --- | --- |
+| `labeled` (default) | Header bar with a filename label and the copy button; omit data-variant. |
+| `bare` | No header; the copy button floats top-right via `data-variant="bare"`. |
+
+## Tokens
+
+Reads: `--surface`, `--border`, `--text`, `--text-muted`, `--accent`, `--radius`, `--font-body`, `--text-base`, `--space`. Every color comes from a semantic role; nothing is hard-coded.
+
+## Markup
+
+```html
+<!-- Labeled variant (default): header bar with a filename label and copy button.
+     Bare variant: data-variant="bare" with no header; the copy button floats top-right. -->
+<div class="uif-code-block">
+  <div data-slot="header">
+    <span data-slot="label">install.sh</span>
+    <button type="button" data-slot="copy">Copy</button>
+  </div>
+  <pre data-slot="code"><code>node kit/scripts/uifa.mjs tokens
+node kit/scripts/uifa.mjs add
+node kit/validation/check.mjs</code></pre>
+</div>
+```
+
+## Files
+
+- [code-block.html](../../items/code-block/code-block.html) - markup
+- [code-block.css](../../items/code-block/code-block.css) - style
+- [code-block.js](../../items/code-block/code-block.js) - behavior
+- [code-block.example.html](../../items/code-block/code-block.example.html) - example
+- [fixture.aria.yml](../../items/code-block/fixture.aria.yml) - fixture
+
+## Usage
+
+Wrap a `<pre data-slot="code">` in `.uif-code-block`; escape HTML entities in the snippet. The labeled variant (default) shows a `data-slot="label"` filename beside the copy button; `data-variant="bare"` drops the header and floats the button top-right. The script copies the snippet's text and flashes "Copied!" on the button.
+
+## Validation
+
+Open the example page and diff the rendered tree against the fixture with Playwright:
+
+```js
+const snap = await page.locator("body").ariaSnapshot();
+// compare with items/code-block/fixture.aria.yml
+```
