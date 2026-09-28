@@ -212,5 +212,31 @@
       "top-nav"
     ],
     "summary": "uiforagents ships a bin: npm install + npx uiforagents init bootstraps a project; uiforagents check runs the linter from the installed package"
+  },
+  {
+    "version": "0.1.0",
+    "date": "2026-09-28",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "code-block",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "footer",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "sidebar",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ],
+    "summary": "first line release: the npm package is the documented install path (npm install uiforagents, npx uiforagents init)"
   }
 ]

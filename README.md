@@ -1,6 +1,6 @@
 # uiforagents
 
-![npm](https://img.shields.io/npm/v/uiforagents?color=232323&label=uiforagents)
+[![npm](https://img.shields.io/npm/v/uiforagents?color=232323&label=uiforagents)](https://www.npmjs.com/package/uiforagents)
 
 **An open-source, agent-first frontend UI kit and design system for AI agents.**
 
