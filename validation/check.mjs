@@ -131,7 +131,7 @@ function buildContext(config) {
   }
   const tokensPath = resolveInRoot(config.root, config.dest.tokensCss, "dest.tokensCss");
   if (!statSync(tokensPath, { throwIfNoEntry: false })) {
-    throw new Error(`check: tokens.css "${config.dest.tokensCss}" not found; run "uifa tokens" first`);
+    throw new Error(`check: tokens.css "${config.dest.tokensCss}" not found; run "npx uiforagents tokens" first`);
   }
   const tokensCss = readFileSync(tokensPath, "utf8");
   for (const match of tokensCss.matchAll(TOKEN_DECLARATION)) {

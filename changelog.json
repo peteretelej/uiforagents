@@ -186,5 +186,31 @@
       "toggle",
       "top-nav"
     ]
+  },
+  {
+    "version": "0.0.9",
+    "date": "2026-09-28",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "code-block",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "footer",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "sidebar",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ],
+    "summary": "uiforagents ships a bin: npm install + npx uiforagents init bootstraps a project; uiforagents check runs the linter from the installed package"
   }
 ]

@@ -1,4 +1,4 @@
-// Shared consumer-config loader for the flow CLI (scripts/uifa.mjs) and the
+// Shared consumer-config loader for the flow CLI (scripts/uiforagents.mjs) and the
 // adherence linter (validation/check.mjs), so both tools can never disagree
 // about where uiforagents.json lives, how its paths resolve, or which globs
 // match.

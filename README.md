@@ -25,26 +25,38 @@ It is built for the workflow where your agent does the building and you review a
 | Link row | Toast | Dead states | Audio player |
 | Top nav | Tabs | Modal | Data table |
 
-Browse the [rendered catalog](docs/arena.html) (self-contained page - open it locally), or read [`llms.txt`](llms.txt) the way an agent would.
+Browse the live site at [uiforagents.com](https://uiforagents.com) - every component rendered in place, restyleable via the direction switcher - or read [`llms.txt`](llms.txt) the way an agent would.
 
 ## Quick start
+
+In your project:
+
+```sh
+npm install uiforagents
+npx uiforagents init
+```
+
+`init` writes a `uiforagents.json` config (all components, the default "paper" direction), copies every component into `src/ui/`, writes `src/styles/tokens.css`, and scaffolds `docs/design-system.md`. Validate with:
+
+```sh
+npx uiforagents check
+```
 
 Give your agent the [`SKILL.md`](SKILL.md) - it is the full adapter - or just point it at this repo. The loop:
 
 1. Read [`llms.txt`](llms.txt) and pick a component and variant from its lines.
-2. Copy the item's files from `items/<name>/`: markup + CSS, plus a script when its `behavior` is `js-inline`.
-3. Wire tokens: copy `themes/tokens.css`, or write your own stylesheet declaring the same semantic roles.
-4. Validate: open the item's `*.example.html` and diff the rendered tree against `fixture.aria.yml` with Playwright's ariaSnapshot.
+2. Edit `uiforagents.json` to choose the subset and direction, then `npx uiforagents add && npx uiforagents tokens && npx uiforagents scaffold`.
+3. Validate: open an item's `*.example.html` and diff the rendered tree against `fixture.aria.yml` with Playwright's ariaSnapshot, and run `npx uiforagents check`.
 
 ## Use it across a project
 
-For ongoing work, a project consumes the kit through a `uiforagents.json` config and one CLI. Point `kit` at a checkout of this repo (or `node_modules/uiforagents` after `npm install uiforagents`):
+For ongoing work, a project consumes the kit through a `uiforagents.json` config and one CLI. After `npm install uiforagents`, `npx uiforagents init` writes a starter config with the kit resolved from `node_modules/uiforagents`; a checkout of this repo works too (`"kit": "../uiforagents"`):
 
 ```sh
-node <kit>/scripts/uifa.mjs tokens    # write the project's tokens.css from the chosen direction
-node <kit>/scripts/uifa.mjs add       # copy the configured item subset into the project
-node <kit>/scripts/uifa.mjs scaffold  # write docs/design-system.md from the committed tokens + config
-node <kit>/validation/check.mjs       # adherence linter over the configured lint globs
+npx uiforagents tokens    # write the project's tokens.css from the chosen direction
+npx uiforagents add       # copy the configured item subset into the project
+npx uiforagents scaffold  # write docs/design-system.md from the committed tokens + config
+npx uiforagents check     # adherence linter over the configured lint globs
 ```
 
 Config (resolved against the config file's directory; destinations that

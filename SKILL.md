@@ -37,14 +37,17 @@ artifacts, prototypes.
 
 ## Per-project flow
 
-Projects adopt the kit through a `uiforagents.json` config at their root and
-run the kit CLI from the project directory:
+Install the kit in the project (`npm install uiforagents`) and run
+`npx uiforagents init` for one-command onboarding: it writes a starter
+`uiforagents.json` (all components, default direction, kit resolved from
+`node_modules/uiforagents`), copies the components in, and writes tokens +
+docs. Projects then run the kit CLI from the project directory:
 
 ```sh
-node <kit>/scripts/uifa.mjs tokens    # tokens.css from the chosen direction
-node <kit>/scripts/uifa.mjs add       # copy the configured subset into dest.itemsDir
-node <kit>/scripts/uifa.mjs scaffold  # docs/design-system.md from tokens + config
-node <kit>/validation/check.mjs       # adherence linter (reports, never fixes)
+npx uiforagents tokens    # tokens.css from the chosen direction
+npx uiforagents add       # copy the configured subset into dest.itemsDir
+npx uiforagents scaffold  # docs/design-system.md from tokens + config
+npx uiforagents check     # adherence linter (reports, never fixes)
 ```
 
 Config keys: `kit` (path to this kit), `direction` (slug),
@@ -59,7 +62,7 @@ token stylesheet at the project's `tokens.css`.
 `check` reports raw hex colors, invalid or missing `data-variant` (closed
 tables; elements map to items by their `uif-<name>` class), and tokens used
 via `var()` but declared by neither the copied items' `cssVars` nor the
-project's `tokens.css`. Run `node <kit>/validation/check.mjs --self-test`
+project's `tokens.css`. Run `npx uiforagents check --self-test`
 to verify the linter itself against its planted violations.
 
 ## Notes
