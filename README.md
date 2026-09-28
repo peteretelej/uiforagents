@@ -6,11 +6,14 @@
 
 uiforagents is a library of vanilla HTML/CSS/JS components that AI coding agents can pick, copy into your project, and wire up. No framework, no build step, no runtime dependencies - the components are just files, so they work in any stack.
 
+Demo: Live site using the UI kit [uiforagents.com](https://uiforagents.com) - components demos and selectable theme. `llms.txt` at [https://uiforagents.com/llms.txt](https://uiforagents.com/llms.txt).
+
+
 It is built for the workflow where your agent does the building and you review and own the output. Every component ships with machine-readable manifests, agent-readable docs, and a rendered catalog, so an agent can go from "I need a modal" to working, on-system markup without guessing. And because the result is small readable HTML/CSS/JS in your own repo - not a dependency you have to look inside - reviewing what your agent built stays easy.
 
 ## Why agents work well with it
 
-- **Pickable index**: [`llms.txt`](llms.txt) lists every component and its variants; an agent can choose from the index lines alone.
+- **Pickable index**: [https://uiforagents.com/llms.txt](https://uiforagents.com/llms.txt) lists every component and its variants; an agent can choose from the index lines alone.
 - **Copy-in distribution**: components live under `items/<name>/`; the agent copies markup + CSS into your project. You own the code.
 - **Built-in verification**: every item ships an executable example and an ARIA fixture; the agent renders the example and diffs it against the fixture with Playwright's ariaSnapshot.
 - **Adherence linting**: [`validation/check.mjs`](validation/check.mjs) catches drift in generated UI - raw hex colors, off-table variants, undeclared tokens.
@@ -27,7 +30,6 @@ It is built for the workflow where your agent does the building and you review a
 | Link row | Toast | Dead states | Audio player |
 | Top nav | Tabs | Modal | Data table |
 
-Browse the live site at [uiforagents.com](https://uiforagents.com) - every component rendered in place, restyleable via the direction switcher - or read [`llms.txt`](llms.txt) the way an agent would.
 
 ## Quick start
 
