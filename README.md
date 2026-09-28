@@ -1,5 +1,7 @@
 # uiforagents
 
+![npm](https://img.shields.io/npm/v/uiforagents?color=232323&label=uiforagents)
+
 **An open-source, agent-first frontend UI kit and design system for AI agents.**
 
 uiforagents is a library of vanilla HTML/CSS/JS components that AI coding agents can pick, copy into your project, and wire up. No framework, no build step, no runtime dependencies - the components are just files, so they work in any stack.
