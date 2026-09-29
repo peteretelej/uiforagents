@@ -280,7 +280,10 @@ const iframeChrome = `
     border-radius: inherit;
   }
   /* The catalog renders in flow: fixed regions would paint over the last item. */
-  .uifa-toast-region { position: static; justify-items: start; }
+  .uifa-toast-region { position: static; justify-items: start; row-gap: calc(var(--uifa-space) * 2); }
+  /* The kit ships items without external margins, so the demo supplies the
+     consumer-style spacing between a composed field and its action row. */
+  .arena-sample .uifa-card .uifa-field { margin-bottom: calc(var(--uifa-space) * 3); }
   /* Columned footers need width to show their columns; the catalog shrink-wraps items. */
   .arena-item .uifa-footer { min-width: min(640px, 100%); }
   .arena-item {
