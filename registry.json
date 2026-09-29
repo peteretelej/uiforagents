@@ -43,7 +43,7 @@
       "category": "content",
       "behavior": "none",
       "title": "Card",
-      "description": "Flat surface card with one radius and direction-defined shadow character."
+      "description": "Flat surface card with one radius and theme-defined shadow character."
     },
     {
       "name": "link-row",
@@ -120,7 +120,7 @@
       "category": "navigation",
       "behavior": "css-only",
       "title": "Tabs",
-      "description": "Tab selector with underline (default) and pill styles per direction; panels switch via CSS."
+      "description": "Tab selector with underline (default) and pill styles per theme; panels switch via CSS."
     },
     {
       "name": "modal",

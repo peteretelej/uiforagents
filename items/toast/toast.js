@@ -1,8 +1,8 @@
 // Dependency-free show/hide. The script scopes queries to its own markup; no ids.
-const region = document.querySelector(".uif-toast-region");
-const toast = region.querySelector(".uif-toast");
-const trigger = document.querySelector("[data-slot='trigger']");
-const close = toast.querySelector("[data-slot='close']");
+const region = document.querySelector(".uifa-toast-region");
+const toast = region.querySelector(".uifa-toast");
+const trigger = document.querySelector("[data-uifa-slot='trigger']");
+const close = toast.querySelector("[data-uifa-slot='close']");
 
 let timer;
 trigger.addEventListener("click", () => {

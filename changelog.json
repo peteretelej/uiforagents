@@ -238,5 +238,31 @@
       "top-nav"
     ],
     "summary": "first line release: the npm package is the documented install path (npm install uiforagents, npx uiforagents init)"
+  },
+  {
+    "version": "0.1.1",
+    "date": "2026-09-29",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "code-block",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "footer",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "sidebar",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ],
+    "summary": "the kit renames to the uifa- namespace: .uifa-* classes, data-uifa-* hooks, --uifa-* tokens with shape, motion, and texture roles, cascade layers, a versioned schema, and themes replace the old token-set concept"
   }
 ]

@@ -8,19 +8,19 @@
   "keywords": ["button", "action", "submit", "cta", "destructive"],
   "behavior": "none",
   "cssVars": [
-    "--accent",
-    "--accent-fg",
-    "--surface",
-    "--border",
-    "--text",
-    "--danger",
-    "--danger-fg",
-    "--faint",
-    "--bg",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-accent",
+    "--uifa-accent-fg",
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-danger",
+    "--uifa-danger-fg",
+    "--uifa-faint",
+    "--uifa-bg",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
     { "name": "primary", "default": true, "description": "Solid accent fill; the main action of a view." },
@@ -34,6 +34,6 @@
     { "path": "button.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Use `data-variant` on the button element; omit it for the primary default. Disable with the native `disabled` attribute. Focus rings and hover shades derive from tokens, so no per-theme overrides are needed.",
+  "docs": "Use `data-uifa-variant` on the button element; omit it for the primary default. Disable with the native `disabled` attribute. Focus rings and hover shades derive from tokens, so no per-theme overrides are needed.",
   "meta": { "source": "original" }
 }

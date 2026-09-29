@@ -2,23 +2,29 @@
 // Per-project flow CLI: `init | add | tokens | scaffold | check`, driven by
 // the project's uiforagents.json. `init` bootstraps a project from defaults
 // (kit resolved from the installed npm package), `add` copies the configured
-// item subset into the project, `tokens` writes the project's tokens.css
-// from the chosen direction, `scaffold` writes docs/design-system.md, and
+// item subset into the project, `tokens` writes the project's themes.css
+// from the chosen theme, `scaffold` writes docs/design-system.md, and
 // `check` runs the adherence linter from the installed package.
+//
+// add/tokens/scaffold refuse to overwrite existing destination files unless
+// --force is passed; init stays create-only.
 //
 // Usage:
 //   npx uiforagents init [after: npm install uiforagents]
-//   npx uiforagents add | tokens | scaffold | check [--config <path>]
+//   npx uiforagents add | tokens | scaffold | check [--config <path>] [--force]
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { findConfig, loadConfig, resolveInRoot, resolveDirectionsFile, configFlagValue } from "./lib/config.mjs";
+import { findConfig, loadConfig, resolveInRoot, resolveThemesFile, configFlagValue } from "./lib/config.mjs";
+import { themesCss, singleThemeCss } from "./lib/themes-css.mjs";
 
-const USAGE = "usage: npx uiforagents init | add | tokens | scaffold | check [--config <path>]";
+const USAGE = "usage: npx uiforagents init | add | tokens | scaffold | check [--config <path>] [--force]";
 
 const pkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const { version } = JSON.parse(readFileSync(join(pkgRoot, "package.json"), "utf8"));
 
 const args = process.argv.slice(2);
+const force = args.includes("--force");
 let configFlag;
 try {
   configFlag = configFlagValue(args, "uiforagents");
@@ -43,13 +49,13 @@ function writeDefaultConfig() {
   const items = (registry.items ?? registry).map((entry) => entry.name ?? entry);
   const config = {
     kit: kitInNodeModules,
-    direction: "paper",
+    theme: "paper",
     items,
-    dest: { itemsDir: "src/ui", tokensCss: "src/styles/tokens.css", docs: "docs/design-system.md" },
+    dest: { itemsDir: "src/ui", tokensCss: "src/styles/themes.css", docs: "docs/design-system.md" },
     lint: ["src/ui/**/*.html", "src/ui/**/*.css"],
   };
   writeFileSync("uiforagents.json", `${JSON.stringify(config, null, 2)}\n`);
-  console.log(`init: wrote uiforagents.json (${items.length} items, direction "${config.direction}")`);
+  console.log(`init: wrote uiforagents.json (${items.length} items, theme "${config.theme}")`);
 }
 
 if (command === "init") {
@@ -80,6 +86,15 @@ const writeFileManaged = (path, content) => {
   writeFileSync(path, content);
 };
 
+// Overwrite consent: without --force, never clobber an existing destination.
+function assertWriteConsent(targets, label) {
+  const existing = targets.filter((target) => existsSync(target));
+  if (existing.length > 0 && !force) {
+    console.error(`uiforagents: ${label} would overwrite existing file${existing.length === 1 ? "" : "s"}; pass --force to overwrite:\n${existing.map((target) => relFromRoot(target)).join("\n")}`);
+    process.exit(1);
+  }
+}
+
 function loadManifest(name) {
   const manifestPath = join(kitRoot, "items", name, "item.json");
   try {
@@ -89,23 +104,23 @@ function loadManifest(name) {
   }
 }
 
-async function loadDirections() {
-  const source = config.directionsFile
-    ? resolveDirectionsFile(config.root, config.directionsFile)
-    : join(kitRoot, "themes", "directions.mjs");
+async function loadThemes() {
+  const source = config.themesFile
+    ? resolveThemesFile(config.root, config.themesFile)
+    : join(kitRoot, "themes", "index.mjs");
   if (!statSync(source, { throwIfNoEntry: false })) {
-    throw new Error(`uiforagents: directions module not found: ${source}`);
+    throw new Error(`uiforagents: themes module not found: ${source}`);
   }
-  const { directions } = await import(pathToFileURL(source).href);
-  return { directions, source };
+  const { themes } = await import(pathToFileURL(source).href);
+  return { themes, source };
 }
 
-function findDirection(directions, source) {
-  const direction = directions.find((d) => d.slug === config.direction);
-  if (!direction) {
-    throw new Error(`uiforagents: direction "${config.direction}" not found in ${relFromRoot(source)}`);
+function findTheme(themes, source) {
+  const theme = themes.find((t) => t.slug === config.theme);
+  if (!theme) {
+    throw new Error(`uiforagents: theme "${config.theme}" not found in ${relFromRoot(source)}`);
   }
-  return direction;
+  return theme;
 }
 
 function tokensCssPath() {
@@ -115,11 +130,19 @@ function tokensCssPath() {
 function add() {
   const itemsDir = resolveInRoot(config.root, config.dest.itemsDir, "dest.itemsDir");
   const tokensPath = tokensCssPath();
+  const targets = [];
+  for (const name of config.items) {
+    const manifest = loadManifest(name);
+    for (const file of manifest.files) {
+      targets.push(join(itemsDir, name, basename(file.path)));
+    }
+  }
+  assertWriteConsent(targets, "add");
   for (const name of config.items) {
     const manifest = loadManifest(name);
     const destDir = join(itemsDir, name);
     // Examples ship linking the kit's tokens.css two levels up; point them at
-    // the project's own tokens.css so the copies render in the chosen direction.
+    // the project's own tokens file so the copies render in the chosen theme.
     const tokensHref = relative(destDir, tokensPath).split("\\").join("/");
     for (const file of manifest.files) {
       let content = readFileSync(join(kitRoot, "items", name, file.path), "utf8");
@@ -133,55 +156,49 @@ function add() {
 }
 
 async function tokens() {
-  const { directions, source } = await loadDirections();
+  const { themes, source } = await loadThemes();
   // Path-free origin for external modules; generated files must not carry
   // machine-local absolute paths.
-  const origin = config.directionsFile ? "the configured directions module" : "the kit's themes/directions.mjs";
-  const header = `/* GENERATED by uiforagents uifa tokens from ${origin} - do not edit. */`;
-  if (config.direction === "all") {
-    // Same selector pattern as build-arena: the first direction owns :root.
-    const blocks = directions.map((direction, index) => {
-      const selector = index === 0 ? [":root", `[data-theme="${direction.slug}"]`] : [`[data-theme="${direction.slug}"]`];
-      const body = Object.entries(direction.tokens)
-        .map(([token, value]) => `  ${token}: ${value};`)
-        .join("\n");
-      return `${selector.join(",\n")} {\n${body}\n}`;
-    });
-    writeFileManaged(tokensCssPath(), `${header}\n\n${blocks.join("\n\n")}\n`);
-    console.log(`tokens: all directions (${directions.length}) from ${origin} -> ${config.dest.tokensCss}`);
+  const origin = config.themesFile ? "the configured themes module" : "the kit's themes/index.mjs";
+  const header = `/* GENERATED by uiforagents ${version} from ${origin} - do not edit. */`;
+  const target = tokensCssPath();
+  assertWriteConsent([target], "tokens");
+  if (config.theme === "all") {
+    // Same selector pattern as the kit's themes/tokens.css: the first theme owns :root.
+    writeFileManaged(target, themesCss({ themes, header }));
+    console.log(`tokens: all themes (${themes.length}) from ${origin} -> ${config.dest.tokensCss}`);
     return;
   }
-  const direction = findDirection(directions, source);
-  const body = Object.entries(direction.tokens)
-    .map(([token, value]) => `  ${token}: ${value};`)
-    .join("\n");
-  writeFileManaged(tokensCssPath(), `${header}\n\n:root {\n${body}\n}\n`);
-  console.log(`tokens: ${direction.name} (${direction.slug}) from ${origin} -> ${config.dest.tokensCss}`);
+  const theme = findTheme(themes, source);
+  writeFileManaged(target, singleThemeCss({ theme, header }));
+  console.log(`tokens: ${theme.name} (${theme.slug}) from ${origin} -> ${config.dest.tokensCss}`);
 }
 
 async function scaffold() {
-  const { directions, source } = await loadDirections();
+  const { themes, source } = await loadThemes();
   const tokensPath = tokensCssPath();
   if (!existsSync(tokensPath)) {
     throw new Error(`uiforagents: ${config.dest.tokensCss} not found; run "npx uiforagents tokens" first`);
   }
+  const docsPath = resolveInRoot(config.root, config.dest.docs, "dest.docs");
+  assertWriteConsent([docsPath], "scaffold");
   const tokensCss = readFileSync(tokensPath, "utf8");
-  // One row per token name; with "direction: all" the first block (:root,
-  // the default direction) supplies the values.
+  // One row per token name; with "theme: all" the first block (:root, the
+  // default theme) supplies the values.
   const seen = new Set();
   const tokenRows = [...tokensCss.matchAll(/(--[a-zA-Z0-9-]+)\s*:\s*([^;]+);/g)]
     .filter((match) => !seen.has(match[1]) && seen.add(match[1]))
     .map((match) => `| \`${match[1]}\` | \`${match[2]}\` |`)
     .join("\n");
   const scheme = tokensCss.match(/color-scheme\s*:\s*([^;]+);/);
-  const all = config.direction === "all";
-  const directionIntro = all
-    ? `All ${directions.length} directions are bundled in \`${config.dest.tokensCss}\`; switch at runtime with \`document.documentElement.dataset.theme\` (direction-switcher recipe in the kit README).
+  const all = config.theme === "all";
+  const themeIntro = all
+    ? `All ${themes.length} themes are bundled in \`${config.dest.tokensCss}\`; switch at runtime with \`document.documentElement.dataset.theme\` (theme-switcher recipe in the kit README).
 
-${directions.map((d) => `- **${d.name}** (\`${d.slug}\`) - ${d.mood}. ${d.notes}`).join("\n")}`
+${themes.map((t) => `- **${t.name}** (\`${t.slug}\`) - ${t.mood}. ${t.notes}`).join("\n")}`
     : (() => {
-        const d = findDirection(directions, source);
-        return `Direction: **${d.name}** (\`${d.slug}\`) - ${d.mood}. ${d.notes}`;
+        const t = findTheme(themes, source);
+        return `Theme: **${t.name}** (\`${t.slug}\`) - ${t.mood}. ${t.notes}`;
       })();
   const componentRows = config.items
     .map((name) => {
@@ -204,7 +221,7 @@ ${directions.map((d) => `- **${d.name}** (\`${d.slug}\`) - ${d.mood}. ${d.notes}
       ];
   const docs = `# Design system
 
-${directionIntro}
+${themeIntro}
 
 Generated by [uiforagents](https://github.com/peteretelej/uiforagents); the
 committed \`${config.dest.tokensCss}\` is the source of truth. Regenerate with
@@ -212,7 +229,7 @@ the flow commands and commit the output.
 
 ## Tokens
 
-Declared in \`${config.dest.tokensCss}\`${all ? " (the \`:root\` block is the default direction; each direction overrides via \`[data-theme]\`)" : (scheme ? ` (color-scheme: ${scheme[1]})` : "")}:
+Declared in \`${config.dest.tokensCss}\`${all ? " (the \`:root\` block is the default theme; each theme overrides via \`[data-theme]\`)" : (scheme ? ` (color-scheme: ${scheme[1]})` : "")}:
 
 | Token | Value |
 | --- | --- |
@@ -230,7 +247,7 @@ ${componentRows}
 
 \`check\` lints the configured HTML/CSS against the registry and reports -
 never auto-corrects - three violation classes: raw hex colors, invalid or
-missing \`data-variant\`, and tokens outside the copied items' \`cssVars\` and
+missing \`data-uifa-variant\`, and tokens outside the copied items' \`cssVars\` and
 this project's \`${config.dest.tokensCss}\`. Lint scope: ${config.lint.map((globPattern) => `\`${globPattern}\``).join(", ")}.
 
 ## Flow
@@ -241,7 +258,7 @@ Config: \`uiforagents.json\`.
 ${flowLines.join("\n")}
 \`\`\`
 `;
-  writeFileManaged(resolveInRoot(config.root, config.dest.docs, "dest.docs"), docs);
+  writeFileManaged(docsPath, docs);
   console.log(`scaffold: ${config.dest.docs} from ${config.dest.tokensCss} + config`);
 }
 

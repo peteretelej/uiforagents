@@ -8,15 +8,15 @@
   "keywords": ["switch", "toggle", "checkbox", "setting", "on-off"],
   "behavior": "css-only",
   "cssVars": [
-    "--border",
-    "--accent",
-    "--surface",
-    "--faint",
-    "--text",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-border",
+    "--uifa-accent",
+    "--uifa-surface",
+    "--uifa-faint",
+    "--uifa-text",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [],
   "files": [
@@ -25,6 +25,6 @@
     { "path": "toggle.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Wrap the input and label text in a `.uif-toggle` label so the whole row is the click target. `role=\"switch\"` turns the native checkbox into switch semantics; `checked` is on, `disabled` is locked.",
+  "docs": "Wrap the input and label text in a `.uifa-toggle` label so the whole row is the click target. `role=\"switch\"` turns the native checkbox into switch semantics; `checked` is on, `disabled` is locked.",
   "meta": { "source": "original" }
 }

@@ -4,22 +4,22 @@
   "type": "registry:component",
   "category": "navigation",
   "title": "Tabs",
-  "description": "Tab selector with underline (default) and pill styles per direction; panels switch via CSS.",
+  "description": "Tab selector with underline (default) and pill styles per theme; panels switch via CSS.",
   "keywords": ["tabs", "tablist", "panels", "navigation", "switcher"],
   "behavior": "css-only",
   "cssVars": [
-    "--border",
-    "--text",
-    "--text-muted",
-    "--accent",
-    "--accent-soft",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-accent",
+    "--uifa-accent-soft",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
-    { "name": "underline", "default": true, "description": "Accent underline on the active tab; omit data-variant." },
+    { "name": "underline", "default": true, "description": "Accent underline on the active tab; omit data-uifa-variant." },
     { "name": "pill", "description": "Soft accent pill on the active tab." }
   ],
   "files": [
@@ -28,6 +28,6 @@
     { "path": "tabs.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Radio inputs keep selection and arrow-key navigation JavaScript-free. Each tab's `value` must match its panel's `data-panel`; the stylesheet ships the preview/history pair, so extend the panel-switch selectors when you add tabs. Style comes from the direction: underline reads formal, pill reads casual.",
+  "docs": "Radio inputs keep selection and arrow-key navigation JavaScript-free. Each tab's `value` must match its panel's `data-panel`; the stylesheet ships the preview/history pair, so extend the panel-switch selectors when you add tabs. Style comes from the theme: underline reads formal, pill reads casual.",
   "meta": { "source": "original" }
 }

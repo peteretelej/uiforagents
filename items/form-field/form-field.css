@@ -1,46 +1,46 @@
-.uif-field {
+.uifa-field {
   display: grid;
-  gap: calc(var(--space) * 1.5);
-  font-family: var(--font-body);
-  font-size: calc(var(--text-base) * 0.875);
-  color: var(--text);
+  gap: calc(var(--uifa-space) * 1.5);
+  font-family: var(--uifa-font-body);
+  font-size: calc(var(--uifa-text-base) * 0.875);
+  color: var(--uifa-text);
 }
 
-.uif-field [data-slot="label"] {
+.uifa-field [data-uifa-slot="label"] {
   font-weight: 600;
 }
 
-.uif-field-input {
+.uifa-field-input {
   box-sizing: border-box;
   width: 100%;
-  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  padding: calc(var(--uifa-space) * 1.5) calc(var(--uifa-space) * 2);
   /* 44px minimum touch target, scaling with the type size */
-  min-height: max(44px, calc(var(--space) * 5.5), calc(var(--text-base) * 2.75));
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: var(--text-base);
+  min-height: max(44px, calc(var(--uifa-space) * 5.5), calc(var(--uifa-text-base) * 2.75));
+  background: var(--uifa-surface);
+  border: 1px solid var(--uifa-border);
+  border-radius: var(--uifa-radius-control);
+  color: var(--uifa-text);
+  font-family: var(--uifa-font-body);
+  font-size: var(--uifa-text-base);
   transition: border-color 120ms ease;
 }
 
-.uif-field-input::placeholder {
-  color: var(--text-muted);
+.uifa-field-input::placeholder {
+  color: var(--uifa-text-muted);
   opacity: 1;
 }
 
-.uif-field-input:hover {
-  border-color: var(--text-muted);
+.uifa-field-input:hover {
+  border-color: var(--uifa-text-muted);
 }
 
-.uif-field-input:focus-visible {
-  outline: 2px solid var(--accent);
+.uifa-field-input:focus-visible {
+  outline: 2px solid var(--uifa-accent);
   outline-offset: 0;
-  border-color: var(--accent);
+  border-color: var(--uifa-accent);
 }
 
-.uif-field-input[data-variant="textarea"] {
-  min-height: calc(var(--space) * 8);
+.uifa-field-input[data-uifa-variant="textarea"] {
+  min-height: calc(var(--uifa-space) * 8);
   resize: vertical;
 }

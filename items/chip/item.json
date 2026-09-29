@@ -8,17 +8,17 @@
   "keywords": ["chip", "tag", "pill", "metadata", "category"],
   "behavior": "none",
   "cssVars": [
-    "--surface",
-    "--border",
-    "--text",
-    "--accent-soft",
-    "--accent",
-    "--warn-soft",
-    "--warn",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-accent-soft",
+    "--uifa-accent",
+    "--uifa-warn-soft",
+    "--uifa-warn",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
     { "name": "neutral", "default": true, "description": "Outlined surface tag." },
@@ -31,6 +31,6 @@
     { "path": "chip.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Static tag for metadata. For interactive filter chips with pressed states use the `filter-bar` item. Radius derives from `--radius` so pill roundness tracks the direction.",
+  "docs": "Static tag for metadata. For interactive filter chips with pressed states use the `filter-bar` item. Radius derives from `--uifa-radius-control` so pill roundness tracks the theme.",
   "meta": { "source": "original" }
 }

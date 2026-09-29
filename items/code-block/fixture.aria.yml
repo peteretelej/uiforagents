@@ -2,4 +2,4 @@
 - button "Copy"
 - code: node kit/scripts/uifa.mjs tokens node kit/scripts/uifa.mjs add node kit/validation/check.mjs
 - button "Copy"
-- code: <button class="uif-button" data-variant="primary"> Save draft </button>
+- code: <button class="uifa-button" data-uifa-variant="primary"> Save draft </button>

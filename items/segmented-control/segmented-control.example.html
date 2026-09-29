@@ -10,30 +10,30 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: start;
     }
   </style>
 </head>
 <body>
-  <div class="uif-segmented" role="radiogroup" aria-label="Range">
-    <label class="uif-segmented-option">
+  <div class="uifa-segmented" role="radiogroup" aria-label="Range">
+    <label class="uifa-segmented-option">
       <input type="radio" name="range-demo" value="day" checked>
-      <span data-slot="segment">Day</span>
+      <span data-uifa-slot="segment">Day</span>
     </label>
-    <label class="uif-segmented-option">
+    <label class="uifa-segmented-option">
       <input type="radio" name="range-demo" value="week">
-      <span data-slot="segment">Week</span>
+      <span data-uifa-slot="segment">Week</span>
     </label>
-    <label class="uif-segmented-option">
+    <label class="uifa-segmented-option">
       <input type="radio" name="range-demo" value="month">
-      <span data-slot="segment">Month</span>
+      <span data-uifa-slot="segment">Month</span>
     </label>
   </div>
 </body>

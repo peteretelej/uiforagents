@@ -8,13 +8,22 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const ITEMS_DIR = join(ROOT, "items");
 const SCHEMA_PATH = join(ROOT, "schema", "registry.schema.json");
-const DIRECTIONS_PATH = join(ROOT, "themes", "directions.mjs");
+const THEMES_PATH = join(ROOT, "themes", "index.mjs");
+const DIALECTS_DIR = join(ROOT, "themes", "dialects");
+
+// Optional contract tokens a theme may omit; the loader supplies these
+// defaults so every theme's effective token set is total.
+const OPTIONAL_TOKEN_DEFAULTS = {
+  "--uifa-corner-shape": "round",
+  "--uifa-noise": "none",
+};
 
 // Draft-07 keywords this validator understands; anything else must fail loudly
-// rather than be silently ignored.
+// rather than be silently ignored. "version" is a no-op here: it versions the
+// schema document itself and carries no per-manifest validation.
 const SUPPORTED_KEYWORDS = new Set([
   "$schema", "$id", "title", "description", "type", "const", "enum", "pattern",
-  "required", "properties", "additionalProperties", "items",
+  "required", "properties", "additionalProperties", "items", "version",
 ]);
 
 function typeMatches(value, type) {
@@ -33,7 +42,7 @@ function fileExists(path) {
   return statSync(path, { throwIfNoEntry: false })?.isFile() ?? false;
 }
 
-export function validateAgainstSchema(value, schemaNode, where, errors) {
+export function validateAgainstSchema(value, schemaNode, where, errors, isRoot = true) {
   for (const key of Object.keys(schemaNode)) {
     if (!SUPPORTED_KEYWORDS.has(key)) {
       throw new Error(`schema uses unsupported keyword "${key}" (at ${where}); extend the validator`);
@@ -59,7 +68,9 @@ export function validateAgainstSchema(value, schemaNode, where, errors) {
     for (const key of schemaNode.required ?? []) {
       if (!(key in value)) errors.push(`${where}: missing required property "${key}"`);
     }
-    if (schemaNode.additionalProperties === false) {
+    // Unknown fields are tolerated at the root manifest object only (forward
+    // compatibility); nested closed tables stay strictly validated.
+    if (schemaNode.additionalProperties === false && !isRoot) {
       for (const key of Object.keys(value)) {
         if (!(key in (schemaNode.properties ?? {}))) {
           errors.push(`${where}: unknown property "${key}"`);
@@ -67,11 +78,11 @@ export function validateAgainstSchema(value, schemaNode, where, errors) {
       }
     }
     for (const [key, sub] of Object.entries(schemaNode.properties ?? {})) {
-      if (key in value) validateAgainstSchema(value[key], sub, `${where}.${key}`, errors);
+      if (key in value) validateAgainstSchema(value[key], sub, `${where}.${key}`, errors, false);
     }
   }
   if (Array.isArray(value) && schemaNode.items) {
-    value.forEach((entry, i) => validateAgainstSchema(entry, schemaNode.items, `${where}[${i}]`, errors));
+    value.forEach((entry, i) => validateAgainstSchema(entry, schemaNode.items, `${where}[${i}]`, errors, false));
   }
 }
 
@@ -80,21 +91,32 @@ const REQUIRED_FILE_TYPES = ["kit:markup", "kit:style", "kit:example", "kit:fixt
 export async function loadKit() {
   const errors = [];
   const schema = JSON.parse(readFileSync(SCHEMA_PATH, "utf8"));
-  const { directions } = await import(pathToFileURL(DIRECTIONS_PATH).href);
+  const { themes } = await import(pathToFileURL(THEMES_PATH).href);
 
-  if (directions.length !== 3) {
-    errors.push(`themes/directions.mjs: expected exactly 3 example directions, found ${directions.length}`);
+  if (!Array.isArray(themes) || themes.length < 1) {
+    throw new Error("item validation failed:\nthemes/index.mjs: expected at least 1 example theme");
   }
   const slugs = new Set();
-  for (const direction of directions) {
-    if (slugs.has(direction.slug)) errors.push(`themes/directions.mjs: duplicate slug "${direction.slug}"`);
-    slugs.add(direction.slug);
+  for (const theme of themes) {
+    if (slugs.has(theme.slug)) errors.push(`themes/index.mjs: duplicate slug "${theme.slug}"`);
+    slugs.add(theme.slug);
+    for (const [token, value] of Object.entries(OPTIONAL_TOKEN_DEFAULTS)) {
+      if (!(token in theme.tokens)) theme.tokens[token] = value;
+    }
   }
-  const tokenKeySets = new Set(directions.map((d) => JSON.stringify(Object.keys(d.tokens))));
-  if (tokenKeySets.size > 1) {
-    errors.push("themes/directions.mjs: directions do not share the same token key set");
+  const requiredKeySets = new Set(
+    themes.map((theme) =>
+      JSON.stringify(Object.keys(theme.tokens).filter((key) => !(key in OPTIONAL_TOKEN_DEFAULTS)).sort())
+    )
+  );
+  if (requiredKeySets.size > 1) {
+    errors.push("themes/index.mjs: themes do not share the same required token key set");
   }
-  const baseScale = new Set(Object.keys(directions[0].tokens).filter((k) => k !== "color-scheme"));
+  for (const theme of themes) {
+    const dialectPath = join(DIALECTS_DIR, `${theme.slug}.css`);
+    theme.dialect = fileExists(dialectPath) ? readFileSync(dialectPath, "utf8") : "";
+  }
+  const baseScale = new Set(Object.keys(themes[0].tokens).filter((k) => k !== "color-scheme"));
 
   const items = [];
   for (const entry of readdirSync(ITEMS_DIR, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
@@ -114,7 +136,7 @@ export async function loadKit() {
     }
     for (const token of manifest.cssVars ?? []) {
       if (!baseScale.has(token)) {
-        errors.push(`${where}: cssVars token "${token}" is not in the base scale declared by themes/directions.mjs`);
+        errors.push(`${where}: cssVars token "${token}" is not in the base scale declared by themes/index.mjs`);
       }
     }
     for (const file of manifest.files ?? []) {
@@ -138,5 +160,5 @@ export async function loadKit() {
   if (errors.length > 0) {
     throw new Error(`item validation failed:\n${errors.join("\n")}`);
   }
-  return { schema, directions, baseScale, items };
+  return { schema, themes, baseScale, items };
 }

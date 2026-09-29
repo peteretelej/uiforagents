@@ -8,14 +8,14 @@
   "keywords": ["link", "row", "list-item", "bookmark", "result"],
   "behavior": "none",
   "cssVars": [
-    "--accent",
-    "--accent-soft",
-    "--text",
-    "--text-muted",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-accent",
+    "--uifa-accent-soft",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [],
   "files": [
@@ -24,6 +24,6 @@
     { "path": "link-row.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Use for lists of destinations: search results, recent files, reading queues. Parts: `[data-slot=\"title\"]` (the link), `url`, `chips` (contains `[data-slot=\"chip\"]` spans), `actions`. Hovering anywhere in the row underlines the title.",
+  "docs": "Use for lists of destinations: search results, recent files, reading queues. Parts: `[data-uifa-slot=\"title\"]` (the link), `url`, `chips` (contains `[data-uifa-slot=\"chip\"]` spans), `actions`. Hovering anywhere in the row underlines the title.",
   "meta": { "source": "original" }
 }

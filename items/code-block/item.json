@@ -8,19 +8,19 @@
   "keywords": ["code", "snippet", "pre", "copy", "clipboard"],
   "behavior": "js-inline",
   "cssVars": [
-    "--surface",
-    "--border",
-    "--text",
-    "--text-muted",
-    "--accent",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-accent",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
-    { "name": "labeled", "default": true, "description": "Header bar with a filename label and the copy button; omit data-variant." },
-    { "name": "bare", "description": "No header; the copy button floats top-right via `data-variant=\"bare\"`." }
+    { "name": "labeled", "default": true, "description": "Header bar with a filename label and the copy button; omit data-uifa-variant." },
+    { "name": "bare", "description": "No header; the copy button floats top-right via `data-uifa-variant=\"bare\"`." }
   ],
   "files": [
     { "path": "code-block.html", "type": "kit:markup" },
@@ -29,6 +29,6 @@
     { "path": "code-block.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Wrap a `<pre data-slot=\"code\">` in `.uif-code-block`; escape HTML entities in the snippet. The labeled variant (default) shows a `data-slot=\"label\"` filename beside the copy button; `data-variant=\"bare\"` drops the header and floats the button top-right. The script copies the snippet's text and flashes \"Copied!\" on the button.",
+  "docs": "Wrap a `<pre data-uifa-slot=\"code\">` in `.uifa-code-block`; escape HTML entities in the snippet. The labeled variant (default) shows a `data-uifa-slot=\"label\"` filename beside the copy button; `data-uifa-variant=\"bare\"` drops the header and floats the button top-right. The script copies the snippet's text and flashes \"Copied!\" on the button.",
   "meta": { "source": "original" }
 }

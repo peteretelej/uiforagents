@@ -10,29 +10,29 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: start;
     }
   </style>
 </head>
 <body>
-  <label class="uif-toggle">
-    <input class="uif-toggle-input" type="checkbox" role="switch">
-    <span data-slot="label">Email notifications</span>
+  <label class="uifa-toggle">
+    <input class="uifa-toggle-input" type="checkbox" role="switch">
+    <span data-uifa-slot="label">Email notifications</span>
   </label>
-  <label class="uif-toggle">
-    <input class="uif-toggle-input" type="checkbox" role="switch" checked>
-    <span data-slot="label">Compact mode</span>
+  <label class="uifa-toggle">
+    <input class="uifa-toggle-input" type="checkbox" role="switch" checked>
+    <span data-uifa-slot="label">Compact mode</span>
   </label>
-  <label class="uif-toggle">
-    <input class="uif-toggle-input" type="checkbox" role="switch" disabled>
-    <span data-slot="label">Legacy export</span>
+  <label class="uifa-toggle">
+    <input class="uifa-toggle-input" type="checkbox" role="switch" disabled>
+    <span data-uifa-slot="label">Legacy export</span>
   </label>
 </body>
 </html>

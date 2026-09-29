@@ -8,19 +8,19 @@
   "keywords": ["input", "textarea", "text", "form", "field", "label"],
   "behavior": "none",
   "cssVars": [
-    "--surface",
-    "--border",
-    "--text",
-    "--text-muted",
-    "--accent",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-accent",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
-    { "name": "text", "default": true, "description": "Single-line input; omit data-variant." },
-    { "name": "textarea", "description": "Multi-line input via `data-variant=\"textarea\"` on the textarea." }
+    { "name": "text", "default": true, "description": "Single-line input; omit data-uifa-variant." },
+    { "name": "textarea", "description": "Multi-line input via `data-uifa-variant=\"textarea\"` on the textarea." }
   ],
   "files": [
     { "path": "form-field.html", "type": "kit:markup" },
@@ -28,6 +28,6 @@
     { "path": "form-field.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "A wrapping `<label class=\"uif-field\">` binds the visible label to its control without ids. The focus ring uses the accent role; hover deepens the border. Keep `min-height` at the 44px touch floor on inputs.",
+  "docs": "A wrapping `<label class=\"uifa-field\">` binds the visible label to its control without ids. The focus ring uses the accent role; hover deepens the border. Keep `min-height` at the 44px touch floor on inputs.",
   "meta": { "source": "original" }
 }

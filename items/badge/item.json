@@ -8,20 +8,20 @@
   "keywords": ["badge", "status", "label", "pill", "tag"],
   "behavior": "none",
   "cssVars": [
-    "--accent-soft",
-    "--accent",
-    "--ok-soft",
-    "--ok",
-    "--warn-soft",
-    "--warn",
-    "--danger-soft",
-    "--danger",
-    "--border",
-    "--text-muted",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-accent-soft",
+    "--uifa-accent",
+    "--uifa-ok-soft",
+    "--uifa-ok",
+    "--uifa-warn-soft",
+    "--uifa-warn",
+    "--uifa-danger-soft",
+    "--uifa-danger",
+    "--uifa-border",
+    "--uifa-text-muted",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
     { "name": "accent", "default": true, "description": "Neutral-highlight state such as in review or open work." },
@@ -36,6 +36,6 @@
     { "path": "badge.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "A plain span with `data-variant`; no role so it reads as text in the accessibility tree. Keep the copy to one or two words. Pairs with the `status` roles `--ok`, `--warn`, `--danger` from the direction tokens.",
+  "docs": "A plain span with `data-uifa-variant`; no role so it reads as text in the accessibility tree. Keep the copy to one or two words. Pairs with the `status` roles `--uifa-ok`, `--uifa-warn`, `--uifa-danger` from the theme tokens.",
   "meta": { "source": "original" }
 }

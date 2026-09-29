@@ -1,9 +1,9 @@
 // Dependency-free play-state demo: toggles the control and advances progress.
 // Wire the same hooks to a real <audio> element in a consumer.
-const player = document.querySelector(".uif-player");
-const button = player.querySelector("[data-slot='play']");
-const bar = player.querySelector("[data-slot='progress']");
-const fill = player.querySelector("[data-slot='progress-fill']");
+const player = document.querySelector(".uifa-player");
+const button = player.querySelector("[data-uifa-slot='play']");
+const bar = player.querySelector("[data-uifa-slot='progress']");
+const fill = player.querySelector("[data-uifa-slot='progress-fill']");
 
 let playing = false;
 let value = Number(bar.getAttribute("aria-valuenow")) || 0;

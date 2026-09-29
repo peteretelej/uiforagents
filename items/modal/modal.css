@@ -1,89 +1,89 @@
-.uif-modal {
+.uifa-modal {
   box-sizing: border-box;
-  width: min(420px, calc(100vw - var(--space) * 4));
-  padding: calc(var(--space) * 4);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-char);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: var(--text-base);
+  width: min(420px, calc(100vw - var(--uifa-space) * 4));
+  padding: calc(var(--uifa-space) * 4);
+  background: var(--uifa-surface);
+  border: 1px solid var(--uifa-border);
+  border-radius: var(--uifa-radius-control);
+  box-shadow: var(--uifa-shadow-char);
+  color: var(--uifa-text);
+  font-family: var(--uifa-font-body);
+  font-size: var(--uifa-text-base);
 }
 
-.uif-modal::backdrop {
-  background: var(--scrim);
+.uifa-modal::backdrop {
+  background: var(--uifa-scrim);
 }
 
-.uif-modal [data-slot="title"] {
-  margin: 0 0 calc(var(--space) * 1.5);
-  font-family: var(--font-display);
-  font-size: calc(var(--text-base) * 1.125);
+.uifa-modal [data-uifa-slot="title"] {
+  margin: 0 0 calc(var(--uifa-space) * 1.5);
+  font-family: var(--uifa-font-display);
+  font-size: calc(var(--uifa-text-base) * 1.125);
   font-weight: 600;
   line-height: 1.3;
 }
 
-.uif-modal [data-slot="body"] {
-  margin: 0 0 calc(var(--space) * 3);
-  color: var(--text-muted);
+.uifa-modal [data-uifa-slot="body"] {
+  margin: 0 0 calc(var(--uifa-space) * 3);
+  color: var(--uifa-text-muted);
   line-height: 1.5;
 }
 
-.uif-modal [data-slot="actions"] {
+.uifa-modal [data-uifa-slot="actions"] {
   display: flex;
   justify-content: flex-end;
-  gap: calc(var(--space) * 2);
+  gap: calc(var(--uifa-space) * 2);
 }
 
-.uif-modal [data-slot="action"] {
-  padding: 0 calc(var(--space) * 3);
+.uifa-modal [data-uifa-slot="action"] {
+  padding: 0 calc(var(--uifa-space) * 3);
   /* 44px minimum touch target */
-  min-height: max(44px, calc(var(--space) * 5.5));
+  min-height: max(44px, calc(var(--uifa-space) * 5.5));
   border: 1px solid transparent;
-  border-radius: var(--radius);
-  font-family: var(--font-body);
-  font-size: calc(var(--text-base) * 0.875);
+  border-radius: var(--uifa-radius-control);
+  font-family: var(--uifa-font-body);
+  font-size: calc(var(--uifa-text-base) * 0.875);
   font-weight: 600;
   cursor: pointer;
 }
 
-.uif-modal [data-slot="action"][data-variant="secondary"] {
-  background: var(--surface);
-  border-color: var(--border);
-  color: var(--text);
+.uifa-modal [data-uifa-slot="action"][data-uifa-variant="secondary"] {
+  background: var(--uifa-surface);
+  border-color: var(--uifa-border);
+  color: var(--uifa-text);
 }
 
-.uif-modal [data-slot="action"][data-variant="danger"] {
-  background: var(--danger);
-  color: var(--danger-fg);
+.uifa-modal [data-uifa-slot="action"][data-uifa-variant="danger"] {
+  background: var(--uifa-danger);
+  color: var(--uifa-danger-fg);
 }
 
-.uif-modal [data-slot="action"]:focus-visible,
-.uif-modal-trigger:focus-visible {
-  outline: 2px solid var(--accent);
+.uifa-modal [data-uifa-slot="action"]:focus-visible,
+.uifa-modal-trigger:focus-visible {
+  outline: 2px solid var(--uifa-accent);
   outline-offset: 2px;
 }
 
-.uif-modal-trigger {
-  padding: 0 calc(var(--space) * 3);
+.uifa-modal-trigger {
+  padding: 0 calc(var(--uifa-space) * 3);
   /* 44px minimum touch target */
-  min-height: max(44px, calc(var(--space) * 5.5));
-  background: var(--accent);
+  min-height: max(44px, calc(var(--uifa-space) * 5.5));
+  background: var(--uifa-accent);
   border: 0;
-  border-radius: var(--radius);
-  color: var(--accent-fg);
-  font-family: var(--font-body);
-  font-size: calc(var(--text-base) * 0.875);
+  border-radius: var(--uifa-radius-control);
+  color: var(--uifa-accent-fg);
+  font-family: var(--uifa-font-body);
+  font-size: calc(var(--uifa-text-base) * 0.875);
   font-weight: 600;
   cursor: pointer;
 }
 
 /* Bottom sheet on small screens; centered card otherwise. */
 @media (max-width: 480px) {
-  .uif-modal {
+  .uifa-modal {
     width: 100%;
     max-width: 100%;
     margin: auto 0 0;
-    border-radius: var(--radius) var(--radius) 0 0;
+    border-radius: var(--uifa-radius-control) var(--uifa-radius-control) 0 0;
   }
 }

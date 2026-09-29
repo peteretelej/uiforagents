@@ -10,25 +10,25 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: stretch;
     }
   </style>
 </head>
 <body>
-  <label class="uif-field">
-    <span data-slot="label">Project name</span>
-    <input class="uif-field-input" type="text" name="project" placeholder="Acme Inc">
+  <label class="uifa-field">
+    <span data-uifa-slot="label">Project name</span>
+    <input class="uifa-field-input" type="text" name="project" placeholder="Acme Inc">
   </label>
-  <label class="uif-field">
-    <span data-slot="label">Description</span>
-    <textarea class="uif-field-input" data-variant="textarea" name="description" rows="4" placeholder="What is this project for?"></textarea>
+  <label class="uifa-field">
+    <span data-uifa-slot="label">Description</span>
+    <textarea class="uifa-field-input" data-uifa-variant="textarea" name="description" rows="4" placeholder="What is this project for?"></textarea>
   </label>
 </body>
 </html>

@@ -8,17 +8,17 @@
   "keywords": ["empty-state", "404", "not-found", "expired", "deleted"],
   "behavior": "none",
   "cssVars": [
-    "--surface",
-    "--border",
-    "--text",
-    "--text-muted",
-    "--accent",
-    "--accent-fg",
-    "--radius",
-    "--font-display",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-accent",
+    "--uifa-accent-fg",
+    "--uifa-radius-control",
+    "--uifa-font-display",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
     { "name": "not-found", "default": true, "description": "Missing or moved content; primary recovery action." },

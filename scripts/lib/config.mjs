@@ -7,7 +7,7 @@ import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 
 export const CONFIG_NAME = "uiforagents.json";
 
-const TOP_LEVEL_KEYS = ["kit", "direction", "directionsFile", "items", "dest", "lint"];
+const TOP_LEVEL_KEYS = ["kit", "theme", "themesFile", "items", "dest", "lint"];
 const DEST_KEYS = ["itemsDir", "tokensCss", "docs"];
 
 export function findConfig(startDir) {
@@ -46,12 +46,12 @@ export function resolveInRoot(root, value, label) {
   return resolved;
 }
 
-// `directionsFile` is read-only input, not a write destination: the module
+// `themesFile` is read-only input, not a write destination: the module
 // may live anywhere, so absolute paths are allowed and relative paths
 // resolve against the config file's directory without root confinement.
-export function resolveDirectionsFile(root, value) {
+export function resolveThemesFile(root, value) {
   if (typeof value !== "string" || !value.trim()) {
-    throw new Error(`config: directionsFile must be a path`);
+    throw new Error(`config: themesFile must be a path`);
   }
   return resolve(root, value);
 }
@@ -67,14 +67,14 @@ export function loadConfig(configPath) {
   if (unknown.length > 0) {
     throw new Error(`config: ${configPath}: unknown key "${unknown[0]}"`);
   }
-  for (const key of ["kit", "direction", "items", "dest", "lint"]) {
+  for (const key of ["kit", "theme", "items", "dest", "lint"]) {
     if (!(key in config)) throw new Error(`config: ${configPath}: missing required key "${key}"`);
   }
   if (typeof config.kit !== "string" || !config.kit.trim()) {
     throw new Error(`config: ${configPath}: "kit" must point at the uiforagents checkout`);
   }
-  if (typeof config.direction !== "string" || !config.direction.trim()) {
-    throw new Error(`config: ${configPath}: "direction" must be a direction slug`);
+  if (typeof config.theme !== "string" || !config.theme.trim()) {
+    throw new Error(`config: ${configPath}: "theme" must be a theme slug or "all"`);
   }
   if (
     !Array.isArray(config.items) ||
@@ -95,8 +95,8 @@ export function loadConfig(configPath) {
       throw new Error(`config: ${configPath}: dest.${key} must be a path`);
     }
   }
-  if (config.directionsFile !== undefined && (typeof config.directionsFile !== "string" || !config.directionsFile.trim())) {
-    throw new Error(`config: ${configPath}: "directionsFile" must be a path`);
+  if (config.themesFile !== undefined && (typeof config.themesFile !== "string" || !config.themesFile.trim())) {
+    throw new Error(`config: ${configPath}: "themesFile" must be a path`);
   }
   const lint = Array.isArray(config.lint) ? config.lint : [config.lint];
   if (lint.length === 0 || lint.some((glob) => typeof glob !== "string" || !glob.trim())) {

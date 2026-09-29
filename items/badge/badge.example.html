@@ -10,22 +10,22 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: start;
     }
   </style>
 </head>
 <body>
-  <span class="uif-badge" data-variant="accent">In review</span>
-  <span class="uif-badge" data-variant="ok">Open</span>
-  <span class="uif-badge" data-variant="warn">Due soon</span>
-  <span class="uif-badge" data-variant="danger">Expired</span>
-  <span class="uif-badge" data-variant="muted">Closed</span>
+  <span class="uifa-badge" data-uifa-variant="accent">In review</span>
+  <span class="uifa-badge" data-uifa-variant="ok">Open</span>
+  <span class="uifa-badge" data-uifa-variant="warn">Due soon</span>
+  <span class="uifa-badge" data-uifa-variant="danger">Expired</span>
+  <span class="uifa-badge" data-uifa-variant="muted">Closed</span>
 </body>
 </html>

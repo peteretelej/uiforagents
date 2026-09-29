@@ -8,21 +8,21 @@
   "keywords": ["sidebar", "nav", "navigation", "menu", "sections"],
   "behavior": "none",
   "cssVars": [
-    "--surface",
-    "--border",
-    "--text",
-    "--text-muted",
-    "--faint",
-    "--accent",
-    "--accent-soft",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-faint",
+    "--uifa-accent",
+    "--uifa-accent-soft",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
     { "name": "panel", "default": true, "description": "Owns a bordered surface for standalone placement." },
-    { "name": "flat", "description": "No surface of its own; embeds in existing chrome via `data-variant=\"flat\"`." }
+    { "name": "flat", "description": "No surface of its own; embeds in existing chrome via `data-uifa-variant=\"flat\"`." }
   ],
   "files": [
     { "path": "sidebar.html", "type": "kit:markup" },
@@ -30,6 +30,6 @@
     { "path": "sidebar.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Vertical navigation: links are `data-slot=\"link\"`; group them under `data-slot=\"group\"` with a `data-slot=\"heading\"` label. Mark the current section with `aria-current=\"page\"` and give the nav an `aria-label`. Variant `panel` (default) draws its own bordered surface; `flat` drops it for embedding in app chrome.",
+  "docs": "Vertical navigation: links are `data-uifa-slot=\"link\"`; group them under `data-uifa-slot=\"group\"` with a `data-uifa-slot=\"heading\"` label. Mark the current section with `aria-current=\"page\"` and give the nav an `aria-label`. Variant `panel` (default) draws its own bordered surface; `flat` drops it for embedding in app chrome.",
   "meta": { "source": "original" }
 }

@@ -10,30 +10,30 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: stretch;
     }
   </style>
 </head>
 <body>
-  <div class="uif-code-block">
-    <div data-slot="header">
-      <span data-slot="label">install.sh</span>
-      <button type="button" data-slot="copy">Copy</button>
+  <div class="uifa-code-block">
+    <div data-uifa-slot="header">
+      <span data-uifa-slot="label">install.sh</span>
+      <button type="button" data-uifa-slot="copy">Copy</button>
     </div>
-    <pre data-slot="code"><code>node kit/scripts/uifa.mjs tokens
+    <pre data-uifa-slot="code"><code>node kit/scripts/uifa.mjs tokens
 node kit/scripts/uifa.mjs add
 node kit/validation/check.mjs</code></pre>
   </div>
-  <div class="uif-code-block" data-variant="bare">
-    <button type="button" data-slot="copy">Copy</button>
-    <pre data-slot="code"><code>&lt;button class="uif-button" data-variant="primary"&gt;
+  <div class="uifa-code-block" data-uifa-variant="bare">
+    <button type="button" data-uifa-slot="copy">Copy</button>
+    <pre data-uifa-slot="code"><code>&lt;button class="uifa-button" data-uifa-variant="primary"&gt;
   Save draft
 &lt;/button&gt;</code></pre>
   </div>

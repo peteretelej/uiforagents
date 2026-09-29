@@ -8,16 +8,16 @@
   "keywords": ["segmented", "tabs-like", "radio", "picker", "view-switcher"],
   "behavior": "css-only",
   "cssVars": [
-    "--surface",
-    "--border",
-    "--text",
-    "--text-muted",
-    "--accent",
-    "--accent-fg",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-accent",
+    "--uifa-accent-fg",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [],
   "files": [
@@ -26,6 +26,6 @@
     { "path": "segmented-control.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Use for 2-5 mutually exclusive options. Native radios carry the state: selection and arrow-key navigation come free, no JavaScript. Give each group its own `name`; the visible segment is `[data-slot=\"segment\"]`.",
+  "docs": "Use for 2-5 mutually exclusive options. Native radios carry the state: selection and arrow-key navigation come free, no JavaScript. Give each group its own `name`; the visible segment is `[data-uifa-slot=\"segment\"]`.",
   "meta": { "source": "original" }
 }

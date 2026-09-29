@@ -1,17 +1,17 @@
-.uif-button {
+.uifa-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: calc(var(--space) * 1);
-  padding: 0 calc(var(--space) * 3);
+  gap: calc(var(--uifa-space) * 1);
+  padding: 0 calc(var(--uifa-space) * 3);
   /* 44px minimum touch target */
-  min-height: max(44px, calc(var(--space) * 5.5));
+  min-height: max(44px, calc(var(--uifa-space) * 5.5));
   border: 1px solid transparent;
-  border-radius: var(--radius);
-  background: var(--accent);
-  color: var(--accent-fg);
-  font-family: var(--font-body);
-  font-size: calc(var(--text-base) * 0.875);
+  border-radius: var(--uifa-radius-control);
+  background: var(--uifa-accent);
+  color: var(--uifa-accent-fg);
+  font-family: var(--uifa-font-body);
+  font-size: calc(var(--uifa-text-base) * 0.875);
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
@@ -19,42 +19,42 @@
   transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
 }
 
-.uif-button:hover {
-  background: color-mix(in oklch, var(--accent), var(--text) 12%);
+.uifa-button:hover {
+  background: color-mix(in oklch, var(--uifa-accent), var(--uifa-text) 12%);
 }
 
-.uif-button:focus-visible {
-  outline: 2px solid var(--accent);
+.uifa-button:focus-visible {
+  outline: 2px solid var(--uifa-accent);
   outline-offset: 2px;
 }
 
-.uif-button[data-variant="secondary"] {
-  background: var(--surface);
-  border-color: var(--border);
-  color: var(--text);
+.uifa-button[data-uifa-variant="secondary"] {
+  background: var(--uifa-surface);
+  border-color: var(--uifa-border);
+  color: var(--uifa-text);
 }
 
-.uif-button[data-variant="secondary"]:hover {
-  background: color-mix(in oklch, var(--surface), var(--text) 6%);
+.uifa-button[data-uifa-variant="secondary"]:hover {
+  background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 6%);
 }
 
-.uif-button[data-variant="danger"] {
-  background: var(--danger);
-  color: var(--danger-fg);
+.uifa-button[data-uifa-variant="danger"] {
+  background: var(--uifa-danger);
+  color: var(--uifa-danger-fg);
 }
 
-.uif-button[data-variant="danger"]:hover {
-  background: color-mix(in oklch, var(--danger), var(--text) 12%);
+.uifa-button[data-uifa-variant="danger"]:hover {
+  background: color-mix(in oklch, var(--uifa-danger), var(--uifa-text) 12%);
 }
 
-.uif-button[data-variant="small"] {
-  padding: 0 calc(var(--space) * 2);
-  font-size: calc(var(--text-base) * 0.8125);
+.uifa-button[data-uifa-variant="small"] {
+  padding: 0 calc(var(--uifa-space) * 2);
+  font-size: calc(var(--uifa-text-base) * 0.8125);
 }
 
-.uif-button:disabled {
-  background: var(--faint);
-  border-color: var(--faint);
-  color: var(--bg);
+.uifa-button:disabled {
+  background: var(--uifa-faint);
+  border-color: var(--uifa-faint);
+  color: var(--uifa-bg);
   cursor: not-allowed;
 }

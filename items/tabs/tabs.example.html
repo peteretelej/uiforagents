@@ -10,45 +10,45 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 4);
+      gap: calc(var(--uifa-space) * 4);
       justify-items: stretch;
     }
   </style>
 </head>
 <body>
-  <div class="uif-tabs">
-    <div class="uif-tabs-list">
-      <label class="uif-tab">
+  <div class="uifa-tabs">
+    <div class="uifa-tabs-list">
+      <label class="uifa-tab">
         <input type="radio" name="tabs-underline" value="preview" checked>
-        <span data-slot="tab">Preview</span>
+        <span data-uifa-slot="tab">Preview</span>
       </label>
-      <label class="uif-tab">
+      <label class="uifa-tab">
         <input type="radio" name="tabs-underline" value="history">
-        <span data-slot="tab">History</span>
+        <span data-uifa-slot="tab">History</span>
       </label>
     </div>
-    <div class="uif-tabs-panel" data-panel="preview">Preview shows the rendered result of the current draft.</div>
-    <div class="uif-tabs-panel" data-panel="history" hidden>History lists every saved revision with timestamps.</div>
+    <div class="uifa-tabs-panel" data-panel="preview">Preview shows the rendered result of the current draft.</div>
+    <div class="uifa-tabs-panel" data-panel="history" hidden>History lists every saved revision with timestamps.</div>
   </div>
-  <div class="uif-tabs" data-variant="pill">
-    <div class="uif-tabs-list">
-      <label class="uif-tab">
+  <div class="uifa-tabs" data-uifa-variant="pill">
+    <div class="uifa-tabs-list">
+      <label class="uifa-tab">
         <input type="radio" name="tabs-pill" value="preview" checked>
-        <span data-slot="tab">Preview</span>
+        <span data-uifa-slot="tab">Preview</span>
       </label>
-      <label class="uif-tab">
+      <label class="uifa-tab">
         <input type="radio" name="tabs-pill" value="history">
-        <span data-slot="tab">History</span>
+        <span data-uifa-slot="tab">History</span>
       </label>
     </div>
-    <div class="uif-tabs-panel" data-panel="preview">The pill style reads softer; the direction picks per project.</div>
-    <div class="uif-tabs-panel" data-panel="history" hidden>Same panels, different tab chrome.</div>
+    <div class="uifa-tabs-panel" data-panel="preview">The pill style reads softer; the theme picks per project.</div>
+    <div class="uifa-tabs-panel" data-panel="history" hidden>Same panels, different tab chrome.</div>
   </div>
 </body>
 </html>

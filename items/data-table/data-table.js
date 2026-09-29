@@ -1,5 +1,5 @@
 // Dependency-free sorting and select-all for tables marked data-sortable.
-document.querySelectorAll(".uif-table[data-sortable]").forEach((table) => {
+document.querySelectorAll(".uifa-table[data-sortable]").forEach((table) => {
   const tbody = table.querySelector("tbody");
 
   table.querySelectorAll("th button").forEach((button) => {

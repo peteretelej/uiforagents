@@ -10,20 +10,20 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: start;
     }
   </style>
 </head>
 <body>
-  <span class="uif-chip">design</span>
-  <span class="uif-chip" data-variant="accent">featured</span>
-  <span class="uif-chip" data-variant="warn">needs review</span>
+  <span class="uifa-chip">design</span>
+  <span class="uifa-chip" data-uifa-variant="accent">featured</span>
+  <span class="uifa-chip" data-uifa-variant="warn">needs review</span>
 </body>
 </html>

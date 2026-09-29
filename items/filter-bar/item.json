@@ -8,18 +8,18 @@
   "keywords": ["filter", "search", "toolbar", "chips", "query"],
   "behavior": "none",
   "cssVars": [
-    "--surface",
-    "--border",
-    "--text",
-    "--text-muted",
-    "--accent",
-    "--accent-fg",
-    "--warn",
-    "--warn-fg",
-    "--radius",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-accent",
+    "--uifa-accent-fg",
+    "--uifa-warn",
+    "--uifa-warn-fg",
+    "--uifa-radius-control",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [],
   "files": [
@@ -28,6 +28,6 @@
     { "path": "filter-bar.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Compose a search input and filter chips in one row. Chips are `type=\"button\"` with `aria-pressed` carrying the applied state; CSS renders pressed chips solid. Give a chip `data-variant=\"warn\"` for caution filters such as overdue.",
+  "docs": "Compose a search input and filter chips in one row. Chips are `type=\"button\"` with `aria-pressed` carrying the applied state; CSS renders pressed chips solid. Give a chip `data-uifa-variant=\"warn\"` for caution filters such as overdue.",
   "meta": { "source": "original" }
 }

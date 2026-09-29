@@ -10,25 +10,25 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: start;
     }
   </style>
 </head>
 <body>
-  <button type="button" class="uif-modal-trigger" data-slot="open">Delete project</button>
-  <dialog class="uif-modal" open aria-label="Delete project">
-    <h2 data-slot="title">Delete project?</h2>
-    <p data-slot="body">This permanently removes the project and all of its data. This action cannot be undone.</p>
-    <div data-slot="actions">
-      <button type="button" class="uif-modal-action" data-variant="secondary" data-slot="cancel">Cancel</button>
-      <button type="button" class="uif-modal-action" data-variant="danger" data-slot="confirm">Delete</button>
+  <button type="button" class="uifa-modal-trigger" data-uifa-slot="open">Delete project</button>
+  <dialog class="uifa-modal" open aria-label="Delete project">
+    <h2 data-uifa-slot="title">Delete project?</h2>
+    <p data-uifa-slot="body">This permanently removes the project and all of its data. This action cannot be undone.</p>
+    <div data-uifa-slot="actions">
+      <button type="button" class="uifa-modal-action" data-uifa-variant="secondary" data-uifa-slot="cancel">Cancel</button>
+      <button type="button" class="uifa-modal-action" data-uifa-variant="danger" data-uifa-slot="confirm">Delete</button>
     </div>
   </dialog>
   <script src="modal.js"></script>

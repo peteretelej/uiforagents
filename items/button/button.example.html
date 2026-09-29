@@ -10,22 +10,22 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: start;
     }
   </style>
 </head>
 <body>
-  <button class="uif-button" data-variant="primary">Save changes</button>
-  <button class="uif-button" data-variant="secondary">Preview</button>
-  <button class="uif-button" data-variant="danger">Delete project</button>
-  <button class="uif-button" data-variant="small">Compact action</button>
-  <button class="uif-button" data-variant="primary" disabled>Saved</button>
+  <button class="uifa-button" data-uifa-variant="primary">Save changes</button>
+  <button class="uifa-button" data-uifa-variant="secondary">Preview</button>
+  <button class="uifa-button" data-uifa-variant="danger">Delete project</button>
+  <button class="uifa-button" data-uifa-variant="small">Compact action</button>
+  <button class="uifa-button" data-uifa-variant="primary" disabled>Saved</button>
 </body>
 </html>

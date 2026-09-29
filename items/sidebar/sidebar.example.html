@@ -10,32 +10,32 @@
     *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: calc(var(--space) * 4);
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
+      padding: calc(var(--uifa-space) * 4);
+      background: var(--uifa-bg);
+      color: var(--uifa-text);
+      font-family: var(--uifa-font-body);
+      font-size: var(--uifa-text-base);
       display: grid;
-      gap: calc(var(--space) * 3);
+      gap: calc(var(--uifa-space) * 3);
       justify-items: start;
     }
-    .uif-sidebar { min-width: 240px; }
+    .uifa-sidebar { min-width: 240px; }
   </style>
 </head>
 <body>
-  <nav class="uif-sidebar" data-variant="panel" aria-label="Sections">
-    <a data-slot="link" href="#" aria-current="page">Overview</a>
-    <a data-slot="link" href="#">Episodes</a>
-    <div data-slot="group">
-      <span data-slot="heading">Library</span>
-      <a data-slot="link" href="#">Clips</a>
-      <a data-slot="link" href="#">Assets</a>
+  <nav class="uifa-sidebar" data-uifa-variant="panel" aria-label="Sections">
+    <a data-uifa-slot="link" href="#" aria-current="page">Overview</a>
+    <a data-uifa-slot="link" href="#">Episodes</a>
+    <div data-uifa-slot="group">
+      <span data-uifa-slot="heading">Library</span>
+      <a data-uifa-slot="link" href="#">Clips</a>
+      <a data-uifa-slot="link" href="#">Assets</a>
     </div>
   </nav>
-  <nav class="uif-sidebar" data-variant="flat" aria-label="Library sections">
-    <a data-slot="link" href="#" aria-current="page">Season 4</a>
-    <a data-slot="link" href="#">Season 3</a>
-    <a data-slot="link" href="#">Season 2</a>
+  <nav class="uifa-sidebar" data-uifa-variant="flat" aria-label="Library sections">
+    <a data-uifa-slot="link" href="#" aria-current="page">Season 4</a>
+    <a data-uifa-slot="link" href="#">Season 3</a>
+    <a data-uifa-slot="link" href="#">Season 2</a>
   </nav>
 </body>
 </html>

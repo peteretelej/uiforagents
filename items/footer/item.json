@@ -8,20 +8,20 @@
   "keywords": ["footer", "site", "links", "legal", "colophon"],
   "behavior": "none",
   "cssVars": [
-    "--surface",
-    "--border",
-    "--text",
-    "--text-muted",
-    "--faint",
-    "--accent",
-    "--font-display",
-    "--font-body",
-    "--text-base",
-    "--space"
+    "--uifa-surface",
+    "--uifa-border",
+    "--uifa-text",
+    "--uifa-text-muted",
+    "--uifa-faint",
+    "--uifa-accent",
+    "--uifa-font-display",
+    "--uifa-font-body",
+    "--uifa-text-base",
+    "--uifa-space"
   ],
   "variants": [
-    { "name": "columns", "default": true, "description": "Brand block, link groups, and a full-width legal line; omit data-variant." },
-    { "name": "simple", "description": "Single row: wordmark and legal line via `data-variant=\"simple\"`." }
+    { "name": "columns", "default": true, "description": "Brand block, link groups, and a full-width legal line; omit data-uifa-variant." },
+    { "name": "simple", "description": "Single row: wordmark and legal line via `data-uifa-variant=\"simple\"`." }
   ],
   "files": [
     { "path": "footer.html", "type": "kit:markup" },
@@ -29,6 +29,6 @@
     { "path": "footer.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Columned footer: brand copy under `data-slot=\"brand\"` (wordmark plus note), link groups as `data-slot=\"group\"` navs with `data-slot=\"heading\"` labels, and `data-slot=\"legal\"` spanning the full width. Variant `simple` (via `data-variant=\"simple\"`) is a single wordmark + legal row for lean pages.",
+  "docs": "Columned footer: brand copy under `data-uifa-slot=\"brand\"` (wordmark plus note), link groups as `data-uifa-slot=\"group\"` navs with `data-uifa-slot=\"heading\"` labels, and `data-uifa-slot=\"legal\"` spanning the full width. Variant `simple` (via `data-uifa-variant=\"simple\"`) is a single wordmark + legal row for lean pages.",
   "meta": { "source": "original" }
 }

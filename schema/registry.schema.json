@@ -2,7 +2,8 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://uiforagents.com/schema/registry.schema.json",
   "title": "uiforagents registry item",
-  "description": "Manifest for one uiforagents component item: a shadcn registry-item dialect superset for a vanilla HTML/CSS kit.",
+  "description": "Manifest for one uiforagents component item: a shadcn registry-item dialect superset for a vanilla HTML/CSS kit. Versioned in this file via \"version\"; no versioned filenames.",
+  "version": "1.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -57,7 +58,7 @@
     },
     "cssVars": {
       "type": "array",
-      "description": "Semantic token roles this item's CSS reads. The kit token vocabulary is the union of cssVars across items plus the base scale declared by themes/directions.mjs.",
+      "description": "Semantic token roles this item's CSS reads. The kit token vocabulary is the union of cssVars across items plus the base scale declared by themes/index.mjs.",
       "items": {
         "type": "string",
         "pattern": "^--[a-z][a-z0-9-]*$"
@@ -65,7 +66,7 @@
     },
     "variants": {
       "type": "array",
-      "description": "Closed [data-variant] table. Empty when the item has no variants.",
+      "description": "Closed [data-uifa-variant] table. Empty when the item has no variants.",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -73,7 +74,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The data-variant attribute value.",
+            "description": "The data-uifa-variant attribute value.",
             "pattern": "^[a-z][a-z0-9-]*$"
           },
           "default": {

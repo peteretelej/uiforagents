@@ -1,7 +1,7 @@
 {
   "kit": "../../..",
-  "direction": "paper",
-  "directionsFile": "../../../themes/directions.mjs",
+  "theme": "paper",
+  "themesFile": "../../../themes/index.mjs",
   "items": ["button", "badge"],
   "dest": {
     "itemsDir": "unused-by-check",

@@ -1,0 +1,11 @@
+/* Planted dialect control: every rule is scoped under a [data-theme] selector
+   and targets kit selectors only, so the dialect exemption holds - the raw
+   hex and the undeclared token below are sanctioned here. */
+
+[data-theme="paper"] .uifa-badge {
+  color: #123456;
+}
+
+[data-theme="paper"] .uifa-button:hover .uifa-badge {
+  background: var(--uifa-brand-override);
+}
