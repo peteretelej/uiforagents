@@ -10,18 +10,24 @@
   "cssVars": [
     "--uifa-surface",
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text",
     "--uifa-text-muted",
     "--uifa-accent",
+    "--uifa-accent-fg",
+    "--uifa-accent-soft",
     "--uifa-danger",
     "--uifa-danger-fg",
+    "--uifa-scrim",
     "--uifa-radius-control",
     "--uifa-shadow-char",
-    "--uifa-scrim",
     "--uifa-font-display",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [],
   "files": [

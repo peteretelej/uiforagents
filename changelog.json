@@ -316,5 +316,31 @@
       "top-nav"
     ],
     "summary": "forms and content items rebuilt to the premium baseline: inset input wells with a proper disabled state, layered card shadows, row hover fills with hairline separators, code wells on the mono token, inset progress tracks, full state walks, reduced-motion, forced-colors, and prefers-contrast coverage, and uif-items layer wraps on form field, card, link row, code block, and audio player"
+  },
+  {
+    "version": "0.1.4",
+    "date": "2026-09-29",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "code-block",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "footer",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "sidebar",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ],
+    "summary": "overlay and feedback items rebuilt to the premium baseline: maximum modal elevation with a gated dialog and backdrop entrance, opaque toast tints with shorter exits than entrances, whitespace-led borderless empty states, full state walks, reduced-motion, forced-colors, and prefers-contrast coverage, and uif-items layer wraps on modal, toast, and dead states"
   }
 ]

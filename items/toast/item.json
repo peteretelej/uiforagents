@@ -18,12 +18,16 @@
     "--uifa-danger",
     "--uifa-surface",
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text",
     "--uifa-radius-control",
     "--uifa-shadow-char",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [
     { "name": "info", "default": true, "description": "Neutral confirmation such as a saved draft." },
