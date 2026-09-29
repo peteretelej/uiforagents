@@ -1,86 +1,173 @@
-.uifa-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  background: var(--uifa-surface);
-  border: 1px solid var(--uifa-border);
-  border-radius: var(--uifa-radius-control);
-  overflow: hidden;
-  color: var(--uifa-text);
-  font-family: var(--uifa-font-body);
-  font-size: calc(var(--uifa-text-base) * 0.875);
-}
+@layer uif-reset, uif-tokens, uif-items, uif-themes;
 
-.uifa-table th {
-  padding: calc(var(--uifa-space) * 2) calc(var(--uifa-space) * 3);
-  border-bottom: 1px solid var(--uifa-border);
-  color: var(--uifa-text-muted);
-  font-size: calc(var(--uifa-text-base) * 0.8125);
-  font-weight: 600;
-  text-align: left;
-}
+@layer uif-items {
+  .uifa-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--uifa-surface);
+    border: var(--uifa-border-width) solid var(--uifa-border);
+    border-radius: var(--uifa-radius-surface);
+    overflow: hidden;
+    color: var(--uifa-text);
+    font-family: var(--uifa-font-body);
+    font-size: calc(var(--uifa-text-base) * 0.875);
+    /* numerals line up across rows and columns */
+    font-variant-numeric: tabular-nums lining-nums;
+  }
 
-.uifa-table td {
-  padding: calc(var(--uifa-space) * 2) calc(var(--uifa-space) * 3);
-  border-bottom: 1px solid var(--uifa-border);
-}
+  /* column heads: tracked uppercase micro-labels */
+  .uifa-table th {
+    padding: calc(var(--uifa-space) * 2) calc(var(--uifa-space) * 3);
+    border-bottom: var(--uifa-border-width) solid var(--uifa-border);
+    color: var(--uifa-text-muted);
+    font-size: calc(var(--uifa-text-base) * 0.75);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+  }
 
-.uifa-table tbody tr:last-child td {
-  border-bottom: 0;
-}
+  /* hairline row separators softened a step; vertical borders stay gone */
+  .uifa-table td {
+    padding: calc(var(--uifa-space) * 2) calc(var(--uifa-space) * 3);
+    border-bottom: var(--uifa-border-width) solid color-mix(in oklch, var(--uifa-border), transparent 50%);
+  }
 
-.uifa-table th button {
-  display: inline-flex;
-  align-items: center;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
+  .uifa-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
 
-.uifa-table th button:focus-visible {
-  outline: 2px solid var(--uifa-accent);
-  outline-offset: 2px;
-}
+  .uifa-table:not([data-state="empty"]) tbody tr:hover td {
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 4%);
+  }
 
-.uifa-table th[aria-sort="ascending"] button::after {
-  content: "↑";
-}
+  .uifa-table th button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: calc(var(--uifa-radius-control) * 0.25);
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
 
-.uifa-table th[aria-sort="descending"] button::after {
-  content: "↓";
-}
+  .uifa-table th button:hover {
+    color: var(--uifa-text);
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 6%);
+  }
 
-.uifa-table [data-uifa-slot="select"] {
-  width: calc(var(--uifa-space) * 2);
-  height: calc(var(--uifa-space) * 2);
-  margin: 0;
-  accent-color: var(--uifa-accent);
-}
+  .uifa-table th button:active {
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 10%);
+  }
 
-.uifa-table [data-uifa-slot="status"] {
-  display: inline-flex;
-  padding: calc(var(--uifa-space) * 0.25) calc(var(--uifa-space) * 1.5);
-  border-radius: calc(var(--uifa-radius-control) * 10);
-  background: var(--uifa-ok-soft);
-  color: var(--uifa-ok);
-  font-size: calc(var(--uifa-text-base) * 0.75);
-  font-weight: 600;
-}
+  /* dense row: the ring hugs inside instead of offsetting outward */
+  .uifa-table th button:focus-visible {
+    outline: 2px solid var(--uifa-accent);
+    outline-offset: -2px;
+  }
 
-.uifa-table [data-uifa-slot="status"][data-uifa-variant="warn"] {
-  background: var(--uifa-warn-soft);
-  color: var(--uifa-warn);
-}
+  .uifa-table th[aria-sort="ascending"] button::after {
+    content: "↑";
+  }
 
-.uifa-table [data-uifa-slot="status"][data-uifa-variant="danger"] {
-  background: var(--uifa-danger-soft);
-  color: var(--uifa-danger);
-}
+  .uifa-table th[aria-sort="descending"] button::after {
+    content: "↓";
+  }
 
-.uifa-table td[data-uifa-slot="empty"] {
-  padding: calc(var(--uifa-space) * 6) calc(var(--uifa-space) * 3);
-  color: var(--uifa-text-muted);
-  text-align: center;
+  .uifa-table [data-uifa-slot="select"] {
+    width: calc(var(--uifa-space) * 2);
+    height: calc(var(--uifa-space) * 2);
+    margin: 0;
+    accent-color: var(--uifa-accent);
+  }
+
+  /* status pills share the badge family: soft role fill plus a role-tinted
+     hairline, never elevation */
+  .uifa-table [data-uifa-slot="status"] {
+    display: inline-flex;
+    padding: calc(var(--uifa-space) * 0.25) calc(var(--uifa-space) * 1.5);
+    border: var(--uifa-border-width) solid color-mix(in oklch, var(--uifa-ok), transparent 70%);
+    border-radius: calc(var(--uifa-radius-control) * 10);
+    background: var(--uifa-ok-soft);
+    color: var(--uifa-ok);
+    font-size: calc(var(--uifa-text-base) * 0.75);
+    font-weight: 600;
+    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .uifa-table [data-uifa-slot="status"][data-uifa-variant="warn"] {
+    border-color: color-mix(in oklch, var(--uifa-warn), transparent 70%);
+    background: var(--uifa-warn-soft);
+    color: var(--uifa-warn);
+  }
+
+  .uifa-table [data-uifa-slot="status"][data-uifa-variant="danger"] {
+    border-color: color-mix(in oklch, var(--uifa-danger), transparent 70%);
+    background: var(--uifa-danger-soft);
+    color: var(--uifa-danger);
+  }
+
+  /* empty state: the whitespace-heavy read, roomier than data rows */
+  .uifa-table td[data-uifa-slot="empty"] {
+    padding: calc(var(--uifa-space) * 7) calc(var(--uifa-space) * 3);
+    color: var(--uifa-text-muted);
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .uifa-table th button {
+      transition:
+        background-color var(--uifa-duration) var(--uifa-ease),
+        color var(--uifa-duration) var(--uifa-ease);
+    }
+
+    .uifa-table td {
+      transition: background-color var(--uifa-duration) var(--uifa-ease);
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .uifa-table {
+      border-color: var(--uifa-border-strong);
+    }
+
+    .uifa-table th {
+      border-bottom-color: var(--uifa-border-strong);
+    }
+
+    .uifa-table td {
+      border-bottom-color: var(--uifa-border);
+    }
+
+    .uifa-table [data-uifa-slot="status"] {
+      border-color: var(--uifa-text);
+    }
+
+    .uifa-table th button:focus-visible {
+      outline-color: var(--uifa-text);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .uifa-table {
+      border-color: CanvasText;
+    }
+
+    .uifa-table th {
+      border-bottom-color: CanvasText;
+    }
+
+    .uifa-table td {
+      border-bottom-color: CanvasText;
+    }
+
+    /* pill fills are background-carried; keep strokes instead */
+    .uifa-table [data-uifa-slot="status"] {
+      border-color: CanvasText;
+    }
+  }
 }

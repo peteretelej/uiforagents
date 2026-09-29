@@ -8,17 +8,21 @@
   "keywords": ["nav", "header", "navigation", "app-bar", "menu"],
   "behavior": "none",
   "cssVars": [
-    "--uifa-surface",
-    "--uifa-border",
-    "--uifa-text",
-    "--uifa-text-muted",
     "--uifa-accent",
     "--uifa-accent-soft",
-    "--uifa-radius-control",
-    "--uifa-font-display",
+    "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
+    "--uifa-duration",
+    "--uifa-ease",
     "--uifa-font-body",
+    "--uifa-font-display",
+    "--uifa-radius-control",
+    "--uifa-space",
+    "--uifa-surface",
+    "--uifa-text",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-text-muted"
   ],
   "variants": [],
   "files": [

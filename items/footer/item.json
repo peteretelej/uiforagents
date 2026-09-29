@@ -8,16 +8,21 @@
   "keywords": ["footer", "site", "links", "legal", "colophon"],
   "behavior": "none",
   "cssVars": [
-    "--uifa-surface",
-    "--uifa-border",
-    "--uifa-text",
-    "--uifa-text-muted",
-    "--uifa-faint",
     "--uifa-accent",
-    "--uifa-font-display",
+    "--uifa-bg",
+    "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
+    "--uifa-duration",
+    "--uifa-ease",
+    "--uifa-faint",
     "--uifa-font-body",
+    "--uifa-font-display",
+    "--uifa-space",
+    "--uifa-surface",
+    "--uifa-text",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-text-muted"
   ],
   "variants": [
     { "name": "columns", "default": true, "description": "Brand block, link groups, and a full-width legal line; omit data-uifa-variant." },
