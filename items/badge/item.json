@@ -17,6 +17,8 @@
     "--uifa-danger-soft",
     "--uifa-danger",
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text-muted",
     "--uifa-radius-control",
     "--uifa-font-body",

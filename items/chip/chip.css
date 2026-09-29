@@ -1,26 +1,51 @@
-.uifa-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(var(--uifa-space) * 1);
-  padding: calc(var(--uifa-space) * 0.375) calc(var(--uifa-space) * 2);
-  border: 1px solid var(--uifa-border);
-  border-radius: calc(var(--uifa-radius-control) * 10);
-  background: var(--uifa-surface);
-  color: var(--uifa-text);
-  font-family: var(--uifa-font-body);
-  font-size: calc(var(--uifa-text-base) * 0.8125);
-  font-weight: 500;
-  line-height: 1.4;
-}
+@layer uif-reset, uif-tokens, uif-items, uif-themes;
 
-.uifa-chip[data-uifa-variant="accent"] {
-  background: var(--uifa-accent-soft);
-  border-color: transparent;
-  color: var(--uifa-accent);
-}
+@layer uif-items {
+  /* static tag: soft fill plus role-tinted hairline, never elevation */
+  .uifa-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--uifa-space) * 1);
+    padding: calc(var(--uifa-space) * 0.375) calc(var(--uifa-space) * 2);
+    border: var(--uifa-border-width) solid color-mix(in oklch, var(--uifa-border), var(--uifa-text) 25%);
+    border-radius: calc(var(--uifa-radius-control) * 10);
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 3%);
+    color: var(--uifa-text);
+    font-family: var(--uifa-font-body);
+    font-size: calc(var(--uifa-text-base) * 0.8125);
+    font-weight: 500;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
 
-.uifa-chip[data-uifa-variant="warn"] {
-  background: var(--uifa-warn-soft);
-  border-color: transparent;
-  color: var(--uifa-warn);
+  .uifa-chip[data-uifa-variant="accent"] {
+    border-color: color-mix(in oklch, var(--uifa-accent), transparent 70%);
+    background: var(--uifa-accent-soft);
+    color: var(--uifa-accent);
+  }
+
+  .uifa-chip[data-uifa-variant="warn"] {
+    border-color: color-mix(in oklch, var(--uifa-warn), transparent 70%);
+    background: var(--uifa-warn-soft);
+    color: var(--uifa-warn);
+  }
+
+  @media (prefers-contrast: more) {
+    .uifa-chip {
+      border-color: var(--uifa-border-strong);
+    }
+
+    .uifa-chip[data-uifa-variant="accent"],
+    .uifa-chip[data-uifa-variant="warn"] {
+      border-color: var(--uifa-text);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .uifa-chip {
+      border-color: CanvasText;
+    }
+  }
 }

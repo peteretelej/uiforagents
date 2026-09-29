@@ -10,6 +10,8 @@
   "cssVars": [
     "--uifa-surface",
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text",
     "--uifa-accent-soft",
     "--uifa-accent",

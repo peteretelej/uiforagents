@@ -9,6 +9,8 @@
   "behavior": "css-only",
   "cssVars": [
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-accent",
     "--uifa-surface",
     "--uifa-faint",
@@ -16,7 +18,9 @@
     "--uifa-radius-control",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [],
   "files": [

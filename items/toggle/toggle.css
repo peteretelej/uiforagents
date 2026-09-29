@@ -1,55 +1,117 @@
-.uifa-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(var(--uifa-space) * 2);
-  /* 44px minimum touch target */
-  min-height: max(44px, calc(var(--uifa-space) * 5.5));
-  font-family: var(--uifa-font-body);
-  font-size: calc(var(--uifa-text-base) * 0.875);
-  color: var(--uifa-text);
-  cursor: pointer;
-}
+@layer uif-reset, uif-tokens, uif-items, uif-themes;
 
-.uifa-toggle-input {
-  appearance: none;
-  box-sizing: border-box;
-  position: relative;
-  flex-shrink: 0;
-  width: calc(var(--uifa-space) * 5);
-  height: calc(var(--uifa-space) * 3);
-  margin: 0;
-  border-radius: calc(var(--uifa-radius-control) * 10);
-  background: var(--uifa-border);
-  cursor: pointer;
-  transition: background-color 120ms ease;
-}
+@layer uif-items {
+  .uifa-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--uifa-space) * 2);
+    /* 44px minimum touch target */
+    min-height: max(44px, calc(var(--uifa-space) * 5.5));
+    font-family: var(--uifa-font-body);
+    font-size: calc(var(--uifa-text-base) * 0.875);
+    color: var(--uifa-text);
+    cursor: pointer;
+  }
 
-.uifa-toggle-input::before {
-  content: "";
-  position: absolute;
-  top: calc(var(--uifa-space) * 0.25);
-  left: calc(var(--uifa-space) * 0.25);
-  width: calc(var(--uifa-space) * 2.5);
-  height: calc(var(--uifa-space) * 2.5);
-  border-radius: 50%;
-  background: var(--uifa-surface);
-  transition: translate 120ms ease;
-}
+  .uifa-toggle-input {
+    appearance: none;
+    box-sizing: border-box;
+    position: relative;
+    flex-shrink: 0;
+    width: calc(var(--uifa-space) * 5);
+    height: calc(var(--uifa-space) * 3);
+    margin: 0;
+    border-radius: calc(var(--uifa-radius-control) * 10);
+    /* off-track: a step clearly darker than its surround, between border and border-strong */
+    background: color-mix(in oklch, var(--uifa-border), var(--uifa-border-strong) 50%);
+    /* inset shadow well inside the track */
+    box-shadow: inset 0 1px 2px color-mix(in oklch, var(--uifa-text) 12%, transparent);
+    cursor: pointer;
+  }
 
-.uifa-toggle-input:checked {
-  background: var(--uifa-accent);
-}
+  .uifa-toggle-input::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--uifa-space) * 0.25);
+    left: calc(var(--uifa-space) * 0.25);
+    width: calc(var(--uifa-space) * 2.5);
+    height: calc(var(--uifa-space) * 2.5);
+    border-radius: 50%;
+    background: var(--uifa-surface);
+    box-shadow: 0 1px 2px color-mix(in oklch, var(--uifa-text) 15%, transparent);
+  }
 
-.uifa-toggle-input:checked::before {
-  translate: calc(var(--uifa-space) * 2) 0;
-}
+  .uifa-toggle-input:hover {
+    background: color-mix(in oklch, var(--uifa-border), var(--uifa-text) 10%);
+  }
 
-.uifa-toggle-input:focus-visible {
-  outline: 2px solid var(--uifa-accent);
-  outline-offset: 2px;
-}
+  .uifa-toggle-input:active {
+    background: color-mix(in oklch, var(--uifa-border), var(--uifa-text) 16%);
+  }
 
-.uifa-toggle-input:disabled {
-  background: var(--uifa-faint);
-  cursor: not-allowed;
+  .uifa-toggle-input:checked {
+    background: var(--uifa-accent);
+  }
+
+  .uifa-toggle-input:checked:hover {
+    background: color-mix(in oklch, var(--uifa-accent), var(--uifa-text) 10%);
+  }
+
+  .uifa-toggle-input:checked:active {
+    background: color-mix(in oklch, var(--uifa-accent), var(--uifa-text) 16%);
+  }
+
+  .uifa-toggle-input:checked::before {
+    translate: calc(var(--uifa-space) * 2) 0;
+  }
+
+  .uifa-toggle-input:focus-visible {
+    outline: 2px solid var(--uifa-accent);
+    outline-offset: 2px;
+  }
+
+  .uifa-toggle-input:disabled {
+    background: var(--uifa-faint);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .uifa-toggle-input:disabled::before {
+    box-shadow: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .uifa-toggle-input {
+      transition:
+        background-color var(--uifa-duration) var(--uifa-ease),
+        translate var(--uifa-duration) var(--uifa-ease);
+    }
+
+    .uifa-toggle-input::before {
+      transition: scale var(--uifa-duration) var(--uifa-ease);
+    }
+
+    /* pressed knob scales slightly */
+    .uifa-toggle-input:active::before {
+      scale: 0.85;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .uifa-toggle-input:focus-visible {
+      outline-color: var(--uifa-text);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .uifa-toggle-input {
+      border: var(--uifa-border-width) solid CanvasText;
+      box-shadow: none;
+    }
+
+    .uifa-toggle-input::before {
+      border: var(--uifa-border-width) solid CanvasText;
+      box-shadow: none;
+    }
+  }
 }

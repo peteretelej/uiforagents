@@ -1,6 +1,6 @@
 # uiforagents
 
-Version 0.1.1; manifest schema 1.0.0.
+Version 0.1.2; manifest schema 1.0.0.
 
 Agent-first vanilla UI kit: registry-shaped, copy-in HTML/CSS, zero runtime dependencies. The primary consumer is the AI agent building the UI; humans review and own the output.
 

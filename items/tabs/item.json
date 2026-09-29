@@ -9,6 +9,8 @@
   "behavior": "css-only",
   "cssVars": [
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text",
     "--uifa-text-muted",
     "--uifa-accent",
@@ -16,7 +18,9 @@
     "--uifa-radius-control",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [
     { "name": "underline", "default": true, "description": "Accent underline on the active tab; omit data-uifa-variant." },

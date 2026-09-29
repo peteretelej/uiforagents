@@ -264,5 +264,31 @@
       "top-nav"
     ],
     "summary": "the kit renames to the uifa- namespace: .uifa-* classes, data-uifa-* hooks, --uifa-* tokens with shape, motion, and texture roles, cascade layers, a versioned schema, and themes replace the old token-set concept"
+  },
+  {
+    "version": "0.1.2",
+    "date": "2026-09-29",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "code-block",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "footer",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "sidebar",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ],
+    "summary": "controls and actions items rebuilt to the premium baseline: layered hue-matched shadows, full rest/hover/active/focus walks, offset focus-visible rings, reduced-motion, forced-colors, and prefers-contrast coverage, and uif-items layer wraps on button, toggle, segmented control, tabs, chip, and badge"
   }
 ]

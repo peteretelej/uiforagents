@@ -1,33 +1,66 @@
-.uifa-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: calc(var(--uifa-space) * 0.25) calc(var(--uifa-space) * 1.5);
-  border-radius: calc(var(--uifa-radius-control) * 10);
-  background: var(--uifa-accent-soft);
-  color: var(--uifa-accent);
-  font-family: var(--uifa-font-body);
-  font-size: calc(var(--uifa-text-base) * 0.75);
-  font-weight: 600;
-  line-height: 1.6;
-}
+@layer uif-reset, uif-tokens, uif-items, uif-themes;
 
-.uifa-badge[data-uifa-variant="ok"] {
-  background: var(--uifa-ok-soft);
-  color: var(--uifa-ok);
-}
+@layer uif-items {
+  /* static status label: soft role fill plus role-tinted hairline, never elevation */
+  .uifa-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: calc(var(--uifa-space) * 0.25) calc(var(--uifa-space) * 1.5);
+    border: var(--uifa-border-width) solid transparent;
+    border-radius: calc(var(--uifa-radius-control) * 10);
+    background: var(--uifa-accent-soft);
+    color: var(--uifa-accent);
+    font-family: var(--uifa-font-body);
+    font-size: calc(var(--uifa-text-base) * 0.75);
+    font-weight: 600;
+    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
 
-.uifa-badge[data-uifa-variant="warn"] {
-  background: var(--uifa-warn-soft);
-  color: var(--uifa-warn);
-}
+  .uifa-badge[data-uifa-variant="accent"] {
+    border-color: color-mix(in oklch, var(--uifa-accent), transparent 70%);
+  }
 
-.uifa-badge[data-uifa-variant="danger"] {
-  background: var(--uifa-danger-soft);
-  color: var(--uifa-danger);
-}
+  .uifa-badge[data-uifa-variant="ok"] {
+    border-color: color-mix(in oklch, var(--uifa-ok), transparent 70%);
+    background: var(--uifa-ok-soft);
+    color: var(--uifa-ok);
+  }
 
-.uifa-badge[data-uifa-variant="muted"] {
-  background: transparent;
-  border: 1px solid var(--uifa-border);
-  color: var(--uifa-text-muted);
+  .uifa-badge[data-uifa-variant="warn"] {
+    border-color: color-mix(in oklch, var(--uifa-warn), transparent 70%);
+    background: var(--uifa-warn-soft);
+    color: var(--uifa-warn);
+  }
+
+  .uifa-badge[data-uifa-variant="danger"] {
+    border-color: color-mix(in oklch, var(--uifa-danger), transparent 70%);
+    background: var(--uifa-danger-soft);
+    color: var(--uifa-danger);
+  }
+
+  /* muted keeps its outlined-only form */
+  .uifa-badge[data-uifa-variant="muted"] {
+    border-color: var(--uifa-border);
+    background: transparent;
+    color: var(--uifa-text-muted);
+  }
+
+  @media (prefers-contrast: more) {
+    .uifa-badge {
+      border-color: var(--uifa-text);
+    }
+
+    .uifa-badge[data-uifa-variant="muted"] {
+      border-color: var(--uifa-border-strong);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .uifa-badge {
+      border-color: CanvasText;
+    }
+  }
 }

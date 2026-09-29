@@ -12,15 +12,19 @@
     "--uifa-accent-fg",
     "--uifa-surface",
     "--uifa-border",
+    "--uifa-border-strong",
     "--uifa-text",
+    "--uifa-text-muted",
     "--uifa-danger",
     "--uifa-danger-fg",
     "--uifa-faint",
-    "--uifa-bg",
     "--uifa-radius-control",
+    "--uifa-border-width",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [
     { "name": "primary", "default": true, "description": "Solid accent fill; the main action of a view." },

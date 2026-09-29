@@ -9,15 +9,19 @@
   "behavior": "css-only",
   "cssVars": [
     "--uifa-surface",
+    "--uifa-surface-2",
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text",
     "--uifa-text-muted",
     "--uifa-accent",
-    "--uifa-accent-fg",
     "--uifa-radius-control",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [],
   "files": [
