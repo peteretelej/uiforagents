@@ -10,12 +10,17 @@
   "cssVars": [
     "--uifa-accent",
     "--uifa-accent-soft",
+    "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text",
     "--uifa-text-muted",
     "--uifa-radius-control",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [],
   "files": [

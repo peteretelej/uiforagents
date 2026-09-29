@@ -8,15 +8,20 @@
   "keywords": ["input", "textarea", "text", "form", "field", "label"],
   "behavior": "none",
   "cssVars": [
+    "--uifa-accent",
     "--uifa-surface",
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text",
     "--uifa-text-muted",
-    "--uifa-accent",
+    "--uifa-faint",
     "--uifa-radius-control",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [
     { "name": "text", "default": true, "description": "Single-line input; omit data-uifa-variant." },

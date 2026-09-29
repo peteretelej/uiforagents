@@ -8,15 +8,20 @@
   "keywords": ["code", "snippet", "pre", "copy", "clipboard"],
   "behavior": "js-inline",
   "cssVars": [
+    "--uifa-accent",
     "--uifa-surface",
     "--uifa-border",
+    "--uifa-border-strong",
+    "--uifa-border-width",
     "--uifa-text",
     "--uifa-text-muted",
-    "--uifa-accent",
     "--uifa-radius-control",
     "--uifa-font-body",
+    "--uifa-font-mono",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [
     { "name": "labeled", "default": true, "description": "Header bar with a filename label and the copy button; omit data-uifa-variant." },

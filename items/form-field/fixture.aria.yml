@@ -1,6 +1,9 @@
 - text: Project name
 - textbox "Project name":
   - /placeholder: Acme Inc
+- text: Locked field
+- textbox "Locked field" [disabled]:
+  - /placeholder: Unavailable while synced
 - text: Description
 - textbox "Description":
   - /placeholder: What is this project for?

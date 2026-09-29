@@ -1,46 +1,103 @@
-.uifa-field {
-  display: grid;
-  gap: calc(var(--uifa-space) * 1.5);
-  font-family: var(--uifa-font-body);
-  font-size: calc(var(--uifa-text-base) * 0.875);
-  color: var(--uifa-text);
-}
+@layer uif-reset, uif-tokens, uif-items, uif-themes;
 
-.uifa-field [data-uifa-slot="label"] {
-  font-weight: 600;
-}
+@layer uif-items {
+  .uifa-field {
+    display: grid;
+    gap: calc(var(--uifa-space) * 1.5);
+    font-family: var(--uifa-font-body);
+    font-size: calc(var(--uifa-text-base) * 0.875);
+    color: var(--uifa-text);
+  }
 
-.uifa-field-input {
-  box-sizing: border-box;
-  width: 100%;
-  padding: calc(var(--uifa-space) * 1.5) calc(var(--uifa-space) * 2);
-  /* 44px minimum touch target, scaling with the type size */
-  min-height: max(44px, calc(var(--uifa-space) * 5.5), calc(var(--uifa-text-base) * 2.75));
-  background: var(--uifa-surface);
-  border: 1px solid var(--uifa-border);
-  border-radius: var(--uifa-radius-control);
-  color: var(--uifa-text);
-  font-family: var(--uifa-font-body);
-  font-size: var(--uifa-text-base);
-  transition: border-color 120ms ease;
-}
+  /* tracked uppercase micro-label, muted a step against the value */
+  .uifa-field [data-uifa-slot="label"] {
+    color: var(--uifa-text-muted);
+    font-size: calc(var(--uifa-text-base) * 0.75);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
 
-.uifa-field-input::placeholder {
-  color: var(--uifa-text-muted);
-  opacity: 1;
-}
+  .uifa-field-input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: calc(var(--uifa-space) * 1.5) calc(var(--uifa-space) * 2);
+    /* 44px minimum touch target, scaling with the type size */
+    min-height: max(44px, calc(var(--uifa-space) * 5.5), calc(var(--uifa-text-base) * 2.75));
+    /* inset well: a step darker than the surrounding surface */
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 4%);
+    border: var(--uifa-border-width) solid var(--uifa-border);
+    border-radius: var(--uifa-radius-control);
+    box-shadow: inset 0 1px 2px color-mix(in oklch, var(--uifa-text) 6%, transparent);
+    color: var(--uifa-text);
+    font-family: var(--uifa-font-body);
+    font-size: var(--uifa-text-base);
+  }
 
-.uifa-field-input:hover {
-  border-color: var(--uifa-text-muted);
-}
+  .uifa-field-input::placeholder {
+    color: var(--uifa-text-muted);
+    opacity: 1;
+  }
 
-.uifa-field-input:focus-visible {
-  outline: 2px solid var(--uifa-accent);
-  outline-offset: 0;
-  border-color: var(--uifa-accent);
-}
+  .uifa-field-input:hover {
+    border-color: color-mix(in oklch, var(--uifa-border), var(--uifa-text) 30%);
+  }
 
-.uifa-field-input[data-uifa-variant="textarea"] {
-  min-height: calc(var(--uifa-space) * 8);
-  resize: vertical;
+  /* text-input exception: hugging ring (offset 0) paired with the accent border */
+  .uifa-field-input:focus-visible {
+    outline: 2px solid var(--uifa-accent);
+    outline-offset: 0;
+    border-color: var(--uifa-accent);
+  }
+
+  /* disabled reads as a reduced-contrast well, not bare opacity */
+  .uifa-field-input:disabled {
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 2%);
+    border-color: var(--uifa-faint);
+    box-shadow: none;
+    color: var(--uifa-text-muted);
+    cursor: not-allowed;
+  }
+
+  .uifa-field-input:disabled::placeholder {
+    color: var(--uifa-faint);
+  }
+
+  .uifa-field-input[data-uifa-variant="textarea"] {
+    min-height: calc(var(--uifa-space) * 8);
+    resize: vertical;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .uifa-field-input {
+      transition:
+        background-color var(--uifa-duration) var(--uifa-ease),
+        border-color var(--uifa-duration) var(--uifa-ease);
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .uifa-field-input {
+      border-color: var(--uifa-border-strong);
+    }
+
+    .uifa-field-input:hover {
+      border-color: var(--uifa-text-muted);
+    }
+
+    .uifa-field-input:focus-visible {
+      outline-color: var(--uifa-text);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .uifa-field-input {
+      border-color: CanvasText;
+      box-shadow: none;
+    }
+
+    .uifa-field-input:disabled {
+      border-color: GrayText;
+    }
+  }
 }
