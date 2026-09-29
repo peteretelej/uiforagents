@@ -19,6 +19,7 @@
     "--uifa-border",
     "--uifa-border-strong",
     "--uifa-border-width",
+    "--uifa-text",
     "--uifa-text-muted",
     "--uifa-radius-control",
     "--uifa-font-body",
