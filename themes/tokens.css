@@ -797,13 +797,14 @@
 /* Synth dialect: neon on black. Layered glow replaces the diffuse stacks on
    the surfaces a view stacks; scanlines reuse the terminal overlay
    mechanism tinted from the accent; a soft glow rides display voice and
-   the buttons. Glow complements the state colors, never replaces them, and
-   every overlay target is positioned here (item CSS leaves these surfaces
-   static); data-table and toggle own their pseudo-elements, so overlays
-   hit card, modal, sidebar, and code-block only. */
+   the buttons. Glow complements the state colors, never replaces them. Card
+   and sidebar are positioned here (item CSS leaves them static); the modal
+   keeps the UA sheet's dialog positioning so open dialogs stay viewport-
+   anchored, and the scanline ::after anchors to it regardless. Data-table
+   and toggle own their pseudo-elements, so overlays hit card, modal,
+   sidebar, and code-block only. */
 @layer uif-themes {
   [data-theme="synth"] .uifa-card,
-  [data-theme="synth"] .uifa-modal,
   [data-theme="synth"] .uifa-sidebar {
     position: relative;
   }
