@@ -279,8 +279,14 @@ const iframeChrome = `
     background: var(--uifa-scrim);
     border-radius: inherit;
   }
-  /* The catalog renders in flow: fixed regions would paint over the last item. */
-  .uifa-toast-region { position: static; justify-items: start; row-gap: calc(var(--uifa-space) * 2); }
+  /* The catalog renders in flow: fixed regions would paint over the last item.
+     The region sits at body level, so it carries the sample's inline padding. */
+  .uifa-toast-region {
+    position: static;
+    justify-items: start;
+    row-gap: calc(var(--uifa-space) * 2);
+    padding-inline: calc(var(--uifa-space) * 4);
+  }
   /* The kit ships items without external margins, so the demo supplies the
      consumer-style spacing between a composed field and its action row. */
   .arena-sample .uifa-card .uifa-field { margin-bottom: calc(var(--uifa-space) * 3); }
