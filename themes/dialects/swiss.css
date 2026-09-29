@@ -1,0 +1,31 @@
+@layer uif-reset, uif-tokens, uif-items, uif-themes;
+
+/* Swiss dialect: flatness. Shadows never - every composed diffuse and inset
+   stack is removed so hairline rules, whitespace, and type carry the layout
+   alone. Borders and fills stay token-driven; nothing moves. */
+@layer uif-themes {
+  [data-theme="swiss"] .uifa-card,
+  [data-theme="swiss"] .uifa-modal,
+  [data-theme="swiss"] .uifa-toast,
+  [data-theme="swiss"] .uifa-player,
+  [data-theme="swiss"] .uifa-player [data-uifa-slot="play"],
+  [data-theme="swiss"] .uifa-player [data-uifa-slot="progress"],
+  [data-theme="swiss"] .uifa-button,
+  [data-theme="swiss"] .uifa-field-input,
+  [data-theme="swiss"] .uifa-filter-bar [data-uifa-slot="search"],
+  [data-theme="swiss"] .uifa-code-block,
+  [data-theme="swiss"] .uifa-code-block [data-uifa-slot="copy"],
+  [data-theme="swiss"] .uifa-segmented,
+  [data-theme="swiss"] .uifa-modal-trigger,
+  [data-theme="swiss"] .uifa-modal-action,
+  [data-theme="swiss"] .uifa-dead [data-uifa-slot="action"],
+  [data-theme="swiss"] .uifa-toggle-input,
+  [data-theme="swiss"] .uifa-toggle-input::before {
+    box-shadow: none;
+  }
+
+  /* the checked segment keeps its hairline ring, minus the diffuse */
+  [data-theme="swiss"] .uifa-segmented-option input:checked + [data-uifa-slot="segment"] {
+    box-shadow: 0 0 0 var(--uifa-border-width) var(--uifa-border);
+  }
+}

@@ -1,0 +1,87 @@
+@layer uif-reset, uif-tokens, uif-items, uif-themes;
+
+/* Retro 98 dialect: bevels. The two-step raised bevel is the depth model:
+   it replaces the diffuse stacks on surfaces and controls, inverts to
+   sunken on press, and input wells sink white. Motion is instant, so the
+   press needs no reduced-motion fork; the token border stays as the hard
+   outline, and forced-colors drops the bevels to plain borders. */
+@layer uif-themes {
+  [data-theme="retro98"] .uifa-card,
+  [data-theme="retro98"] .uifa-modal,
+  [data-theme="retro98"] .uifa-toast,
+  [data-theme="retro98"] .uifa-player {
+    box-shadow:
+      inset -1px -1px 0 0 oklch(22% 0 0),
+      inset 1px 1px 0 0 oklch(100% 0 0),
+      inset -2px -2px 0 0 oklch(55% 0 0),
+      inset 2px 2px 0 0 oklch(91% 0 0);
+  }
+
+  [data-theme="retro98"] .uifa-button,
+  [data-theme="retro98"] .uifa-modal-trigger,
+  [data-theme="retro98"] .uifa-modal-action,
+  [data-theme="retro98"] .uifa-dead [data-uifa-slot="action"],
+  [data-theme="retro98"] .uifa-code-block [data-uifa-slot="copy"] {
+    border-color: oklch(28% 0 0);
+    box-shadow:
+      inset -1px -1px 0 0 oklch(22% 0 0),
+      inset 1px 1px 0 0 oklch(100% 0 0),
+      inset -2px -2px 0 0 oklch(55% 0 0),
+      inset 2px 2px 0 0 oklch(91% 0 0);
+  }
+
+  /* the press: raised bevels invert and the control sinks */
+  [data-theme="retro98"] .uifa-button:active,
+  [data-theme="retro98"] .uifa-modal-trigger:active,
+  [data-theme="retro98"] .uifa-modal-action:active,
+  [data-theme="retro98"] .uifa-dead [data-uifa-slot="action"]:active,
+  [data-theme="retro98"] .uifa-code-block [data-uifa-slot="copy"]:active {
+    box-shadow:
+      inset 1px 1px 0 0 oklch(55% 0 0),
+      inset -1px -1px 0 0 oklch(100% 0 0),
+      inset 2px 2px 0 0 oklch(22% 0 0),
+      inset -2px -2px 0 0 oklch(91% 0 0);
+  }
+
+  [data-theme="retro98"] .uifa-field-input,
+  [data-theme="retro98"] .uifa-filter-bar [data-uifa-slot="search"] {
+    background: var(--uifa-surface-2);
+    border-color: oklch(55% 0 0);
+    box-shadow:
+      inset 1px 1px 0 0 oklch(55% 0 0),
+      inset -1px -1px 0 0 oklch(100% 0 0),
+      inset 2px 2px 0 0 oklch(22% 0 0),
+      inset -2px -2px 0 0 oklch(91% 0 0);
+  }
+
+  [data-theme="retro98"] .uifa-code-block {
+    box-shadow:
+      inset 1px 1px 0 0 oklch(55% 0 0),
+      inset -1px -1px 0 0 oklch(100% 0 0),
+      inset 2px 2px 0 0 oklch(22% 0 0),
+      inset -2px -2px 0 0 oklch(91% 0 0);
+  }
+
+  /* the selected segment reads as a raised key in a flat tray */
+  [data-theme="retro98"] .uifa-segmented {
+    box-shadow: none;
+  }
+
+  [data-theme="retro98"] .uifa-segmented-option input:checked + [data-uifa-slot="segment"] {
+    box-shadow:
+      inset -1px -1px 0 0 oklch(22% 0 0),
+      inset 1px 1px 0 0 oklch(100% 0 0),
+      inset -2px -2px 0 0 oklch(55% 0 0),
+      inset 2px 2px 0 0 oklch(91% 0 0);
+  }
+
+  /* the switch goes square and flat; the track color carries the state */
+  [data-theme="retro98"] .uifa-toggle-input,
+  [data-theme="retro98"] .uifa-toggle-input::before {
+    box-shadow: none;
+  }
+
+  [data-theme="retro98"] .uifa-toggle-input::before {
+    border-radius: 0;
+  }
+}

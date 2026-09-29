@@ -394,5 +394,31 @@
       "top-nav"
     ],
     "summary": "six-theme calibration set: paper, graphite, and citrus premium refreshes plus the first three dialect themes - brutalist, terminal, and glass - each with a themes/dialects stylesheet in the uif-themes layer, surfaced through the arena, the committed token surface, and the CLI themes.css emission with oklch contrast validation across all six sets"
+  },
+  {
+    "version": "0.1.7",
+    "date": "2026-09-29",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "code-block",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "footer",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "sidebar",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ],
+    "summary": "theme library completed to twelve: swiss, sketch, clay, synth, retro98, and luxe join the set, each with a themes/dialects stylesheet in the uif-themes layer alongside its token block, surfaced through the arena, the committed token surface, and the CLI themes.css emission with oklch contrast validation across all twelve"
   }
 ]
