@@ -49,3 +49,6 @@ node validation/check.mjs --self-test
   tables are closed-additive - new themes and variants may be added, existing
   slugs and variant names are never renamed or removed.
 - No dependencies: Node stdlib for scripts, zero runtime deps for items.
+- A version bump is a release event: `package.json`, `changelog.json`, and a
+  git tag move together, ideally alongside an npm publish. Ordinary commits
+  never bump the version.
