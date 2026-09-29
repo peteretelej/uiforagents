@@ -1,6 +1,6 @@
 # uiforagents
 
-Version 0.1.5; manifest schema 1.0.0.
+Version 0.1.6; manifest schema 1.0.0.
 
 Agent-first vanilla UI kit: registry-shaped, copy-in HTML/CSS, zero runtime dependencies. The primary consumer is the AI agent building the UI; humans review and own the output.
 
@@ -13,7 +13,7 @@ Agent-first vanilla UI kit: registry-shaped, copy-in HTML/CSS, zero runtime depe
 
 ## Token vocabulary
 
-Every token is a --uifa-* custom property declared per theme in themes/tokens.css. The base scale: --uifa-bg --uifa-surface --uifa-surface-2 --uifa-border --uifa-border-strong --uifa-text --uifa-text-muted --uifa-faint --uifa-accent --uifa-accent-soft --uifa-accent-fg --uifa-ok --uifa-ok-soft --uifa-ok-fg --uifa-warn --uifa-warn-soft --uifa-warn-fg --uifa-danger --uifa-danger-soft --uifa-danger-fg --uifa-scrim --uifa-radius-control --uifa-radius-surface --uifa-radius-pill --uifa-border-width --uifa-shadow-char --uifa-font-display --uifa-font-body --uifa-font-mono --uifa-text-base --uifa-space --uifa-duration --uifa-ease --uifa-corner-shape --uifa-noise.
+Every token is a --uifa-* custom property declared per theme in themes/tokens.css. The base scale: --uifa-bg --uifa-surface --uifa-surface-2 --uifa-border --uifa-border-strong --uifa-text --uifa-text-muted --uifa-faint --uifa-accent --uifa-accent-soft --uifa-accent-fg --uifa-ok --uifa-ok-soft --uifa-ok-fg --uifa-warn --uifa-warn-soft --uifa-warn-fg --uifa-danger --uifa-danger-soft --uifa-danger-fg --uifa-scrim --uifa-radius-control --uifa-radius-surface --uifa-radius-pill --uifa-border-width --uifa-shadow-char --uifa-font-display --uifa-font-body --uifa-font-mono --uifa-text-base --uifa-space --uifa-duration --uifa-ease --uifa-noise --uifa-corner-shape.
 Pairs read background -> foreground: --uifa-bg/--uifa-text, --uifa-surface/--uifa-text, --uifa-surface-2, --uifa-accent/--uifa-accent-fg plus --uifa-accent-soft, and the same shape for --uifa-ok, --uifa-warn, --uifa-danger; --uifa-text-muted and --uifa-faint grade emphasis; --uifa-scrim dims overlays; --uifa-border and --uifa-border-strong draw edges. Shape tiers: --uifa-radius-control, --uifa-radius-surface, --uifa-radius-pill, --uifa-border-width, --uifa-corner-shape. Depth: --uifa-shadow-char. Type: --uifa-font-display, --uifa-font-body, --uifa-font-mono, --uifa-text-base. Density: --uifa-space. Motion: --uifa-duration (durations derive via calc(): 1x feedback, 2x enter, 1.33x exit) and --uifa-ease. Texture: --uifa-noise.
 Components read tokens only - no component-local colors. Variants are closed [data-uifa-variant] tables; parts are [data-uifa-slot] hooks. Literal values are allowed only in theme dialect CSS inside the uif-themes layer, scoped under [data-theme] and targeting kit hooks and classes.
 

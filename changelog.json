@@ -368,5 +368,31 @@
       "top-nav"
     ],
     "summary": "navigation and data items rebuilt to the premium baseline: surface-tinted nav and sidebar fills with accent-rail selection, tinted footer block with tracked micro-labels, chip ladders with an inset-well search, tabular numerals with hairline row separators and badge-family status pills, full state walks, reduced-motion, forced-colors, and prefers-contrast coverage, and uif-items layer wraps on top nav, sidebar, footer, filter bar, and data table"
+  },
+  {
+    "version": "0.1.6",
+    "date": "2026-09-29",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "code-block",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "footer",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "sidebar",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ],
+    "summary": "six-theme calibration set: paper, graphite, and citrus premium refreshes plus the first three dialect themes - brutalist, terminal, and glass - each with a themes/dialects stylesheet in the uif-themes layer, surfaced through the arena, the committed token surface, and the CLI themes.css emission with oklch contrast validation across all six sets"
   }
 ]

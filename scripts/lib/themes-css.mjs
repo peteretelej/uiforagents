@@ -22,12 +22,15 @@ export function themeRootBlock(theme) {
   return `:root {\n${body}\n}`;
 }
 
-// A theme's dialect CSS, scoped under its [data-theme] selector inside the
-// uif-themes layer. Null when the theme carries no dialect CSS.
+// A theme's dialect CSS: the themes/dialects/<slug>.css content verbatim.
+// Dialect files are standalone order-safe CSS (they re-declare the layer
+// statement and scope their rules under [data-theme] inside their own
+// uif-themes block), so inlining needs no wrapper. Null when the theme
+// carries no dialect CSS.
 export function themeDialectBlock(theme) {
   const dialect = (theme.dialect ?? "").trim();
   if (!dialect) return null;
-  return `@layer uif-themes {\n[data-theme="${theme.slug}"] {\n${dialect}\n}\n}`;
+  return dialect;
 }
 
 export function themesTokensLayer(themes, { firstOwnsRoot = true } = {}) {
@@ -57,8 +60,10 @@ export function singleThemeCss({ theme, header, withDialects = true }) {
 }
 
 // Per-theme page style for the arena iframes: the same statement + layer
-// structure as the tokens surface, without the header or reset (the arena
-// chrome carries its own box-sizing rule).
+// structure as the tokens surface, dialects included, without the header or
+// reset (the arena chrome carries its own box-sizing rule).
 export function themesLayerStyle(themes) {
-  return `${LAYER_STATEMENT}\n\n${themesTokensLayer(themes)}`;
+  const dialects = themes.map(themeDialectBlock).filter(Boolean);
+  const dialectCss = dialects.length > 0 ? `\n\n${dialects.join("\n\n")}` : "";
+  return `${LAYER_STATEMENT}\n\n${themesTokensLayer(themes)}${dialectCss}`;
 }
