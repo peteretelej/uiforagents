@@ -545,13 +545,13 @@
 /* Terminal dialect: CRT phosphor. Scanline overlays sit on the large surfaces
    and a soft glow rides the display roles; glow complements the color states,
    never replaces them, and the overlay alpha stays far above the validated
-   text pairs. The overlays are absolute-inset sheets, so each surface they
-   ride is positioned here (item CSS leaves them static). data-table and
-   toggle own their pseudo-elements, so overlays target card, modal, sidebar,
-   and code-block only. */
+   text pairs. Card and sidebar are positioned here (item CSS leaves them
+   static); the modal keeps the UA sheet's dialog positioning so open dialogs
+   stay viewport-anchored, and the scanline ::after anchors to it regardless.
+   Data-table and toggle own their pseudo-elements, so overlays hit card,
+   modal, sidebar, and code-block only. */
 @layer uif-themes {
   [data-theme="terminal"] .uifa-card,
-  [data-theme="terminal"] .uifa-modal,
   [data-theme="terminal"] .uifa-sidebar {
     position: relative;
   }
