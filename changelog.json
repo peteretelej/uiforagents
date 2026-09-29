@@ -420,5 +420,31 @@
       "top-nav"
     ],
     "summary": "theme library completed to twelve: swiss, sketch, clay, synth, retro98, and luxe join the set, each with a themes/dialects stylesheet in the uif-themes layer alongside its token block, surfaced through the arena, the committed token surface, and the CLI themes.css emission with oklch contrast validation across all twelve"
+  },
+  {
+    "version": "0.1.8",
+    "date": "2026-09-29",
+    "items": [
+      "audio-player",
+      "badge",
+      "button",
+      "card",
+      "chip",
+      "code-block",
+      "data-table",
+      "dead-states",
+      "filter-bar",
+      "footer",
+      "form-field",
+      "link-row",
+      "modal",
+      "segmented-control",
+      "sidebar",
+      "tabs",
+      "toast",
+      "toggle",
+      "top-nav"
+    ],
+    "summary": "release-scale rebuild shipped: the kit moves to the uifa- namespace, directions become themes with a twelve-theme library carrying dialect layers, all nineteen items are rebuilt on the premium baseline with closed data-uifa-variant tables, schemaVersion anchors the manifests, and the agent docs, consumer config keys, and generated surfaces all tell the new story"
   }
 ]

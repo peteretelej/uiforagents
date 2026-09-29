@@ -17,18 +17,19 @@ It is built for the workflow where your agent does the building and you review a
 - **Copy-in distribution**: components live under `items/<name>/`; the agent copies markup + CSS into your project. You own the code.
 - **Built-in verification**: every item ships an executable example and an ARIA fixture; the agent renders the example and diffs it against the fixture with Playwright's ariaSnapshot.
 - **Adherence linting**: [`validation/check.mjs`](validation/check.mjs) catches drift in generated UI - raw hex colors, off-table variants, undeclared tokens.
-- **Theming by tokens**: swap a design "direction" (a token set) and the whole kit restyles. Colors are semantic roles (bg/fg pairs plus status triplets), contrast-checked by construction.
+- **Theming by tokens**: swap a theme (a complete `--uifa-*` token set) and the whole kit restyles. Colors are semantic roles (bg/fg pairs plus status triplets), and the contrast pairs are validated in the build.
 
 ## Components
 
-16 items, each a folder with markup, CSS, an executable example, and an ARIA fixture:
+19 items, each a folder with markup, CSS, an executable example, and an ARIA fixture:
 
 | | | | |
 | --- | --- | --- | --- |
 | Button | Segmented control | Toggle switch | Form field |
 | Filter bar | Badge | Chip | Card |
-| Link row | Toast | Dead states | Audio player |
+| Link row | Toast | Dead states | Audio player bar |
 | Top nav | Tabs | Modal | Data table |
+| Code block | Sidebar | Footer | |
 
 
 ## Quick start
@@ -40,7 +41,7 @@ npm install uiforagents
 npx uiforagents init
 ```
 
-`init` writes a `uiforagents.json` config (all components, the default "paper" direction), copies every component into `src/ui/`, writes `src/styles/tokens.css`, and scaffolds `docs/design-system.md`. Validate with:
+`init` writes a `uiforagents.json` config (all components, the default "paper" theme), copies every component into `src/ui/`, writes `src/styles/themes.css`, and scaffolds `docs/design-system.md`. Validate with:
 
 ```sh
 npx uiforagents check
@@ -49,7 +50,7 @@ npx uiforagents check
 Give your agent the [`SKILL.md`](SKILL.md) - it is the full adapter - or just point it at this repo. The loop:
 
 1. Read [`llms.txt`](llms.txt) and pick a component and variant from its lines.
-2. Edit `uiforagents.json` to choose the subset and direction, then `npx uiforagents add && npx uiforagents tokens && npx uiforagents scaffold`.
+2. Edit `uiforagents.json` to choose the subset and theme, then `npx uiforagents add && npx uiforagents tokens && npx uiforagents scaffold`.
 3. Validate: open an item's `*.example.html` and diff the rendered tree against `fixture.aria.yml` with Playwright's ariaSnapshot, and run `npx uiforagents check`.
 
 ## Use it across a project
@@ -57,9 +58,9 @@ Give your agent the [`SKILL.md`](SKILL.md) - it is the full adapter - or just po
 For ongoing work, a project consumes the kit through a `uiforagents.json` config and one CLI. After `npm install uiforagents`, `npx uiforagents init` writes a starter config with the kit resolved from `node_modules/uiforagents`; a checkout of this repo works too (`"kit": "../uiforagents"`):
 
 ```sh
-npx uiforagents tokens    # write the project's tokens.css from the chosen direction
+npx uiforagents tokens    # write the project's themes.css from the chosen theme(s)
 npx uiforagents add       # copy the configured item subset into the project
-npx uiforagents scaffold  # write docs/design-system.md from the committed tokens + config
+npx uiforagents scaffold  # write docs/design-system.md from the committed themes.css + config
 npx uiforagents check     # adherence linter over the configured lint globs
 ```
 
@@ -69,74 +70,88 @@ escape it are refused):
 ```json
 {
   "kit": "../uiforagents",
-  "direction": "paper",
-  "directionsFile": "themes/directions.mjs",
+  "theme": "paper",
+  "themesFile": "themes/index.mjs",
   "items": ["badge", "button", "card"],
   "dest": {
     "itemsDir": "src/ui",
-    "tokensCss": "src/styles/tokens.css",
+    "tokensCss": "src/styles/themes.css",
     "docs": "docs/design-system.md"
   },
   "lint": ["src/ui/**/*.html", "src/ui/**/*.css"]
 }
 ```
 
-- `direction` (required): a direction slug from the directions module, or
-  `"all"` to ship every direction: `tokens` then writes the first
-  direction's tokens to `:root` plus a `[data-theme="slug"]` block per
-  direction (same shape as the kit's `themes/tokens.css`), and `scaffold`
-  lists all directions in the design-system doc.
+- `theme` (required): a theme slug from the themes module, or `"all"` to
+  ship every theme: `tokens` then writes the first theme's tokens to
+  `:root` plus a `[data-theme="slug"]` block per theme (same shape as the
+  kit's `themes/tokens.css`), and `scaffold` lists all themes in the
+  design-system doc.
 
-- `directionsFile` (optional): a directions module, same shape as
-  `themes/directions.mjs`; without it the kit's example directions are used.
+- `themesFile` (optional): a themes module, same shape as
+  `themes/index.mjs`; without it the kit's example themes are used.
   It is read-only input, so it may live outside the project: relative paths
   resolve against the config file's directory and absolute paths are kept.
   Unlike `dest.*` it is not confined to the project root.
 - `add` copies each item's markup, CSS, script, example, and ARIA fixture
   into `dest.itemsDir/<name>/`, rewriting the examples' token stylesheet
-  link to the project's `tokens.css`.
+  link to the project's themes file.
 - `check` reports three violation classes - raw hex colors, invalid or
-  missing `data-variant` (closed tables from the registry; elements map to
-  items by their `uif-<name>` class), and tokens used via `var()` but
-  declared by neither the copied items' `cssVars` nor the project's
-  `tokens.css`. It reports; it never auto-corrects.
+  missing `data-uifa-variant` (closed tables from the registry; elements map
+  to items by their `.uifa-<name>` class), and tokens used via `var()` but
+  declared by neither the copied items' `cssVars` nor the project's themes
+  file. It reports; it never auto-corrects.
 - `node <kit>/validation/check.mjs --self-test` runs the linter over its
   planted-violation fixtures and exits nonzero on any miss.
 
-## Theming: directions and tokens
+## Theming: themes and tokens
 
-A direction is a complete visual identity as a token set (see
-`themes/directions.mjs`): semantic bg/fg pairs (`--bg`/`--text`,
-`--surface`/`--text`, `--accent`/`--accent-fg` + `--accent-soft`, and the
-`--ok`/`--warn`/`--danger` status triplets), `--border`, `--scrim`, tone
-(`--radius`, `--shadow-char`), type (`--font-display`, `--font-body`,
-`--text-base`), density (`--space`), and `color-scheme`.
+A theme is a complete visual identity as one `--uifa-*` token set (see
+`themes/index.mjs`): color roles (`--uifa-bg`, `--uifa-surface` with a raised
+`--uifa-surface-2` tier, `--uifa-border` with a stronger `--uifa-border-strong`
+step, `--uifa-text`/`--uifa-text-muted`/`--uifa-faint`, the
+`--uifa-accent`/`--uifa-accent-soft`/`--uifa-accent-fg` slot, the
+`--uifa-ok`/`--uifa-warn`/`--uifa-danger` status triplets, and `--uifa-scrim`),
+shape (`--uifa-radius-control`/`--uifa-radius-surface`/`--uifa-radius-pill`
+plus `--uifa-border-width`), shadow character (`--uifa-shadow-char`), type
+(`--uifa-font-display`, `--uifa-font-body`, `--uifa-font-mono`,
+`--uifa-text-base`), density (`--uifa-space`), motion (`--uifa-duration`,
+`--uifa-ease`), optional texture (`--uifa-noise`, `--uifa-corner-shape`), and
+`color-scheme`. Contrast pairs are validated in the build.
+
+The launch library ships 12 themes: `paper`, `graphite`, `citrus`,
+`brutalist`, `terminal`, `glass`, `swiss`, `sketch`, `clay`, `synth`,
+`retro98`, and `luxe`. Theme slugs and variant names are stable API; the
+tables are closed-additive - new themes and variants may be added, existing
+names are never renamed or deleted. Each theme can carry a dialect layer
+(a few `[data-theme]`-scoped overrides) that rides inside the generated
+themes file.
 
 Components read tokens only - no component-local colors. Sizes derive from
-`--space` and `--text-base` via `calc()`; touch targets stay at 44px
-minimum. Restyling the kit is swapping the token set.
+`--uifa-space` and `--uifa-text-base` via `calc()`; touch targets stay at
+44px minimum. Restyling the kit is swapping the token set.
 
-### Switching directions at runtime
+### Switching themes at runtime
 
-Generate every direction (`"direction": "all"`), ship `themes/tokens.css`,
-and let users flip between them. A direction switcher is site chrome, not a
+Generate every theme (`"theme": "all"`), ship the generated themes file,
+and let users flip between them. A theme switcher is site chrome, not a
 component - a ~10-line script reading a persisted choice and applying it
 before first paint:
 
 ```html
-<select data-direction-switcher>
+<select data-theme-switcher>
   <option value="paper">Paper</option>
   <option value="graphite">Graphite</option>
   <option value="citrus">Citrus</option>
 </select>
 <script>
-  // Persisted direction, applied before first paint (no flash).
-  document.documentElement.dataset.theme = localStorage.getItem("direction") || "paper";
-  const switcher = document.querySelector("[data-direction-switcher]");
+  // Persisted theme, applied before first paint (no flash).
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "paper";
+  const switcher = document.querySelector("[data-theme-switcher]");
   switcher.value = document.documentElement.dataset.theme;
   switcher.addEventListener("change", () => {
     document.documentElement.dataset.theme = switcher.value;
-    localStorage.setItem("direction", switcher.value);
+    localStorage.setItem("theme", switcher.value);
   });
 </script>
 ```
@@ -150,15 +165,16 @@ tokens.css maps each `[data-theme="slug"]` block to its token set.
 
 - `llms.txt` - compact agent index
 - `docs/components/*.md` - per-component docs twins
-- `docs/arena.html` - rendered catalog across example directions
+- `docs/arena.html` - rendered catalog across the 12 example themes
 
 Each `item.json` declares the manifest contract: `name`, `title`,
 `description`, `category` (closed enum from the schema; drives the `llms.txt`
 grouping), `behavior` (`none` | `css-only` | `js-inline`), `variants` (closed
-`[data-variant]` tables with a default), `cssVars` (the tokens the item
+`data-uifa-variant` tables with a default), `cssVars` (the tokens the item
 reads), `files`, `docs`, and `schemaVersion`. The build validates every
 manifest against [`schema/registry.schema.json`](schema/registry.schema.json)
-and keeps `registry.json` in lockstep.
+and keeps `registry.json` in lockstep. Generated files carry a `GENERATED`
+header comment with the kit version, so drifted copies are easy to spot.
 
 Regenerate after changing items or manifests:
 

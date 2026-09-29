@@ -9,21 +9,31 @@ artifacts, prototypes.
 1. **Pick from the index.** Read `llms.txt`. Each line carries the component
    name, description, closed variant table (default marked `*`), and behavior -
    enough to choose a component and variant without opening other files.
-2. **Wire tokens.** Copy `themes/tokens.css` for the example directions, or
-   declare your own direction with the same role names: `--bg`, `--surface`,
-   `--border`, `--text`, `--text-muted`, `--faint`, `--accent`,
-   `--accent-soft`, `--accent-fg`, `--ok`/`--ok-soft`/`--ok-fg`,
-   `--warn`/`--warn-soft`/`--warn-fg`, `--danger`/`--danger-soft`/`--danger-fg`,
-   `--scrim`, `--radius`, `--shadow-char`, `--font-display`, `--font-body`,
-   `--text-base`, `--space`, `color-scheme`. Direction scopes are
-   `[data-theme="slug"]`; the palette pairs are contrast-checked by
-   construction.
+2. **Wire tokens.** Copy `themes/tokens.css` for the 12 example themes, or
+   declare your own theme with the same role names: `--uifa-bg`,
+   `--uifa-surface`, `--uifa-surface-2`, `--uifa-border`,
+   `--uifa-border-strong`, `--uifa-text`, `--uifa-text-muted`, `--uifa-faint`,
+   `--uifa-accent`/`--uifa-accent-soft`/`--uifa-accent-fg`,
+   `--uifa-ok`/`--uifa-ok-soft`/`--uifa-ok-fg`,
+   `--uifa-warn`/`--uifa-warn-soft`/`--uifa-warn-fg`,
+   `--uifa-danger`/`--uifa-danger-soft`/`--uifa-danger-fg`, `--uifa-scrim`,
+   `--uifa-radius-control`/`--uifa-radius-surface`/`--uifa-radius-pill`,
+   `--uifa-border-width`, `--uifa-shadow-char`, `--uifa-font-display`,
+   `--uifa-font-body`, `--uifa-font-mono`, `--uifa-text-base`, `--uifa-space`,
+   `--uifa-duration`, `--uifa-ease`, optional `--uifa-corner-shape` and
+   `--uifa-noise`, and `color-scheme`. Theme scopes are
+   `[data-theme="slug"]`; the fg/bg pairs are contrast-validated by the
+   build before the generated surfaces are written.
 3. **Copy items in.** From `items/<name>/`, copy the markup pattern
    (`<name>.html`) and styles (`<name>.css`); when `behavior` is `js-inline`,
    copy `<name>.js` too. Components are self-contained: the only shared file
    is the token sheet.
-4. **Use the closed variant API.** Variants are `data-variant` attributes from
-   the manifest table; parts are `[data-slot]` hooks. Do not invent variants.
+4. **Use the closed variant API.** Variants are `data-uifa-variant` attributes
+   from the manifest table; parts are `[data-uifa-slot]` hooks; elements carry
+   a `.uifa-<name>` class. Do not invent variants. Theme slugs and variant
+   names are stable API from the first release: the tables are
+   closed-additive, so new themes and variants may be added but existing
+   slugs and variant names are never renamed or deleted.
 5. **Validate.** Open the item's `<name>.example.html` and diff the rendered
    tree against `fixture.aria.yml` (Playwright ariaSnapshot YAML):
 
@@ -39,38 +49,42 @@ artifacts, prototypes.
 
 Install the kit in the project (`npm install uiforagents`) and run
 `npx uiforagents init` for one-command onboarding: it writes a starter
-`uiforagents.json` (all components, default direction, kit resolved from
-`node_modules/uiforagents`), copies the components in, and writes tokens +
-docs. Projects then run the kit CLI from the project directory:
+`uiforagents.json` (all components, the default "paper" theme, kit resolved
+from `node_modules/uiforagents`), copies the components in, and writes
+tokens + docs. Projects then run the kit CLI from the project directory:
 
 ```sh
-npx uiforagents tokens    # tokens.css from the chosen direction
+npx uiforagents tokens    # themes.css from the chosen theme(s)
 npx uiforagents add       # copy the configured subset into dest.itemsDir
-npx uiforagents scaffold  # docs/design-system.md from tokens + config
+npx uiforagents scaffold  # docs/design-system.md from themes.css + config
 npx uiforagents check     # adherence linter (reports, never fixes)
 ```
 
-Config keys: `kit` (path to this kit), `direction` (slug),
-`directionsFile` (optional directions module; read-only input, so it may
-live outside the project), `items` (subset list), `dest` (`itemsDir`,
+Config keys: `kit` (path to this kit), `theme` (slug, or `"all"` to ship
+every theme), `themesFile` (optional themes module; read-only input, so it
+may live outside the project), `items` (subset list), `dest` (`itemsDir`,
 `tokensCss`, `docs`), `lint` (globs the linter covers). Paths resolve
-against the config file's directory and may not escape it; `directionsFile`
+against the config file's directory and may not escape it; `themesFile`
 is the exception since it is read-only input. `add` copies markup, CSS,
 script, example, and ARIA fixture per item, and points the copied examples'
-token stylesheet at the project's `tokens.css`.
+token stylesheet at the project's themes file. `tokens` writes the project's
+`themes.css`: one `[data-theme]` token block per theme (the first owning
+`:root`) plus each theme's dialect-layer CSS; with a single slug it emits
+just that theme.
 
-`check` reports raw hex colors, invalid or missing `data-variant` (closed
-tables; elements map to items by their `uif-<name>` class), and tokens used
-via `var()` but declared by neither the copied items' `cssVars` nor the
-project's `tokens.css`. Run `npx uiforagents check --self-test`
-to verify the linter itself against its planted violations.
+`check` reports raw hex colors, invalid or missing `data-uifa-variant`
+(closed tables; elements map to items by their `.uifa-<name>` class), and
+`--uifa-*` tokens used via `var()` but declared by neither the copied items'
+`cssVars` nor the project's themes file. Run
+`npx uiforagents check --self-test` to verify the linter itself against its
+planted violations.
 
 ## Notes
 
-- Touch targets hold a 44px minimum; spacing derives from `--space` via
-  `calc()`, so density follows the direction.
-- To ship every direction and switch at runtime, set `"direction": "all"`
-  in the config (`tokens` emits a `[data-theme]` block per direction); the
-  README's direction-switcher recipe covers the ~10-line runtime script.
+- Touch targets hold a 44px minimum; spacing derives from `--uifa-space` via
+  `calc()`, so density follows the theme.
+- To ship every theme and switch at runtime, set `"theme": "all"` in the
+  config; the README's theme-switcher recipe covers the ~10-line runtime
+  script.
 - `schemaVersion` in each manifest anchors the contract; check it when items
   and kit versions drift apart.
