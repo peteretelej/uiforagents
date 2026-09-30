@@ -6,7 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadKit } from "./lib/items.mjs";
+import { loadKit, readText } from "./lib/items.mjs";
 import { tokenPairRatio } from "./lib/color.mjs";
 import { themesCss, themesLayerStyle } from "./lib/themes-css.mjs";
 
@@ -65,15 +65,15 @@ writeFileSync(join(ROOT, "themes", "tokens.css"), tokensCss);
 const itemBlocks = items.map((item) => {
   const css = item.manifest.files
     .filter((f) => f.type === "kit:style")
-    .map((f) => readFileSync(join(item.dir, f.path), "utf8").trim())
+    .map((f) => readText(join(item.dir, f.path)).trim())
     .join("\n\n");
   const behaviorFiles = new Map(
     item.manifest.files
       .filter((f) => f.type === "kit:behavior")
-      .map((f) => [f.path, readFileSync(join(item.dir, f.path), "utf8").trim()])
+      .map((f) => [f.path, readText(join(item.dir, f.path)).trim()])
   );
   const examplePath = item.manifest.files.find((f) => f.type === "kit:example").path;
-  const example = readFileSync(join(item.dir, examplePath), "utf8");
+  const example = readText(join(item.dir, examplePath));
   const bodyMatch = example.match(/<body[^>]*>([\s\S]*)<\/body>/);
   if (!bodyMatch) throw new Error(`items/${item.name}: example has no <body> to extract`);
   const body = bodyMatch[1].replace(/<script src="([^"]+)"><\/script>/g, (tag, src) => {

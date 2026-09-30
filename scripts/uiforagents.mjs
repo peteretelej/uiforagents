@@ -17,6 +17,7 @@ import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { findConfig, loadConfig, resolveInRoot, resolveThemesFile, configFlagValue } from "./lib/config.mjs";
 import { themesCss, singleThemeCss } from "./lib/themes-css.mjs";
+import { readText } from "./lib/items.mjs";
 
 const USAGE = "usage: npx uiforagents init | add | tokens | scaffold | check [--config <path>] [--force]";
 
@@ -145,7 +146,7 @@ function add() {
     // the project's own tokens file so the copies render in the chosen theme.
     const tokensHref = relative(destDir, tokensPath).split("\\").join("/");
     for (const file of manifest.files) {
-      let content = readFileSync(join(kitRoot, "items", name, file.path), "utf8");
+      let content = readText(join(kitRoot, "items", name, file.path));
       if (file.type === "kit:example") {
         content = content.replace(/href="[^"]*themes\/tokens\.css"/, `href="${tokensHref}"`);
       }

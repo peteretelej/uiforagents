@@ -11,6 +11,13 @@ const SCHEMA_PATH = join(ROOT, "schema", "registry.schema.json");
 const THEMES_PATH = join(ROOT, "themes", "index.mjs");
 const DIALECTS_DIR = join(ROOT, "themes", "dialects");
 
+// Generated artifacts embed source contents verbatim, so reads are
+// normalized to LF: a CRLF checkout (Windows) and an LF checkout
+// (Linux CI) must produce byte-identical output.
+export function readText(path) {
+  return readFileSync(path, "utf8").replace(/\r\n/g, "\n");
+}
+
 // Optional contract tokens a theme may omit; the loader supplies these
 // defaults so every theme's effective token set is total.
 const OPTIONAL_TOKEN_DEFAULTS = {
@@ -114,7 +121,7 @@ export async function loadKit() {
   }
   for (const theme of themes) {
     const dialectPath = join(DIALECTS_DIR, `${theme.slug}.css`);
-    theme.dialect = fileExists(dialectPath) ? readFileSync(dialectPath, "utf8") : "";
+    theme.dialect = fileExists(dialectPath) ? readText(dialectPath) : "";
   }
   const baseScale = new Set(Object.keys(themes[0].tokens).filter((k) => k !== "color-scheme"));
 

@@ -4,7 +4,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadKit } from "./lib/items.mjs";
+import { loadKit, readText } from "./lib/items.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const LLMS_MAX_BYTES = 15360;
@@ -119,7 +119,7 @@ for (const { name, manifest } of items) {
     .join("\n");
   const markup = manifest.files
     .filter((f) => f.type === "kit:markup")
-    .map((f) => readFileSync(join(ROOT, "items", name, f.path), "utf8").trim())
+    .map((f) => readText(join(ROOT, "items", name, f.path)).trim())
     .join("\n");
   const fileLines = manifest.files
     .map((f) => `- [${f.path}](../../items/${name}/${f.path}) - ${f.type.replace("kit:", "")}`)
