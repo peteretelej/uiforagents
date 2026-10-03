@@ -18,6 +18,7 @@ references.
 | `scripts/codemod-uifa.mjs` | One-off uifa- codemod, committed evidence |
 | `scripts/lib/` | Shared loaders: item/schema loading (`items.mjs`), consumer-config loading (`config.mjs`), theme-CSS serialization (`themes-css.mjs`), color math (`color.mjs`) |
 | `scripts/uiforagents.mjs` | Per-project flow CLI over a consumer's `uiforagents.json`: `add \| tokens \| scaffold` |
+| `scripts/self-test-flow.mjs` | Flow self-test: serializer `--uifa-*` prefix mapping, idempotence, inert-token catch |
 | `validation/check.mjs` | Adherence linter: raw hex, invalid/missing `data-uifa-variant`, undeclared tokens; `--self-test` |
 | `validation/fixtures/planted/` | Planted-violation inputs for the linter's self-test |
 | `llms.txt`, `docs/` | GENERATED agent surfaces |

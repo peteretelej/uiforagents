@@ -7,17 +7,24 @@ export const LAYER_STATEMENT = "@layer uif-reset, uif-tokens, uif-items, uif-the
 
 export const RESET_BLOCK = "@layer uif-reset {\n  *, *::before, *::after { box-sizing: border-box; }\n}";
 
+// Kit item CSS consumes only --uifa-* custom properties, but direction
+// modules may carry unprefixed names (--bg) beside bare standard properties
+// (color-scheme). The mapping lives at this single serialization point:
+// custom properties are prefixed unless already --uifa-* (idempotent, so
+// kit-native themes emit unchanged); bare properties pass through verbatim.
+const uifaToken = (token) => (token.startsWith("--") && !token.startsWith("--uifa-") ? `--uifa-${token.slice(2)}` : token);
+
 export function themeTokenBlock(theme, { ownsRoot = false } = {}) {
   const selectors = ownsRoot ? [":root", `[data-theme="${theme.slug}"]`] : [`[data-theme="${theme.slug}"]`];
   const body = Object.entries(theme.tokens)
-    .map(([token, value]) => `  ${token}: ${value};`)
+    .map(([token, value]) => `  ${uifaToken(token)}: ${value};`)
     .join("\n");
   return `${selectors.join(",\n")} {\n${body}\n}`;
 }
 
 export function themeRootBlock(theme) {
   const body = Object.entries(theme.tokens)
-    .map(([token, value]) => `  ${token}: ${value};`)
+    .map(([token, value]) => `  ${uifaToken(token)}: ${value};`)
     .join("\n");
   return `:root {\n${body}\n}`;
 }

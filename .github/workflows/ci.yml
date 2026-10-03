@@ -27,5 +27,8 @@ jobs:
       - name: Adherence linter self-test
         run: node validation/check.mjs --self-test
 
+      - name: Flow self-test
+        run: node scripts/self-test-flow.mjs
+
       - name: Generated files are fresh
         run: git diff --exit-code
