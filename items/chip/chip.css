@@ -36,6 +36,8 @@
   .uifa-chip:is(button, a) {
     text-decoration: none;
     cursor: pointer;
+    /* 44px minimum touch target for the interactive rendering */
+    min-height: max(44px, calc(var(--uifa-space) * 5.5));
   }
 
   .uifa-chip:not([data-uifa-variant]):is(button, a):not(:disabled):hover {
