@@ -6,6 +6,6 @@ export default defineConfig({
   esbuild: { jsx: "automatic" },
   test: {
     environment: "jsdom",
-    include: ["adapters/react/*.test.jsx"],
+    include: ["adapters/react/*.test.jsx", "adapters/*/compile.test.mjs"],
   },
 });

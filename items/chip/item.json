@@ -39,7 +39,7 @@
     { "name": "variant", "type": "enum", "values": [ "neutral", "accent", "warn" ], "default": "neutral", "description": "Visual variant; the closed data-uifa-variant table." }
   ],
   "slots": [],
-  "adapters": { "react": true },
+  "adapters": { "react": true, "svelte": true, "vue": true },
   "files": [
     { "path": "chip.html", "type": "kit:markup" },
     { "path": "chip.css", "type": "kit:style" },

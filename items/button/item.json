@@ -41,7 +41,7 @@
     { "name": "disabled", "type": "boolean", "default": false, "description": "Native disabled attribute; blocks interaction and dims via tokens." }
   ],
   "slots": [],
-  "adapters": { "react": true },
+  "adapters": { "react": true, "svelte": true, "vue": true },
   "files": [
     { "path": "button.html", "type": "kit:markup" },
     { "path": "button.css", "type": "kit:style" },

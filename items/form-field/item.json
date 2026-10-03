@@ -38,7 +38,7 @@
   "slots": [
     { "name": "label", "description": "Visible label text bound to the control." }
   ],
-  "adapters": { "react": true },
+  "adapters": { "react": true, "svelte": true, "vue": true },
   "files": [
     { "path": "form-field.html", "type": "kit:markup" },
     { "path": "form-field.css", "type": "kit:style" },

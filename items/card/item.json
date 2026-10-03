@@ -33,7 +33,7 @@
     { "name": "body", "description": "Card copy; renders in the p." },
     { "name": "actions", "description": "Action cluster; renders in the trailing div." }
   ],
-  "adapters": { "react": true },
+  "adapters": { "react": true, "svelte": true, "vue": true },
   "files": [
     { "path": "card.html", "type": "kit:markup" },
     { "path": "card.css", "type": "kit:style" },

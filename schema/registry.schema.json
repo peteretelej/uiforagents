@@ -132,6 +132,14 @@
         "react": {
           "const": true,
           "description": "A React adapter is generated at adapters/react/<name>.jsx."
+        },
+        "svelte": {
+          "const": true,
+          "description": "A Svelte template is generated at adapters/svelte/<name>.svelte."
+        },
+        "vue": {
+          "const": true,
+          "description": "A Vue SFC is generated at adapters/vue/<name>.vue."
         }
       }
     },

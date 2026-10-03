@@ -15,8 +15,8 @@ references.
 | `themes/tokens.css` | GENERATED from index.mjs by build-arena; includes per-theme dialect layers |
 | `scripts/build-index.mjs` | Validates items; generates `llms.txt` + `docs/components/*.md` |
 | `scripts/build-arena.mjs` | Generates `themes/tokens.css` + `docs/arena.html`; enforces theme contrast pairs |
-| `scripts/generate-adapters.mjs` | Emits `adapters/react/*.jsx` + fixture tests from manifests declaring `adapters.react` |
-| `adapters/react/` | GENERATED React adapters and their fixture tests; committed |
+| `scripts/generate-adapters.mjs` | Emits framework adapters from manifests declaring adapter support: `adapters/react/*.jsx` (+ fixture tests), `adapters/svelte/*.svelte`, `adapters/vue/*.vue` |
+| `adapters/` | GENERATED framework adapters - React components + fixture tests, Svelte/Vue templates + compile tests; committed |
 | `scripts/codemod-uifa.mjs` | One-off uifa- codemod, committed evidence |
 | `scripts/lib/` | Shared loaders: item/schema loading (`items.mjs`), consumer-config loading (`config.mjs`), theme-CSS serialization (`themes-css.mjs`), color math (`color.mjs`), fixture parser (`fixture.mjs`) |
 | `scripts/uiforagents.mjs` | Per-project flow CLI over a consumer's `uiforagents.json`: `add \| tokens \| scaffold` |

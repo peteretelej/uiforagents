@@ -41,7 +41,7 @@
     { "name": "variant", "type": "enum", "values": [ "accent", "ok", "warn", "danger", "muted" ], "default": "accent", "description": "Visual variant; the closed data-uifa-variant table." }
   ],
   "slots": [],
-  "adapters": { "react": true },
+  "adapters": { "react": true, "svelte": true, "vue": true },
   "files": [
     { "path": "badge.html", "type": "kit:markup" },
     { "path": "badge.css", "type": "kit:style" },
