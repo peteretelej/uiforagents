@@ -17,14 +17,18 @@
     "--uifa-border-strong",
     "--uifa-border-width",
     "--uifa-text",
+    "--uifa-text-muted",
     "--uifa-accent-soft",
     "--uifa-accent",
     "--uifa-warn-soft",
     "--uifa-warn",
-    "--uifa-radius-control",
+    "--uifa-faint",
+    "--uifa-radius-pill",
     "--uifa-font-body",
     "--uifa-text-base",
-    "--uifa-space"
+    "--uifa-space",
+    "--uifa-duration",
+    "--uifa-ease"
   ],
   "variants": [
     { "name": "neutral", "default": true, "description": "Outlined surface tag." },
@@ -42,6 +46,6 @@
     { "path": "chip.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Static tag for metadata. For interactive filter chips with pressed states use the `filter-bar` item. Radius derives from `--uifa-radius-control` so pill roundness tracks the theme.",
+  "docs": "Static tag for metadata. Rendered as a `button` or link it gains hover, focus-visible, active, and disabled states; for full filter-chip behavior use the `filter-bar` item. Radius derives from `--uifa-radius-pill` so tag roundness tracks the theme.",
   "meta": { "source": "original" }
 }

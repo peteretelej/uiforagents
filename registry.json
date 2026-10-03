@@ -55,7 +55,7 @@
         "kind": "none"
       },
       "title": "Card",
-      "description": "Flat surface card with one radius and theme-defined shadow character."
+      "description": "Surface card with one radius and theme-defined shadow character."
     },
     {
       "name": "link-row",

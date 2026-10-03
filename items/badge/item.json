@@ -25,7 +25,7 @@
     "--uifa-border-width",
     "--uifa-text",
     "--uifa-text-muted",
-    "--uifa-radius-control",
+    "--uifa-radius-pill",
     "--uifa-font-body",
     "--uifa-text-base",
     "--uifa-space"

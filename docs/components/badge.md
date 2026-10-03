@@ -31,7 +31,7 @@ React: copy [adapters/react/badge.jsx](../../adapters/react/badge.jsx) in, or im
 
 ## Tokens
 
-Reads: `--uifa-accent-soft`, `--uifa-accent`, `--uifa-ok-soft`, `--uifa-ok`, `--uifa-warn-soft`, `--uifa-warn`, `--uifa-danger-soft`, `--uifa-danger`, `--uifa-border`, `--uifa-border-strong`, `--uifa-border-width`, `--uifa-text`, `--uifa-text-muted`, `--uifa-radius-control`, `--uifa-font-body`, `--uifa-text-base`, `--uifa-space`. Every color comes from a semantic role; nothing is hard-coded.
+Reads: `--uifa-accent-soft`, `--uifa-accent`, `--uifa-ok-soft`, `--uifa-ok`, `--uifa-warn-soft`, `--uifa-warn`, `--uifa-danger-soft`, `--uifa-danger`, `--uifa-border`, `--uifa-border-strong`, `--uifa-border-width`, `--uifa-text`, `--uifa-text-muted`, `--uifa-radius-pill`, `--uifa-font-body`, `--uifa-text-base`, `--uifa-space`. Every color comes from a semantic role; nothing is hard-coded.
 
 ## Markup
 

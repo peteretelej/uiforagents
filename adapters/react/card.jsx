@@ -3,7 +3,7 @@
 // unchanged; React is the consumer's dependency.
 
 /**
- * Card: Flat surface card with one radius and theme-defined shadow character.
+ * Card: Surface card with one radius and theme-defined shadow character.
  *
  * @param {object} props
  * @param {import("react").ReactNode} [props.title] Card heading; renders in the h3.

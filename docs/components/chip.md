@@ -29,7 +29,7 @@ React: copy [adapters/react/chip.jsx](../../adapters/react/chip.jsx) in, or impo
 
 ## Tokens
 
-Reads: `--uifa-surface`, `--uifa-border`, `--uifa-border-strong`, `--uifa-border-width`, `--uifa-text`, `--uifa-accent-soft`, `--uifa-accent`, `--uifa-warn-soft`, `--uifa-warn`, `--uifa-radius-control`, `--uifa-font-body`, `--uifa-text-base`, `--uifa-space`. Every color comes from a semantic role; nothing is hard-coded.
+Reads: `--uifa-surface`, `--uifa-border`, `--uifa-border-strong`, `--uifa-border-width`, `--uifa-text`, `--uifa-text-muted`, `--uifa-accent-soft`, `--uifa-accent`, `--uifa-warn-soft`, `--uifa-warn`, `--uifa-faint`, `--uifa-radius-pill`, `--uifa-font-body`, `--uifa-text-base`, `--uifa-space`, `--uifa-duration`, `--uifa-ease`. Every color comes from a semantic role; nothing is hard-coded.
 
 ## Markup
 
@@ -49,7 +49,7 @@ Reads: `--uifa-surface`, `--uifa-border`, `--uifa-border-strong`, `--uifa-border
 
 ## Usage
 
-Static tag for metadata. For interactive filter chips with pressed states use the `filter-bar` item. Radius derives from `--uifa-radius-control` so pill roundness tracks the theme.
+Static tag for metadata. Rendered as a `button` or link it gains hover, focus-visible, active, and disabled states; for full filter-chip behavior use the `filter-bar` item. Radius derives from `--uifa-radius-pill` so tag roundness tracks the theme.
 
 ## Validation
 

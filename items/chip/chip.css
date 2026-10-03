@@ -6,17 +6,15 @@
     display: inline-flex;
     align-items: center;
     gap: calc(var(--uifa-space) * 1);
-    padding: calc(var(--uifa-space) * 0.375) calc(var(--uifa-space) * 2);
+    padding: calc(var(--uifa-space) * 0.375) calc(var(--uifa-space) * 1.5);
     border: var(--uifa-border-width) solid color-mix(in oklch, var(--uifa-border), var(--uifa-text) 25%);
-    border-radius: calc(var(--uifa-radius-control) * 10);
+    border-radius: var(--uifa-radius-pill);
     background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 3%);
     color: var(--uifa-text);
     font-family: var(--uifa-font-body);
     font-size: calc(var(--uifa-text-base) * 0.8125);
     font-weight: 500;
-    line-height: 1.4;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    line-height: 1.2;
     font-variant-numeric: tabular-nums lining-nums;
   }
 
@@ -32,6 +30,53 @@
     color: var(--uifa-warn);
   }
 
+  /* Consumers may render the tag as a removable/filterable control; states
+     apply only when the chip itself is an interactive element. Fill deepens
+     stay neutral-scoped so variant tints survive hover. */
+  .uifa-chip:is(button, a) {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .uifa-chip:not([data-uifa-variant]):is(button, a):not(:disabled):hover {
+    border-color: color-mix(in oklch, var(--uifa-border), var(--uifa-text) 45%);
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 6%);
+  }
+
+  .uifa-chip[data-uifa-variant="accent"]:is(button, a):not(:disabled):hover {
+    border-color: color-mix(in oklch, var(--uifa-accent), transparent 45%);
+  }
+
+  .uifa-chip[data-uifa-variant="warn"]:is(button, a):not(:disabled):hover {
+    border-color: color-mix(in oklch, var(--uifa-warn), transparent 45%);
+  }
+
+  .uifa-chip:is(button, a):focus-visible {
+    outline: 2px solid var(--uifa-accent);
+    outline-offset: 2px;
+  }
+
+  .uifa-chip:not([data-uifa-variant]):is(button):not(:disabled):active {
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 8%);
+  }
+
+  /* disabled reads as a reduced-contrast outline, not bare opacity */
+  .uifa-chip:is(button):disabled {
+    border-color: var(--uifa-faint);
+    background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 3%);
+    color: var(--uifa-text-muted);
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .uifa-chip:is(button, a) {
+      transition:
+        background-color var(--uifa-duration) var(--uifa-ease),
+        border-color var(--uifa-duration) var(--uifa-ease),
+        color var(--uifa-duration) var(--uifa-ease);
+    }
+  }
+
   @media (prefers-contrast: more) {
     .uifa-chip {
       border-color: var(--uifa-border-strong);
@@ -40,6 +85,10 @@
     .uifa-chip[data-uifa-variant="accent"],
     .uifa-chip[data-uifa-variant="warn"] {
       border-color: var(--uifa-text);
+    }
+
+    .uifa-chip:is(button, a):focus-visible {
+      outline-color: var(--uifa-text);
     }
   }
 

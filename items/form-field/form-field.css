@@ -9,13 +9,12 @@
     color: var(--uifa-text);
   }
 
-  /* tracked uppercase micro-label, muted a step against the value */
+  /* label sits a step muted against the value, sentence case */
   .uifa-field [data-uifa-slot="label"] {
     color: var(--uifa-text-muted);
-    font-size: calc(var(--uifa-text-base) * 0.75);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: calc(var(--uifa-text-base) * 0.8125);
+    font-weight: 500;
+    line-height: 1.4;
   }
 
   .uifa-field-input {
@@ -29,13 +28,14 @@
     border: var(--uifa-border-width) solid var(--uifa-border);
     border-radius: var(--uifa-radius-control);
     box-shadow: inset 0 1px 2px color-mix(in oklch, var(--uifa-text) 6%, transparent);
+    caret-color: var(--uifa-accent);
     color: var(--uifa-text);
     font-family: var(--uifa-font-body);
     font-size: var(--uifa-text-base);
   }
 
   .uifa-field-input::placeholder {
-    color: var(--uifa-text-muted);
+    color: var(--uifa-faint);
     opacity: 1;
   }
 
@@ -79,6 +79,10 @@
   @media (prefers-contrast: more) {
     .uifa-field-input {
       border-color: var(--uifa-border-strong);
+    }
+
+    .uifa-field-input::placeholder {
+      color: var(--uifa-text-muted);
     }
 
     .uifa-field-input:hover {

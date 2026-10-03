@@ -4,7 +4,7 @@
   "type": "registry:component",
   "category": "content",
   "title": "Card",
-  "description": "Flat surface card with one radius and theme-defined shadow character.",
+  "description": "Surface card with one radius and theme-defined shadow character.",
   "keywords": ["card", "surface", "panel", "container"],
   "behavior": {
     "kind": "none",
@@ -19,7 +19,7 @@
     "--uifa-border-width",
     "--uifa-text",
     "--uifa-text-muted",
-    "--uifa-radius-control",
+    "--uifa-radius-surface",
     "--uifa-shadow-char",
     "--uifa-font-body",
     "--uifa-font-display",
@@ -40,6 +40,6 @@
     { "path": "card.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "One card, one radius, no variant table by design; visual character comes entirely from the theme (`--uifa-surface`, `--uifa-radius-control`, `--uifa-shadow-char`). Parts: `[data-uifa-slot=\"title\"]`, `[data-uifa-slot=\"body\"]`, `[data-uifa-slot=\"actions\"]`. Compose buttons or badges into the slots.",
+  "docs": "One card, one radius, no variant table by design; visual character comes entirely from the theme (`--uifa-surface`, `--uifa-radius-surface`, `--uifa-shadow-char`). Parts: `[data-uifa-slot=\"title\"]`, `[data-uifa-slot=\"body\"]`, `[data-uifa-slot=\"actions\"]`. Compose buttons or badges into the slots.",
   "meta": { "source": "original" }
 }

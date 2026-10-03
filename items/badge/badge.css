@@ -5,17 +5,15 @@
   .uifa-badge {
     display: inline-flex;
     align-items: center;
-    padding: calc(var(--uifa-space) * 0.25) calc(var(--uifa-space) * 1.5);
+    padding: calc(var(--uifa-space) * 0.375) calc(var(--uifa-space) * 1.25);
     border: var(--uifa-border-width) solid transparent;
-    border-radius: calc(var(--uifa-radius-control) * 10);
+    border-radius: var(--uifa-radius-pill);
     background: var(--uifa-accent-soft);
     color: var(--uifa-accent);
     font-family: var(--uifa-font-body);
     font-size: calc(var(--uifa-text-base) * 0.75);
-    font-weight: 600;
-    line-height: 1.6;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-weight: 500;
+    line-height: 1.1;
     font-variant-numeric: tabular-nums lining-nums;
   }
 

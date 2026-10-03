@@ -31,7 +31,7 @@ Components read tokens only - no component-local colors. Variants are closed [da
 ## Content
 
 - badge | Badge | Small status label: accent, ok, warn, danger, and muted outline variants. | data-uifa-variant: accent* / ok / warn / danger / muted | behavior: none | react: adapters/react/badge.jsx | docs: docs/components/badge.md | src: items/badge/
-- card | Card | Flat surface card with one radius and theme-defined shadow character. | data-uifa-variant: none | behavior: none | react: adapters/react/card.jsx | docs: docs/components/card.md | src: items/card/
+- card | Card | Surface card with one radius and theme-defined shadow character. | data-uifa-variant: none | behavior: none | react: adapters/react/card.jsx | docs: docs/components/card.md | src: items/card/
 - chip | Chip | Pill-radius tag for filters and metadata: neutral, accent, and warn variants. | data-uifa-variant: neutral* / accent / warn | behavior: none | react: adapters/react/chip.jsx | docs: docs/components/chip.md | src: items/chip/
 - code-block | Code block | Snippet surface with an optional filename header and a copy-to-clipboard button. | data-uifa-variant: labeled* / bare | behavior: js-inline | docs: docs/components/code-block.md | src: items/code-block/
 - link-row | Link row | Title link with url line, chips, and an actions cluster; hover state on the row. | data-uifa-variant: none | behavior: none | docs: docs/components/link-row.md | src: items/link-row/

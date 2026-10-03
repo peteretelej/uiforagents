@@ -5,15 +5,17 @@
     display: block;
     padding: calc(var(--uifa-space) * 4);
     background: var(--uifa-surface);
-    border: var(--uifa-border-width) solid var(--uifa-border);
-    border-radius: var(--uifa-radius-control);
+    border: var(--uifa-border-width) solid color-mix(in oklch, var(--uifa-border), var(--uifa-surface) 30%);
+    border-radius: var(--uifa-radius-surface);
     /* theme shadow character plus diffuse hue-matched layers; the inset top
-       line is the light-from-above cue. Non-interactive: never a hover lift. */
+       line is the light-from-above cue. The boundary hairline softens toward
+       the surface so elevation carries the edge. Non-interactive: never a
+       hover lift. */
     box-shadow:
       var(--uifa-shadow-char),
       inset 0 1px 0 0 color-mix(in oklch, var(--uifa-accent-soft), transparent 70%),
       0 2px 4px color-mix(in oklch, var(--uifa-text) 7%, transparent),
-      0 8px 24px color-mix(in oklch, var(--uifa-text) 5%, transparent);
+      0 12px 32px color-mix(in oklch, var(--uifa-text) 7%, transparent);
     color: var(--uifa-text);
     font-family: var(--uifa-font-body);
     font-size: var(--uifa-text-base);
@@ -24,13 +26,15 @@
     font-family: var(--uifa-font-display);
     font-size: calc(var(--uifa-text-base) * 1.125);
     font-weight: 600;
-    line-height: 1.3;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
   }
 
   .uifa-card [data-uifa-slot="body"] {
     margin: 0 0 calc(var(--uifa-space) * 2);
     color: var(--uifa-text-muted);
-    line-height: 1.5;
+    font-size: calc(var(--uifa-text-base) * 0.9375);
+    line-height: 1.6;
   }
 
   .uifa-card [data-uifa-slot="body"]:last-child {

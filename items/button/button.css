@@ -15,7 +15,7 @@
     color: var(--uifa-accent-fg);
     font-family: var(--uifa-font-body);
     font-size: calc(var(--uifa-text-base) * 0.875);
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
@@ -47,6 +47,7 @@
   }
 
   .uifa-button[data-uifa-variant="secondary"]:hover {
+    border-color: color-mix(in oklch, var(--uifa-border), var(--uifa-text) 30%);
     background: color-mix(in oklch, var(--uifa-surface), var(--uifa-text) 6%);
   }
 
@@ -92,6 +93,7 @@
         background-color var(--uifa-duration) var(--uifa-ease),
         border-color var(--uifa-duration) var(--uifa-ease),
         color var(--uifa-duration) var(--uifa-ease),
+        box-shadow var(--uifa-duration) var(--uifa-ease),
         transform var(--uifa-duration) var(--uifa-ease);
     }
 
