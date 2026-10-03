@@ -59,7 +59,18 @@ node validation/check.mjs --self-test
 - Theme slugs and variant names are stable API from the first release: the
   tables are closed-additive - new themes and variants may be added, existing
   slugs and variant names are never renamed or removed.
-- No dependencies: Node stdlib for scripts, zero runtime deps for items.
+- Behavior core: `behavior.kind` is `none`, `css-only`, `js-inline`, or
+  `zag`. Accessible interactive state runs on `@zag-js/*` machines behind
+  thin vanilla bindings (`<name>.js`), never hand-rolled FSMs; the binding
+  renders machine state into the item's existing markup contract (roles,
+  `[data-uifa-slot]` hooks, `data-*` state attributes) declared in
+  `behavior.contract`. Zag example pages and the arena load the pinned
+  packages through an esm.sh import map; the copy-in contract for consumers
+  remains npm packages.
+- Dependencies: css-only and `js-inline` items stay zero-runtime-dep;
+  `zag` behavior items depend on `@zag-js/*` machine packages only (MIT),
+  pinned to exact versions in the manifest's `behavior.packages`. No other
+  runtime dependency is allowed; scripts stay on the Node stdlib.
 - A version bump is a release event: `package.json`, `changelog.json`, and a
   git tag move together. Pushing the `vX.Y.Z` tag is the release; the
   `release.yml` workflow publishes to npm from it via trusted publishing.

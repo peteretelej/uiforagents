@@ -26,8 +26,11 @@ artifacts, prototypes.
    build before the generated surfaces are written.
 3. **Copy items in.** From `items/<name>/`, copy the markup pattern
    (`<name>.html`) and styles (`<name>.css`); when `behavior` is `js-inline`,
-   copy `<name>.js` too. Components are self-contained: the only shared file
-   is the token sheet.
+   copy `<name>.js` too. When `behavior` is `zag`, copy `<name>.js` and
+   install the manifest's `behavior.packages` first
+   (`npm i @zag-js/<machine>`); the script is an ES module that imports the
+   machines. Components are self-contained: the only shared file is the
+   token sheet.
 4. **Use the closed variant API.** Variants are `data-uifa-variant` attributes
    from the manifest table; parts are `[data-uifa-slot]` hooks; elements carry
    a `.uifa-<name>` class. Do not invent variants. Theme slugs and variant
@@ -78,6 +81,32 @@ just that theme.
 `cssVars` nor the project's themes file. Run
 `npx uiforagents check --self-test` to verify the linter itself against its
 planted violations.
+
+## Behavior core
+
+Items with `behavior.kind: "zag"` run their interactive state on
+`@zag-js/*` machines (MIT) behind a thin vanilla binding, never on
+hand-rolled state machines. Toast uses `@zag-js/toast`, code-block copy uses
+`@zag-js/clipboard`, data-table select-all uses `@zag-js/checkbox`. The
+machine owns the state and timing (queues, auto-dismiss, copied windows,
+tri-state checks); the binding renders machine state into the item's
+existing markup - same roles, same `[data-uifa-slot]` hooks, same
+`data-*` state attributes - so fixtures and styles carry over unchanged.
+
+- **Install, then copy.** `npm i @zag-js/<machine>` before copying
+  `<name>.js` in; the script is an ES module importing the machines (and
+  `@zag-js/core`, their shared runtime). CSS-only and `js-inline` items stay
+  zero-runtime-dep; `@zag-js/*` machine packages are the only allowed item
+  runtime dependencies, pinned exact in each manifest's
+  `behavior.packages`.
+- **Behavior contracts.** `behavior.contract` lists the machine-driven
+  data-attribute contract the binding emits; React/Svelte/Vue renderers
+  consume those attributes instead of re-implementing the machine.
+- **Zero-build examples.** Item examples and the generated arena load the
+  pinned packages through an esm.sh import map (exact versions from the
+  manifests, emitted by `build-arena.mjs`), so the static pages run without
+  a bundler. The copy-in contract for consumers remains npm packages, not
+  CDN.
 
 ## Framework adapters
 

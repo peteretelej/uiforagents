@@ -7,12 +7,12 @@
   "description": "Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors.",
   "keywords": ["toast", "notification", "snackbar", "status", "transient"],
   "behavior": {
-    "kind": "js-inline",
+    "kind": "zag",
     "contract": [
       "data-state=\"visible|hidden\" on .uifa-toast controls visibility",
-      "data-uifa-slot=\"trigger\" click shows the toast; auto-hides after 4s; data-uifa-slot=\"close\" click hides it"
+      "data-uifa-slot=\"trigger\" click starts the toast lifecycle on the @zag-js/toast machine: the machine owns the queue, auto-dismiss after 4s, and pause/resume (region hover/focus, page idle); data-uifa-slot=\"close\" click dismisses it through the machine"
     ],
-    "packages": []
+    "packages": ["@zag-js/toast@1.44.0", "@zag-js/core@1.44.0"]
   },
   "cssVars": [
     "--uifa-accent-soft",
@@ -57,6 +57,6 @@
     { "path": "toast.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "The region is fixed bottom-center; keep one region per page and stack toasts inside it. `role=\"status\"` announces messages politely. Drive visibility with `data-state=\"visible|hidden\"`; the script wires the trigger, auto-hide after 4s, and manual dismissal.",
+  "docs": "The region is fixed bottom-center; keep one region per page and stack toasts inside it. `role=\"status\"` announces messages politely. Drive visibility with `data-state=\"visible|hidden\"`. Behavior runs on `@zag-js/toast` machines: install `@zag-js/toast` first (`npm i @zag-js/toast`), then the script wires the trigger, the 4s machine-owned auto-dismiss, pause/resume on region hover/focus, and manual dismissal.",
   "meta": { "source": "original" }
 }

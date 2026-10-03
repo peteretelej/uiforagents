@@ -3,9 +3,21 @@
 
 Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors.
 
-Category: feedback · Behavior: js-inline · Schema: 2.0.0 · Source: original
+Category: feedback · Behavior: zag · Schema: 2.0.0 · Source: original
 
-Ships a dependency-free script; wire its hooks to your own state as needed.
+Behavior runs on @zag-js/* state machines behind a thin vanilla binding; install the packages below, copy the script, and wire its hooks.
+
+## Behavior
+
+Data-attribute contract the script drives and framework renderers consume:
+
+- data-state="visible|hidden" on .uifa-toast controls visibility
+- data-uifa-slot="trigger" click starts the toast lifecycle on the @zag-js/toast machine: the machine owns the queue, auto-dismiss after 4s, and pause/resume (region hover/focus, page idle); data-uifa-slot="close" click dismisses it through the machine
+
+Runtime packages (install before copying the script in):
+
+- `@zag-js/toast@1.44.0`
+- `@zag-js/core@1.44.0`
 
 ## Variants
 
@@ -59,7 +71,7 @@ Reads: `--uifa-accent-soft`, `--uifa-accent`, `--uifa-ok-soft`, `--uifa-ok`, `--
 
 ## Usage
 
-The region is fixed bottom-center; keep one region per page and stack toasts inside it. `role="status"` announces messages politely. Drive visibility with `data-state="visible|hidden"`; the script wires the trigger, auto-hide after 4s, and manual dismissal.
+The region is fixed bottom-center; keep one region per page and stack toasts inside it. `role="status"` announces messages politely. Drive visibility with `data-state="visible|hidden"`. Behavior runs on `@zag-js/toast` machines: install `@zag-js/toast` first (`npm i @zag-js/toast`), then the script wires the trigger, the 4s machine-owned auto-dismiss, pause/resume on region hover/focus, and manual dismissal.
 
 ## Validation
 

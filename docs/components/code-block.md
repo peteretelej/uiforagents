@@ -3,9 +3,20 @@
 
 Snippet surface with an optional filename header and a copy-to-clipboard button.
 
-Category: content · Behavior: js-inline · Schema: 2.0.0 · Source: original
+Category: content · Behavior: zag · Schema: 2.0.0 · Source: original
 
-Ships a dependency-free script; wire its hooks to your own state as needed.
+Behavior runs on @zag-js/* state machines behind a thin vanilla binding; install the packages below, copy the script, and wire its hooks.
+
+## Behavior
+
+Data-attribute contract the script drives and framework renderers consume:
+
+- data-uifa-slot="copy" click copies data-uifa-slot="code" text through the @zag-js/clipboard machine; the machine owns the copied state and the button label flips Copy/Copied! from it for 2s
+
+Runtime packages (install before copying the script in):
+
+- `@zag-js/clipboard@1.44.0`
+- `@zag-js/core@1.44.0`
 
 ## Variants
 
@@ -61,7 +72,7 @@ node kit/validation/check.mjs</code></pre>
 
 ## Usage
 
-Wrap a `<pre data-uifa-slot="code">` in `.uifa-code-block`; escape HTML entities in the snippet. The labeled variant (default) shows a `data-uifa-slot="label"` filename beside the copy button; `data-uifa-variant="bare"` drops the header and floats the button top-right. The script copies the snippet's text and flashes "Copied!" on the button.
+Wrap a `<pre data-uifa-slot="code">` in `.uifa-code-block`; escape HTML entities in the snippet. The labeled variant (default) shows a `data-uifa-slot="label"` filename beside the copy button; `data-uifa-variant="bare"` drops the header and floats the button top-right. Behavior runs on `@zag-js/clipboard`: install it first (`npm i @zag-js/clipboard`), then the script copies the snippet's text and flashes "Copied!" on the button from the machine's copied state.
 
 ## Validation
 

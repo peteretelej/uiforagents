@@ -7,6 +7,13 @@ Category: media · Behavior: js-inline · Schema: 2.0.0 · Source: original
 
 Ships a dependency-free script; wire its hooks to your own state as needed.
 
+## Behavior
+
+Data-attribute contract the script drives and framework renderers consume:
+
+- data-uifa-slot="play" click toggles playback; the aria-label flips play/pause
+- aria-valuenow 0-100 on the role=progressbar drives data-uifa-slot="progress-fill" width
+
 ## Variants
 
 No variant table; the item has a single form.

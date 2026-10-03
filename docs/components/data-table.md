@@ -3,9 +3,22 @@
 
 Table with sortable headers, row selection, status cells, and an empty state.
 
-Category: data · Behavior: js-inline · Schema: 2.0.0 · Source: original
+Category: data · Behavior: zag · Schema: 2.0.0 · Source: original
 
-Ships a dependency-free script; wire its hooks to your own state as needed.
+Behavior runs on @zag-js/* state machines behind a thin vanilla binding; install the packages below, copy the script, and wire its hooks.
+
+## Behavior
+
+Data-attribute contract the script drives and framework renderers consume:
+
+- data-sortable on .uifa-table: th button click sets aria-sort ascending|descending and reorders rows (plain data logic; no sort machine exists)
+- data-state="empty" renders the single empty row
+- th data-uifa-slot="select" runs on a @zag-js/checkbox machine: the machine owns the tri-state checked|unchecked|indeterminate select-all, syncs its native input, and tbody checkbox changes aggregate into it; select-all changes fan out to the rows
+
+Runtime packages (install before copying the script in):
+
+- `@zag-js/checkbox@1.44.0`
+- `@zag-js/core@1.44.0`
 
 ## Variants
 
@@ -65,7 +78,7 @@ Reads: `--uifa-accent`, `--uifa-border`, `--uifa-border-strong`, `--uifa-border-
 
 ## Usage
 
-Mark the table `data-sortable` to wire header buttons; they set `aria-sort` on the `th` and re-order rows in place. Status cells are `[data-uifa-slot="status"]` spans mapping to the ok/warn/danger roles. For an empty table, use `data-state="empty"` with a single `[data-uifa-slot="empty"]` row.
+Mark the table `data-sortable` to wire header buttons; they set `aria-sort` on the `th` and re-order rows in place. Status cells are `[data-uifa-slot="status"]` spans mapping to the ok/warn/danger roles. For an empty table, use `data-state="empty"` with a single `[data-uifa-slot="empty"]` row. Select-all runs on `@zag-js/checkbox`: install it first (`npm i @zag-js/checkbox`); the machine owns the select-all's checked, unchecked, and indeterminate states, row checkboxes aggregate into it, and select-all changes sync the rows.
 
 ## Validation
 

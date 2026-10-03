@@ -7,6 +7,13 @@ Category: overlay · Behavior: js-inline · Schema: 2.0.0 · Source: original
 
 Ships a dependency-free script; wire its hooks to your own state as needed.
 
+## Behavior
+
+Data-attribute contract the script drives and framework renderers consume:
+
+- data-uifa-slot="open" click calls dialog.showModal()
+- data-uifa-slot="cancel" and data-uifa-slot="confirm" click call dialog.close()
+
 ## Variants
 
 No variant table; the item has a single form.

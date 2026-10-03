@@ -55,13 +55,13 @@
       "items": { "type": "string" }
     },
     "behavior": {
-      "description": "Behavior model. kind: none (static markup), css-only (state via native inputs and CSS), js-inline (ships a dependency-free script file). contract: data-attribute behavior contract strings framework renderers consume. packages: npm names the behavior needs; empty for css-only and none.",
+      "description": "Behavior model. kind: none (static markup), css-only (state via native inputs and CSS), js-inline (ships a dependency-free script file), zag (behavior runs on @zag-js/* machines behind a thin vanilla binding; the only allowed runtime packages). contract: data-attribute behavior contract strings framework renderers consume. packages: npm names the behavior needs with exact versions for zag; empty for css-only, none, and js-inline.",
       "type": "object",
       "additionalProperties": false,
       "required": ["kind", "contract", "packages"],
       "properties": {
         "kind": {
-          "enum": ["none", "css-only", "js-inline"]
+          "enum": ["none", "css-only", "js-inline", "zag"]
         },
         "contract": {
           "type": "array",

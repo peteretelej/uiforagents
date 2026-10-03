@@ -7,11 +7,11 @@
   "description": "Snippet surface with an optional filename header and a copy-to-clipboard button.",
   "keywords": ["code", "snippet", "pre", "copy", "clipboard"],
   "behavior": {
-    "kind": "js-inline",
+    "kind": "zag",
     "contract": [
-      "data-uifa-slot=\"copy\" click copies data-uifa-slot=\"code\" text to the clipboard; the button label flips Copy/Copied!"
+      "data-uifa-slot=\"copy\" click copies data-uifa-slot=\"code\" text through the @zag-js/clipboard machine; the machine owns the copied state and the button label flips Copy/Copied! from it for 2s"
     ],
-    "packages": []
+    "packages": ["@zag-js/clipboard@1.44.0", "@zag-js/core@1.44.0"]
   },
   "cssVars": [
     "--uifa-accent",
@@ -49,6 +49,6 @@
     { "path": "code-block.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Wrap a `<pre data-uifa-slot=\"code\">` in `.uifa-code-block`; escape HTML entities in the snippet. The labeled variant (default) shows a `data-uifa-slot=\"label\"` filename beside the copy button; `data-uifa-variant=\"bare\"` drops the header and floats the button top-right. The script copies the snippet's text and flashes \"Copied!\" on the button.",
+  "docs": "Wrap a `<pre data-uifa-slot=\"code\">` in `.uifa-code-block`; escape HTML entities in the snippet. The labeled variant (default) shows a `data-uifa-slot=\"label\"` filename beside the copy button; `data-uifa-variant=\"bare\"` drops the header and floats the button top-right. Behavior runs on `@zag-js/clipboard`: install it first (`npm i @zag-js/clipboard`), then the script copies the snippet's text and flashes \"Copied!\" on the button from the machine's copied state.",
   "meta": { "source": "original" }
 }

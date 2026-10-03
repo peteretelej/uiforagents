@@ -95,6 +95,24 @@ export function validateAgainstSchema(value, schemaNode, where, errors, isRoot =
 
 const REQUIRED_FILE_TYPES = ["kit:markup", "kit:style", "kit:example", "kit:fixture"];
 
+// The example page's import map is the hand-maintained twin of the manifest's
+// pinned behavior packages; the loader cross-checks them so neither drifts.
+function parseImportMap(example) {
+  const match = example.match(/<script type="importmap">([\s\S]*?)<\/script>/);
+  if (!match) return null;
+  try {
+    const imports = JSON.parse(match[1]).imports ?? {};
+    const map = new Map();
+    for (const [name, url] of Object.entries(imports)) {
+      const at = String(url).lastIndexOf("@");
+      map.set(name, at <= 0 ? "" : String(url).slice(at + 1));
+    }
+    return map;
+  } catch {
+    return null;
+  }
+}
+
 export async function loadKit() {
   const errors = [];
   const schema = JSON.parse(readFileSync(SCHEMA_PATH, "utf8"));
@@ -158,8 +176,42 @@ export async function loadKit() {
     for (const requiredType of REQUIRED_FILE_TYPES) {
       if (!types.has(requiredType)) errors.push(`${where}: missing a ${requiredType} file`);
     }
-    if (types.has("kit:behavior") !== (manifest.behavior.kind === "js-inline")) {
+    const scriptedKind = manifest.behavior.kind === "js-inline" || manifest.behavior.kind === "zag";
+    if (types.has("kit:behavior") !== scriptedKind) {
       errors.push(`${where}: behavior kind "${manifest.behavior.kind}" does not match the presence of a kit:behavior file`);
+    }
+    if (manifest.behavior.kind === "zag") {
+      const packages = manifest.behavior.packages ?? [];
+      if (packages.length === 0) errors.push(`${where}: zag behavior must list its @zag-js/* packages`);
+      for (const pkg of packages) {
+        if (!pkg.startsWith("@zag-js/")) errors.push(`${where}: zag package "${pkg}" is not an @zag-js/* package`);
+      }
+      const exampleFile = (manifest.files ?? []).find((f) => f.type === "kit:example");
+      if (exampleFile) {
+        const example = readFileSync(join(dir, exampleFile.path), "utf8");
+        const map = parseImportMap(example);
+        const pinned = new Map();
+        for (const pkg of packages) {
+          const at = pkg.lastIndexOf("@");
+          if (at <= 0) {
+            errors.push(`${where}: zag package "${pkg}" must pin an exact version (name@version)`);
+            continue;
+          }
+          pinned.set(pkg.slice(0, at), pkg.slice(at + 1));
+        }
+        if (!map) {
+          errors.push(`${where}: zag example has no import map pinning the behavior packages`);
+        } else {
+          for (const [name, version] of pinned) {
+            if (map.get(name) !== version) {
+              errors.push(`${where}: example import map pins ${name} at ${map.get(name) ?? "nothing"}, manifest says ${version}`);
+            }
+          }
+          for (const name of map.keys()) {
+            if (!pinned.has(name)) errors.push(`${where}: example import map pins undeclared package "${name}"`);
+          }
+        }
+      }
     }
     const propNames = new Set();
     for (const prop of manifest.props) {

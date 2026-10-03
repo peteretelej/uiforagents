@@ -80,7 +80,7 @@ lines.push("");
 lines.push("## How to use");
 lines.push("");
 lines.push("- Pick an item below; each line is enough to choose a component and a variant without opening other files.");
-lines.push("- Copy the files from items/<name>/: markup + CSS, plus a script when behavior is js-inline.");
+lines.push("- Copy the files from items/<name>/: markup + CSS, plus a script when behavior is js-inline or zag; zag items also need the manifest's @zag-js/* packages installed.");
 lines.push("- Wire theme tokens: themes/tokens.css, or your own stylesheet declaring the same roles.");
 lines.push("- Validate: open the item's example page and diff the rendered tree against its fixture.aria.yml with Playwright's ariaSnapshot.");
 lines.push("");
@@ -132,7 +132,9 @@ for (const { name, manifest } of items) {
     ? "Ships a dependency-free script; wire its hooks to your own state as needed."
     : manifest.behavior.kind === "css-only"
       ? "State lives in native inputs; no JavaScript required."
-      : "Static markup; no JavaScript required.";
+      : manifest.behavior.kind === "zag"
+        ? "Behavior runs on @zag-js/* state machines behind a thin vanilla binding; install the packages below, copy the script, and wire its hooks."
+        : "Static markup; no JavaScript required.";
   const propRows = manifest.props
     .map((prop) => {
       const type = prop.type === "enum" ? prop.values.map((v) => `\`${v}\``).join(" \\| ") : prop.type;
@@ -142,6 +144,12 @@ for (const { name, manifest } of items) {
   const slotRows = manifest.slots
     .map((slot) => `- \`${slot.name}\` - ${slot.description}`)
     .join("\n");
+  const behaviorRows = manifest.behavior.contract.length
+    ? ["## Behavior", "", "Data-attribute contract the script drives and framework renderers consume:", "", ...manifest.behavior.contract.map((line) => `- ${line}`), ""]
+    : [];
+  const packageRows = manifest.behavior.packages.length
+    ? ["Runtime packages (install before copying the script in):", "", ...manifest.behavior.packages.map((pkg) => `- \`${pkg}\``), ""]
+    : [];
   const sections = [
     manifest.props.length === 0
       ? ""
@@ -163,6 +171,8 @@ for (const { name, manifest } of items) {
     "",
     behaviorNote,
     "",
+    ...behaviorRows,
+    ...packageRows,
     "## Variants",
     "",
     manifest.variants.length === 0 ? "No variant table; the item has a single form." : "| `data-uifa-variant` | Description |",

@@ -177,14 +177,23 @@ tokens.css maps each `[data-theme="slug"]` block to its token set.
 
 Each `item.json` declares the manifest contract: `name`, `title`,
 `description`, `category` (closed enum from the schema; drives the `llms.txt`
-grouping), `behavior` (`{ kind }` of `none` | `css-only` | `js-inline`, plus
-`contract` strings and `packages` framework renderers consume), `props` and
+grouping), `behavior` (`{ kind }` of `none` | `css-only` | `js-inline` |
+`zag`, plus `contract` strings and `packages` framework renderers consume),
+`props` and
 `slots` (the codegen surface), `variants` (closed `data-uifa-variant` tables
 with a default), `cssVars` (the tokens the item reads), `files`, `docs`, and
 `schemaVersion`. The build validates every manifest against
 [`schema/registry.schema.json`](schema/registry.schema.json) and keeps
 `registry.json` in lockstep. Generated files carry a `GENERATED` header
 comment with the kit version, so drifted copies are easy to spot.
+
+Behavioral items run on [`zag.js`](https://zagjs.com) state machines behind
+thin vanilla bindings: css-only and `js-inline` items stay
+zero-runtime-dep, while `zag` items depend on `@zag-js/*` machine packages
+only (MIT, exact versions pinned in `behavior.packages`) - never hand-rolled
+state machines. Zag examples and the generated arena load the pinned
+packages through an esm.sh import map so the static pages stay zero-build;
+consumers copy items in from npm packages, not a CDN.
 
 Regenerate after changing items or manifests:
 

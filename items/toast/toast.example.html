@@ -6,6 +6,14 @@
   <title>Toast · uiforagents example</title>
   <link rel="stylesheet" href="../../themes/tokens.css">
   <link rel="stylesheet" href="toast.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "@zag-js/toast": "https://esm.sh/@zag-js/toast@1.44.0",
+      "@zag-js/core": "https://esm.sh/@zag-js/core@1.44.0"
+    }
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body {
@@ -29,6 +37,6 @@
     </div>
   </div>
   <button type="button" class="uifa-toast-trigger" data-uifa-slot="trigger">Show toast</button>
-  <script src="toast.js"></script>
+  <script type="module" src="toast.js"></script>
 </body>
 </html>

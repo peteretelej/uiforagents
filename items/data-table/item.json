@@ -7,13 +7,13 @@
   "description": "Table with sortable headers, row selection, status cells, and an empty state.",
   "keywords": ["table", "grid", "sortable", "rows", "empty-state"],
   "behavior": {
-    "kind": "js-inline",
+    "kind": "zag",
     "contract": [
-      "data-sortable on .uifa-table: th button click sets aria-sort ascending|descending and reorders rows",
+      "data-sortable on .uifa-table: th button click sets aria-sort ascending|descending and reorders rows (plain data logic; no sort machine exists)",
       "data-state=\"empty\" renders the single empty row",
-      "th data-uifa-slot=\"select\" change syncs tbody checkboxes"
+      "th data-uifa-slot=\"select\" runs on a @zag-js/checkbox machine: the machine owns the tri-state checked|unchecked|indeterminate select-all, syncs its native input, and tbody checkbox changes aggregate into it; select-all changes fan out to the rows"
     ],
-    "packages": []
+    "packages": ["@zag-js/checkbox@1.44.0", "@zag-js/core@1.44.0"]
   },
   "cssVars": [
     "--uifa-accent",
@@ -51,6 +51,6 @@
     { "path": "data-table.example.html", "type": "kit:example" },
     { "path": "fixture.aria.yml", "type": "kit:fixture" }
   ],
-  "docs": "Mark the table `data-sortable` to wire header buttons; they set `aria-sort` on the `th` and re-order rows in place. Status cells are `[data-uifa-slot=\"status\"]` spans mapping to the ok/warn/danger roles. For an empty table, use `data-state=\"empty\"` with a single `[data-uifa-slot=\"empty\"]` row.",
+  "docs": "Mark the table `data-sortable` to wire header buttons; they set `aria-sort` on the `th` and re-order rows in place. Status cells are `[data-uifa-slot=\"status\"]` spans mapping to the ok/warn/danger roles. For an empty table, use `data-state=\"empty\"` with a single `[data-uifa-slot=\"empty\"]` row. Select-all runs on `@zag-js/checkbox`: install it first (`npm i @zag-js/checkbox`); the machine owns the select-all's checked, unchecked, and indeterminate states, row checkboxes aggregate into it, and select-all changes sync the rows.",
   "meta": { "source": "original" }
 }

@@ -61,7 +61,10 @@ const tokensCss = themesCss({
 });
 writeFileSync(join(ROOT, "themes", "tokens.css"), tokensCss);
 
-// Collect each item's example markup and scripts.
+// Collect each item's example markup and scripts. Behavior modules that load
+// @zag-js/* machines need an import map: the arena pages are zero-build
+// static HTML, so the manifest-pinned packages resolve against pinned esm.sh
+// URLs. The copy-in contract for consumers remains npm packages, not CDN.
 const itemBlocks = items.map((item) => {
   const css = item.manifest.files
     .filter((f) => f.type === "kit:style")
@@ -76,15 +79,30 @@ const itemBlocks = items.map((item) => {
   const example = readText(join(item.dir, examplePath));
   const bodyMatch = example.match(/<body[^>]*>([\s\S]*)<\/body>/);
   if (!bodyMatch) throw new Error(`items/${item.name}: example has no <body> to extract`);
-  const body = bodyMatch[1].replace(/<script src="([^"]+)"><\/script>/g, (tag, src) => {
+  const body = bodyMatch[1].replace(/<script( type="module")? src="([^"]+)"><\/script>/g, (tag, moduleAttr, src) => {
     const content = behaviorFiles.get(src);
     if (content === undefined) {
       throw new Error(`items/${item.name}: example references "${src}" which is not a declared kit:behavior file`);
     }
-    return `<script>\n${content}\n</script>`;
+    return `<script${moduleAttr ?? ""}>\n${content}\n</script>`;
   });
   return { name: item.name, css, body };
 });
+
+const zagImports = new Map();
+for (const item of items) {
+  if (item.manifest.behavior.kind !== "zag") continue;
+  for (const pkg of item.manifest.behavior.packages ?? []) {
+    const at = pkg.lastIndexOf("@");
+    if (at <= 0) throw new Error(`items/${item.name}: zag package "${pkg}" does not pin an exact version`);
+    zagImports.set(pkg.slice(0, at), pkg.slice(at + 1));
+  }
+}
+const importMap = zagImports.size
+  ? `<script type="importmap">\n{\n  "imports": {\n${[...zagImports]
+      .map(([name, version]) => `    "${name}": "https://esm.sh/${name}@${version}"`)
+      .join(",\n")}\n  }\n}\n</script>`
+  : "";
 
 // Sample UI: one composed screen proving the items work together per theme.
 const sampleUi = `
@@ -336,6 +354,7 @@ function themeDocument(theme) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+${importMap}
 <style>
 ${themesLayerStyle(themes)}
 </style>

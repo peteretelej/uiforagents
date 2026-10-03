@@ -7,7 +7,7 @@ Agent-first vanilla UI kit: registry-shaped, copy-in HTML/CSS, zero runtime depe
 ## How to use
 
 - Pick an item below; each line is enough to choose a component and a variant without opening other files.
-- Copy the files from items/<name>/: markup + CSS, plus a script when behavior is js-inline.
+- Copy the files from items/<name>/: markup + CSS, plus a script when behavior is js-inline or zag; zag items also need the manifest's @zag-js/* packages installed.
 - Wire theme tokens: themes/tokens.css, or your own stylesheet declaring the same roles.
 - Validate: open the item's example page and diff the rendered tree against its fixture.aria.yml with Playwright's ariaSnapshot.
 
@@ -33,13 +33,13 @@ Components read tokens only - no component-local colors. Variants are closed [da
 - badge | Badge | Small status label: accent, ok, warn, danger, and muted outline variants. | data-uifa-variant: accent* / ok / warn / danger / muted | behavior: none | react: adapters/react/badge.jsx | docs: docs/components/badge.md | src: items/badge/
 - card | Card | Surface card with one radius and theme-defined shadow character. | data-uifa-variant: none | behavior: none | react: adapters/react/card.jsx | docs: docs/components/card.md | src: items/card/
 - chip | Chip | Pill-radius tag for filters and metadata: neutral, accent, and warn variants. | data-uifa-variant: neutral* / accent / warn | behavior: none | react: adapters/react/chip.jsx | docs: docs/components/chip.md | src: items/chip/
-- code-block | Code block | Snippet surface with an optional filename header and a copy-to-clipboard button. | data-uifa-variant: labeled* / bare | behavior: js-inline | docs: docs/components/code-block.md | src: items/code-block/
+- code-block | Code block | Snippet surface with an optional filename header and a copy-to-clipboard button. | data-uifa-variant: labeled* / bare | behavior: zag | docs: docs/components/code-block.md | src: items/code-block/
 - link-row | Link row | Title link with url line, chips, and an actions cluster; hover state on the row. | data-uifa-variant: none | behavior: none | docs: docs/components/link-row.md | src: items/link-row/
 
 ## Feedback
 
 - dead-states | Dead states | Page-level empty states for not-found, deleted, expired, and closed content. | data-uifa-variant: not-found* / deleted / expired / closed | behavior: none | docs: docs/components/dead-states.md | src: items/dead-states/
-- toast | Toast | Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors. | data-uifa-variant: info* / ok / warn / danger | behavior: js-inline | docs: docs/components/toast.md | src: items/toast/
+- toast | Toast | Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors. | data-uifa-variant: info* / ok / warn / danger | behavior: zag | docs: docs/components/toast.md | src: items/toast/
 
 ## Navigation
 
@@ -50,7 +50,7 @@ Components read tokens only - no component-local colors. Variants are closed [da
 
 ## Data
 
-- data-table | Data table | Table with sortable headers, row selection, status cells, and an empty state. | data-uifa-variant: none | behavior: js-inline | docs: docs/components/data-table.md | src: items/data-table/
+- data-table | Data table | Table with sortable headers, row selection, status cells, and an empty state. | data-uifa-variant: none | behavior: zag | docs: docs/components/data-table.md | src: items/data-table/
 
 ## Overlay
 

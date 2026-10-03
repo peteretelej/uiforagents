@@ -70,7 +70,7 @@
       "name": "code-block",
       "category": "content",
       "behavior": {
-        "kind": "js-inline"
+        "kind": "zag"
       },
       "title": "Code block",
       "description": "Snippet surface with an optional filename header and a copy-to-clipboard button."
@@ -88,7 +88,7 @@
       "name": "toast",
       "category": "feedback",
       "behavior": {
-        "kind": "js-inline"
+        "kind": "zag"
       },
       "title": "Toast",
       "description": "Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors."
@@ -169,7 +169,7 @@
       "name": "data-table",
       "category": "data",
       "behavior": {
-        "kind": "js-inline"
+        "kind": "zag"
       },
       "title": "Data table",
       "description": "Table with sortable headers, row selection, status cells, and an empty state."
