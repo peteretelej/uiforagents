@@ -22,13 +22,22 @@
     "schema/",
     "items/",
     "themes/",
+    "adapters/",
     "scripts/",
     "validation/",
     "docs/",
     "llms.txt"
   ],
   "scripts": {
-    "build": "node scripts/build-index.mjs && node scripts/build-arena.mjs"
+    "build": "node scripts/build-index.mjs && node scripts/build-arena.mjs",
+    "test-adapters": "vitest run"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "jsdom": "^26.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "vitest": "^3.2.4"
   },
   "keywords": [
     "ui",

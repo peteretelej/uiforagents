@@ -3,7 +3,9 @@
 
 Vertical section nav with an active pill and grouped links; panel or flat placement.
 
-Category: navigation · Behavior: none · Schema: 1.0.0 · Source: original
+Category: navigation · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
@@ -11,6 +13,22 @@ Category: navigation · Behavior: none · Schema: 1.0.0 · Source: original
 | --- | --- |
 | `panel` (default) | Owns a bordered surface for standalone placement. |
 | `flat` | No surface of its own; embeds in existing chrome via `data-uifa-variant="flat"`. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `panel` \| `flat` | `"panel"` | Visual variant; the closed data-uifa-variant table. |
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `heading` - Section heading.
+- `group` - Nav section.
+- `link` - Nav link.
 
 ## Tokens
 

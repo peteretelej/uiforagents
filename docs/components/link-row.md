@@ -3,11 +3,23 @@
 
 Title link with url line, chips, and an actions cluster; hover state on the row.
 
-Category: content · Behavior: none · Schema: 1.0.0 · Source: original
+Category: content · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `title` - Row title link.
+- `url` - URL line under the title.
+- `chips` - Chip cluster.
+- `chip` - Single metadata chip.
+- `actions` - Action cluster at the row end.
 
 ## Tokens
 

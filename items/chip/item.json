@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "chip",
   "type": "registry:component",
   "category": "content",
   "title": "Chip",
   "description": "Pill-radius tag for filters and metadata: neutral, accent, and warn variants.",
   "keywords": ["chip", "tag", "pill", "metadata", "category"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-surface",
     "--uifa-border",
@@ -27,6 +31,11 @@
     { "name": "accent", "description": "Soft accent fill for highlighted tags." },
     { "name": "warn", "description": "Soft warning fill for tags that need attention." }
   ],
+  "props": [
+    { "name": "variant", "type": "enum", "values": [ "neutral", "accent", "warn" ], "default": "neutral", "description": "Visual variant; the closed data-uifa-variant table." }
+  ],
+  "slots": [],
+  "adapters": { "react": true },
   "files": [
     { "path": "chip.html", "type": "kit:markup" },
     { "path": "chip.css", "type": "kit:style" },

@@ -158,8 +158,38 @@ export async function loadKit() {
     for (const requiredType of REQUIRED_FILE_TYPES) {
       if (!types.has(requiredType)) errors.push(`${where}: missing a ${requiredType} file`);
     }
-    if (types.has("kit:behavior") !== (manifest.behavior === "js-inline")) {
-      errors.push(`${where}: behavior "${manifest.behavior}" does not match the presence of a kit:behavior file`);
+    if (types.has("kit:behavior") !== (manifest.behavior.kind === "js-inline")) {
+      errors.push(`${where}: behavior kind "${manifest.behavior.kind}" does not match the presence of a kit:behavior file`);
+    }
+    const propNames = new Set();
+    for (const prop of manifest.props) {
+      if (propNames.has(prop.name)) errors.push(`${where}: duplicate prop "${prop.name}"`);
+      propNames.add(prop.name);
+      if (prop.type === "enum" && !(prop.values ?? []).includes(prop.default)) {
+        errors.push(`${where}: prop "${prop.name}" default ${JSON.stringify(prop.default)} is not in its values`);
+      }
+    }
+    const variantProp = manifest.props.find((prop) => prop.name === "variant");
+    if ((manifest.variants.length > 0) !== (variantProp !== undefined)) {
+      errors.push(`${where}: items with a variant table surface exactly one enum "variant" prop, items without one surface none`);
+    } else if (variantProp) {
+      if (variantProp.type !== "enum") {
+        errors.push(`${where}: the "variant" prop must be an enum`);
+      } else {
+        const names = manifest.variants.map((v) => v.name);
+        if (JSON.stringify(variantProp.values) !== JSON.stringify(names)) {
+          errors.push(`${where}: "variant" prop values do not match the closed variant table (${names.join(", ")})`);
+        }
+      }
+      const fallback = manifest.variants.find((v) => v.default);
+      if (fallback && variantProp.default !== fallback.name) {
+        errors.push(`${where}: "variant" prop default "${variantProp.default}" does not match the default variant "${fallback.name}"`);
+      }
+    }
+    const slotNames = new Set();
+    for (const slot of manifest.slots) {
+      if (slotNames.has(slot.name)) errors.push(`${where}: duplicate slot "${slot.name}"`);
+      slotNames.add(slot.name);
     }
     items.push({ name: entry.name, dir, manifest });
   }

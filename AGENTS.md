@@ -15,8 +15,10 @@ references.
 | `themes/tokens.css` | GENERATED from index.mjs by build-arena; includes per-theme dialect layers |
 | `scripts/build-index.mjs` | Validates items; generates `llms.txt` + `docs/components/*.md` |
 | `scripts/build-arena.mjs` | Generates `themes/tokens.css` + `docs/arena.html`; enforces theme contrast pairs |
+| `scripts/generate-adapters.mjs` | Emits `adapters/react/*.jsx` + fixture tests from manifests declaring `adapters.react` |
+| `adapters/react/` | GENERATED React adapters and their fixture tests; committed |
 | `scripts/codemod-uifa.mjs` | One-off uifa- codemod, committed evidence |
-| `scripts/lib/` | Shared loaders: item/schema loading (`items.mjs`), consumer-config loading (`config.mjs`), theme-CSS serialization (`themes-css.mjs`), color math (`color.mjs`) |
+| `scripts/lib/` | Shared loaders: item/schema loading (`items.mjs`), consumer-config loading (`config.mjs`), theme-CSS serialization (`themes-css.mjs`), color math (`color.mjs`), fixture parser (`fixture.mjs`) |
 | `scripts/uiforagents.mjs` | Per-project flow CLI over a consumer's `uiforagents.json`: `add \| tokens \| scaffold` |
 | `scripts/self-test-flow.mjs` | Flow self-test: serializer `--uifa-*` prefix mapping, idempotence, inert-token catch |
 | `validation/check.mjs` | Adherence linter: raw hex, invalid/missing `data-uifa-variant`, undeclared tokens; `--self-test` |
@@ -29,21 +31,29 @@ references.
 ```sh
 node scripts/build-index.mjs
 node scripts/build-arena.mjs
+node scripts/generate-adapters.mjs
+npm run test-adapters
 npx uiforagents init | add | tokens | scaffold | check   # against a consumer config
 node validation/check.mjs --self-test
 ```
 
 ## Rules
 
-- `llms.txt`, `docs/`, and `themes/tokens.css` are generated: run the builders
-  after changing items, schema, or themes, and commit the regenerated
-  output.
+- `llms.txt`, `docs/`, `themes/tokens.css`, and `adapters/react/` are
+  generated: run the builders (and `generate-adapters.mjs` after manifest or
+  shape changes) after changing items, schema, or themes, and commit the
+  regenerated output. `npm run test-adapters` (vitest, jsdom) renders each
+  generated component against its `fixture.aria.yml`.
 - Item CSS reads semantic tokens only; no literal colors, no component-local
   values. The sanctioned exception is theme dialect CSS in the themes cascade
   layer, scoped to `[data-theme]` and targeting only kit hooks and classes,
   which may use literal values. Sizes derive from `--uifa-space` /
   `--uifa-text-base` via `calc()`; interactive controls keep 44px minimum
   touch targets.
+- Manifest schema is 2.0.0: `behavior` is an object (`kind`/`contract`/
+  `packages`), and `props` + `slots` are required on every item. Items with a
+  variant table surface exactly one enum prop named `variant` mirroring the
+  closed table; `adapters.react` opts an item into React codegen.
 - Variant APIs are closed `[data-uifa-variant]` tables declared in the
   manifest; part hooks are `[data-uifa-slot]` attributes.
 - Theme slugs and variant names are stable API from the first release: the

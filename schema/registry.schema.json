@@ -3,7 +3,7 @@
   "$id": "https://uiforagents.com/schema/registry.schema.json",
   "title": "uiforagents registry item",
   "description": "Manifest for one uiforagents component item: a shadcn registry-item dialect superset for a vanilla HTML/CSS kit. Versioned in this file via \"version\"; no versioned filenames.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,6 +15,8 @@
     "description",
     "keywords",
     "behavior",
+    "props",
+    "slots",
     "cssVars",
     "variants",
     "files",
@@ -53,8 +55,85 @@
       "items": { "type": "string" }
     },
     "behavior": {
-      "description": "none: static markup. css-only: state via native inputs and CSS. js-inline: ships a dependency-free script file.",
-      "enum": ["none", "css-only", "js-inline"]
+      "description": "Behavior model. kind: none (static markup), css-only (state via native inputs and CSS), js-inline (ships a dependency-free script file). contract: data-attribute behavior contract strings framework renderers consume. packages: npm names the behavior needs; empty for css-only and none.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "contract", "packages"],
+      "properties": {
+        "kind": {
+          "enum": ["none", "css-only", "js-inline"]
+        },
+        "contract": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "packages": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "props": {
+      "type": "array",
+      "description": "Codegen props surface. Items with a variant table surface exactly one enum prop named variant whose values are the closed table; items without variants have no variant prop. HTML-attribute passthrough is rest-props and not declared here.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "type", "default", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Prop name, lowerCamelCase.",
+            "pattern": "^[a-z][a-zA-Z0-9]*$"
+          },
+          "type": {
+            "description": "enum: closed string union in values. boolean: on/off attr or flag. string: free-form text.",
+            "enum": ["enum", "boolean", "string"]
+          },
+          "values": {
+            "type": "array",
+            "description": "Closed value list for enum props, in manifest order.",
+            "items": { "type": "string" }
+          },
+          "default": {
+            "type": ["string", "boolean"],
+            "description": "Default value; string for enum and string props, boolean for boolean props."
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "slots": {
+      "type": "array",
+      "description": "Named render positions, mapping [data-uifa-slot] hooks to slot names. The root/children default slot is implicit and not listed.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The data-uifa-slot attribute value.",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "adapters": {
+      "type": "object",
+      "description": "Optional framework-adapter support map. Only declared adapters get generated output.",
+      "additionalProperties": false,
+      "properties": {
+        "react": {
+          "const": true,
+          "description": "A React adapter is generated at adapters/react/<name>.jsx."
+        }
+      }
     },
     "cssVars": {
       "type": "array",

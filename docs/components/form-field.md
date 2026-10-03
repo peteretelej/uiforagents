@@ -3,7 +3,9 @@
 
 Label, text input, and textarea with an accent focus ring.
 
-Category: forms · Behavior: none · Schema: 1.0.0 · Source: original
+Category: forms · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
@@ -11,6 +13,25 @@ Category: forms · Behavior: none · Schema: 1.0.0 · Source: original
 | --- | --- |
 | `text` (default) | Single-line input; omit data-uifa-variant. |
 | `textarea` | Multi-line input via `data-uifa-variant="textarea"` on the textarea. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `text` \| `textarea` | `"text"` | Control to render: single-line input or multi-line textarea. |
+| `disabled` | boolean | `false` | Disables the rendered control. |
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `label` - Visible label text bound to the control.
+
+## React adapter
+
+React: copy [adapters/react/form-field.jsx](../../adapters/react/form-field.jsx) in, or import it from the repo path. Same class, same closed `data-uifa-variant` / `data-uifa-slot` attributes, so this stylesheet and the linter apply unchanged.
 
 ## Tokens
 

@@ -3,11 +3,19 @@
 
 Switch-style checkbox with on, off, and disabled states.
 
-Category: forms · Behavior: css-only · Schema: 1.0.0 · Source: original
+Category: forms · Behavior: css-only · Schema: 2.0.0 · Source: original
+
+State lives in native inputs; no JavaScript required.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `label` - Switch label text.
 
 ## Tokens
 

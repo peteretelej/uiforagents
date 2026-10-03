@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "toggle",
   "type": "registry:component",
   "category": "forms",
   "title": "Toggle switch",
   "description": "Switch-style checkbox with on, off, and disabled states.",
   "keywords": ["switch", "toggle", "checkbox", "setting", "on-off"],
-  "behavior": "css-only",
+  "behavior": {
+    "kind": "css-only",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-border",
     "--uifa-border-strong",
@@ -23,6 +27,10 @@
     "--uifa-ease"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "label", "description": "Switch label text." }
+  ],
   "files": [
     { "path": "toggle.html", "type": "kit:markup" },
     { "path": "toggle.css", "type": "kit:style" },

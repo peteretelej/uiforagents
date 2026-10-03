@@ -3,11 +3,21 @@
 
 Table with sortable headers, row selection, status cells, and an empty state.
 
-Category: data · Behavior: js-inline · Schema: 1.0.0 · Source: original
+Category: data · Behavior: js-inline · Schema: 2.0.0 · Source: original
+
+Ships a dependency-free script; wire its hooks to your own state as needed.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `select` - Row or select-all checkbox.
+- `status` - Status cell content.
+- `empty` - Empty-state cell.
 
 ## Tokens
 

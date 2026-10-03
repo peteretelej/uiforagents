@@ -3,11 +3,25 @@
 
 Flat surface card with one radius and theme-defined shadow character.
 
-Category: content · Behavior: none · Schema: 1.0.0 · Source: original
+Category: content · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `title` - Card heading; renders in the h3.
+- `body` - Card copy; renders in the p.
+- `actions` - Action cluster; renders in the trailing div.
+
+## React adapter
+
+React: copy [adapters/react/card.jsx](../../adapters/react/card.jsx) in, or import it from the repo path. Same class, same closed `data-uifa-variant` / `data-uifa-slot` attributes, so this stylesheet and the linter apply unchanged.
 
 ## Tokens
 

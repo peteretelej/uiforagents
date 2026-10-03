@@ -3,7 +3,9 @@
 
 Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors.
 
-Category: feedback · Behavior: js-inline · Schema: 1.0.0 · Source: original
+Category: feedback · Behavior: js-inline · Schema: 2.0.0 · Source: original
+
+Ships a dependency-free script; wire its hooks to your own state as needed.
 
 ## Variants
 
@@ -13,6 +15,22 @@ Category: feedback · Behavior: js-inline · Schema: 1.0.0 · Source: original
 | `ok` | Success completion. |
 | `warn` | Recoverable problem. |
 | `danger` | Failure that needs user action. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `info` \| `ok` \| `warn` \| `danger` | `"info"` | Visual variant; the closed data-uifa-variant table. |
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `message` - Toast text.
+- `close` - Dismiss button.
+- `trigger` - Show-toast trigger.
 
 ## Tokens
 

@@ -1,12 +1,19 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "audio-player",
   "type": "registry:component",
   "category": "media",
   "title": "Audio player bar",
   "description": "Playback bar with play toggle, meta, and a token-styled progress track.",
   "keywords": ["audio", "player", "playback", "progress", "media"],
-  "behavior": "js-inline",
+  "behavior": {
+    "kind": "js-inline",
+    "contract": [
+      "data-uifa-slot=\"play\" click toggles playback; the aria-label flips play/pause",
+      "aria-valuenow 0-100 on the role=progressbar drives data-uifa-slot=\"progress-fill\" width"
+    ],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent",
     "--uifa-accent-fg",
@@ -26,6 +33,15 @@
     "--uifa-ease"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "play", "description": "Play/pause control." },
+    { "name": "title", "description": "Media title." },
+    { "name": "time", "description": "Elapsed/total time readout." },
+    { "name": "meta", "description": "Title and time cluster." },
+    { "name": "progress", "description": "Progressbar track." },
+    { "name": "progress-fill", "description": "Visual fill inside the track." }
+  ],
   "files": [
     { "path": "audio-player.html", "type": "kit:markup" },
     { "path": "audio-player.css", "type": "kit:style" },

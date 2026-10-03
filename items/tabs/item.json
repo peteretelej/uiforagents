@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "tabs",
   "type": "registry:component",
   "category": "navigation",
   "title": "Tabs",
   "description": "Tab selector with underline (default) and pill styles per theme; panels switch via CSS.",
   "keywords": ["tabs", "tablist", "panels", "navigation", "switcher"],
-  "behavior": "css-only",
+  "behavior": {
+    "kind": "css-only",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-border",
     "--uifa-border-strong",
@@ -25,6 +29,12 @@
   "variants": [
     { "name": "underline", "default": true, "description": "Accent underline on the active tab; omit data-uifa-variant." },
     { "name": "pill", "description": "Soft accent pill on the active tab." }
+  ],
+  "props": [
+    { "name": "variant", "type": "enum", "values": [ "underline", "pill" ], "default": "underline", "description": "Visual variant; the closed data-uifa-variant table." }
+  ],
+  "slots": [
+    { "name": "tab", "description": "Tab label wired to its panel via the native radio." }
   ],
   "files": [
     { "path": "tabs.html", "type": "kit:markup" },

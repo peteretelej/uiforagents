@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "sidebar",
   "type": "registry:component",
   "category": "navigation",
   "title": "Sidebar",
   "description": "Vertical section nav with an active pill and grouped links; panel or flat placement.",
   "keywords": ["sidebar", "nav", "navigation", "menu", "sections"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent",
     "--uifa-accent-soft",
@@ -29,6 +33,14 @@
   "variants": [
     { "name": "panel", "default": true, "description": "Owns a bordered surface for standalone placement." },
     { "name": "flat", "description": "No surface of its own; embeds in existing chrome via `data-uifa-variant=\"flat\"`." }
+  ],
+  "props": [
+    { "name": "variant", "type": "enum", "values": [ "panel", "flat" ], "default": "panel", "description": "Visual variant; the closed data-uifa-variant table." }
+  ],
+  "slots": [
+    { "name": "heading", "description": "Section heading." },
+    { "name": "group", "description": "Nav section." },
+    { "name": "link", "description": "Nav link." }
   ],
   "files": [
     { "path": "sidebar.html", "type": "kit:markup" },

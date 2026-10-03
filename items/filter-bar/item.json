@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "filter-bar",
   "type": "registry:component",
   "category": "forms",
   "title": "Filter bar",
   "description": "Search input plus toggleable filter chips with pressed states.",
   "keywords": ["filter", "search", "toolbar", "chips", "query"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent",
     "--uifa-accent-fg",
@@ -26,6 +30,12 @@
     "--uifa-warn-fg"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "search", "description": "Search input." },
+    { "name": "chips", "description": "Chip row container." },
+    { "name": "chip", "description": "Single filter chip; pressed state via aria-pressed." }
+  ],
   "files": [
     { "path": "filter-bar.html", "type": "kit:markup" },
     { "path": "filter-bar.css", "type": "kit:style" },

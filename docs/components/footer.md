@@ -3,7 +3,9 @@
 
 Site footer with brand block, link groups, and a legal line; columned or single-row.
 
-Category: navigation · Behavior: none · Schema: 1.0.0 · Source: original
+Category: navigation · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
@@ -11,6 +13,26 @@ Category: navigation · Behavior: none · Schema: 1.0.0 · Source: original
 | --- | --- |
 | `columns` (default) | Brand block, link groups, and a full-width legal line; omit data-uifa-variant. |
 | `simple` | Single row: wordmark and legal line via `data-uifa-variant="simple"`. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `columns` \| `simple` | `"columns"` | Visual variant; the closed data-uifa-variant table. |
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `brand` - Brand block.
+- `wordmark` - Site wordmark.
+- `group` - Link group column.
+- `heading` - Group heading.
+- `link` - Footer link.
+- `legal` - Legal line.
+- `note` - Supplementary note.
 
 ## Tokens
 

@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "card",
   "type": "registry:component",
   "category": "content",
   "title": "Card",
   "description": "Flat surface card with one radius and theme-defined shadow character.",
   "keywords": ["card", "surface", "panel", "container"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent-soft",
     "--uifa-surface",
@@ -23,6 +27,13 @@
     "--uifa-space"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "title", "description": "Card heading; renders in the h3." },
+    { "name": "body", "description": "Card copy; renders in the p." },
+    { "name": "actions", "description": "Action cluster; renders in the trailing div." }
+  ],
+  "adapters": { "react": true },
   "files": [
     { "path": "card.html", "type": "kit:markup" },
     { "path": "card.css", "type": "kit:style" },

@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "link-row",
   "type": "registry:component",
   "category": "content",
   "title": "Link row",
   "description": "Title link with url line, chips, and an actions cluster; hover state on the row.",
   "keywords": ["link", "row", "list-item", "bookmark", "result"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent",
     "--uifa-accent-soft",
@@ -23,6 +27,14 @@
     "--uifa-ease"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "title", "description": "Row title link." },
+    { "name": "url", "description": "URL line under the title." },
+    { "name": "chips", "description": "Chip cluster." },
+    { "name": "chip", "description": "Single metadata chip." },
+    { "name": "actions", "description": "Action cluster at the row end." }
+  ],
   "files": [
     { "path": "link-row.html", "type": "kit:markup" },
     { "path": "link-row.css", "type": "kit:style" },

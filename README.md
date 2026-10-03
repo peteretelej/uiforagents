@@ -31,6 +31,14 @@ It is built for the workflow where your agent does the building and you review a
 | Top nav | Tabs | Modal | Data table |
 | Code block | Sidebar | Footer | |
 
+## Framework adapters
+
+The five core primitives (button, badge, chip, card, form-field) ship generated
+React adapters in [`adapters/react/`](adapters/react/) that render the same
+classes, variants, and slots as the vanilla markup; tokens and item CSS apply
+unchanged. Copy the files in or import them from the repo path in Vite. The
+consumption contract lives in [`SKILL.md`](SKILL.md) ("Framework adapters").
+
 
 ## Quick start
 
@@ -169,18 +177,21 @@ tokens.css maps each `[data-theme="slug"]` block to its token set.
 
 Each `item.json` declares the manifest contract: `name`, `title`,
 `description`, `category` (closed enum from the schema; drives the `llms.txt`
-grouping), `behavior` (`none` | `css-only` | `js-inline`), `variants` (closed
-`data-uifa-variant` tables with a default), `cssVars` (the tokens the item
-reads), `files`, `docs`, and `schemaVersion`. The build validates every
-manifest against [`schema/registry.schema.json`](schema/registry.schema.json)
-and keeps `registry.json` in lockstep. Generated files carry a `GENERATED`
-header comment with the kit version, so drifted copies are easy to spot.
+grouping), `behavior` (`{ kind }` of `none` | `css-only` | `js-inline`, plus
+`contract` strings and `packages` framework renderers consume), `props` and
+`slots` (the codegen surface), `variants` (closed `data-uifa-variant` tables
+with a default), `cssVars` (the tokens the item reads), `files`, `docs`, and
+`schemaVersion`. The build validates every manifest against
+[`schema/registry.schema.json`](schema/registry.schema.json) and keeps
+`registry.json` in lockstep. Generated files carry a `GENERATED` header
+comment with the kit version, so drifted copies are easy to spot.
 
 Regenerate after changing items or manifests:
 
 ```sh
-node scripts/build-index.mjs   # validates items; writes llms.txt + docs/components/
-node scripts/build-arena.mjs   # writes themes/tokens.css + docs/arena.html
+node scripts/build-index.mjs        # validates items; writes llms.txt + docs/components/
+node scripts/build-arena.mjs        # writes themes/tokens.css + docs/arena.html
+node scripts/generate-adapters.mjs  # writes adapters/react/ for items declaring adapters.react
 ```
 
 Generated files are committed. The build fails loudly on schema violations,

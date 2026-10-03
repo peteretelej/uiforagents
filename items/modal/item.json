@@ -1,12 +1,19 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "modal",
   "type": "registry:component",
   "category": "overlay",
   "title": "Modal",
   "description": "Native dialog: centered card on desktop, bottom sheet on small screens, scrim via token.",
   "keywords": ["modal", "dialog", "overlay", "confirm", "sheet"],
-  "behavior": "js-inline",
+  "behavior": {
+    "kind": "js-inline",
+    "contract": [
+      "data-uifa-slot=\"open\" click calls dialog.showModal()",
+      "data-uifa-slot=\"cancel\" and data-uifa-slot=\"confirm\" click call dialog.close()"
+    ],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-surface",
     "--uifa-border",
@@ -30,6 +37,15 @@
     "--uifa-ease"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "open", "description": "Trigger that opens the dialog." },
+    { "name": "title", "description": "Dialog heading." },
+    { "name": "body", "description": "Dialog copy." },
+    { "name": "actions", "description": "Footer action cluster." },
+    { "name": "cancel", "description": "Dismiss action." },
+    { "name": "confirm", "description": "Primary action; danger styling for destructive flows." }
+  ],
   "files": [
     { "path": "modal.html", "type": "kit:markup" },
     { "path": "modal.css", "type": "kit:style" },

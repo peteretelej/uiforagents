@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "top-nav",
   "type": "registry:component",
   "category": "navigation",
   "title": "Top nav",
   "description": "Wordmark, links with an active pill, and a right-aligned actions cluster.",
   "keywords": ["nav", "header", "navigation", "app-bar", "menu"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent",
     "--uifa-accent-soft",
@@ -25,6 +29,12 @@
     "--uifa-text-muted"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "wordmark", "description": "Site wordmark." },
+    { "name": "links", "description": "Nav link row." },
+    { "name": "actions", "description": "Right-aligned action cluster." }
+  ],
   "files": [
     { "path": "top-nav.html", "type": "kit:markup" },
     { "path": "top-nav.css", "type": "kit:style" },

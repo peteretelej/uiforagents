@@ -3,11 +3,21 @@
 
 Search input plus toggleable filter chips with pressed states.
 
-Category: forms · Behavior: none · Schema: 1.0.0 · Source: original
+Category: forms · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `search` - Search input.
+- `chips` - Chip row container.
+- `chip` - Single filter chip; pressed state via aria-pressed.
 
 ## Tokens
 

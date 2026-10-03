@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "segmented-control",
   "type": "registry:component",
   "category": "forms",
   "title": "Segmented control",
   "description": "Radio-group segment selector with selected and unselected states; keyboard navigable without JavaScript.",
   "keywords": ["segmented", "tabs-like", "radio", "picker", "view-switcher"],
-  "behavior": "css-only",
+  "behavior": {
+    "kind": "css-only",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-surface",
     "--uifa-surface-2",
@@ -24,6 +28,10 @@
     "--uifa-ease"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "segment", "description": "One radio segment: input plus label." }
+  ],
   "files": [
     { "path": "segmented-control.html", "type": "kit:markup" },
     { "path": "segmented-control.css", "type": "kit:style" },

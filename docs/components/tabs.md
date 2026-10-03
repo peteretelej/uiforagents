@@ -3,7 +3,9 @@
 
 Tab selector with underline (default) and pill styles per theme; panels switch via CSS.
 
-Category: navigation · Behavior: css-only · Schema: 1.0.0 · Source: original
+Category: navigation · Behavior: css-only · Schema: 2.0.0 · Source: original
+
+State lives in native inputs; no JavaScript required.
 
 ## Variants
 
@@ -11,6 +13,20 @@ Category: navigation · Behavior: css-only · Schema: 1.0.0 · Source: original
 | --- | --- |
 | `underline` (default) | Accent underline on the active tab; omit data-uifa-variant. |
 | `pill` | Soft accent pill on the active tab. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `underline` \| `pill` | `"underline"` | Visual variant; the closed data-uifa-variant table. |
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `tab` - Tab label wired to its panel via the native radio.
 
 ## Tokens
 

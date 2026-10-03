@@ -3,7 +3,9 @@
 
 Snippet surface with an optional filename header and a copy-to-clipboard button.
 
-Category: content · Behavior: js-inline · Schema: 1.0.0 · Source: original
+Category: content · Behavior: js-inline · Schema: 2.0.0 · Source: original
+
+Ships a dependency-free script; wire its hooks to your own state as needed.
 
 ## Variants
 
@@ -11,6 +13,23 @@ Category: content · Behavior: js-inline · Schema: 1.0.0 · Source: original
 | --- | --- |
 | `labeled` (default) | Header bar with a filename label and the copy button; omit data-uifa-variant. |
 | `bare` | No header; the copy button floats top-right via `data-uifa-variant="bare"`. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `labeled` \| `bare` | `"labeled"` | Visual variant; the closed data-uifa-variant table. |
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `header` - Header bar; omitted in the bare variant.
+- `label` - Filename label inside the header.
+- `copy` - Copy button; its label doubles as the copied feedback.
+- `code` - Code content.
 
 ## Tokens
 

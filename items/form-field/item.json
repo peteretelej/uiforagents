@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "form-field",
   "type": "registry:component",
   "category": "forms",
   "title": "Form field",
   "description": "Label, text input, and textarea with an accent focus ring.",
   "keywords": ["input", "textarea", "text", "form", "field", "label"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent",
     "--uifa-surface",
@@ -27,6 +31,14 @@
     { "name": "text", "default": true, "description": "Single-line input; omit data-uifa-variant." },
     { "name": "textarea", "description": "Multi-line input via `data-uifa-variant=\"textarea\"` on the textarea." }
   ],
+  "props": [
+    { "name": "variant", "type": "enum", "values": [ "text", "textarea" ], "default": "text", "description": "Control to render: single-line input or multi-line textarea." },
+    { "name": "disabled", "type": "boolean", "default": false, "description": "Disables the rendered control." }
+  ],
+  "slots": [
+    { "name": "label", "description": "Visible label text bound to the control." }
+  ],
+  "adapters": { "react": true },
   "files": [
     { "path": "form-field.html", "type": "kit:markup" },
     { "path": "form-field.css", "type": "kit:style" },

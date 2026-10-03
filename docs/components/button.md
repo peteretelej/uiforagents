@@ -3,7 +3,9 @@
 
 Primary, secondary, danger, and compact action buttons with disabled, hover, and focus states.
 
-Category: actions · Behavior: none · Schema: 1.0.0 · Source: original
+Category: actions · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
@@ -13,6 +15,19 @@ Category: actions · Behavior: none · Schema: 1.0.0 · Source: original
 | `secondary` | Outlined surface for supporting actions. |
 | `danger` | Destructive actions such as delete or revoke. |
 | `small` | Compact type and padding for dense toolbars; keeps the 44px touch target. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `primary` \| `secondary` \| `danger` \| `small` | `"primary"` | Visual variant; the closed data-uifa-variant table. |
+| `disabled` | boolean | `false` | Native disabled attribute; blocks interaction and dims via tokens. |
+
+## React adapter
+
+React: copy [adapters/react/button.jsx](../../adapters/react/button.jsx) in, or import it from the repo path. Same class, same closed `data-uifa-variant` / `data-uifa-slot` attributes, so this stylesheet and the linter apply unchanged.
 
 ## Tokens
 

@@ -3,11 +3,19 @@
 
 Radio-group segment selector with selected and unselected states; keyboard navigable without JavaScript.
 
-Category: forms · Behavior: css-only · Schema: 1.0.0 · Source: original
+Category: forms · Behavior: css-only · Schema: 2.0.0 · Source: original
+
+State lives in native inputs; no JavaScript required.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `segment` - One radio segment: input plus label.
 
 ## Tokens
 

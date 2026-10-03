@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "badge",
   "type": "registry:component",
   "category": "content",
   "title": "Badge",
   "description": "Small status label: accent, ok, warn, danger, and muted outline variants.",
   "keywords": ["badge", "status", "label", "pill", "tag"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent-soft",
     "--uifa-accent",
@@ -33,6 +37,11 @@
     { "name": "danger", "description": "Failed or expired state." },
     { "name": "muted", "description": "Muted outline for closed or archived; the only outlined variant." }
   ],
+  "props": [
+    { "name": "variant", "type": "enum", "values": [ "accent", "ok", "warn", "danger", "muted" ], "default": "accent", "description": "Visual variant; the closed data-uifa-variant table." }
+  ],
+  "slots": [],
+  "adapters": { "react": true },
   "files": [
     { "path": "badge.html", "type": "kit:markup" },
     { "path": "badge.css", "type": "kit:style" },

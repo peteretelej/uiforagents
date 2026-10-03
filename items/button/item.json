@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "button",
   "type": "registry:component",
   "category": "actions",
   "title": "Button",
   "description": "Primary, secondary, danger, and compact action buttons with disabled, hover, and focus states.",
   "keywords": ["button", "action", "submit", "cta", "destructive"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent",
     "--uifa-accent-fg",
@@ -32,6 +36,12 @@
     { "name": "danger", "description": "Destructive actions such as delete or revoke." },
     { "name": "small", "description": "Compact type and padding for dense toolbars; keeps the 44px touch target." }
   ],
+  "props": [
+    { "name": "variant", "type": "enum", "values": [ "primary", "secondary", "danger", "small" ], "default": "primary", "description": "Visual variant; the closed data-uifa-variant table." },
+    { "name": "disabled", "type": "boolean", "default": false, "description": "Native disabled attribute; blocks interaction and dims via tokens." }
+  ],
+  "slots": [],
+  "adapters": { "react": true },
   "files": [
     { "path": "button.html", "type": "kit:markup" },
     { "path": "button.css", "type": "kit:style" },

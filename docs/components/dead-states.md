@@ -3,7 +3,9 @@
 
 Page-level empty states for not-found, deleted, expired, and closed content.
 
-Category: feedback · Behavior: none · Schema: 1.0.0 · Source: original
+Category: feedback · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
@@ -13,6 +15,22 @@ Category: feedback · Behavior: none · Schema: 1.0.0 · Source: original
 | `deleted` | Content removed by its owner; offer restore when possible. |
 | `expired` | Time-limited access ended; secondary-weighted action. |
 | `closed` | Account or workspace is closed; secondary-weighted action. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `not-found` \| `deleted` \| `expired` \| `closed` | `"not-found"` | Visual variant; the closed data-uifa-variant table. |
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `title` - State heading.
+- `body` - Explanation copy.
+- `action` - Recovery action.
 
 ## Tokens
 

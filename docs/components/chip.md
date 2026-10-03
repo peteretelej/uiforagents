@@ -3,7 +3,9 @@
 
 Pill-radius tag for filters and metadata: neutral, accent, and warn variants.
 
-Category: content · Behavior: none · Schema: 1.0.0 · Source: original
+Category: content · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
@@ -12,6 +14,18 @@ Category: content · Behavior: none · Schema: 1.0.0 · Source: original
 | `neutral` (default) | Outlined surface tag. |
 | `accent` | Soft accent fill for highlighted tags. |
 | `warn` | Soft warning fill for tags that need attention. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `neutral` \| `accent` \| `warn` | `"neutral"` | Visual variant; the closed data-uifa-variant table. |
+
+## React adapter
+
+React: copy [adapters/react/chip.jsx](../../adapters/react/chip.jsx) in, or import it from the repo path. Same class, same closed `data-uifa-variant` / `data-uifa-slot` attributes, so this stylesheet and the linter apply unchanged.
 
 ## Tokens
 

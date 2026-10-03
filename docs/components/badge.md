@@ -3,7 +3,9 @@
 
 Small status label: accent, ok, warn, danger, and muted outline variants.
 
-Category: content · Behavior: none · Schema: 1.0.0 · Source: original
+Category: content · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
@@ -14,6 +16,18 @@ Category: content · Behavior: none · Schema: 1.0.0 · Source: original
 | `warn` | Attention state such as due soon. |
 | `danger` | Failed or expired state. |
 | `muted` | Muted outline for closed or archived; the only outlined variant. |
+
+## Props
+
+Framework-adapter props; HTML passthrough rides on rest props.
+
+| prop | type | default | description |
+| --- | --- | --- | --- |
+| `variant` | `accent` \| `ok` \| `warn` \| `danger` \| `muted` | `"accent"` | Visual variant; the closed data-uifa-variant table. |
+
+## React adapter
+
+React: copy [adapters/react/badge.jsx](../../adapters/react/badge.jsx) in, or import it from the repo path. Same class, same closed `data-uifa-variant` / `data-uifa-slot` attributes, so this stylesheet and the linter apply unchanged.
 
 ## Tokens
 

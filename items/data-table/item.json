@@ -1,12 +1,20 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "data-table",
   "type": "registry:component",
   "category": "data",
   "title": "Data table",
   "description": "Table with sortable headers, row selection, status cells, and an empty state.",
   "keywords": ["table", "grid", "sortable", "rows", "empty-state"],
-  "behavior": "js-inline",
+  "behavior": {
+    "kind": "js-inline",
+    "contract": [
+      "data-sortable on .uifa-table: th button click sets aria-sort ascending|descending and reorders rows",
+      "data-state=\"empty\" renders the single empty row",
+      "th data-uifa-slot=\"select\" change syncs tbody checkboxes"
+    ],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent",
     "--uifa-border",
@@ -30,6 +38,12 @@
     "--uifa-warn-soft"
   ],
   "variants": [],
+  "props": [],
+  "slots": [
+    { "name": "select", "description": "Row or select-all checkbox." },
+    { "name": "status", "description": "Status cell content." },
+    { "name": "empty", "description": "Empty-state cell." }
+  ],
   "files": [
     { "path": "data-table.html", "type": "kit:markup" },
     { "path": "data-table.css", "type": "kit:style" },

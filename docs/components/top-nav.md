@@ -3,11 +3,21 @@
 
 Wordmark, links with an active pill, and a right-aligned actions cluster.
 
-Category: navigation · Behavior: none · Schema: 1.0.0 · Source: original
+Category: navigation · Behavior: none · Schema: 2.0.0 · Source: original
+
+Static markup; no JavaScript required.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `wordmark` - Site wordmark.
+- `links` - Nav link row.
+- `actions` - Right-aligned action cluster.
 
 ## Tokens
 

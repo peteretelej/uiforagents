@@ -1,12 +1,19 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "toast",
   "type": "registry:component",
   "category": "feedback",
   "title": "Toast",
   "description": "Bottom-center transient message with show/hide transition and info, ok, warn, danger flavors.",
   "keywords": ["toast", "notification", "snackbar", "status", "transient"],
-  "behavior": "js-inline",
+  "behavior": {
+    "kind": "js-inline",
+    "contract": [
+      "data-state=\"visible|hidden\" on .uifa-toast controls visibility",
+      "data-uifa-slot=\"trigger\" click shows the toast; auto-hides after 4s; data-uifa-slot=\"close\" click hides it"
+    ],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-accent-soft",
     "--uifa-accent",
@@ -34,6 +41,14 @@
     { "name": "ok", "description": "Success completion." },
     { "name": "warn", "description": "Recoverable problem." },
     { "name": "danger", "description": "Failure that needs user action." }
+  ],
+  "props": [
+    { "name": "variant", "type": "enum", "values": [ "info", "ok", "warn", "danger" ], "default": "info", "description": "Visual variant; the closed data-uifa-variant table." }
+  ],
+  "slots": [
+    { "name": "message", "description": "Toast text." },
+    { "name": "close", "description": "Dismiss button." },
+    { "name": "trigger", "description": "Show-toast trigger." }
   ],
   "files": [
     { "path": "toast.html", "type": "kit:markup" },

@@ -3,11 +3,24 @@
 
 Playback bar with play toggle, meta, and a token-styled progress track.
 
-Category: media · Behavior: js-inline · Schema: 1.0.0 · Source: original
+Category: media · Behavior: js-inline · Schema: 2.0.0 · Source: original
+
+Ships a dependency-free script; wire its hooks to your own state as needed.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `play` - Play/pause control.
+- `title` - Media title.
+- `time` - Elapsed/total time readout.
+- `meta` - Title and time cluster.
+- `progress` - Progressbar track.
+- `progress-fill` - Visual fill inside the track.
 
 ## Tokens
 

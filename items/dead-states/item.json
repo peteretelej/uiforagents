@@ -1,12 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "name": "dead-states",
   "type": "registry:component",
   "category": "feedback",
   "title": "Dead states",
   "description": "Page-level empty states for not-found, deleted, expired, and closed content.",
   "keywords": ["empty-state", "404", "not-found", "expired", "deleted"],
-  "behavior": "none",
+  "behavior": {
+    "kind": "none",
+    "contract": [],
+    "packages": []
+  },
   "cssVars": [
     "--uifa-surface",
     "--uifa-border",
@@ -30,6 +34,14 @@
     { "name": "deleted", "description": "Content removed by its owner; offer restore when possible." },
     { "name": "expired", "description": "Time-limited access ended; secondary-weighted action." },
     { "name": "closed", "description": "Account or workspace is closed; secondary-weighted action." }
+  ],
+  "props": [
+    { "name": "variant", "type": "enum", "values": [ "not-found", "deleted", "expired", "closed" ], "default": "not-found", "description": "Visual variant; the closed data-uifa-variant table." }
+  ],
+  "slots": [
+    { "name": "title", "description": "State heading." },
+    { "name": "body", "description": "Explanation copy." },
+    { "name": "action", "description": "Recovery action." }
   ],
   "files": [
     { "path": "dead-states.html", "type": "kit:markup" },

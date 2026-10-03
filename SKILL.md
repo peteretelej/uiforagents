@@ -79,6 +79,31 @@ just that theme.
 `npx uiforagents check --self-test` to verify the linter itself against its
 planted violations.
 
+## Framework adapters
+
+Items that declare `adapters.react` in their manifest ship a generated
+`adapters/react/<name>.jsx` with a named export `<Name>` (kebab-case name in
+PascalCase). The adapter renders the exact vanilla DOM - same `uifa-<name>`
+class, same closed `data-uifa-variant` / `data-uifa-slot` attributes - so the
+item stylesheet and the adherence linter apply unchanged.
+
+Consumption contract:
+
+- Import `themes/tokens.css` (or your flow-emitted tokens) before item CSS;
+  keep the `@layer` statement order and the imports-first rule.
+- Copy `adapters/react/<name>.jsx` into your project, or consume it straight
+  from the repo/package path in Vite
+  (`import { Button } from "uiforagents/adapters/react/button.jsx"`).
+- React is the consumer's dependency; adapters have no runtime imports.
+- Props come from the manifest `props` surface (a `variant` enum mirrors the
+  closed table), `children` fills the default slot, named slots are
+  `ReactNode` props, and rest props spread last - onto the root element, or
+  onto the rendered control for form fields.
+- No Tailwind or shadcn involved; styling stays token-driven CSS.
+
+The committed `adapters/react/<name>.test.jsx` suites render each generated
+component against its `fixture.aria.yml` (`npm run test-adapters`).
+
 ## Notes
 
 - Touch targets hold a 44px minimum; spacing derives from `--uifa-space` via

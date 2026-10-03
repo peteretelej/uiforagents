@@ -3,11 +3,24 @@
 
 Native dialog: centered card on desktop, bottom sheet on small screens, scrim via token.
 
-Category: overlay · Behavior: js-inline · Schema: 1.0.0 · Source: original
+Category: overlay · Behavior: js-inline · Schema: 2.0.0 · Source: original
+
+Ships a dependency-free script; wire its hooks to your own state as needed.
 
 ## Variants
 
 No variant table; the item has a single form.
+
+## Slots
+
+Named `[data-uifa-slot]` render positions; the root is the implicit default slot.
+
+- `open` - Trigger that opens the dialog.
+- `title` - Dialog heading.
+- `body` - Dialog copy.
+- `actions` - Footer action cluster.
+- `cancel` - Dismiss action.
+- `confirm` - Primary action; danger styling for destructive flows.
 
 ## Tokens
 
