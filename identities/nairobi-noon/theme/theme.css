@@ -1,7 +1,7 @@
 /* nairobi-noon - shadcn/ui theme (Tailwind v4).
    Drop into your global CSS after `@import "tailwindcss";`.
    Scoped to [data-theme="nairobi-noon"]; set it on <html> to activate.
-   Values are the identity spec from identity.json (lineage: lab direction "nairobi-noon"). */
+   Values are the identity spec from identity.json. */
 
 @theme inline {
   --color-background: var(--background);

@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "title": "Nairobi Noon",
   "description": "Warm Kenyan daylight. Sand and terracotta, relaxed and inviting, Lilita One display over Inter body.",
-  "lineage": "nairobi-noon (lab direction library)",
   "vibe": ["warm", "daylight", "light", "mtaa"],
   "author": "uiforagents",
   "license": "Apache-2.0",
