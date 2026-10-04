@@ -6,6 +6,7 @@ import { Article, Callout, Kpi } from "@identity/blocks/article"
 const IDENTITIES = [
   { slug: "ocean-calm", label: "ocean-calm" },
   { slug: "nairobi-noon", label: "nairobi-noon" },
+  { slug: "graphite-terminal", label: "graphite-terminal" },
 ]
 
 const jobs = [

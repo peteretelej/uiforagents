@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@uiforagents/graphite-terminal",
+  "homepage": "https://uiforagents.com",
+  "items": [
+    {
+      "name": "graphite-terminal",
+      "type": "registry:style",
+      "title": "Graphite Terminal",
+      "description": "Dark dense ops tooling. Near-black graphite steps, electric lime action, JetBrains Mono data over Inter body, tight radius, flat fast surfaces.",
+      "file": "graphite-terminal.json"
+    }
+  ]
+}

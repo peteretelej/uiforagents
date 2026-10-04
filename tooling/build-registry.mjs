@@ -13,6 +13,16 @@ const outDir = path.join(idDir, "registry")
 const read = (p) => fs.readFileSync(p, "utf8")
 const identity = JSON.parse(read(path.join(idDir, "identity.json")))
 
+// Identity-driven values with ocean-calm-equal fallbacks, so regenerating an
+// identity that does not declare them keeps producing the historical payload.
+const fontPackages = identity.fonts?.packages ?? ["@fontsource/plus-jakarta-sans", "@fontsource/inter"]
+const fontInstallNote = identity.fonts?.install ?? "(Plus Jakarta Sans 500-800, Inter 400-700)."
+const tokens = identity.tokens
+const secondaryForeground = tokens["secondary-foreground"] ?? "oklch(30% 0.05 258)"
+const muted = tokens.muted ?? "oklch(96.5% 0.008 242)"
+const destructiveForeground = tokens["destructive-foreground"] ?? "oklch(99% 0.005 30)"
+const radius = tokens.radius ?? "0.625rem"
+
 const themeCss = read(path.join(idDir, "theme/theme.css"))
 const overridesCss = read(path.join(idDir, "overrides/overrides.css"))
 const pack = read(path.join(idDir, "prompt-pack.md"))
@@ -35,8 +45,7 @@ const item = {
     "clsx",
     "tailwind-merge",
     "@radix-ui/react-slot",
-    "@fontsource/plus-jakarta-sans",
-    "@fontsource/inter",
+    ...fontPackages,
   ],
   registryDependencies: ["button", "card", "badge", "input", "label"],
   cssVars: {
@@ -54,13 +63,13 @@ const item = {
       "--primary": identity.tokens.accent,
       "--primary-foreground": identity.tokens["accent-fg"],
       "--secondary": identity.tokens["accent-soft"],
-      "--secondary-foreground": "oklch(30% 0.05 258)",
-      "--muted": "oklch(96.5% 0.008 242)",
+      "--secondary-foreground": secondaryForeground,
+      "--muted": muted,
       "--muted-foreground": identity.tokens["text-muted"],
       "--accent": identity.tokens["accent-soft"],
       "--accent-foreground": identity.tokens.text,
       "--destructive": identity.tokens.danger,
-      "--destructive-foreground": "oklch(99% 0.005 30)",
+      "--destructive-foreground": destructiveForeground,
       "--ok": identity.tokens.ok,
       "--ok-soft": identity.tokens["ok-soft"] || "oklch(95% 0.03 155)",
       "--ok-foreground": identity.tokens["ok-fg"] || "oklch(38% 0.09 155)",
@@ -70,7 +79,7 @@ const item = {
       "--border": identity.tokens.border,
       "--input": identity.tokens.border,
       "--ring": identity.tokens.accent,
-      "--radius": "0.625rem",
+      "--radius": radius,
     },
   },
   css: {
@@ -119,7 +128,7 @@ const item = {
       content: read(path.join(idDir, "blocks", f)),
     })),
   ],
-  docs: "After install: (1) import the theme css in your global stylesheet AFTER the Tailwind import - it contains both the theme and the overrides layer; (2) set data-identity=\"" + slug + "\" on your root html element so overrides apply; (3) attach prompt-pack.md to every agent building UI - it is the binding design contract; (4) fonts are installed as deps - import weights in your entry file (Plus Jakarta Sans 500-800, Inter 400-700).",
+  docs: "After install: (1) import the theme css in your global stylesheet AFTER the Tailwind import - it contains both the theme and the overrides layer; (2) set data-identity=\"" + slug + "\" on your root html element so overrides apply; (3) attach prompt-pack.md to every agent building UI - it is the binding design contract; (4) fonts are installed as deps - import weights in your entry file " + fontInstallNote,
   meta: {
     identityVersion: identity.version,
     tested: identity.stack.tested,

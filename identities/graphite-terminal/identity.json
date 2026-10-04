@@ -1,0 +1,66 @@
+{
+  "name": "graphite-terminal",
+  "version": "1.0.0",
+  "title": "Graphite Terminal",
+  "description": "Dark dense ops tooling. Near-black graphite steps, electric lime action, JetBrains Mono data over Inter body, tight radius, flat fast surfaces.",
+  "vibe": ["dark", "dense", "technical", "tool"],
+  "author": "uiforagents",
+  "license": "Apache-2.0",
+  "stack": {
+    "base": "shadcn/ui",
+    "primitives": "shadcn defaults (radix slot; base-ui supported)",
+    "tailwind": "v4",
+    "react": ">=18",
+    "tested": {
+      "shadcn": "2026-03 (cli v4)",
+      "tailwind": "4.x",
+      "@base-ui/react": "1.x"
+    }
+  },
+  "typography": {
+    "display": "JetBrains Mono",
+    "body": "Inter",
+    "mono": "JetBrains Mono",
+    "ramp": {
+      "display-xl": "clamp(32px, 4.4vw, 44px) / 700 / -0.02em",
+      "h1": "26px / 700 / -0.02em",
+      "h2": "19px / 700 / -0.01em",
+      "h3": "15px / 600 / 0",
+      "body": "15px / 400 / 1.55",
+      "small": "12.5px / 400 / 1.5",
+      "eyebrow": "11px / 700 / 0.14em uppercase"
+    }
+  },
+  "tokens": {
+    "background": "oklch(14.5% 0.008 255)",
+    "surface": "oklch(17.5% 0.009 255)",
+    "border": "oklch(88% 0.006 255 / 0.22)",
+    "text": "oklch(92% 0.005 255)",
+    "text-muted": "oklch(68% 0.008 255)",
+    "accent": "oklch(82% 0.12 118)",
+    "accent-fg": "oklch(15% 0.02 118)",
+    "accent-soft": "oklch(82% 0.12 118 / 0.14)",
+    "ok": "oklch(76% 0.13 155)",
+    "ok-soft": "oklch(76% 0.13 155 / 0.14)",
+    "ok-fg": "oklch(83% 0.12 155)",
+    "warn": "oklch(80% 0.13 85)",
+    "warn-soft": "oklch(80% 0.13 85 / 0.14)",
+    "warn-fg": "oklch(85% 0.11 85)",
+    "danger": "oklch(66% 0.17 25)",
+    "muted": "oklch(21.5% 0.009 255)",
+    "secondary-foreground": "oklch(87% 0.006 255)",
+    "destructive-foreground": "oklch(15% 0.02 25)",
+    "radius-control": "4px",
+    "radius-surface": "8px",
+    "radius": "0.5rem",
+    "shadow": "0 1px 2px oklch(0% 0 0 / 0.35)",
+    "gradient-to": "oklch(22% 0.06 155)"
+  },
+  "fonts": {
+    "packages": ["@fontsource/jetbrains-mono", "@fontsource/inter"],
+    "install": "(JetBrains Mono 400-700, Inter 400-600)."
+  },
+  "blocks": ["hero", "auth", "dashboard-shell", "table-page", "article"],
+  "registry": "@uiforagents/graphite-terminal",
+  "notes": "Density is tight (ops tooling): 15px base, 36-40px rows, 4px grid. JetBrains Mono carries headings, numbers, ids, and latency columns; Inter carries prose. Lime is for action only. Surfaces are stepped graphite (bg 14.5% < card 17.5% < muted 21.5%); feedback is border/glow, never lift. Theme is scoped to [data-theme]/[data-identity] (no :root claim) so multiple identities can be imported side by side. One-shot test 2026-10-05: PASS - fresh agent given only prompt-pack + theme + overrides built a log-audit view (event log table, severity chips, filters, stat strip), identity-faithful, zero console errors, desktop 1280 + mobile 390 verified."
+}

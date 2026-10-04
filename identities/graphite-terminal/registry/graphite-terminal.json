@@ -1,0 +1,144 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "graphite-terminal",
+  "type": "registry:style",
+  "title": "Graphite Terminal",
+  "description": "Dark dense ops tooling. Near-black graphite steps, electric lime action, JetBrains Mono data over Inter body, tight radius, flat fast surfaces.",
+  "author": "uiforagents",
+  "license": "Apache-2.0",
+  "dependencies": [
+    "lucide-react",
+    "class-variance-authority",
+    "clsx",
+    "tailwind-merge",
+    "@radix-ui/react-slot",
+    "@fontsource/jetbrains-mono",
+    "@fontsource/inter"
+  ],
+  "registryDependencies": [
+    "button",
+    "card",
+    "badge",
+    "input",
+    "label"
+  ],
+  "cssVars": {
+    "theme": {
+      "--font-display": "JetBrains Mono",
+      "--font-sans": "Inter"
+    },
+    "light": {
+      "--background": "oklch(14.5% 0.008 255)",
+      "--foreground": "oklch(92% 0.005 255)",
+      "--card": "oklch(17.5% 0.009 255)",
+      "--card-foreground": "oklch(92% 0.005 255)",
+      "--popover": "oklch(17.5% 0.009 255)",
+      "--popover-foreground": "oklch(92% 0.005 255)",
+      "--primary": "oklch(82% 0.12 118)",
+      "--primary-foreground": "oklch(15% 0.02 118)",
+      "--secondary": "oklch(82% 0.12 118 / 0.14)",
+      "--secondary-foreground": "oklch(87% 0.006 255)",
+      "--muted": "oklch(21.5% 0.009 255)",
+      "--muted-foreground": "oklch(68% 0.008 255)",
+      "--accent": "oklch(82% 0.12 118 / 0.14)",
+      "--accent-foreground": "oklch(92% 0.005 255)",
+      "--destructive": "oklch(66% 0.17 25)",
+      "--destructive-foreground": "oklch(15% 0.02 25)",
+      "--ok": "oklch(76% 0.13 155)",
+      "--ok-soft": "oklch(76% 0.13 155 / 0.14)",
+      "--ok-foreground": "oklch(83% 0.12 155)",
+      "--warn": "oklch(80% 0.13 85)",
+      "--warn-soft": "oklch(80% 0.13 85 / 0.14)",
+      "--warn-foreground": "oklch(85% 0.11 85)",
+      "--border": "oklch(88% 0.006 255 / 0.22)",
+      "--input": "oklch(88% 0.006 255 / 0.22)",
+      "--ring": "oklch(82% 0.12 118)",
+      "--radius": "0.5rem"
+    }
+  },
+  "css": {
+    "@theme inline": {
+      "--color-background": "var(--background)",
+      "--color-foreground": "var(--foreground)",
+      "--color-primary": "var(--primary)",
+      "--color-primary-foreground": "var(--primary-foreground)",
+      "--color-secondary": "var(--secondary)",
+      "--color-secondary-foreground": "var(--secondary-foreground)",
+      "--color-muted": "var(--muted)",
+      "--color-muted-foreground": "var(--muted-foreground)",
+      "--color-accent": "var(--accent)",
+      "--color-accent-foreground": "var(--accent-foreground)",
+      "--color-destructive": "var(--destructive)",
+      "--color-ok": "var(--ok)",
+      "--color-ok-soft": "var(--ok-soft)",
+      "--color-ok-foreground": "var(--ok-foreground)",
+      "--color-warn": "var(--warn)",
+      "--color-warn-soft": "var(--warn-soft)",
+      "--color-warn-foreground": "var(--warn-foreground)",
+      "--color-border": "var(--border)",
+      "--color-input": "var(--input)",
+      "--color-ring": "var(--ring)",
+      "--font-display": "JetBrains Mono",
+      "--font-sans": "Inter"
+    }
+  },
+  "files": [
+    {
+      "path": "theme/graphite-terminal.css",
+      "type": "registry:style",
+      "target": "src/identities/graphite-terminal/theme.css",
+      "content": "/* graphite-terminal - shadcn/ui theme (Tailwind v4).\n   Drop into your global CSS after `@import \"tailwindcss\";`.\n   Scoped to [data-theme] / [data-identity] so multiple identities can be\n   imported side by side without cascade bleed; set either on <html> to\n   activate. Values are the identity spec from identity.json. */\n\n@theme inline {\n  --color-background: var(--background);\n  --color-foreground: var(--foreground);\n  --color-card: var(--card);\n  --color-card-foreground: var(--card-foreground);\n  --color-popover: var(--popover);\n  --color-popover-foreground: var(--popover-foreground);\n  --color-primary: var(--primary);\n  --color-primary-foreground: var(--primary-foreground);\n  --color-secondary: var(--secondary);\n  --color-secondary-foreground: var(--secondary-foreground);\n  --color-muted: var(--muted);\n  --color-muted-foreground: var(--muted-foreground);\n  --color-accent: var(--accent);\n  --color-accent-foreground: var(--accent-foreground);\n  --color-destructive: var(--destructive);\n  --color-destructive-foreground: var(--destructive-foreground);\n  --color-ok: var(--ok);\n  --color-ok-soft: var(--ok-soft);\n  --color-ok-foreground: var(--ok-foreground);\n  --color-warn: var(--warn);\n  --color-warn-soft: var(--warn-soft);\n  --color-warn-foreground: var(--warn-foreground);\n  --color-border: var(--border);\n  --color-input: var(--input);\n  --color-ring: var(--ring);\n  --font-display: \"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace;\n  --font-sans: \"Inter\", system-ui, sans-serif;\n  --font-mono: \"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace;\n  --radius-sm: calc(var(--radius) - 4px);\n  --radius-md: calc(var(--radius) - 2px);\n  --radius-lg: var(--radius);\n  --radius-xl: calc(var(--radius) + 4px);\n}\n\n[data-theme=\"graphite-terminal\"],\n[data-identity=\"graphite-terminal\"] {\n  --background: oklch(14.5% 0.008 255);\n  --foreground: oklch(92% 0.005 255);\n  --card: oklch(17.5% 0.009 255);\n  --card-foreground: oklch(92% 0.005 255);\n  --popover: oklch(18.5% 0.009 255);\n  --popover-foreground: oklch(92% 0.005 255);\n  --primary: oklch(82% 0.12 118);\n  --primary-foreground: oklch(15% 0.02 118);\n  --secondary: oklch(82% 0.12 118 / 0.14);\n  --secondary-foreground: oklch(87% 0.006 255);\n  --muted: oklch(21.5% 0.009 255);\n  --muted-foreground: oklch(68% 0.008 255);\n  --accent: oklch(82% 0.12 118 / 0.14);\n  --accent-foreground: oklch(88% 0.01 130);\n  --destructive: oklch(66% 0.17 25);\n  --destructive-foreground: oklch(15% 0.02 25);\n  --ok: oklch(76% 0.13 155);\n  --ok-soft: oklch(76% 0.13 155 / 0.14);\n  --ok-foreground: oklch(83% 0.12 155);\n  --warn: oklch(80% 0.13 85);\n  --warn-soft: oklch(80% 0.13 85 / 0.14);\n  --warn-foreground: oklch(85% 0.11 85);\n  --border: oklch(88% 0.006 255 / 0.22);\n  --input: oklch(88% 0.006 255 / 0.22);\n  --ring: oklch(82% 0.12 118);\n  --radius: 0.5rem;\n  --font-display: \"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace;\n  --font-sans: \"Inter\", system-ui, sans-serif;\n  --font-mono: \"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace;\n  --shadow-identity: 0 1px 2px oklch(0% 0 0 / 0.35);\n  --identity-gradient-to: oklch(22% 0.06 155);\n  color-scheme: dark;\n}\n\n/* Identity signatures: mono display on headings, tabular mono data, flat fast motion. */\n[data-theme=\"graphite-terminal\"] h1, [data-identity=\"graphite-terminal\"] h1,\n[data-theme=\"graphite-terminal\"] h2, [data-identity=\"graphite-terminal\"] h2,\n[data-theme=\"graphite-terminal\"] h3, [data-identity=\"graphite-terminal\"] h3,\n[data-theme=\"graphite-terminal\"] .font-display, [data-identity=\"graphite-terminal\"] .font-display {\n  font-family: var(--font-display);\n  letter-spacing: -0.01em;\n}\n[data-theme=\"graphite-terminal\"] h1, [data-identity=\"graphite-terminal\"] h1 { letter-spacing: -0.02em; }\n[data-theme=\"graphite-terminal\"] .tabular, [data-identity=\"graphite-terminal\"] .tabular {\n  font-variant-numeric: tabular-nums;\n}\n[data-theme=\"graphite-terminal\"] body, [data-identity=\"graphite-terminal\"] body {\n  font-family: var(--font-sans);\n  -webkit-font-smoothing: antialiased;\n}\n@media (prefers-reduced-motion: reduce) {\n  [data-theme=\"graphite-terminal\"] *, [data-identity=\"graphite-terminal\"] *,\n  [data-theme=\"graphite-terminal\"] *::before, [data-identity=\"graphite-terminal\"] *::before,\n  [data-theme=\"graphite-terminal\"] *::after, [data-identity=\"graphite-terminal\"] *::after {\n    animation-duration: 0.01ms !important;\n    transition-duration: 0.01ms !important;\n  }\n}\n\n\n/* ---- overrides ---- */\n/* graphite-terminal overrides - the opinionated treatment on top of stock shadcn.\n   Layer AFTER shadcn styles. Each rule is a deliberate identity decision. */\n\n/* Buttons are terminal controls: mono face, flat and fast. No lift; feedback is\n   glow on the primary action only. */\n[data-identity=\"graphite-terminal\"] [data-slot=\"button\"] {\n  font-family: var(--font-mono);\n  font-weight: 600;\n  letter-spacing: 0.01em;\n  transition: background-color 120ms cubic-bezier(0, 0, 0.2, 1),\n    border-color 120ms cubic-bezier(0, 0, 0.2, 1),\n    box-shadow 120ms cubic-bezier(0, 0, 0.2, 1);\n}\n[data-identity=\"graphite-terminal\"] [data-slot=\"button\"].bg-primary:hover {\n  box-shadow: 0 0 0 1px var(--ring), 0 0 14px oklch(82% 0.12 118 / 0.25);\n}\n\n/* Cards: flat stepped surfaces with hairline borders. Hover strengthens the\n   border, it never lifts and never grows a shadow. */\n[data-identity=\"graphite-terminal\"] [data-slot=\"card\"] {\n  border-radius: 8px;\n  box-shadow: none;\n  transition: border-color 120ms cubic-bezier(0, 0, 0.2, 1);\n}\n[data-identity=\"graphite-terminal\"] a[data-slot=\"card\"]:hover,\n[data-identity=\"graphite-terminal\"] .hover-lift:hover {\n  border-color: oklch(88% 0.006 255 / 0.45);\n}\n\n/* Focus: lime ring with a hairline background gap - a lit terminal cursor, not\n   a harsh outline. Radius untouched so pills and rounded elements keep shape. */\n[data-identity=\"graphite-terminal\"] :focus-visible {\n  outline: none;\n  box-shadow: 0 0 0 1px var(--background), 0 0 0 3px oklch(82% 0.12 118 / 0.5);\n}\n\n/* Tables: mono headers, hairline grid, tabular numbers. */\n[data-identity=\"graphite-terminal\"] table {\n  font-variant-numeric: tabular-nums;\n  border-collapse: separate;\n  border-spacing: 0;\n}\n[data-identity=\"graphite-terminal\"] th {\n  font-family: var(--font-mono);\n  font-size: 10.5px;\n  font-weight: 600;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: oklch(68% 0.008 255);\n}\n\n/* Badges: mono status chips. */\n[data-identity=\"graphite-terminal\"] [data-slot=\"badge\"] {\n  font-family: var(--font-mono);\n  letter-spacing: 0.04em;\n  font-weight: 600;\n}\n\n/* Inputs: dark field, quick border/glow focus instead of a color flip. */\n[data-identity=\"graphite-terminal\"] input,\n[data-identity=\"graphite-terminal\"] textarea,\n[data-identity=\"graphite-terminal\"] select {\n  transition: border-color 120ms ease, box-shadow 120ms ease;\n}\n"
+    },
+    {
+      "path": "prompt-pack/graphite-terminal.md",
+      "type": "registry:file",
+      "target": "src/identities/graphite-terminal/prompt-pack.md",
+      "content": "# graphite-terminal - Agent Prompt-Pack\n\nYou are building with the **graphite-terminal** design identity: dark dense ops\ntooling. Near-black graphite, electric lime action, mono data. The design\ndecisions are already made - follow this pack exactly and ship product. Do not\nimprovise visual design.\n\n## Identity contract\n\n- **Fonts**: JetBrains Mono for every heading, display number, id, metric,\n  status chip, and code snippet; Inter for body prose and UI text. Never\n  introduce another font. Headings: -0.01em to -0.02em tracking. Body: 15px,\n  line-height 1.55.\n- **Color**: lime `oklch(82% 0.12 118)` is for ACTION (primary buttons, links,\n  focus, selected states) - never decoration, never large fills except the\n  hero gradient panel. Semantic colors only for meaning: green = healthy,\n  amber = degraded/pending, red = failing/destructive (destructive is the\n  lighter dark-theme red `oklch(66% 0.17 25)`, never the light-theme red).\n- **Surfaces are stepped graphite** (hue 255): page 14.5%, card 17.5%,\n  popover 18.5%, muted 21.5%. Depth = a lighter step plus a hairline border,\n  never a heavy shadow. Never pure black `#000`, never pure white text.\n- **Contrast floor (measured)**: body text 15.6:1 on the page step; muted\n  text 6.6-6.9:1; dark-on-lime action 11.5:1; destructive 5.9:1; borders\n  clear 3:1 (3.7:1 on card). If you introduce a new color pair, it must clear\n  4.5:1 for text and 3:1 for boundaries. Gray-on-gray below that is a bug.\n- **Radius is tight**: controls 4px, surfaces/cards 8px, pills only for\n  avatars. Nothing softer than 8px except pills; no rounded-2xl softness.\n- **Density is tight**: 15px base, 36-40px interactive rows, 4px spacing\n  grid, 16-32px between sections. Dense means efficient, not cramped: keep\n  one clear gutter rhythm.\n- **Numbers are mono and tabular** (`font-mono tabular-nums`) everywhere a\n  metric, id, price, or latency appears - `99.98%`, `42ms`, `svc-01`. Units\n  stay lowercase (`ms`, `mb`); thousands use commas.\n- **Motion**: 120ms, `cubic-bezier(0, 0, 0.2, 1)`. Feedback is border/glow\n  change, never lift or bounce. Respect `prefers-reduced-motion`.\n- **Focus**: lime ring with a background gap (`0 0 0 1px` page color, `0 0 0\n  3px` lime/50) - a lit terminal cursor, not a harsh outline.\n- **Shadows**: flat. The only sanctioned shadow is the theme's\n  `--shadow-identity` (1px black drop). Glows are reserved for the primary\n  button hover.\n\n## Layout rules\n\n- Max content width 1120px (prose 680px). Centered, left-aligned content, one\n  primary action per view.\n- Sections alternate `--background` and `--muted` steps; never light\n  sections. Section headers: eyebrow (11px mono, 700, 0.14em, uppercase,\n  lime) → h2 → one-sentence support.\n- Landing heroes: left copy / right visual. The visual is the one sanctioned\n  gradient (150deg, lime → deep green `oklch(22% 0.06 155)`) with the\n  identity signature: a mono prompt line (`~/ops $ ...`).\n- Dashboards: stat cards (uppercase 10.5px labels, 22px mono numbers), dense\n  hairline tables in 8px-bordered wraps, sticky 52px header with backdrop\n  blur.\n- Forms: labels above inputs, 8px gaps in pairs, segmented controls for 2-4\n  mutually exclusive options, toggles for single switches.\n\n## Component choices (do not substitute)\n\n- Mutually exclusive options → Segmented Control, never dropdowns.\n- Single on/off → Toggle. 2-5 static filters → Chips.\n- Page-level empty states → the identity dead-state pattern (title + one-line\n  body + primary action), never blank space.\n- Feedback → Toast, bottom-center, one at a time.\n- Navigation → top header for marketing and shells; sidebars only when a\n  dashboard truly needs a second nav level.\n\n## Copy voice\n\n- Plain, precise, unexcited. Short sentences. Ops vocabulary is welcome\n  (`deploy`, `incident`, `rollback`); keep product labels in English.\n- Buttons are verbs: \"Deploy now\", not \"Submit\". Empty states tell the user\n  what to do next.\n- Statuses are single words in chips: Healthy, Degraded, Failing. Timestamps:\n  `12 Oct 14:02` or \"3 min ago\".\n\n## Do not\n\n- Do not add gradients except the sanctioned hero panel; no glows except the\n  primary hover and focus ring.\n- Do not use lime as decoration, large fill, or background wash.\n- Do not use light sections, pure black surfaces, glassmorphism, bounce\n  easing, or transitions above 180ms.\n- Do not invent spacing outside the 4px grid, or radii above 8px (pills\n  excepted).\n- Do not add fonts, weights above 700, or letter-spacing below -0.02em.\n- Do not set body text below 4.5:1 contrast or boundaries below 3:1.\n\n## Fonts in self-contained output\n\nWhen the deliverable is a single HTML file, inline the fonts: base64 woff2\n@font-face for JetBrains Mono 400/600/700 and Inter 400/500/600 (latin\nsubsets, ~30KB each). For app installs, use `@fontsource/jetbrains-mono` +\n`@fontsource/inter`. The mono stack in the theme is a preload fallback only -\nnever ship system mono as the final display face.\n"
+    },
+    {
+      "path": "blocks/article.tsx",
+      "type": "registry:block",
+      "target": "src/identities/graphite-terminal/blocks/article.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { Card } from \"@/components/ui/card\"\n\nexport function Article({\n  eyebrow,\n  title,\n  meta,\n  children,\n}: {\n  eyebrow: string\n  title: string\n  meta: string\n  children: ReactNode\n}) {\n  return (\n    <article className=\"mx-auto max-w-[680px] px-6 py-12\">\n      <span className=\"font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-primary\">\n        {eyebrow}\n      </span>\n      <h1 className=\"mt-3 font-display text-[28px] font-bold leading-[1.2] tracking-[-0.02em]\">\n        {title}\n      </h1>\n      <p className=\"mt-2.5 font-mono text-[12px] text-muted-foreground\">{meta}</p>\n      <div className=\"mt-8 flex flex-col gap-4.5 text-[15px] leading-[1.65] [&_blockquote]:border-l-4 [&_blockquote]:border-primary/40 [&_blockquote]:pl-4 [&_blockquote]:italic [&_code]:font-mono [&_code]:text-[13px] [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-[18px] [&_h2]:font-bold [&_h2]:tracking-[-0.01em] [&_li]:mt-1.5 [&_ul]:ml-5 [&_ul]:list-disc\">\n        {children}\n      </div>\n    </article>\n  )\n}\n\nexport function Callout({ tone = \"info\", children }: { tone?: \"info\" | \"warn\"; children: ReactNode }) {\n  return (\n    <Card\n      className={\n        tone === \"warn\"\n          ? \"rounded-lg border-none bg-warn-soft p-3.5 text-[13px] leading-relaxed text-warn-foreground\"\n          : \"rounded-lg border-none bg-accent p-3.5 text-[13px] leading-relaxed\"\n      }\n    >\n      {children}\n    </Card>\n  )\n}\n\nexport function Kpi({ value, label }: { value: string; label: string }) {\n  return (\n    <Card className=\"px-4 py-3\">\n      <b className=\"font-mono text-[20px] font-bold tracking-[-0.01em] tabular-nums\">{value}</b>\n      <span className=\"mt-0.5 block text-[11.5px] text-muted-foreground\">{label}</span>\n    </Card>\n  )\n}\n"
+    },
+    {
+      "path": "blocks/auth.tsx",
+      "type": "registry:block",
+      "target": "src/identities/graphite-terminal/blocks/auth.tsx",
+      "content": "import { Button } from \"@/components/ui/button\"\nimport { Card, CardContent, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\"\nimport { Input } from \"@/components/ui/input\"\nimport { Label } from \"@/components/ui/label\"\n\nexport function AuthCard({\n  title = \"Operator sign-in\",\n  description = \"Authenticate to access the console.\",\n  primaryCta = \"Sign in\",\n}: {\n  title?: string\n  description?: string\n  primaryCta?: string\n}) {\n  return (\n    <Card className=\"w-full max-w-sm rounded-lg shadow-[var(--shadow-identity)]\">\n      <CardHeader>\n        <CardTitle className=\"font-display text-[17px] font-bold tracking-[-0.01em]\">\n          {title}\n        </CardTitle>\n        <CardDescription>{description}</CardDescription>\n      </CardHeader>\n      <CardContent>\n        <form className=\"flex flex-col gap-3.5\">\n          <div className=\"grid gap-2\">\n            <Label htmlFor=\"email\">Email or handle</Label>\n            <Input id=\"email\" type=\"text\" placeholder=\"ops@station.dev\" autoCapitalize=\"none\" />\n          </div>\n          <div className=\"grid gap-2\">\n            <Label htmlFor=\"password\">Password</Label>\n            <Input id=\"password\" type=\"password\" />\n          </div>\n          <Button type=\"submit\" className=\"mt-1.5 h-10 rounded-lg font-semibold\">\n            {primaryCta}\n          </Button>\n        </form>\n      </CardContent>\n    </Card>\n  )\n}\n"
+    },
+    {
+      "path": "blocks/dashboard-shell.tsx",
+      "type": "registry:block",
+      "target": "src/identities/graphite-terminal/blocks/dashboard-shell.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { Badge } from \"@/components/ui/badge\"\nimport { Card, CardContent } from \"@/components/ui/card\"\n\nexport function DashboardShell({\n  title,\n  nav,\n  actions,\n  stats,\n  children,\n}: {\n  title: string\n  nav: { label: string; active?: boolean; count?: number }[]\n  actions?: ReactNode\n  stats: { value: string; label: string }[]\n  children: ReactNode\n}) {\n  return (\n    <div className=\"min-h-screen\">\n      <header className=\"sticky top-0 z-40 border-b border-border/80 bg-card/90 backdrop-blur-md\">\n        <div className=\"mx-auto flex h-[52px] max-w-[1120px] items-center gap-5 px-6\">\n          <span className=\"font-display text-[16px] font-bold tracking-[-0.01em]\">\n            {title}\n          </span>\n          <nav className=\"ml-auto flex items-center gap-5\">\n            {nav.map((n) => (\n              <a\n                key={n.label}\n                href=\"#\"\n                className={`text-[13px] font-medium transition-colors ${\n                  n.active ? \"font-semibold text-foreground\" : \"text-muted-foreground hover:text-primary\"\n                }`}\n              >\n                {n.label}\n                {n.count ? ` (${n.count})` : \"\"}\n              </a>\n            ))}\n          </nav>\n          {actions && <div className=\"flex items-center gap-2.5\">{actions}</div>}\n        </div>\n      </header>\n\n      <main className=\"mx-auto max-w-[1120px] px-6 py-8\">\n        <div className=\"mb-6 grid grid-cols-2 gap-2.5 lg:grid-cols-4\">\n          {stats.map((s) => (\n            <Card key={s.label} className=\"rounded-lg px-4 py-3\">\n              <b className=\"font-mono text-[22px] font-bold tracking-[-0.01em] tabular-nums\">{s.value}</b>\n              <span className=\"mt-0.5 block text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted-foreground\">\n                {s.label}\n              </span>\n            </Card>\n          ))}\n        </div>\n        {children}\n      </main>\n    </div>\n  )\n}\n\nexport function StatBadge({ label, tone = \"muted\" }: { label: string; tone?: \"muted\" | \"ok\" | \"warn\" | \"danger\" }) {\n  const tones = {\n    muted: \"bg-secondary text-secondary-foreground\",\n    ok: \"bg-ok-soft text-ok-foreground\",\n    warn: \"bg-warn-soft text-warn-foreground\",\n    danger: \"bg-destructive/10 text-destructive\",\n  }\n  return <Badge className={`rounded-sm px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide ${tones[tone]}`}>{label}</Badge>\n}\n"
+    },
+    {
+      "path": "blocks/hero.tsx",
+      "type": "registry:block",
+      "target": "src/identities/graphite-terminal/blocks/hero.tsx",
+      "content": "import { ArrowRight } from \"lucide-react\"\nimport { Button } from \"@/components/ui/button\"\n\nconst stats = [\n  { value: \"412\", label: \"deploys this week\" },\n  { value: \"99.98%\", label: \"fleet uptime\" },\n  { value: \"42ms\", label: \"p99 latency\" },\n  { value: \"3\", label: \"open incidents\" },\n]\n\nexport function Hero({\n  eyebrow,\n  title,\n  accent,\n  description,\n  primaryCta,\n  secondaryCta,\n  stats = [\n    { value: \"412\", label: \"deploys this week\" },\n    { value: \"99.98%\", label: \"fleet uptime\" },\n    { value: \"42ms\", label: \"p99 latency\" },\n    { value: \"3\", label: \"open incidents\" },\n  ],\n}: {\n  eyebrow: string\n  title: string\n  accent?: string\n  description: string\n  primaryCta: string\n  secondaryCta?: string\n  stats?: { value: string; label: string }[]\n}) {\n  return (\n    <section className=\"grid grid-cols-1 items-center gap-10 px-6 py-14 lg:grid-cols-[1.04fr_0.96fr] lg:py-20\">\n      <div>\n        <p className=\"font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-primary\">\n          {eyebrow}\n        </p>\n        <h1 className=\"mt-3 font-display text-[clamp(32px,4.4vw,44px)] font-bold leading-[1.08] tracking-[-0.02em]\">\n          {title} {accent && <em className=\"not-italic text-primary\">{accent}</em>}\n        </h1>\n        <p className=\"mt-4 max-w-[46ch] text-[15px] leading-relaxed text-muted-foreground\">\n          {description}\n        </p>\n        <div className=\"mt-6 flex flex-wrap gap-2.5\">\n          <Button size=\"lg\" className=\"h-[44px] rounded-lg px-6 text-[13.5px]\">\n            {primaryCta} <ArrowRight className=\"ml-1 size-4\" />\n          </Button>\n          {secondaryCta && (\n            <Button size=\"lg\" variant=\"outline\" className=\"h-[44px] rounded-lg px-6 text-[13.5px]\">\n              {secondaryCta}\n            </Button>\n          )}\n        </div>\n        <dl className=\"mt-8 flex flex-wrap gap-6 border-t border-border pt-4\">\n          {stats.map((s) => (\n            <div key={s.label}>\n              <dt className=\"sr-only\">{s.label}</dt>\n              <dd className=\"font-mono text-[20px] font-bold tracking-[-0.01em] tabular-nums\">\n                {s.value}\n              </dd>\n              <dd className=\"text-[12px] text-muted-foreground\">{s.label}</dd>\n            </div>\n          ))}\n        </dl>\n      </div>\n      <div\n        aria-hidden\n        className=\"relative flex min-h-[360px] items-center justify-center overflow-hidden rounded-lg bg-[linear-gradient(150deg,var(--color-primary),var(--identity-gradient-to))] shadow-[var(--shadow-identity)]\"\n      >\n        {/* Identity signature: a live prompt line over the lime-to-deep-green field. */}\n        <div className=\"absolute -right-20 -top-24 size-72 rounded-full bg-white/[0.05]\" />\n        <p className=\"font-mono text-[13px] text-primary-foreground/80\">~/ops $ tail -f fleet.log ▌</p>\n      </div>\n    </section>\n  )\n}\n"
+    },
+    {
+      "path": "blocks/table-page.tsx",
+      "type": "registry:block",
+      "target": "src/identities/graphite-terminal/blocks/table-page.tsx",
+      "content": "import { Card } from \"@/components/ui/card\"\nimport { DashboardShell, StatBadge } from \"./dashboard-shell\"\n\nconst services = [\n  { id: \"svc-01\", service: \"api-gateway\", owner: \"aowino\", status: \"Healthy\", tone: \"ok\", p99: \"38ms\" },\n  { id: \"svc-02\", service: \"auth-core\", owner: \"mkitui\", status: \"Degraded\", tone: \"warn\", p99: \"210ms\" },\n  { id: \"svc-03\", service: \"ledger-db\", owner: \"aowino\", status: \"Healthy\", tone: \"ok\", p99: \"12ms\" },\n  { id: \"svc-04\", service: \"ingest-fanout\", owner: \"wanjiku\", status: \"Failing\", tone: \"danger\", p99: \"n/a\" },\n]\n\nexport function TablePage() {\n  return (\n    <DashboardShell\n      title=\"Fleet\"\n      nav={[\n        { label: \"Overview\" },\n        { label: \"Services\", active: true },\n        { label: \"Deploys\" },\n        { label: \"Incidents\" },\n      ]}\n      stats={[\n        { value: \"4\", label: \"Services\" },\n        { value: \"1\", label: \"Degraded\" },\n        { value: \"99.98%\", label: \"Uptime 30d\" },\n        { value: \"42ms\", label: \"p99\" },\n      ]}\n    >\n      <h2 className=\"mb-3.5 font-display text-[16px] font-bold tracking-[-0.01em]\">Services</h2>\n      <div className=\"overflow-x-auto rounded-lg border border-border bg-card\">\n        <table className=\"w-full text-[13px]\">\n          <thead className=\"bg-secondary/50\">\n            <tr>\n              {[\"ID\", \"Service\", \"Owner\", \"Status\", \"p99\"].map((h) => (\n                <th key={h} className=\"px-3 py-2 text-left text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted-foreground\">\n                  {h}\n                </th>\n              ))}\n            </tr>\n          </thead>\n          <tbody>\n            {services.map((s) => (\n              <tr key={s.id} className=\"transition-colors hover:bg-accent/30\">\n                <td className=\"px-3 py-2 font-mono text-[12px]\">{s.id}</td>\n                <td>{s.service}</td>\n                <td>{s.owner}</td>\n                <td><StatBadge label={s.status} tone={s.tone as \"muted\" | \"ok\" | \"warn\" | \"danger\"} /></td>\n                <td className=\"font-mono tabular-nums\">{s.p99}</td>\n              </tr>\n            ))}\n          </tbody>\n        </table>\n      </div>\n    </DashboardShell>\n  )\n}\n\nexport function ReportEmpty() {\n  return (\n    <Card className=\"mx-auto max-w-md p-8 text-center\">\n      <h3 className=\"font-display text-[15px] font-bold\">Nothing here yet</h3>\n      <p className=\"mt-2 text-[13px] leading-relaxed text-muted-foreground\">\n        When a service registers it shows up here with live status.\n      </p>\n    </Card>\n  )\n}\n"
+    }
+  ],
+  "docs": "After install: (1) import the theme css in your global stylesheet AFTER the Tailwind import - it contains both the theme and the overrides layer; (2) set data-identity=\"graphite-terminal\" on your root html element so overrides apply; (3) attach prompt-pack.md to every agent building UI - it is the binding design contract; (4) fonts are installed as deps - import weights in your entry file (JetBrains Mono 400-700, Inter 400-600).",
+  "meta": {
+    "identityVersion": "1.0.0",
+    "tested": {
+      "shadcn": "2026-03 (cli v4)",
+      "tailwind": "4.x",
+      "@base-ui/react": "1.x"
+    },
+    "vibe": [
+      "dark",
+      "dense",
+      "technical",
+      "tool"
+    ]
+  }
+}

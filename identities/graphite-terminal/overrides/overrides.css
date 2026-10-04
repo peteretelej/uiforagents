@@ -1,0 +1,64 @@
+/* graphite-terminal overrides - the opinionated treatment on top of stock shadcn.
+   Layer AFTER shadcn styles. Each rule is a deliberate identity decision. */
+
+/* Buttons are terminal controls: mono face, flat and fast. No lift; feedback is
+   glow on the primary action only. */
+[data-identity="graphite-terminal"] [data-slot="button"] {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background-color 120ms cubic-bezier(0, 0, 0.2, 1),
+    border-color 120ms cubic-bezier(0, 0, 0.2, 1),
+    box-shadow 120ms cubic-bezier(0, 0, 0.2, 1);
+}
+[data-identity="graphite-terminal"] [data-slot="button"].bg-primary:hover {
+  box-shadow: 0 0 0 1px var(--ring), 0 0 14px oklch(82% 0.12 118 / 0.25);
+}
+
+/* Cards: flat stepped surfaces with hairline borders. Hover strengthens the
+   border, it never lifts and never grows a shadow. */
+[data-identity="graphite-terminal"] [data-slot="card"] {
+  border-radius: 8px;
+  box-shadow: none;
+  transition: border-color 120ms cubic-bezier(0, 0, 0.2, 1);
+}
+[data-identity="graphite-terminal"] a[data-slot="card"]:hover,
+[data-identity="graphite-terminal"] .hover-lift:hover {
+  border-color: oklch(88% 0.006 255 / 0.45);
+}
+
+/* Focus: lime ring with a hairline background gap - a lit terminal cursor, not
+   a harsh outline. Radius untouched so pills and rounded elements keep shape. */
+[data-identity="graphite-terminal"] :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--background), 0 0 0 3px oklch(82% 0.12 118 / 0.5);
+}
+
+/* Tables: mono headers, hairline grid, tabular numbers. */
+[data-identity="graphite-terminal"] table {
+  font-variant-numeric: tabular-nums;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+[data-identity="graphite-terminal"] th {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: oklch(68% 0.008 255);
+}
+
+/* Badges: mono status chips. */
+[data-identity="graphite-terminal"] [data-slot="badge"] {
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+/* Inputs: dark field, quick border/glow focus instead of a color flip. */
+[data-identity="graphite-terminal"] input,
+[data-identity="graphite-terminal"] textarea,
+[data-identity="graphite-terminal"] select {
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
