@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@uiforagents/ocean-calm",
+  "homepage": "https://uiforagents.com",
+  "items": [
+    {
+      "name": "ocean-calm",
+      "type": "registry:style",
+      "title": "Ocean Calm",
+      "description": "Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display over Inter body, generous whitespace, tabular numbers, quiet shadows.",
+      "file": "ocean-calm.json"
+    }
+  ]
+}

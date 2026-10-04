@@ -1,51 +1,14 @@
 {
   "name": "uiforagents",
-  "version": "0.2.0",
-  "description": "Registry-shaped, agent-first vanilla HTML/CSS/JS kit. The primary consumer is the AI agent building the UI.",
-  "bin": {
-    "uiforagents": "scripts/uiforagents.mjs"
-  },
-  "author": "Peter Etelej <peter@etelej.com>",
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/peteretelej/uiforagents#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/peteretelej/uiforagents.git"
-  },
-  "files": [
-    "AGENTS.md",
-    "SKILL.md",
-    "README.md",
-    "LICENSE",
-    "registry.json",
-    "changelog.json",
-    "schema/",
-    "items/",
-    "themes/",
-    "adapters/",
-    "scripts/",
-    "validation/",
-    "docs/",
-    "llms.txt"
+  "private": true,
+  "version": "1.0.0",
+  "description": "Design identities for agent-built apps - complete, opinionated design systems on shadcn/ui",
+  "type": "module",
+  "workspaces": [
+    "example"
   ],
   "scripts": {
-    "build": "node scripts/build-index.mjs && node scripts/build-arena.mjs",
-    "test-adapters": "vitest run"
-  },
-  "devDependencies": {
-    "@testing-library/react": "^16.3.3",
-    "jsdom": "^26.1.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "svelte": "^5.57.1",
-    "vitest": "^3.2.4",
-    "vue": "^3.5.43"
-  },
-  "keywords": [
-    "ui",
-    "agents",
-    "design-system",
-    "css",
-    "vanilla"
-  ]
+    "build:registry": "node tooling/build-registry.mjs",
+    "dev:example": "npm run dev --workspace example"
+  }
 }

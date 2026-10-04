@@ -1,0 +1,64 @@
+/* ocean-calm overrides - the opinionated treatment on top of stock shadcn.
+   Layer AFTER shadcn styles. Each rule is a deliberate identity decision. */
+
+/* Primary actions carry the identity shadow and slightly heavier weight. */
+[data-identity="ocean-calm"] [data-slot="button"][data-variant="default"],
+.ocean-calm .uifa-btn-primary {
+  font-weight: 600;
+  box-shadow: 0 2px 8px oklch(52% 0.2 258 / 0.3);
+}
+[data-identity="ocean-calm"] [data-slot="button"]:hover {
+  transform: translateY(-1px);
+}
+[data-identity="ocean-calm"] [data-slot="button"] {
+  transition: transform 180ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 180ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Cards: one radius everywhere, identity shadow, gentle hover lift. */
+[data-identity="ocean-calm"] [data-slot="card"] {
+  border-radius: 12px;
+  box-shadow: 0 1px 1px oklch(26% 0.02 255 / 0.05), 0 10px 30px oklch(26% 0.02 255 / 0.05);
+  transition: transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-identity="ocean-calm"] a[data-slot="card"]:hover,
+[data-identity="ocean-calm"] .hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1px 2px oklch(26% 0.02 255 / 0.05), 0 6px 16px oklch(26% 0.02 255 / 0.07),
+    0 16px 40px oklch(52% 0.2 258 / 0.08);
+}
+
+/* Focus: soft azure halo, never a harsh ring. */
+[data-identity="ocean-calm"] :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px oklch(94% 0.03 250), 0 0 0 5px oklch(52% 0.2 258 / 0.55);
+  border-radius: 6px;
+}
+
+/* Tables: airy, tabular numbers, quiet header. */
+[data-identity="ocean-calm"] table {
+  font-variant-numeric: tabular-nums;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+[data-identity="ocean-calm"] th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: oklch(46% 0.02 252);
+}
+
+/* Badges: uppercase tracking, quiet confidence. */
+[data-identity="ocean-calm"] [data-slot="badge"] {
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+/* Inputs: soft focus in the accent halo instead of a hard border color flip. */
+[data-identity="ocean-calm"] input,
+[data-identity="ocean-calm"] textarea,
+[data-identity="ocean-calm"] select {
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}

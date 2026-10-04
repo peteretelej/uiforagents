@@ -1,8 +1,0 @@
-/* Planted token sheet for the self-test: a partial vocabulary on purpose,
-   so clean.html can only pass via item cssVars plus these declarations. */
-
-:root {
-  --uifa-bg: oklch(98% 0.005 85);
-  --uifa-text: oklch(24% 0.01 75);
-  --uifa-space: 8px;
-}

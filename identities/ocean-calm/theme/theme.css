@@ -1,0 +1,77 @@
+/* ocean-calm - shadcn/ui theme (Tailwind v4).
+   Drop into your global CSS after `@import "tailwindcss";`.
+   Values are the identity spec from identity.json. */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root,
+[data-theme="ocean-calm"] {
+  --background: oklch(98.5% 0.005 240);
+  --foreground: oklch(26% 0.02 255);
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(26% 0.02 255);
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(26% 0.02 255);
+  --primary: oklch(52% 0.2 258);
+  --primary-foreground: oklch(99% 0.005 258);
+  --secondary: oklch(94% 0.03 250);
+  --secondary-foreground: oklch(30% 0.05 258);
+  --muted: oklch(96.5% 0.008 242);
+  --muted-foreground: oklch(46% 0.02 252);
+  --accent: oklch(94% 0.03 250);
+  --accent-foreground: oklch(35% 0.1 258);
+  --destructive: oklch(52% 0.17 30);
+  --destructive-foreground: oklch(99% 0.005 30);
+  --border: oklch(91% 0.012 242);
+  --input: oklch(91% 0.012 242);
+  --ring: oklch(52% 0.2 258);
+  --radius: 0.625rem;
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --shadow-calm: 0 1px 1px oklch(26% 0.02 255 / 0.05), 0 2px 6px oklch(26% 0.02 255 / 0.05),
+    0 12px 32px oklch(52% 0.2 258 / 0.06);
+  color-scheme: light;
+}
+
+/* Identity signatures: display face on headings, tabular numbers, calm motion. */
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+h1 { letter-spacing: -0.03em; }
+.tabular { font-variant-numeric: tabular-nums; }
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

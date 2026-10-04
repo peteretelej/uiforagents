@@ -1,4 +1,0 @@
-- article:
-  - heading "Usage summary" [level=3]
-  - paragraph: Your workspace used 42% of its monthly quota. Upgrade any time; usage resets on the first of the month.
-  - button "View usage"

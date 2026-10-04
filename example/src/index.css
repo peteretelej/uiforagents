@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "../../identities/ocean-calm/theme/theme.css";
+@import "../../identities/ocean-calm/overrides/overrides.css";
+
+/* Identity blocks live outside this app's root - register them for scanning. */
+@source "../identities";

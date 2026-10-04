@@ -1,0 +1,55 @@
+{
+  "$schema": "https://schemas.uiforagents.com/identity/1.0.json",
+  "name": "ocean-calm",
+  "version": "1.0.0",
+  "title": "Ocean Calm",
+  "description": "Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display over Inter body, generous whitespace, tabular numbers, quiet shadows.",
+  "lineage": "tess-azure",
+  "vibe": ["calm", "trust", "light", "product"],
+  "author": "uiforagents",
+  "license": "Apache-2.0",
+  "stack": {
+    "base": "shadcn/ui",
+    "primitives": "base-ui",
+    "tailwind": "v4",
+    "react": ">=18",
+    "tested": {
+      "shadcn": "2026-03 (cli v4)",
+      "tailwind": "4.x",
+      "@base-ui/react": "1.x"
+    }
+  },
+  "typography": {
+    "display": "Plus Jakarta Sans",
+    "body": "Inter",
+    "mono": "ui-monospace, Menlo, Consolas, monospace",
+    "ramp": {
+      "display-xl": "clamp(36px, 5vw, 52px) / 800 / -0.035em",
+      "h1": "30px / 800 / -0.03em",
+      "h2": "22px / 700 / -0.02em",
+      "h3": "16px / 700 / -0.01em",
+      "body": "16px / 400 / 1.6",
+      "small": "13px / 400 / 1.5",
+      "eyebrow": "11.5px / 800 / 0.16em uppercase"
+    }
+  },
+  "tokens": {
+    "background": "oklch(98.5% 0.005 240)",
+    "surface": "oklch(100% 0 0)",
+    "border": "oklch(91% 0.012 242)",
+    "text": "oklch(26% 0.02 255)",
+    "text-muted": "oklch(46% 0.02 252)",
+    "accent": "oklch(52% 0.2 258)",
+    "accent-fg": "oklch(99% 0.005 258)",
+    "accent-soft": "oklch(94% 0.03 250)",
+    "ok": "oklch(46% 0.11 155)",
+    "warn": "oklch(55% 0.14 65)",
+    "danger": "oklch(52% 0.17 30)",
+    "radius-control": "8px",
+    "radius-surface": "12px",
+    "shadow": "0 1px 1px oklch(26% 0.02 255 / 0.05), 0 2px 6px oklch(26% 0.02 255 / 0.05), 0 12px 32px oklch(52% 0.2 258 / 0.06)"
+  },
+  "blocks": ["hero", "auth", "dashboard-shell", "table-page", "article"],
+  "registry": "@uiforagents/ocean-calm",
+  "notes": "Density is relaxed (calm product UI): 16px base, 44-56px rows, 8px grid. Numbers are tabular. Accent is for action, never decoration."
+}
