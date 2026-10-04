@@ -8,11 +8,25 @@ component treatment overrides, composed blocks, fonts, motion defaults, and an
 agent prompt-pack, so an AI (or human) can ship a premium UI without making a
 single design decision.
 
+**Build the theme + overrides + blocks into a shadcn registry payload:**
+
 ```bash
-npx shadcn add @uiforagents/ocean-calm
+node tooling/build-registry.mjs ocean-calm   # emits identities/ocean-calm/registry/
 ```
 
-Then hand your agent the identity's prompt-pack. That's the whole integration.
+Install into a shadcn app (Tailwind v4 + React 18+):
+
+1. Add `@uiforagents/ocean-calm` to your `components.json` `registries`, or copy
+   `identities/ocean-calm/registry/ocean-calm.json` and run
+   `npx shadcn add ./ocean-calm.json`.
+2. Import `theme/ocean-calm.css` (theme + overrides) in your global CSS, after
+   the Tailwind import.
+3. Attach `prompt-pack.md` to every agent building UI - this is the integration.
+4. Fonts: `npm i @fontsource/plus-jakarta-sans @fontsource/inter` and import
+   the weights in your entry file.
+
+Registry hosting (making the one-liner work directly) is in progress; until it
+lands, use the copy path above.
 
 ## The catalogue
 
@@ -20,6 +34,7 @@ Then hand your agent the identity's prompt-pack. That's the whole integration.
 |---|---|---|
 | **ocean-calm** | Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display, generous whitespace. | ✅ v1.0 |
 | **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting. | 🔜 queued |
+| **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces. | 🔜 queued |
 
 Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
 one shared demo app).

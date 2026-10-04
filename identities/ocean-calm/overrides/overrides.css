@@ -1,10 +1,13 @@
 /* ocean-calm overrides - the opinionated treatment on top of stock shadcn.
    Layer AFTER shadcn styles. Each rule is a deliberate identity decision. */
 
-/* Primary actions carry the identity shadow and slightly heavier weight. */
-[data-identity="ocean-calm"] [data-slot="button"][data-variant="default"],
-.ocean-calm .uifa-btn-primary {
+/* Buttons carry the identity weight and signature shadow. Primary detection:
+   shadcn emits no data-variant attribute, so style the slot and let .bg-primary
+   (theme-driven) carry the accent shadow. */
+[data-identity="ocean-calm"] [data-slot="button"] {
   font-weight: 600;
+}
+[data-identity="ocean-calm"] [data-slot="button"].bg-primary {
   box-shadow: 0 2px 8px oklch(52% 0.2 258 / 0.3);
 }
 [data-identity="ocean-calm"] [data-slot="button"]:hover {
@@ -29,11 +32,11 @@
     0 16px 40px oklch(52% 0.2 258 / 0.08);
 }
 
-/* Focus: soft azure halo, never a harsh ring. */
+/* Focus: soft azure halo, never a harsh ring. Radius untouched so pills and
+   rounded elements keep their shape. */
 [data-identity="ocean-calm"] :focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px oklch(94% 0.03 250), 0 0 0 5px oklch(52% 0.2 258 / 0.55);
-  border-radius: 6px;
 }
 
 /* Tables: airy, tabular numbers, quiet header. */

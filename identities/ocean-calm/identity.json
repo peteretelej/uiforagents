@@ -1,16 +1,14 @@
 {
-  "$schema": "https://schemas.uiforagents.com/identity/1.0.json",
   "name": "ocean-calm",
   "version": "1.0.0",
   "title": "Ocean Calm",
   "description": "Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display over Inter body, generous whitespace, tabular numbers, quiet shadows.",
-  "lineage": "tess-azure",
   "vibe": ["calm", "trust", "light", "product"],
   "author": "uiforagents",
   "license": "Apache-2.0",
   "stack": {
     "base": "shadcn/ui",
-    "primitives": "base-ui",
+    "primitives": "shadcn defaults (radix slot; base-ui supported)",
     "tailwind": "v4",
     "react": ">=18",
     "tested": {
