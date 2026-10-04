@@ -1,0 +1,97 @@
+/* nairobi-noon - shadcn/ui theme (Tailwind v4).
+   Drop into your global CSS after `@import "tailwindcss";`.
+   Scoped to [data-theme="nairobi-noon"]; set it on <html> to activate.
+   Values are the identity spec from identity.json (lineage: lab direction "nairobi-noon"). */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-foreground: var(--ok-fg);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-foreground: var(--warn-fg);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Lilita One", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+[data-theme="nairobi-noon"] {
+  --background: oklch(96% 0.02 80);
+  --foreground: oklch(28% 0.02 60);
+  --card: oklch(99% 0.01 80);
+  --card-foreground: oklch(28% 0.02 60);
+  --popover: oklch(99% 0.01 80);
+  --popover-foreground: oklch(28% 0.02 60);
+  --primary: oklch(52% 0.15 45);
+  --primary-foreground: oklch(98% 0.008 45);
+  --secondary: oklch(94% 0.04 45);
+  --secondary-foreground: oklch(34% 0.08 45);
+  --muted: oklch(93% 0.018 80);
+  --muted-foreground: oklch(46% 0.03 60);
+  --accent: oklch(94% 0.04 45);
+  --accent-foreground: oklch(36% 0.09 45);
+  --destructive: oklch(52% 0.17 30);
+  --destructive-foreground: oklch(99% 0.005 30);
+  --ok: oklch(46% 0.11 155);
+  --ok-soft: oklch(95% 0.03 155);
+  --ok-fg: oklch(38% 0.09 155);
+  --warn: oklch(46% 0.1 70);
+  --warn-soft: oklch(96% 0.035 85);
+  --warn-fg: oklch(38% 0.07 65);
+  --border: oklch(89% 0.025 80);
+  --input: oklch(89% 0.025 80);
+  --ring: oklch(52% 0.15 45);
+  --radius: 0.625rem;
+  --font-display: "Lilita One", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --shadow-identity: 0 1px 2px oklch(28% 0.02 60 / 0.08), 0 10px 28px oklch(28% 0.02 60 / 0.07);
+  --identity-gradient-to: oklch(38% 0.12 40);
+  color-scheme: light;
+}
+
+/* Identity signatures: Lilita One display keeps its rounded personality. */
+[data-theme="nairobi-noon"] h1,
+[data-theme="nairobi-noon"] h2,
+[data-theme="nairobi-noon"] h3,
+[data-theme="nairobi-noon"] .font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+[data-theme="nairobi-noon"] .tabular {
+  font-variant-numeric: tabular-nums;
+}
+[data-theme="nairobi-noon"] body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="nairobi-noon"] *, [data-theme="nairobi-noon"] *::before, [data-theme="nairobi-noon"] *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

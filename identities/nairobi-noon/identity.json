@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schemas.uiforagents.com/identity/1.0.json",
+  "name": "nairobi-noon",
+  "version": "1.0.0",
+  "title": "Nairobi Noon",
+  "description": "Warm Kenyan daylight. Sand and terracotta, relaxed and inviting, Lilita One display over Inter body.",
+  "lineage": "nairobi-noon (lab direction library)",
+  "vibe": ["warm", "daylight", "light", "mtaa"],
+  "author": "uiforagents",
+  "license": "Apache-2.0",
+  "stack": {
+    "base": "shadcn/ui",
+    "primitives": "base-ui",
+    "tailwind": "v4",
+    "react": ">=18",
+    "tested": {
+      "shadcn": "2026-03 (cli v4)",
+      "tailwind": "4.x",
+      "@base-ui/react": "1.x"
+    }
+  },
+  "typography": {
+    "display": "Lilita One",
+    "body": "Inter",
+    "mono": "ui-monospace, Menlo, Consolas, monospace",
+    "ramp": {
+      "display-xl": "clamp(34px, 4.6vw, 48px) / 400 (Lilita is one weight) / 0.01em",
+      "h1": "28px / 400 / 0.01em",
+      "h2": "21px / 400 / 0.01em",
+      "h3": "16px / 400 / 0",
+      "body": "16px / 400 / 1.6",
+      "small": "13px / 400 / 1.5",
+      "eyebrow": "11.5px / 800 / 0.16em uppercase"
+    }
+  },
+  "tokens": {
+    "background": "oklch(96% 0.02 80)",
+    "surface": "oklch(99% 0.01 80)",
+    "border": "oklch(89% 0.025 80)",
+    "text": "oklch(28% 0.02 60)",
+    "text-muted": "oklch(46% 0.03 60)",
+    "accent": "oklch(52% 0.15 45)",
+    "accent-fg": "oklch(98% 0.008 45)",
+    "accent-soft": "oklch(94% 0.04 45)",
+    "ok": "oklch(46% 0.11 155)",
+    "warn": "oklch(46% 0.1 70)",
+    "danger": "oklch(52% 0.17 30)",
+    "radius-control": "8px",
+    "radius-surface": "12px",
+    "shadow": "0 1px 2px oklch(28% 0.02 60 / 0.08), 0 4px 12px oklch(28% 0.02 60 / 0.06)",
+    "gradient-to": "oklch(38% 0.12 40)"
+  },
+  "blocks": ["hero", "auth", "dashboard-shell", "table-page", "article"],
+  "registry": "@uiforagents/nairobi-noon",
+  "notes": "Warm relaxed product UI. Terracotta is for action. Lilita One carries headings with its own personality - never letterspace it tight, never use it for body. Warm neutrals everywhere; no cool blues."
+}

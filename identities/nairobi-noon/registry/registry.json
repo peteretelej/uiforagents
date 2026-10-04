@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@uiforagents/nairobi-noon",
+  "homepage": "https://uiforagents.com",
+  "items": [
+    {
+      "name": "nairobi-noon",
+      "type": "registry:style",
+      "title": "Nairobi Noon",
+      "description": "Warm Kenyan daylight. Sand and terracotta, relaxed and inviting, Lilita One display over Inter body.",
+      "file": "nairobi-noon.json"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+/* nairobi-noon overrides - warm, relaxed treatments on top of stock shadcn.
+   Layer AFTER shadcn styles. Each rule is a deliberate identity decision. */
+
+[data-identity="nairobi-noon"] [data-slot="button"][data-variant="default"] {
+  font-weight: 600;
+  box-shadow: 0 2px 8px oklch(52% 0.15 45 / 0.28);
+}
+[data-identity="nairobi-noon"] [data-slot="button"]:hover {
+  transform: translateY(-1px);
+}
+[data-identity="nairobi-noon"] [data-slot="button"] {
+  transition: transform 200ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  border-radius: 10px;
+}
+
+/* Cards: warm surfaces, gentle noon shadow. */
+[data-identity="nairobi-noon"] [data-slot="card"] {
+  border-radius: 12px;
+  box-shadow: 0 1px 2px oklch(28% 0.02 60 / 0.08), 0 10px 28px oklch(28% 0.02 60 / 0.07);
+  transition: transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-identity="nairobi-noon"] a[data-slot="card"]:hover,
+[data-identity="nairobi-noon"] .hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px oklch(28% 0.02 60 / 0.08), 0 14px 34px oklch(52% 0.15 45 / 0.14);
+}
+
+/* Focus: warm halo. */
+[data-identity="nairobi-noon"] :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px oklch(94% 0.04 45), 0 0 0 5px oklch(52% 0.15 45 / 0.5);
+  border-radius: 8px;
+}
+
+/* Tables: airy, warm header band, tabular numbers. */
+[data-identity="nairobi-noon"] table {
+  font-variant-numeric: tabular-nums;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+[data-identity="nairobi-noon"] th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: oklch(46% 0.03 60);
+}
+
+/* Badges: uppercase tracking. */
+[data-identity="nairobi-noon"] [data-slot="badge"] {
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+/* Inputs: soft warm focus. */
+[data-identity="nairobi-noon"] input,
+[data-identity="nairobi-noon"] textarea,
+[data-identity="nairobi-noon"] select {
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}

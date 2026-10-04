@@ -53,11 +53,11 @@
         <p>Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display, relaxed density, tabular numbers.</p>
       </div>
     </div>
-    <div class="card" id="card-nairobi-noon" onclick="soon()">
+    <div class="card" id="card-nairobi-noon" onclick="show('nairobi-noon')">
       <div class="shot" style="background:linear-gradient(150deg,#e8a04c,#c96f2e 60%,#8a3d1e)"></div>
       <div class="body">
-        <span class="pill soon">queued</span><br><b>Nairobi Noon</b>
-        <p>Warm Kenyan daylight. Sand and terracotta, relaxed and inviting.</p>
+        <span class="pill live">v1.0 live</span><br><b>Nairobi Noon</b>
+        <p>Warm Kenyan daylight. Sand and terracotta, Lilita One display, relaxed and inviting.</p>
       </div>
     </div>
     <div class="card" id="card-graphite-terminal" onclick="soon()">
@@ -69,11 +69,11 @@
     </div>
   </div>
 
-  <div class="install"><span class="prompt">$</span> npx shadcn add @uiforagents/ocean-calm</div>
+  <div class="install"><span class="prompt">$</span> npx shadcn add @uiforagents/ocean-calm &nbsp;<span style="opacity:.5">|</span>&nbsp; npx shadcn add @uiforagents/nairobi-noon</div>
 
   <p class="hint">Live demo - the same example app rendered under the identity:</p>
-  <iframe id="demo-ocean-calm" class="on" src="../example/dist/index.html" title="ocean-calm demo"></iframe>
-  <div id="demo-soon" class="soon-note" style="display:none">This identity is queued. ocean-calm is live above.</div>
+  <iframe id="demo-ocean-calm" class="on" src="../example/dist/index.html?identity=ocean-calm" title="ocean-calm demo"></iframe>
+  <div id="demo-soon" class="soon-note" style="display:none">This identity is queued. ocean-calm and nairobi-noon are live above.</div>
 </main>
 <script>
   function show(id) {
@@ -81,8 +81,14 @@
     document.getElementById('card-' + id).classList.add('active')
     const frame = document.getElementById('demo-ocean-calm')
     const soon = document.getElementById('demo-soon')
-    if (id === 'ocean-calm') { frame.classList.add('on'); frame.src = '../example/dist/index.html'; soon.style.display = 'none' }
-    else { frame.classList.remove('on'); soon.style.display = 'block' }
+    if (id === 'ocean-calm' || id === 'nairobi-noon') {
+      frame.classList.add('on')
+      frame.src = '../example/dist/index.html?identity=' + id
+      soon.style.display = 'none'
+    } else {
+      frame.classList.remove('on')
+      soon.style.display = 'block'
+    }
   }
   function soon() {
     document.querySelectorAll('.card').forEach(c => c.classList.remove('active'))

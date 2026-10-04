@@ -3,6 +3,11 @@ import { Hero } from "@identity/blocks/hero"
 import { DashboardShell, StatBadge } from "@identity/blocks/dashboard-shell"
 import { Article, Callout, Kpi } from "@identity/blocks/article"
 
+const IDENTITIES = [
+  { slug: "ocean-calm", label: "ocean-calm" },
+  { slug: "nairobi-noon", label: "nairobi-noon" },
+]
+
 const jobs = [
   { code: "TS-4U31", trade: "Plumbing", customer: "Wanjiku M.", zone: "Kilimani", status: "En route", tone: "muted", price: "KSh 2,310" },
   { code: "TS-9KQ2", trade: "Electrical", customer: "Otieno M.", zone: "Westlands", status: "Working", tone: "warn", price: "KSh 3,400" },
@@ -10,15 +15,22 @@ const jobs = [
   { code: "TS-Q8M1", trade: "ICT", customer: "Kamau P.", zone: "Karen", status: "Paid", tone: "ok", price: "KSh 1,850" },
 ]
 
-export default function App() {
+export default function App({ identity }: { identity: string }) {
   const [view, setView] = useState<"landing" | "dashboard" | "article">("landing")
 
+  const switchIdentity = (slug: string) => {
+    localStorage.setItem("uifa-identity", slug)
+    const url = new URL(location.href)
+    url.searchParams.set("identity", slug)
+    location.href = url.toString()
+  }
+
   return (
-    <div data-identity="ocean-calm" className="min-h-screen bg-background text-foreground">
-      <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-xs shadow-[var(--shadow-calm)]">
+    <div data-identity={identity} className="min-h-screen bg-background text-foreground">
+      <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-xs shadow-[var(--shadow-identity)]">
         <span className="size-2 rounded-full bg-primary" />
         <span className="font-medium">identity:</span>
-        <span className="font-display font-bold text-primary">ocean-calm</span>
+        <span className="font-display font-bold text-primary">{identity}</span>
         <span className="mx-1 text-muted-foreground">|</span>
         {(["landing", "dashboard", "article"] as const).map((v) => (
           <button
@@ -29,6 +41,18 @@ export default function App() {
             }`}
           >
             {v}
+          </button>
+        ))}
+        <span className="mx-1 text-muted-foreground">|</span>
+        {IDENTITIES.map((i) => (
+          <button
+            key={i.slug}
+            onClick={() => switchIdentity(i.slug)}
+            className={`rounded-full px-2.5 py-0.5 transition-colors ${
+              identity === i.slug ? "font-bold text-foreground" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {i.label}
           </button>
         ))}
       </div>
@@ -107,7 +131,7 @@ export default function App() {
               </thead>
               <tbody>
                 {jobs.map((j) => (
-                  <tr key={j.code} className="transition-colors hover:bg-[oklch(94%_0.03_250_/_0.45)]">
+                  <tr key={j.code} className="transition-colors hover:bg-accent/40">
                     <td className="px-3.5 py-3 font-mono text-[12.5px]">{j.code}</td>
                     <td>{j.trade}</td>
                     <td>{j.customer}</td>
@@ -125,20 +149,20 @@ export default function App() {
       {view === "article" && (
         <Article
           eyebrow="Field report"
-          title="What the ocean-calm identity looks like in prose"
+          title={`Prose under the ${identity} identity`}
           meta="uiforagents · 5 Oct 2026 · 2 min read"
         >
           <p>
             This article block is part of the identity: a 720px measure, 16px body at 1.7 line height,
-            azure eyebrows, and display headings with tight tracking. It exists so agent-built content
-            pages look finished without a single typography decision.
+            accent eyebrows, and display headings carrying the identity's personality. Content pages
+            look finished without a single typography decision.
           </p>
           <h2>Numbers stay honest</h2>
           <p>
             Metrics use tabular figures so columns never jitter: 1,240 jobs, KSh 412,000 collected,
             15 technicians. The KPI cards below are part of the block set.
           </p>
-          <div className="grid grid-cols-3 gap-3.5 not-italic">
+          <div className="grid grid-cols-3 gap-3.5">
             <Kpi value="2,100+" label="jobs completed" />
             <Kpi value="4.9 ★" label="avg rating" />
             <Kpi value="96%" label="on-time arrival" />
