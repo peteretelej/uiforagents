@@ -1,7 +1,7 @@
 {
   "name": "uiforagents",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Design identities for agent-built apps - complete, opinionated design systems on shadcn/ui",
   "type": "module",
   "workspaces": [

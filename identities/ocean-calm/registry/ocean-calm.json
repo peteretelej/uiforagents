@@ -128,7 +128,7 @@
   ],
   "docs": "After install: (1) import the theme css in your global stylesheet AFTER the Tailwind import - it contains both the theme and the overrides layer; (2) set data-identity=\"ocean-calm\" on your root html element so overrides apply; (3) attach prompt-pack.md to every agent building UI - it is the binding design contract; (4) fonts are installed as deps - import weights in your entry file (Plus Jakarta Sans 500-800, Inter 400-700).",
   "meta": {
-    "identityVersion": "1.0.0",
+    "identityVersion": "0.1.0",
     "tested": {
       "shadcn": "2026-03 (cli v4)",
       "tailwind": "4.x",

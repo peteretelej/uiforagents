@@ -1,6 +1,6 @@
 {
   "name": "graphite-terminal",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "title": "Graphite Terminal",
   "description": "Dark dense ops tooling. Near-black graphite steps, electric lime action, JetBrains Mono data over Inter body, tight radius, flat fast surfaces.",
   "vibe": ["dark", "dense", "technical", "tool"],
