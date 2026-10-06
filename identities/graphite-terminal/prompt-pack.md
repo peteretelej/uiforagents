@@ -15,12 +15,13 @@ improvise visual design.
   focus, selected states) - never decoration, never large fills except the
   hero gradient panel. Semantic colors only for meaning: green = healthy,
   amber = degraded/pending, red = failing/destructive (destructive is the
-  lighter dark-theme red `oklch(66% 0.17 25)`, never the light-theme red).
+  dark-theme red `oklch(52% 0.17 25)` paired with a near-white foreground,
+  so white badge and button text pass contrast on it).
 - **Surfaces are stepped graphite** (hue 255): page 14.5%, card 17.5%,
   popover 18.5%, muted 21.5%. Depth = a lighter step plus a hairline border,
   never a heavy shadow. Never pure black `#000`, never pure white text.
 - **Contrast floor (measured)**: body text 15.6:1 on the page step; muted
-  text 6.6-6.9:1; dark-on-lime action 11.5:1; destructive 5.9:1; borders
+  text 6.6-6.9:1; dark-on-lime action 11.5:1; destructive 6:1; borders
   clear 3:1 (3.7:1 on card). If you introduce a new color pair, it must clear
   4.5:1 for text and 3:1 for boundaries. Gray-on-gray below that is a bug.
 - **Radius is tight**: controls 4px, surfaces/cards 8px, pills only for
