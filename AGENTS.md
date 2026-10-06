@@ -10,11 +10,16 @@ nothing here publishes to npm.
 
 1. Read `identities/<slug>/prompt-pack.md` FIRST - it is the binding design
    contract. Follow it exactly; do not improvise visual design.
-2. Import `theme/theme.css` (theme + overrides) after the Tailwind import.
+2. Import `theme/theme.css` AND `overrides/overrides.css` after the
+   Tailwind import.
 3. Start from `blocks/*.tsx` and adapt content. Never restyle identity
    components per project - brand happens via tokens (accent, logo), not
    structure.
-4. Identity root element carries `data-identity="<slug>"` so overrides apply.
+4. Carry both `data-theme="<slug>"` and `data-identity="<slug>"` on the
+   same identity root element: theme tokens key on `[data-theme]`
+   (nairobi-noon ships no other scope), overrides key on
+   `[data-identity]`. With only one attribute, half the system stays
+   dormant.
 5. Fonts via @fontsource (Plus Jakarta Sans + Inter for ocean-calm); in
    single-file outputs, inline woff2 base64 per the prompt-pack.
 
@@ -36,4 +41,5 @@ nothing here publishes to npm.
 - License: Apache-2.0; keep the NOTICE file intact in distributions.
 - Identity names are vibe-derived and brand-neutral. Never name identities
   after people, clients, or internal systems.
-- Example app content is generic (no real brands or client data).
+- Sample content is generic everywhere (block defaults, site showcases):
+  no real brands or client data.

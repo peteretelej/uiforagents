@@ -4,11 +4,7 @@
   "version": "0.1.0",
   "description": "Design identities for agent-built apps - complete, opinionated design systems on shadcn/ui",
   "type": "module",
-  "workspaces": [
-    "example"
-  ],
   "scripts": {
-    "build:registry": "node tooling/build-registry.mjs",
-    "dev:example": "npm run dev --workspace example"
+    "build:registry": "node tooling/build-registry.mjs"
   }
 }
