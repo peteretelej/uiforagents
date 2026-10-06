@@ -15,6 +15,12 @@ export function Hero({
   description,
   primaryCta,
   secondaryCta,
+  stats = [
+    { value: "15+", label: "vetted technicians" },
+    { value: "2,100+", label: "jobs completed" },
+    { value: "<30 min", label: "match target" },
+    { value: "85%", label: "goes to the fundi" },
+  ],
 }: {
   eyebrow: string
   title: string
