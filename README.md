@@ -40,6 +40,11 @@ lands, use the copy path above.
 Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
 one shared demo app).
 
+**Agents**: install the skill once - `npx skills add peteretelej/uiforagents` -
+then just ask ("use Nairobi Noon for this app"). The skill discovers the
+catalogue, picks identities, and follows the lane contracts; `skills/uiforagents/SKILL.md`
+in this repo is the whole entrypoint.
+
 ## The artifact lane
 
 The second lane serves **self-contained HTML artifacts**: articles, briefings,
