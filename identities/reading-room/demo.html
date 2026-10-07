@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reading-room · identity demo</title>
+<meta name="description" content="Self-documenting demo of the reading-room artifact identity: rationale, token reference, component gallery, build notes.">
+<style>
+/* reading-room - artifact identity foundation
+   A warm editorial reader: paper background, ink serif text, green accent.
+   Extracted from a proven long-form reading page. This file is the entire
+   system: tokens, base, typography, components, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + `color-scheme` on :root. Default follows
+     the OS (`light dark`); a toggle flips html.style.colorScheme to "light"
+     or "dark". There is no data-theme attribute and no duplicated token
+     block. color-scheme must stay on html/:root - light-dark() tokens
+     re-resolve against the root's scheme only.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light dark;
+
+    /* Shared semantic vocabulary */
+    --bg: light-dark(oklch(0.975 0.006 95), oklch(0.205 0.01 140));
+    --surface: light-dark(oklch(1 0 0), oklch(0.24 0.012 140));
+    --ink: light-dark(oklch(0.24 0.012 110), oklch(0.92 0.008 110));
+    --muted: light-dark(oklch(0.47 0.012 110), oklch(0.72 0.01 110));
+    --faint: light-dark(oklch(0.62 0.01 110), oklch(0.55 0.01 110));
+    --line: light-dark(oklch(0.895 0.01 110), oklch(0.34 0.015 140));
+    --line-soft: light-dark(oklch(0.92 0.008 110), oklch(0.29 0.012 140));
+    --accent: light-dark(oklch(0.46 0.115 152), oklch(0.78 0.13 152));
+    --accent-ink: light-dark(oklch(0.30 0.09 152), oklch(0.85 0.11 152));
+    --accent-soft: light-dark(oklch(0.93 0.035 152), oklch(0.30 0.05 152));
+    --ok: light-dark(oklch(0.47 0.115 152), oklch(0.78 0.13 152));
+    --ok-soft: light-dark(oklch(0.93 0.035 152), oklch(0.30 0.05 152));
+    --warn: light-dark(oklch(0.55 0.11 75), oklch(0.80 0.11 85));
+    --warn-soft: light-dark(oklch(0.95 0.045 85), oklch(0.30 0.05 85));
+    --danger: light-dark(oklch(0.50 0.14 25), oklch(0.75 0.12 25));
+    --danger-soft: light-dark(oklch(0.95 0.03 25), oklch(0.30 0.05 25));
+    --radius: 8px;
+    --font-serif: "Charter", "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+    /* Identity extras */
+    --wash: light-dark(oklch(0.945 0.012 130), oklch(0.25 0.02 150));
+    --measure: 70ch;
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--accent-ink); }
+  strong { font-weight: 700; }
+  p { margin: 0 0 1.1rem; max-width: var(--measure); text-wrap: pretty; }
+  .rr-lede { font-size: 1.12rem; color: var(--muted); }
+  ul, ol { max-width: var(--measure); padding-left: 1.4rem; margin: 0 0 1.1rem; }
+  li { margin-bottom: 0.4rem; }
+  code {
+    font-family: var(--font-mono); font-size: 0.82em;
+    background: var(--wash); border: 1px solid var(--line);
+    border-radius: 4px; padding: 0.08em 0.35em; white-space: nowrap;
+  }
+
+  /* ---------- Masthead ---------- */
+  .rr-masthead { border-bottom: 1px solid var(--line); background: var(--surface); }
+  .rr-masthead-inner {
+    max-width: 1080px; margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  }
+  .rr-kicker {
+    font-family: var(--font-sans); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  }
+  .rr-theme-toggle {
+    font-family: var(--font-sans); font-size: 0.78rem; color: var(--muted);
+    background: none; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 0.25rem 0.6rem; cursor: pointer;
+  }
+  .rr-theme-toggle:hover { color: var(--ink); border-color: var(--faint); }
+
+  /* ---------- Hero ---------- */
+  .rr-hero { max-width: 1080px; margin: 0 auto; padding: 3.5rem 1.5rem 2.5rem; }
+  .rr-hero h1 {
+    font-size: clamp(2.3rem, 6vw, 3.6rem);
+    line-height: 1.08; margin: 0 0 1rem;
+    font-weight: 700; letter-spacing: -0.015em; text-wrap: balance;
+  }
+  .rr-dek {
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem); line-height: 1.5;
+    color: var(--muted); max-width: 58ch; margin: 0 0 1.5rem; text-wrap: pretty;
+  }
+  .rr-meta-row {
+    font-family: var(--font-sans); font-size: 0.8rem; color: var(--faint);
+    display: flex; flex-wrap: wrap; gap: 0.35rem 1.25rem;
+  }
+  .rr-meta-row strong { color: var(--muted); font-weight: 600; }
+
+  /* ---------- Layout shell ---------- */
+  .rr-shell {
+    max-width: 1080px; margin: 0 auto; padding: 0 1.5rem 4rem;
+    display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 3rem;
+  }
+  .rr-main { min-width: 0; }
+
+  /* ---------- Table of contents ---------- */
+  .rr-toc { position: sticky; top: 1.5rem; align-self: start; font-family: var(--font-sans); }
+  .rr-toc-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--faint); margin-bottom: 0.6rem;
+  }
+  .rr-toc ol { list-style: none; margin: 0; padding: 0; max-width: none; }
+  .rr-toc li { margin: 0; }
+  .rr-toc a {
+    display: block; padding: 0.28rem 0.75rem; font-size: 0.82rem;
+    color: var(--muted); text-decoration: none; border-left: 2px solid var(--line);
+    line-height: 1.4;
+  }
+  .rr-toc a:hover { color: var(--ink); }
+  .rr-toc a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+  .rr-toc-mobile { display: none; }
+
+  /* ---------- Sections ---------- */
+  .rr-section { margin-bottom: 3.5rem; scroll-margin-top: 1.5rem; }
+  .rr-section h2 {
+    font-size: 1.65rem; line-height: 1.25; margin: 0 0 1rem;
+    letter-spacing: -0.01em; text-wrap: balance;
+    padding-top: 0.5rem; border-top: 1px solid var(--line);
+  }
+  .rr-secnum {
+    font-family: var(--font-sans); font-size: 0.7rem; font-weight: 700;
+    color: var(--accent); letter-spacing: 0.1em; display: block; margin-bottom: 0.4rem;
+  }
+  .rr-section h3 { font-size: 1.15rem; margin: 1.8rem 0 0.6rem; }
+
+  /* ---------- Callouts ---------- */
+  .rr-callout {
+    border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    background: var(--surface); border-radius: var(--radius);
+    padding: 1rem 1.25rem; margin: 1.4rem 0; max-width: 74ch;
+  }
+  .rr-callout--warn { border-left-color: var(--warn); background: var(--warn-soft); }
+  .rr-callout--danger { border-left-color: var(--danger); background: var(--danger-soft); }
+  .rr-callout-label {
+    font-family: var(--font-sans); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-ink);
+    display: block; margin-bottom: 0.35rem;
+  }
+  .rr-callout--warn .rr-callout-label { color: var(--warn); }
+  .rr-callout--danger .rr-callout-label { color: var(--danger); }
+  .rr-callout p:last-child { margin-bottom: 0; }
+
+  /* ---------- Tables ---------- */
+  .rr-table-wrap { overflow-x: auto; margin: 1.3rem 0; }
+  .rr-table-wrap table {
+    border-collapse: collapse; width: 100%;
+    font-family: var(--font-sans); font-size: 0.85rem;
+  }
+  .rr-table-wrap th {
+    text-align: left; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--faint); font-weight: 700; padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--line); white-space: nowrap;
+  }
+  .rr-table-wrap td {
+    padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--line);
+    vertical-align: top; line-height: 1.5;
+  }
+  .rr-table-wrap tbody tr:hover { background: var(--wash); }
+
+  /* ---------- Chips ---------- */
+  .rr-chip {
+    display: inline-block; font-family: var(--font-sans); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    border-radius: 99px; padding: 0.2rem 0.65rem; vertical-align: 2px;
+  }
+  .rr-chip--accent { background: var(--accent-soft); color: var(--accent-ink); }
+  .rr-chip--ok { background: var(--ok-soft); color: var(--ok); }
+  .rr-chip--warn { background: var(--warn-soft); color: var(--warn); }
+  .rr-chip--muted { background: var(--wash); color: var(--muted); }
+  .rr-chip--danger { background: var(--danger-soft); color: var(--danger); }
+
+  /* ---------- Cards ---------- */
+  .rr-card {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); padding: 1.4rem 1.6rem; margin: 1.4rem 0;
+  }
+  .rr-card h3 { margin: 0 0 0.3rem; font-size: 1.3rem; }
+  .rr-card-sub { font-family: var(--font-sans); font-size: 0.85rem; color: var(--muted); margin: 0 0 1rem; }
+  .rr-card dl {
+    display: grid; grid-template-columns: 130px 1fr; gap: 0.45rem 1rem;
+    font-size: 0.92rem; margin: 0 0 1rem; max-width: none;
+  }
+  .rr-card dt {
+    font-family: var(--font-sans); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase; color: var(--faint);
+    padding-top: 0.15rem;
+  }
+  .rr-card dd { margin: 0; }
+  .rr-card-links { font-family: var(--font-sans); font-size: 0.82rem; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; }
+  .rr-card-links a { white-space: nowrap; }
+
+  /* ---------- Reading list ---------- */
+  .rr-readlist h3 { margin-top: 1.6rem; }
+  .rr-readlist ul { list-style: none; padding: 0; max-width: none; }
+  .rr-readlist li {
+    padding: 0.55rem 0; border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .rr-readlist .rr-src {
+    display: block; font-family: var(--font-sans); font-size: 0.78rem;
+    color: var(--faint); margin-top: 0.1rem;
+  }
+  .rr-pill-note { font-family: var(--font-sans); font-size: 0.78rem; color: var(--faint); }
+
+  /* ---------- Colophon ---------- */
+  .rr-colophon {
+    border-top: 1px solid var(--line); background: var(--surface);
+    font-family: var(--font-sans); font-size: 0.8rem; color: var(--faint);
+  }
+  .rr-colophon-inner { max-width: 1080px; margin: 0 auto; padding: 1.5rem; }
+
+  /* ---------- Utilities ---------- */
+  .rr-sans { font-family: var(--font-sans); }
+  .rr-measure { max-width: var(--measure); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    body { font-size: 17px; }
+    .rr-shell { grid-template-columns: 1fr; gap: 0; padding: 0 1.1rem 3rem; }
+    .rr-toc { display: none; }
+    .rr-toc-mobile {
+      display: block; font-family: var(--font-sans); margin: 1rem 0 2rem;
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+    }
+    .rr-toc-mobile summary {
+      cursor: pointer; padding: 0.7rem 1rem; font-size: 0.85rem; font-weight: 600; color: var(--muted);
+    }
+    .rr-toc-mobile ol { list-style: none; margin: 0; padding: 0.25rem 0 0.5rem; }
+    .rr-toc-mobile a { display: block; padding: 0.45rem 1.2rem; font-size: 0.88rem; color: var(--muted); text-decoration: none; }
+    .rr-hero { padding: 2.5rem 1.1rem 1.5rem; }
+    .rr-card { padding: 1.1rem 1.1rem; }
+    .rr-card dl { grid-template-columns: 1fr; gap: 0.1rem; }
+    .rr-card dt { margin-top: 0.5rem; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    .rr-toc, .rr-toc-mobile, .rr-theme-toggle { display: none; }
+    .rr-shell { display: block; }
+    body { background: #fff; color: #111; font-size: 11.5pt; }
+    a { color: inherit; }
+    .rr-card, .rr-callout { break-inside: avoid; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="rr-masthead">
+  <div class="rr-masthead-inner">
+    <span class="rr-kicker">uiforagents · artifact identities</span>
+    <button class="rr-theme-toggle" id="theme-toggle" type="button">Dark theme</button>
+  </div>
+</header>
+
+<div class="rr-hero">
+  <h1>reading-room</h1>
+  <p class="rr-dek">A warm editorial reader for long-form artifacts: paper background,
+  Charter-led serif body, ink text, one green accent reserved for action. This page is
+  the identity's own documentation, styled by nothing but its foundation stylesheet.</p>
+  <div class="rr-meta-row">
+    <span><strong>Status</strong> v1</span>
+    <span><strong>Lane</strong> artifact (pure CSS)</span>
+    <span><strong>Ships</strong> foundation.css · prompt-pack.md · demo.html</span>
+    <span><strong>Theme</strong> light-dark() + color-scheme</span>
+  </div>
+</div>
+
+<div class="rr-shell">
+  <nav class="rr-toc" aria-label="Table of contents">
+    <div class="rr-toc-label">Contents</div>
+    <ol>
+      <li><a href="#rationale" class="active">Design rationale</a></li>
+      <li><a href="#tokens">Token reference</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#callouts">Callouts</a></li>
+      <li><a href="#chips">Chips</a></li>
+      <li><a href="#cards">Cards</a></li>
+      <li><a href="#tables">Tables</a></li>
+      <li><a href="#readlist">Reading lists</a></li>
+      <li><a href="#build">How this page was built</a></li>
+    </ol>
+  </nav>
+
+  <details class="rr-toc-mobile">
+    <summary>Contents</summary>
+    <ol>
+      <li><a href="#rationale">Design rationale</a></li>
+      <li><a href="#tokens">Token reference</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#callouts">Callouts</a></li>
+      <li><a href="#chips">Chips</a></li>
+      <li><a href="#cards">Cards</a></li>
+      <li><a href="#tables">Tables</a></li>
+      <li><a href="#readlist">Reading lists</a></li>
+      <li><a href="#build">How this page was built</a></li>
+    </ol>
+  </details>
+
+  <main class="rr-main">
+
+    <section class="rr-section" id="rationale">
+      <h2><span class="rr-secnum">Section 1</span>Design rationale</h2>
+      <p class="rr-lede">reading-room exists so an agent building a reading artifact
+      (an article, a briefing, a catch-up guide, a report) never improvises the
+      reading experience again. The decisions below are extracted from a proven
+      long-form page, not invented.</p>
+      <p><strong>Paper, not white.</strong> The light theme sits on warm paper
+      (<code>--bg</code>) with pure-white card surfaces. The dark theme is a warm
+      near-black with a green cast, not a flat grey. Both schemes share the same
+      hue family, so switching themes feels like dimming the same room, not
+      visiting another site.</p>
+      <p><strong>Serif carries the reading; sans carries the chrome.</strong> Body
+      copy is a Charter-led serif stack at 18px/1.7 with a 70ch measure. UI chrome
+      (kickers, meta rows, TOC, table headers, chips, labels) is the system sans in
+      small, letterspaced uppercase. Code is the system mono.</p>
+      <p><strong>One accent, spent on action.</strong> Green (<code>--accent</code>)
+      marks links, the active TOC entry, and section eyebrows. Amber and red exist
+      only as semantic status (warn, danger) in callouts and chips. Nothing
+      decorative gets a color.</p>
+      <p><strong>The override model.</strong> The whole file lives in
+      <code>@layer foundation</code>, so any unlayered page CSS wins without
+      <code>!important</code>. Theme switching needs no attribute dance: tokens use
+      <code>light-dark()</code> and re-resolve against <code>color-scheme</code> on
+      <code>html</code>.</p>
+    </section>
+
+    <section class="rr-section" id="tokens">
+      <h2><span class="rr-secnum">Section 2</span>Token reference</h2>
+      <p>All tokens are defined once on <code>:root</code> with
+      <code>light-dark()</code> pairs. Identity extras (<code>--wash</code>,
+      <code>--measure</code>, the soft status pairs) ride the same vocabulary.</p>
+      <div class="rr-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Token</th><th>Light</th><th>Dark</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>--bg</code></td><td>oklch(0.975 0.006 95)</td><td>oklch(0.205 0.01 140)</td><td>page background: warm paper / warm near-black</td></tr>
+            <tr><td><code>--surface</code></td><td>oklch(1 0 0)</td><td>oklch(0.24 0.012 140)</td><td>cards, masthead, colophon</td></tr>
+            <tr><td><code>--ink</code></td><td>oklch(0.24 0.012 110)</td><td>oklch(0.92 0.008 110)</td><td>body text</td></tr>
+            <tr><td><code>--muted</code></td><td>oklch(0.47 0.012 110)</td><td>oklch(0.72 0.01 110)</td><td>secondary text: dek, lede, summaries</td></tr>
+            <tr><td><code>--faint</code></td><td>oklch(0.62 0.01 110)</td><td>oklch(0.55 0.01 110)</td><td>tertiary text: meta rows, table headers</td></tr>
+            <tr><td><code>--line</code></td><td>oklch(0.895 0.01 110)</td><td>oklch(0.34 0.015 140)</td><td>rules and borders</td></tr>
+            <tr><td><code>--line-soft</code></td><td>oklch(0.92 0.008 110)</td><td>oklch(0.29 0.012 140)</td><td>softer rules (derived, sits just under --line)</td></tr>
+            <tr><td><code>--accent</code></td><td>oklch(0.46 0.115 152)</td><td>oklch(0.78 0.13 152)</td><td>links, active TOC, section eyebrows</td></tr>
+            <tr><td><code>--accent-ink</code></td><td>oklch(0.30 0.09 152)</td><td>oklch(0.85 0.11 152)</td><td>text on --accent-soft</td></tr>
+            <tr><td><code>--accent-soft</code></td><td>oklch(0.93 0.035 152)</td><td>oklch(0.30 0.05 152)</td><td>accent tint: chips, callout fills</td></tr>
+            <tr><td><code>--ok</code> / <code>--ok-soft</code></td><td>oklch(0.47 0.115 152) / oklch(0.93 0.035 152)</td><td>oklch(0.78 0.13 152) / oklch(0.30 0.05 152)</td><td>positive status (shares the accent green family)</td></tr>
+            <tr><td><code>--warn</code> / <code>--warn-soft</code></td><td>oklch(0.55 0.11 75) / oklch(0.95 0.045 85)</td><td>oklch(0.80 0.11 85) / oklch(0.30 0.05 85)</td><td>caution status</td></tr>
+            <tr><td><code>--danger</code> / <code>--danger-soft</code></td><td>oklch(0.50 0.14 25) / oklch(0.95 0.03 25)</td><td>oklch(0.75 0.12 25) / oklch(0.30 0.05 25)</td><td>negative status</td></tr>
+            <tr><td><code>--radius</code></td><td colspan="2">8px</td><td>box radius (pills use 99px, inline code 4px)</td></tr>
+            <tr><td><code>--font-serif</code></td><td colspan="2">Charter, Bitstream Charter, Sitka Text, Cambria, Georgia, serif</td><td>body and headings</td></tr>
+            <tr><td><code>--font-sans</code></td><td colspan="2">system-ui stack</td><td>UI chrome</td></tr>
+            <tr><td><code>--font-mono</code></td><td colspan="2">ui-monospace stack</td><td>code</td></tr>
+            <tr><td><code>--wash</code></td><td>oklch(0.945 0.012 130)</td><td>oklch(0.25 0.02 150)</td><td>hover wash, inline code background</td></tr>
+            <tr><td><code>--measure</code></td><td colspan="2">70ch</td><td>reading measure for prose</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="rr-section" id="typography">
+      <h2><span class="rr-secnum">Section 3</span>Typography</h2>
+      <p class="rr-lede">The lede opens a section: one size up from body, muted,
+      still serif.</p>
+      <p>Body paragraphs hold a 70ch measure (<code>--measure</code>) at 18px/1.7.
+      <strong>Bold is reserved for scan anchors</strong>, not emphasis decoration.
+      Inline <code>code()</code> sits on the wash with a hairline border. Below 900px
+      the base size steps down to 17px.</p>
+      <h3>Third-level headings</h3>
+      <p><code>h3</code> inside a section is 1.15rem serif with generous top
+      margin. Section <code>h2</code> is 1.65rem with a hairline top rule; the
+      numbered eyebrow (<code>.rr-secnum</code>) above it is optional:</p>
+      <ul>
+        <li>Serif for everything the reader reads at length.</li>
+        <li>Sans for everything the reader scans: kickers, labels, meta.</li>
+        <li>Uppercase only via CSS on sans micro-labels, never typed in caps.</li>
+      </ul>
+    </section>
+
+    <section class="rr-section" id="callouts">
+      <h2><span class="rr-secnum">Section 4</span>Callouts</h2>
+      <p>Callouts interrupt the prose with a left border and a tinted fill. Three
+      intensities exist; use the mildest one that tells the truth.</p>
+      <div class="rr-callout">
+        <span class="rr-callout-label">Note</span>
+        <p>The neutral callout: surface fill, accent left border, accent-ink label.
+        For context, definitions, and side commentary.</p>
+      </div>
+      <div class="rr-callout rr-callout--warn">
+        <span class="rr-callout-label">Caution</span>
+        <p>The warn callout: amber. For trade-offs, gotchas, and things that bite
+        later if ignored.</p>
+      </div>
+      <div class="rr-callout rr-callout--danger">
+        <span class="rr-callout-label">Stop</span>
+        <p>The danger callout: red. For irreversibility and real risk. If a page
+        has several of these, the page is arguing with itself.</p>
+      </div>
+    </section>
+
+    <section class="rr-section" id="chips">
+      <h2><span class="rr-secnum">Section 5</span>Chips</h2>
+      <p>Verdict chips are pill badges for short classifications. One or two per
+      verdict row; they are labels, not buttons.</p>
+      <p>
+        <span class="rr-chip rr-chip--accent">Recommended</span>
+        <span class="rr-chip rr-chip--ok">Healthy</span>
+        <span class="rr-chip rr-chip--warn">Risky</span>
+        <span class="rr-chip rr-chip--muted">Neutral</span>
+        <span class="rr-chip rr-chip--danger">Blocked</span>
+      </p>
+    </section>
+
+    <section class="rr-section" id="cards">
+      <h2><span class="rr-secnum">Section 6</span>Cards</h2>
+      <p>Cards hold a compared item: title, sub line, a definition list of
+      attributes, and a link row. The <code>dl</code> grid collapses to one column
+      on small screens.</p>
+      <div class="rr-card">
+        <h3>A compared item</h3>
+        <p class="rr-card-sub">One-line summary of what makes this option distinct.</p>
+        <dl>
+          <dt>Best for</dt><dd>Readers who want the short version first.</dd>
+          <dt>Cost</dt><dd>One accent color, spent carefully.</dd>
+          <dt>Verdict</dt><dd><span class="rr-chip rr-chip--accent">Recommended</span></dd>
+        </dl>
+        <div class="rr-card-links">
+          <a href="#cards">Docs</a>
+          <a href="#cards">Source</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="rr-section" id="tables">
+      <h2><span class="rr-secnum">Section 7</span>Tables</h2>
+      <p>Data tables live in <code>.rr-table-wrap</code> (horizontal scroll on
+      narrow screens). Headers are faint uppercase sans; rows wash on hover.</p>
+      <div class="rr-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Option</th><th>Strength</th><th>Trade-off</th><th>Verdict</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Keep it simple</td><td>Ships today</td><td>Fewer features</td><td><span class="rr-chip rr-chip--accent">Recommended</span></td></tr>
+            <tr><td>Do everything</td><td>No limits</td><td>Never ships</td><td><span class="rr-chip rr-chip--danger">Blocked</span></td></tr>
+            <tr><td>Wait and see</td><td>No effort</td><td>Decides nothing</td><td><span class="rr-chip rr-chip--muted">Neutral</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="rr-section rr-readlist" id="readlist">
+      <h2><span class="rr-secnum">Section 8</span>Reading lists</h2>
+      <p>A reading list is a borderless list with hairline dividers and a faint
+      source line per entry.</p>
+      <h3>On design systems for agents</h3>
+      <ul>
+        <li>Decisions, not options: a good identity closes questions.
+          <span class="rr-src">essay · reading-room rationale</span></li>
+        <li>The measure is the message: 70ch has survived every decade of
+          typography. <span class="rr-src">note · typesetting basics</span></li>
+        <li>Themes are schemes, not stylesheets: one token block, two color
+          schemes. <span class="rr-src">reference · light-dark()</span></li>
+      </ul>
+      <p class="rr-pill-note">Pill notes like this one carry asides in the sans
+      voice, smaller and fainter than body text.</p>
+    </section>
+
+    <section class="rr-section" id="build">
+      <h2><span class="rr-secnum">Section 9</span>How this page was built</h2>
+      <ul>
+        <li><strong>One stylesheet.</strong> The entire <code>&lt;style&gt;</code>
+          block above is <code>foundation.css</code> pasted in verbatim. No other
+          CSS exists on this page, so the demo renders identically pasted into a
+          single file or served next to a linked copy.</li>
+        <li><strong>The theme toggle is the only JavaScript.</strong> It flips
+          <code>color-scheme</code> on <code>html</code>, and every
+          <code>light-dark()</code> token re-resolves. Without JS the page renders
+          fully in the OS-preferred scheme. <code>color-scheme</code> must stay on
+          <code>html</code>: root-level tokens only re-resolve against the root's
+          scheme.</li>
+        <li><strong>No attributes, no per-theme blocks.</strong> There is no
+          <code>data-theme</code> attribute anywhere and no duplicated dark token
+          list. Dark mode is half of every token.</li>
+        <li><strong>Responsive and printable.</strong> Below 900px the TOC sidebar
+          becomes a <code>&lt;details&gt;</code> element and the shell collapses to
+          one column. Print styles drop the chrome, force light ink, and keep
+          cards and callouts from splitting across pages.</li>
+        <li><strong>Overridable by construction.</strong> Everything is layered;
+          page CSS written after (or outside) the foundation wins without
+          <code>!important</code>. Brand by swapping tokens, not by restyling
+          components.</li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+
+<footer class="rr-colophon">
+  <div class="rr-colophon-inner">
+    reading-room v1 · an artifact identity from the uiforagents catalogue ·
+    set in Charter with system sans chrome · built as one file with one stylesheet
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var goingLight = root.style.colorScheme === 'dark';
+      root.style.colorScheme = goingLight ? 'light' : 'dark';
+      btn.textContent = goingLight ? 'Dark theme' : 'Light theme';
+    });
+  })();
+</script>
+</body>
+</html>

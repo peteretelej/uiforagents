@@ -1,10 +1,12 @@
 # AGENTS.md - building with uiforagents identities
 
 uiforagents is a catalogue of **design identities**: complete, opinionated
-design systems on shadcn/ui (Tailwind v4, Base UI primitives). Each identity
-under `identities/<slug>/` ships a theme, component overrides, blocks, and an
-agent prompt-pack. The repo root package.json is a private workspace root -
-nothing here publishes to npm.
+design systems. The React lane ships shadcn/ui (Tailwind v4, Base UI
+primitives) identities under `identities/<slug>/` with a theme, component
+overrides, blocks, and an agent prompt-pack. The artifact lane ships pure-CSS
+identities for self-contained HTML (see "Building a single-file artifact" below).
+The repo root package.json is a private workspace root - nothing here publishes
+to npm.
 
 ## Building an app with an identity
 
@@ -22,6 +24,35 @@ nothing here publishes to npm.
    dormant.
 5. Fonts via @fontsource (Plus Jakarta Sans + Inter for ocean-calm); in
    single-file outputs, inline woff2 base64 per the prompt-pack.
+
+## Building a single-file artifact (pure-CSS lane)
+
+The artifact lane serves self-contained HTML: articles, briefings, reports,
+any page shipped as one file. It has no registry, no codegen, no npm
+dependency, and no required JavaScript.
+
+1. Read `identities/<slug>/prompt-pack.md` FIRST - it is the binding design
+   contract. Follow it exactly; do not improvise visual design.
+2. Paste `foundation.css` into a `<style>` block (single-file deliverables)
+   or link it as a file. Both modes are first-class; never edit the CSS
+   itself. Page CSS stays unlayered so it overrides the `@layer foundation`
+   file without `!important`.
+3. Brand via tokens (accent), never by restyling component classes.
+4. No `identity.json`, no `registry/`, no `theme/`, no `blocks/`, and never
+   run `tooling/build-registry.mjs` on an artifact identity.
+
+## Artifact-lane governance
+
+- Curated, not community-directed. Propose changes in issues.
+- A new artifact identity is minted only when a use case recurs or produces a
+  signature look worth naming. One-off pages style themselves with an
+  existing identity's foundation.
+- Any change to an artifact identity updates its prompt-pack AND its demo,
+  and re-runs the one-shot test: a fresh agent gets only the prompt-pack +
+  `foundation.css` and builds a page type with no pre-made block. PASS =
+  identity-faithful, premium, no design improvisation.
+- The CSS file is canonical and hand-curated. If drift ever matters, add a
+  checker, never a generator.
 
 ## Adding or changing an identity
 

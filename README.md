@@ -3,10 +3,11 @@
 **Design identities for agent-built apps.**
 
 uiforagents is a catalogue of complete, opinionated design systems - *identities* -
-built on shadcn/ui, Tailwind v4, and Base UI. Each identity bundles theme tokens,
+so an AI (or human) can ship a premium UI without making a single design decision.
+The React lane is built on shadcn/ui, Tailwind v4, and Base UI: theme tokens,
 component treatment overrides, composed blocks, fonts, motion defaults, and an
-agent prompt-pack, so an AI (or human) can ship a premium UI without making a
-single design decision.
+agent prompt-pack. The artifact lane serves self-contained HTML artifacts with a
+copy-in pure-CSS foundation (see [the artifact lane](#the-artifact-lane)).
 
 **Build the theme + overrides + blocks into a shadcn registry payload:**
 
@@ -39,7 +40,30 @@ lands, use the copy path above.
 Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
 one shared demo app).
 
-## What's inside an identity
+## The artifact lane
+
+The second lane serves **self-contained HTML artifacts**: articles, briefings,
+reports, any page an agent ships as one file. An artifact identity is a copy-in
+pure-CSS system - no build step, no registry, no npm, no required JavaScript.
+
+| Identity | Vibe | Status |
+|---|---|---|
+| **reading-room** | Warm editorial reader. Paper light, Charter-led serif, ink text, one green accent, built-in dark theme. | ✅ v1.0 |
+
+```
+identities/reading-room/
+├── foundation.css    # the entire system: tokens, base, components, print
+├── prompt-pack.md    # the agent contract - design decisions, encoded
+└── demo.html         # verbose self-documenting demo, styled by foundation.css alone
+```
+
+Usage: paste `foundation.css` into a `<style>` block (or link it), attach
+`prompt-pack.md` to the agent, and build. Every token is a `light-dark()` pair;
+themes resolve through `color-scheme` on `html`. The React-lane tooling
+(`tooling/build-registry.mjs`, `identity.json`, registry payloads) does not
+apply to this lane.
+
+## What's inside a React-lane identity
 
 ```
 identities/ocean-calm/
