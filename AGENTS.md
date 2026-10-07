@@ -53,6 +53,11 @@ dependency, and no required JavaScript.
   identity-faithful, premium, no design improvisation.
 - The CSS file is canonical and hand-curated. If drift ever matters, add a
   checker, never a generator.
+- The catalogue presents artifact identities as themselves: an identity's
+  page on the website IS its `demo.html` (published as-is, with a floating
+  catalogue bar overlaid around it). Never restyle, wrap, or re-template an
+  artifact demo to fit site chrome; demos must keep working as standalone
+  documents first.
 
 ## Adding or changing an identity
 
