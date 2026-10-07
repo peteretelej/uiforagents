@@ -49,9 +49,10 @@ pure-CSS system - no build step, no registry, no npm, no required JavaScript.
 | Identity | Vibe | Status |
 |---|---|---|
 | **reading-room** | Warm editorial reader. Paper light, Charter-led serif, ink text, one green accent, built-in dark theme. | ✅ v1.0 |
+| **midnight-bulletin** | Dark-first briefing bulletin. Near-black warm ground, serif display over sans body, mono labels, one amber accent. | ✅ v1.0 |
 
 ```
-identities/reading-room/
+identities/<artifact-identity>/
 ├── foundation.css    # the entire system: tokens, base, components, print
 ├── prompt-pack.md    # the agent contract - design decisions, encoded
 └── demo.html         # verbose self-documenting demo, styled by foundation.css alone

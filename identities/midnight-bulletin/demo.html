@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>midnight-bulletin · identity demo</title>
+<meta name="description" content="Self-documenting demo of the midnight-bulletin artifact identity: rationale, token reference, component gallery, build notes.">
+<style>
+/* midnight-bulletin - artifact identity foundation
+   A dark-first briefing bulletin: near-black warm ground, amber accent,
+   serif display over a sans body, mono for every label and number.
+   Extracted from a proven data briefing page. This file is the entire
+   system: tokens, base, typography, components, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + `color-scheme` on :root. The identity is
+     dark-first: the dark scheme is canonical (its values are verbatim from
+     the extraction source) and the light scheme is the derived alternative.
+     light-dark() slots are fixed by CSS - first slot is the value used
+     under the light scheme - so dark-first is provenance, not slot order.
+     Default follows the OS (`light dark`); a toggle flips
+     html.style.colorScheme to "dark" or "light". There is no data-theme
+     attribute and no duplicated token block. color-scheme must stay on
+     html/:root - light-dark() tokens re-resolve against the root's scheme
+     only.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light dark;
+
+    /* Shared semantic vocabulary (dark scheme canonical) */
+    --bg: light-dark(oklch(0.965 0.01 85), oklch(0.155 0.006 70));
+    --surface: light-dark(oklch(0.995 0.005 85), oklch(0.19 0.008 70));
+    --ink: light-dark(oklch(0.21 0.01 80), oklch(0.92 0.008 80));
+    --muted: light-dark(oklch(0.42 0.015 80), oklch(0.72 0.01 80));
+    --faint: light-dark(oklch(0.52 0.015 80), oklch(0.6 0.01 80));
+    --line: light-dark(oklch(0.86 0.012 80), oklch(0.32 0.01 80));
+    --line-soft: light-dark(oklch(0.9 0.01 80), oklch(0.26 0.01 80));
+    --accent: light-dark(oklch(0.49 0.115 70), oklch(0.8 0.15 75));
+    --accent-ink: light-dark(oklch(0.98 0.02 85), oklch(0.24 0.06 70));
+    --accent-soft: light-dark(oklch(0.93 0.055 85), oklch(0.27 0.05 75));
+    --ok: light-dark(oklch(0.46 0.12 150), oklch(0.78 0.14 145));
+    --ok-soft: light-dark(oklch(0.93 0.045 150), oklch(0.27 0.05 150));
+    --warn: light-dark(oklch(0.49 0.115 70), oklch(0.8 0.15 75));
+    --warn-soft: light-dark(oklch(0.94 0.05 85), oklch(0.27 0.05 85));
+    --danger: light-dark(oklch(0.5 0.17 25), oklch(0.7 0.16 25));
+    --danger-soft: light-dark(oklch(0.95 0.03 25), oklch(0.27 0.05 25));
+    --radius: 3px;
+    --font-serif: "Charter", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --font-sans: ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+    /* Identity extras */
+    --sunken: light-dark(oklch(0.94 0.012 85), oklch(0.125 0.005 70));
+    --measure: 68ch;
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  strong { color: var(--ink); }
+  p { margin: 0; max-width: var(--measure); color: var(--muted); }
+  p + p { margin-top: 14px; }
+  code {
+    font-family: var(--font-mono); font-size: 0.88em; color: var(--ink);
+    background: var(--sunken); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 1px 5px; white-space: nowrap;
+  }
+  .mb-wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Topbar ---------- */
+  .mb-topbar {
+    border-bottom: 1px solid var(--line-soft);
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
+  }
+  .mb-topbar .mb-wrap { display: flex; align-items: center; gap: 16px; height: 44px; }
+  .mb-topbar a { color: var(--muted); text-decoration: none; }
+  .mb-topbar a:hover { color: var(--ink); }
+  .mb-brand { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .mb-crumb { color: var(--faint); }
+  .mb-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .mb-theme-toggle {
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
+    color: var(--muted); background: none; border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 4px 10px; cursor: pointer;
+  }
+  .mb-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
+
+  /* ---------- Hero ---------- */
+  .mb-hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line-soft); }
+  .mb-kicker {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 20px;
+  }
+  .mb-hero h1 {
+    font-family: var(--font-serif); font-weight: 400;
+    font-size: clamp(40px, 6.4vw, 68px); line-height: 1.05;
+    letter-spacing: -0.01em; margin: 0; max-width: 16ch;
+  }
+  .mb-hero h1 em { font-style: italic; color: var(--accent); }
+  .mb-dek {
+    font-family: var(--font-serif); font-size: clamp(18px, 2.2vw, 21px);
+    line-height: 1.5; color: var(--muted); max-width: 56ch; margin: 22px 0 0;
+  }
+
+  /* ---------- Stat strip ---------- */
+  .mb-statstrip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line-soft); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); overflow: hidden; margin: 44px 0 0;
+  }
+  .mb-stat { background: var(--bg); padding: 16px 18px; }
+  .mb-stat b {
+    display: block; font-family: var(--font-mono); font-size: 20px;
+    font-weight: 600; color: var(--ink);
+  }
+  .mb-stat span {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  /* ---------- Sections ---------- */
+  .mb-section { padding: 64px 0; border-bottom: 1px solid var(--line-soft); }
+  .mb-section:last-of-type { border-bottom: none; }
+  .mb-snum {
+    display: block; font-family: var(--font-mono); font-size: 12px;
+    color: var(--accent); letter-spacing: 0.1em; margin: 0 0 12px;
+  }
+  .mb-section h2 {
+    font-family: var(--font-serif); font-weight: 400;
+    font-size: clamp(28px, 3.6vw, 38px); line-height: 1.15;
+    margin: 0 0 18px; max-width: 26ch;
+  }
+  .mb-section h3 { font-family: var(--font-sans); font-weight: 600; font-size: 16px; margin: 28px 0 8px; }
+  .mb-lede { font-family: var(--font-serif); font-size: 19px; line-height: 1.55; color: var(--ink); }
+  .mb-small { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+  .mb-plain { list-style: none; max-width: var(--measure); margin: 0; padding: 0; }
+  .mb-plain li { position: relative; padding-left: 18px; margin-top: 10px; color: var(--muted); }
+  .mb-plain li::before { content: "›"; position: absolute; left: 0; color: var(--accent); }
+
+  /* ---------- Podcast box ---------- */
+  .mb-podcast {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 28px; margin: 36px 0 0;
+  }
+  .mb-podcast h3 { margin: 0; }
+  .mb-ptitle { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .mb-badge {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent-ink); background: var(--accent);
+    border-radius: var(--radius); padding: 3px 8px;
+  }
+  .mb-podcast p { margin: 8px 0 0; font-size: 14.5px; }
+  .mb-podcast audio { width: 100%; margin-top: 18px; }
+  .mb-pmeta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+
+  /* ---------- Tables ---------- */
+  .mb-tblwrap {
+    overflow-x: auto; margin: 26px 0 0;
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+  }
+  .mb-tblwrap table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+  .mb-tblwrap th {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--faint); font-weight: 500;
+    text-align: left; padding: 10px 14px;
+    background: var(--sunken); border-bottom: 1px solid var(--line-soft);
+  }
+  .mb-tblwrap td {
+    padding: 11px 14px; border-bottom: 1px solid var(--line-soft);
+    vertical-align: top; color: var(--muted);
+  }
+  .mb-tblwrap tr:last-child td { border-bottom: none; }
+  .mb-tblwrap td:first-child { color: var(--ink); font-weight: 500; }
+
+  /* ---------- Status pills ---------- */
+  .mb-pill {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em;
+    padding: 2px 7px; border-radius: var(--radius); border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .mb-pill--ok { color: var(--ok); border-color: color-mix(in oklab, var(--ok) 40%, transparent); }
+  .mb-pill--warn { color: var(--warn); border-color: color-mix(in oklab, var(--warn) 40%, transparent); }
+  .mb-pill--danger { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 40%, transparent); }
+
+  /* ---------- Pro / con panels ---------- */
+  .mb-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: 30px 0 0; }
+  .mb-panel {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 22px;
+  }
+  .mb-tag {
+    display: block; font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 10px;
+  }
+  .mb-panel--pro .mb-tag { color: var(--ok); }
+  .mb-panel--con .mb-tag { color: var(--danger); }
+  .mb-panel p { font-size: 14.5px; max-width: none; }
+  .mb-who { margin: 12px 0 0; font-family: var(--font-mono); font-size: 11.5px; color: var(--faint); }
+
+  /* ---------- Code blocks ---------- */
+  .mb-pre {
+    font-family: var(--font-mono); font-size: 12.5px; line-height: 1.65;
+    background: var(--sunken); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 18px; overflow-x: auto;
+    margin: 22px 0 0; color: var(--ink);
+  }
+  .mb-pre .mb-k { color: var(--accent); }
+  .mb-pre .mb-c { color: var(--faint); }
+
+  /* ---------- Figures ---------- */
+  .mb-figure { margin: 30px 0 0; overflow-x: auto; }
+  .mb-figure svg { display: block; width: 100%; min-width: 640px; height: auto; }
+  .mb-figure figcaption {
+    font-family: var(--font-mono); font-size: 11.5px;
+    color: var(--faint); margin-top: 10px; line-height: 1.5;
+  }
+
+  /* ---------- Lab box ---------- */
+  .mb-lab {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 26px; margin: 30px 0 0;
+  }
+  .mb-lab h3 { margin: 0 0 6px; }
+  .mb-lab p { font-size: 14px; max-width: none; }
+  .mb-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 16px; }
+  .mb-row label { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .mb-lab input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); }
+  .mb-threshold { font-family: var(--font-mono); font-size: 14px; color: var(--accent); min-width: 64px; text-align: right; }
+  .mb-outcome {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line-soft); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); overflow: hidden; margin-top: 18px;
+  }
+  .mb-cell { background: var(--bg); padding: 14px; }
+  .mb-cell b { display: block; font-family: var(--font-mono); font-size: 22px; font-weight: 600; }
+  .mb-cell span {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  /* ---------- Timeline ---------- */
+  .mb-timeline { margin: 26px 0 0; border-left: 1px solid var(--line); padding: 0; list-style: none; max-width: var(--measure); }
+  .mb-timeline li { position: relative; padding: 0 0 22px 26px; color: var(--muted); }
+  .mb-timeline li::before {
+    content: ""; position: absolute; left: -5px; top: 8px; width: 9px; height: 9px;
+    background: var(--bg); border: 2px solid var(--accent); border-radius: 50%;
+  }
+  .mb-timeline .mb-t {
+    display: block; font-family: var(--font-mono); font-size: 11.5px;
+    color: var(--accent); margin-bottom: 3px;
+  }
+
+  /* ---------- Share bar ---------- */
+  .mb-sharebar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 34px 0 0; }
+  .mb-share-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .mb-share-row a, .mb-share-row button {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+    color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+    padding: 6px 14px; text-decoration: none; cursor: pointer;
+  }
+  .mb-share-row a:hover, .mb-share-row button:hover { color: var(--ink); border-color: var(--line); }
+
+  /* ---------- Footer / glossary ---------- */
+  .mb-footer { padding: 48px 0 80px; border-top: 1px solid var(--line-soft); }
+  .mb-footer .mb-wrap { font-family: var(--font-mono); font-size: 12px; color: var(--faint); line-height: 1.9; }
+  .mb-footer a { color: var(--muted); }
+  .mb-glossary { margin: 8px 0 0; }
+  .mb-glossary dt { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent); margin-top: 14px; }
+  .mb-glossary dd { margin: 3px 0 0; color: var(--muted); font-size: 14px; max-width: 66ch; }
+
+  /* ---------- Utilities ---------- */
+  .mb-mono { font-family: var(--font-mono); }
+  .mb-measure { max-width: var(--measure); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 800px) {
+    .mb-cols { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .mb-wrap { padding: 0 18px; }
+    .mb-topbar nav { display: none; }
+    .mb-statstrip { grid-template-columns: repeat(2, 1fr); }
+    .mb-outcome { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    :root { color-scheme: light; }
+    .mb-topbar nav, .mb-sharebar, .mb-theme-toggle { display: none; }
+    body { font-size: 11pt; }
+    .mb-panel, .mb-podcast, .mb-lab, .mb-tblwrap { break-inside: avoid; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="mb-topbar">
+  <div class="mb-wrap">
+    <a class="mb-brand" href="#top">uiforagents</a>
+    <span class="mb-crumb">/ artifact identities / midnight-bulletin</span>
+    <nav>
+      <a href="#rationale">Rationale</a>
+      <a href="#tokens">Tokens</a>
+      <a href="#typography">Type</a>
+      <a href="#evidence">Evidence</a>
+      <a href="#debate">Debate</a>
+      <a href="#lab">Lab</a>
+      <button class="mb-theme-toggle" id="theme-toggle" type="button">Light theme</button>
+    </nav>
+  </div>
+</header>
+
+<header class="mb-hero" id="top">
+  <div class="mb-wrap">
+    <p class="mb-kicker">uiforagents · artifact identity 02</p>
+    <h1>The <em>midnight</em> bulletin</h1>
+    <p class="mb-dek">A dark-first briefing identity for data-dense artifacts: near-black
+    warm ground, serif display over a sans body, mono for every label and number, one
+    amber accent spent on what matters now. This page is the identity's own
+    documentation, styled by nothing but its foundation stylesheet.</p>
+    <div class="mb-statstrip">
+      <div class="mb-stat"><b>2</b> <span>built-in themes</span></div>
+      <div class="mb-stat"><b>0</b> <span>required scripts</span></div>
+      <div class="mb-stat"><b>3px</b> <span>radius everywhere</span></div>
+      <div class="mb-stat"><b>1</b> <span>amber accent</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="mb-section" id="rationale">
+  <div class="mb-wrap">
+    <span class="mb-snum">01 / DESIGN RATIONALE</span>
+    <h2>Decisions, not options</h2>
+    <p class="mb-lede">midnight-bulletin exists so an agent building a briefing artifact
+    (a system writeup, a status one-pager, an incident report, a lab note) never
+    improvises the newsprint-of-record look again. The decisions below are extracted
+    from a proven briefing page, not invented.</p>
+    <p><strong>Night shift, warm bulb.</strong> The canonical scheme sits on a
+    near-black warm ground (<code>--bg</code>) with raised surfaces and sunken wells
+    cut from the same hue family - those tokens are verbatim from the extraction
+    source. The light scheme is the derived alternative: warm cream ground, deep
+    bronze accent. Switching themes feels like flipping the office light, not
+    visiting another site.</p>
+    <p><strong>Serif displays, sans reads, mono counts.</strong> Headlines, the dek,
+    and the lede are Charter-led serif. Body copy is system sans at 16px/1.6. Every
+    label, timestamp, table header, pill, and number is system mono - the bulletin
+    counts in mono, the way wire copy does.</p>
+    <p><strong>One accent, spent on attention.</strong> Amber (<code>--accent</code>)
+    marks links, kickers, section eyebrows, timeline dots, and the badge. Green, amber,
+    and red exist only as semantic status in pills, tags, and outcome cells. Nothing
+    decorative gets a color.</p>
+    <p><strong>The override model.</strong> The whole file lives in
+    <code>@layer foundation</code>, so any unlayered page CSS wins without
+    <code>!important</code>. Theme switching needs no attribute dance: tokens use
+    <code>light-dark()</code> and re-resolve against <code>color-scheme</code> on
+    <code>html</code>.</p>
+  </div>
+</section>
+
+<section class="mb-section" id="tokens">
+  <div class="mb-wrap">
+    <span class="mb-snum">02 / TOKEN REFERENCE</span>
+    <h2>Seventeen shared tokens, two extras</h2>
+    <p>All tokens are defined once on <code>:root</code> with <code>light-dark()</code>
+    pairs. The dark scheme is canonical: its values are verbatim from the extraction
+    source; the light values are the derived alternative, tuned to the same contrast
+    gates. The extras (<code>--sunken</code>, <code>--measure</code>, the soft status
+    pairs) ride the same vocabulary.</p>
+    <div class="mb-tblwrap">
+      <table>
+        <thead>
+          <tr><th>Token</th><th>Dark (canonical)</th><th>Light (derived)</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--bg</code></td><td>oklch(0.155 0.006 70)</td><td>oklch(0.965 0.01 85)</td><td>page ground: warm near-black / warm cream</td></tr>
+          <tr><td><code>--surface</code></td><td>oklch(0.19 0.008 70)</td><td>oklch(0.995 0.005 85)</td><td>raised boxes: panels, podcast, lab</td></tr>
+          <tr><td><code>--sunken</code></td><td>oklch(0.125 0.005 70)</td><td>oklch(0.94 0.012 85)</td><td>wells: table headers, pre, inline code</td></tr>
+          <tr><td><code>--ink</code></td><td>oklch(0.92 0.008 80)</td><td>oklch(0.21 0.01 80)</td><td>primary text and strong values</td></tr>
+          <tr><td><code>--muted</code></td><td>oklch(0.72 0.01 80)</td><td>oklch(0.42 0.015 80)</td><td>body copy, dek, cell text</td></tr>
+          <tr><td><code>--faint</code></td><td>oklch(0.6 0.01 80)</td><td>oklch(0.52 0.015 80)</td><td>meta, table headers, captions</td></tr>
+          <tr><td><code>--line</code></td><td>oklch(0.32 0.01 80)</td><td>oklch(0.86 0.012 80)</td><td>timeline rail, hover borders</td></tr>
+          <tr><td><code>--line-soft</code></td><td>oklch(0.26 0.01 80)</td><td>oklch(0.9 0.01 80)</td><td>hairline band and box rules</td></tr>
+          <tr><td><code>--accent</code></td><td>oklch(0.8 0.15 75)</td><td>oklch(0.49 0.115 70)</td><td>links, kickers, eyebrows, badge</td></tr>
+          <tr><td><code>--accent-ink</code></td><td>oklch(0.24 0.06 70)</td><td>oklch(0.98 0.02 85)</td><td>text on the solid badge</td></tr>
+          <tr><td><code>--accent-soft</code></td><td>oklch(0.27 0.05 75)</td><td>oklch(0.93 0.055 85)</td><td>accent tint (reserved fills)</td></tr>
+          <tr><td><code>--ok</code> / <code>--ok-soft</code></td><td>oklch(0.78 0.14 145)</td><td>oklch(0.46 0.12 150)</td><td>positive status</td></tr>
+          <tr><td><code>--warn</code> / <code>--warn-soft</code></td><td>oklch(0.8 0.15 75)</td><td>oklch(0.49 0.115 70)</td><td>caution status (shares the accent family)</td></tr>
+          <tr><td><code>--danger</code> / <code>--danger-soft</code></td><td>oklch(0.7 0.16 25)</td><td>oklch(0.5 0.17 25)</td><td>negative status</td></tr>
+          <tr><td><code>--radius</code></td><td colspan="2">3px</td><td>the one radius; crisp, nothing rounder</td></tr>
+          <tr><td><code>--font-serif</code></td><td colspan="2">Charter, Iowan Old Style, Georgia, Times New Roman, serif</td><td>display: h1, h2, dek, lede</td></tr>
+          <tr><td><code>--font-sans</code></td><td colspan="2">system-ui stack</td><td>body copy</td></tr>
+          <tr><td><code>--font-mono</code></td><td colspan="2">ui-monospace stack</td><td>labels, numbers, code</td></tr>
+          <tr><td><code>--measure</code></td><td colspan="2">68ch</td><td>reading measure for prose</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="mb-section" id="typography">
+  <div class="mb-wrap">
+    <span class="mb-snum">03 / TYPOGRAPHY</span>
+    <h2>Serif says it, mono counts it</h2>
+    <p class="mb-lede">The lede opens a section: serif, one size up from body, full
+    ink. Everything after it is sans until a number shows up.</p>
+    <p>Body paragraphs hold a 68ch measure (<code>--measure</code>) in muted sans;
+    <strong>strong text steps up to full ink</strong> and doubles as the scan anchor.
+    Section <code>h2</code> is serif at up to 38px; <code>h3</code> sub-heads stay
+    sans 16px/600.</p>
+    <h3>Where the mono goes</h3>
+    <ul class="mb-plain">
+      <li>Kickers and eyebrows: 12px mono, letterspaced uppercase, amber.</li>
+      <li>Stat values and outcome cells: 20px and 22px mono, full ink.</li>
+      <li>Table headers, pills, tags, timestamps, captions: 10.5 to 12px mono.</li>
+    </ul>
+    <p class="mb-small">THE SMALL CLASS · 12PX MONO · FOR FOOTNOTES AND ASIDES</p>
+    <pre class="mb-pre"><span class="mb-c"># the only two token colors inside a code block</span>
+<span class="mb-k">accent</span>  = tokens[<span class="mb-k">"--accent"</span>]   <span class="mb-c"># keywords and strings go amber</span>
+comment = <span class="mb-k">"# everything else stays full ink on --sunken"</span></pre>
+  </div>
+</section>
+
+<section class="mb-section" id="evidence">
+  <div class="mb-wrap">
+    <span class="mb-snum">04 / EVIDENCE</span>
+    <h2>Tables, pills, figures</h2>
+    <p>Data tables live in <code>.mb-tblwrap</code>: hairline frame, sunken mono
+    uppercase headers, hairline row rules, first column in full ink. Status pills are
+    outlined mono rectangles; they classify, they never click.</p>
+    <div class="mb-tblwrap">
+      <table>
+        <thead>
+          <tr><th>Claim</th><th>Strength</th><th>Exposure</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ship the boring version</td><td>Explains itself</td><td>Low</td><td><span class="mb-pill mb-pill--ok">VERIFIED</span></td></tr>
+          <tr><td>Scale before signal</td><td>Feels fast</td><td>High</td><td><span class="mb-pill mb-pill--warn">AT RISK</span></td></tr>
+          <tr><td>Ship on vibes</td><td>None found</td><td>Total</td><td><span class="mb-pill mb-pill--danger">FALSIFIED</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="mb-figure">
+      <svg viewBox="0 0 640 180" role="img" aria-label="Bar chart styled with foundation tokens">
+        <line x1="8" y1="150" x2="632" y2="150" stroke="var(--line)"/>
+        <rect x="40"  y="60"  width="72" height="90" fill="var(--accent)" opacity="0.35"/>
+        <rect x="160" y="34"  width="72" height="116" fill="var(--accent)" opacity="0.6"/>
+        <rect x="280" y="90"  width="72" height="60" fill="var(--accent)" opacity="0.35"/>
+        <rect x="400" y="18"  width="72" height="132" fill="var(--accent)"/>
+        <rect x="520" y="104" width="72" height="46" fill="var(--line)"/>
+        <g font-family="var(--font-mono)" font-size="10.5" fill="var(--faint)">
+          <text x="76"  y="168" text-anchor="middle">BRIEF</text>
+          <text x="196" y="168" text-anchor="middle">DRAFT</text>
+          <text x="316" y="168" text-anchor="middle">REVIEW</text>
+          <text x="436" y="168" text-anchor="middle">SHIP</text>
+          <text x="556" y="168" text-anchor="middle">LATER</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 1 - charts draw with the foundation's own custom properties, so
+      they re-theme with the page and print in the light scheme for free.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="mb-section" id="debate">
+  <div class="mb-wrap">
+    <span class="mb-snum">05 / DEBATE</span>
+    <h2>Pro and con, side by side</h2>
+    <p>Compared positions go in <code>.mb-cols</code> panels: green and red mono tags
+    mark the sides, the attribution line sits faint at the bottom. Two panels per
+    debate; a third means the page is hedging.</p>
+    <div class="mb-cols">
+      <div class="mb-panel mb-panel--pro">
+        <span class="mb-tag">PRO / DARK-FIRST</span>
+        <p>Readers of briefings are skimming at night, on second screens, between
+        terminals. A warm near-black ground with full-contrast ink meets them where
+        they already are, and the amber accent reads like a desk lamp.</p>
+        <p class="mb-who">held by: the night-shift editors</p>
+      </div>
+      <div class="mb-panel mb-panel--con">
+        <span class="mb-tag">CON / DARK-FIRST</span>
+        <p>Print is still light, and the light scheme is the one that has to be
+        derived rather than recorded. The bulletin answers with a forced-light print
+        block and a bronze accent tuned to pass contrast on cream.</p>
+        <p class="mb-who">held by: the print traditionalists</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-section" id="timeline">
+  <div class="mb-wrap">
+    <span class="mb-snum">06 / CHRONOLOGY</span>
+    <h2>One rail, amber dots</h2>
+    <p>Sequences render as <code>.mb-timeline</code>: a hairline rail, mono timestamps
+    in accent, muted entries. Timestamps are facts, so they are mono.</p>
+    <ul class="mb-timeline">
+      <li><span class="mb-t">T-02d / DECISION</span>The identity is extracted from the
+      proven briefing, not sketched from taste. Extraction provenance beats invention.</li>
+      <li><span class="mb-t">T-01d / VALIDATION</span>Contrast is checked in both
+      schemes, the demo runs headless at two viewports, and a fresh agent rebuilds an
+      untemplated page from the pack alone.</li>
+      <li><span class="mb-t">T-00 / SHIP</span>One commit, three files. The lane
+      generalizes or it does not.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="mb-section" id="podcast">
+  <div class="mb-wrap">
+    <span class="mb-snum">07 / EPISODE</span>
+    <h2>The companion episode</h2>
+    <p>When a briefing ships with audio, the podcast box carries it: solid amber badge,
+    serif-free description, a full-width player, and a mono meta row. The badge is the
+    only solid accent fill in the identity.</p>
+    <div class="mb-podcast">
+      <div class="mb-ptitle">
+        <h3>Bulletin 02: dark-first by default</h3>
+        <span class="mb-badge">Episode 02</span>
+      </div>
+      <p>Why the extraction source led with dark, how the light scheme was derived
+      from it, and what changed when contrast math disagreed with taste (taste lost).
+      14 min, no ads, one typo.</p>
+      <audio controls></audio>
+      <div class="mb-pmeta">
+        <span class="mb-small">RUNS 14:02</span>
+        <span class="mb-small">RECORDED IN THE SAME ROOM AS THE PAGE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-section" id="lab">
+  <div class="mb-wrap">
+    <span class="mb-snum">08 / LAB</span>
+    <h2>The explainer box</h2>
+    <p>The lab box turns a parameter into an outcome: a mono label, a range input, an
+    accent readout, and a hairline result grid. The input works natively with zero
+    JavaScript; wiring it to the cells is optional page JS, not a foundation feature.
+    This demo leaves it static on purpose.</p>
+    <div class="mb-lab">
+      <h3>Dial a threshold, read the fallout</h3>
+      <p>Pick the alert threshold and the outcome cells report what each choice buys.
+      Values below are the recorded defaults, frozen for print.</p>
+      <div class="mb-row">
+        <label for="demo-threshold">threshold</label>
+        <input type="range" id="demo-threshold" min="50" max="99" value="85">
+        <span class="mb-threshold">85</span>
+      </div>
+      <div class="mb-outcome">
+        <div class="mb-cell"><b>3.1%</b> <span>false alarms</span></div>
+        <div class="mb-cell"><b>41m</b> <span>mean time to notice</span></div>
+        <div class="mb-cell"><b>0.7</b> <span>signal ratio</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-section" id="build">
+  <div class="mb-wrap">
+    <span class="mb-snum">09 / BUILD NOTES</span>
+    <h2>How this page was built</h2>
+    <ul class="mb-plain">
+      <li><strong>One stylesheet.</strong> The entire <code>&lt;style&gt;</code> block
+      in the head is <code>foundation.css</code> pasted in verbatim. No other CSS
+      exists on this page, so the demo renders identically pasted into a single file
+      or served next to a linked copy.</li>
+      <li><strong>The theme toggle is the only JavaScript.</strong> It flips
+      <code>color-scheme</code> on <code>html</code>, and every
+      <code>light-dark()</code> token re-resolves. Without JS the page renders fully
+      in the OS-preferred scheme. Dark leads: the default OS-dark rendering is the
+      canonical look.</li>
+      <li><strong>No attributes, no per-theme blocks.</strong> There is no
+      <code>data-theme</code> attribute anywhere and no duplicated dark token list.
+      Dark is canonical: its tokens are verbatim from the extraction source, and
+      light is derived. (Slot order inside <code>light-dark()</code> is fixed by CSS -
+      the first slot is the light-scheme value - so dark-first means provenance and
+      documentation order, not slot order.)</li>
+      <li><strong>Responsive by collapse.</strong> Under 640px the topbar nav hides,
+      the stat strip folds to 2x2, and the outcome grid stacks; under 800px the
+      debate columns stack. Bands keep their hairlines.</li>
+      <li><strong>Printable and calm.</strong> Print forces the light scheme through
+      <code>color-scheme</code>, drops the nav and share bar, and keeps boxes from
+      splitting across pages. <code>prefers-reduced-motion</code> is the only motion
+      rule in the file.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="mb-footer">
+  <div class="mb-wrap">
+    <div class="mb-sharebar">
+      <span class="mb-small">SHARE /</span>
+      <div class="mb-share-row">
+        <a href="#top">Copy link</a>
+        <a href="#top">Print</a>
+      </div>
+    </div>
+    <dl class="mb-glossary">
+      <dt>bulletin</dt>
+      <dd>A short, factual briefing shipped as one file: numbers up top, evidence in
+      bands, no decoration between.</dd>
+      <dt>dark-first</dt>
+      <dd>Every <code>light-dark()</code> pair lists the dark value first; the light
+      scheme is derived and always re-checked against contrast gates.</dd>
+      <dt>sunken</dt>
+      <dd>The well color for wells that hold content: table headers, code blocks,
+      inline code. Raised surfaces hold boxes; the ground holds bands.</dd>
+    </dl>
+    midnight-bulletin v1 · an artifact identity from the uiforagents catalogue ·
+    set in Charter with system sans body and system mono chrome · built as one file
+    with one stylesheet
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var goingDark = root.style.colorScheme === 'light';
+      root.style.colorScheme = goingDark ? 'dark' : 'light';
+      btn.textContent = goingDark ? 'Light theme' : 'Dark theme';
+    });
+  })();
+</script>
+</body>
+</html>

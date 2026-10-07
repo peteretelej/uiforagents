@@ -1,0 +1,307 @@
+/* midnight-bulletin - artifact identity foundation
+   A dark-first briefing bulletin: near-black warm ground, amber accent,
+   serif display over a sans body, mono for every label and number.
+   Extracted from a proven data briefing page. This file is the entire
+   system: tokens, base, typography, components, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + `color-scheme` on :root. The identity is
+     dark-first: the dark scheme is canonical (its values are verbatim from
+     the extraction source) and the light scheme is the derived alternative.
+     light-dark() slots are fixed by CSS - first slot is the value used
+     under the light scheme - so dark-first is provenance, not slot order.
+     Default follows the OS (`light dark`); a toggle flips
+     html.style.colorScheme to "dark" or "light". There is no data-theme
+     attribute and no duplicated token block. color-scheme must stay on
+     html/:root - light-dark() tokens re-resolve against the root's scheme
+     only.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light dark;
+
+    /* Shared semantic vocabulary (dark scheme canonical) */
+    --bg: light-dark(oklch(0.965 0.01 85), oklch(0.155 0.006 70));
+    --surface: light-dark(oklch(0.995 0.005 85), oklch(0.19 0.008 70));
+    --ink: light-dark(oklch(0.21 0.01 80), oklch(0.92 0.008 80));
+    --muted: light-dark(oklch(0.42 0.015 80), oklch(0.72 0.01 80));
+    --faint: light-dark(oklch(0.52 0.015 80), oklch(0.6 0.01 80));
+    --line: light-dark(oklch(0.86 0.012 80), oklch(0.32 0.01 80));
+    --line-soft: light-dark(oklch(0.9 0.01 80), oklch(0.26 0.01 80));
+    --accent: light-dark(oklch(0.49 0.115 70), oklch(0.8 0.15 75));
+    --accent-ink: light-dark(oklch(0.98 0.02 85), oklch(0.24 0.06 70));
+    --accent-soft: light-dark(oklch(0.93 0.055 85), oklch(0.27 0.05 75));
+    --ok: light-dark(oklch(0.46 0.12 150), oklch(0.78 0.14 145));
+    --ok-soft: light-dark(oklch(0.93 0.045 150), oklch(0.27 0.05 150));
+    --warn: light-dark(oklch(0.49 0.115 70), oklch(0.8 0.15 75));
+    --warn-soft: light-dark(oklch(0.94 0.05 85), oklch(0.27 0.05 85));
+    --danger: light-dark(oklch(0.5 0.17 25), oklch(0.7 0.16 25));
+    --danger-soft: light-dark(oklch(0.95 0.03 25), oklch(0.27 0.05 25));
+    --radius: 3px;
+    --font-serif: "Charter", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --font-sans: ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+    /* Identity extras */
+    --sunken: light-dark(oklch(0.94 0.012 85), oklch(0.125 0.005 70));
+    --measure: 68ch;
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  strong { color: var(--ink); }
+  p { margin: 0; max-width: var(--measure); color: var(--muted); }
+  p + p { margin-top: 14px; }
+  code {
+    font-family: var(--font-mono); font-size: 0.88em; color: var(--ink);
+    background: var(--sunken); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 1px 5px; white-space: nowrap;
+  }
+  .mb-wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Topbar ---------- */
+  .mb-topbar {
+    border-bottom: 1px solid var(--line-soft);
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
+  }
+  .mb-topbar .mb-wrap { display: flex; align-items: center; gap: 16px; height: 44px; }
+  .mb-topbar a { color: var(--muted); text-decoration: none; }
+  .mb-topbar a:hover { color: var(--ink); }
+  .mb-brand { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .mb-crumb { color: var(--faint); }
+  .mb-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .mb-theme-toggle {
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
+    color: var(--muted); background: none; border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 4px 10px; cursor: pointer;
+  }
+  .mb-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
+
+  /* ---------- Hero ---------- */
+  .mb-hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line-soft); }
+  .mb-kicker {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 20px;
+  }
+  .mb-hero h1 {
+    font-family: var(--font-serif); font-weight: 400;
+    font-size: clamp(40px, 6.4vw, 68px); line-height: 1.05;
+    letter-spacing: -0.01em; margin: 0; max-width: 16ch;
+  }
+  .mb-hero h1 em { font-style: italic; color: var(--accent); }
+  .mb-dek {
+    font-family: var(--font-serif); font-size: clamp(18px, 2.2vw, 21px);
+    line-height: 1.5; color: var(--muted); max-width: 56ch; margin: 22px 0 0;
+  }
+
+  /* ---------- Stat strip ---------- */
+  .mb-statstrip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line-soft); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); overflow: hidden; margin: 44px 0 0;
+  }
+  .mb-stat { background: var(--bg); padding: 16px 18px; }
+  .mb-stat b {
+    display: block; font-family: var(--font-mono); font-size: 20px;
+    font-weight: 600; color: var(--ink);
+  }
+  .mb-stat span {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  /* ---------- Sections ---------- */
+  .mb-section { padding: 64px 0; border-bottom: 1px solid var(--line-soft); }
+  .mb-section:last-of-type { border-bottom: none; }
+  .mb-snum {
+    display: block; font-family: var(--font-mono); font-size: 12px;
+    color: var(--accent); letter-spacing: 0.1em; margin: 0 0 12px;
+  }
+  .mb-section h2 {
+    font-family: var(--font-serif); font-weight: 400;
+    font-size: clamp(28px, 3.6vw, 38px); line-height: 1.15;
+    margin: 0 0 18px; max-width: 26ch;
+  }
+  .mb-section h3 { font-family: var(--font-sans); font-weight: 600; font-size: 16px; margin: 28px 0 8px; }
+  .mb-lede { font-family: var(--font-serif); font-size: 19px; line-height: 1.55; color: var(--ink); }
+  .mb-small { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+  .mb-plain { list-style: none; max-width: var(--measure); margin: 0; padding: 0; }
+  .mb-plain li { position: relative; padding-left: 18px; margin-top: 10px; color: var(--muted); }
+  .mb-plain li::before { content: "›"; position: absolute; left: 0; color: var(--accent); }
+
+  /* ---------- Podcast box ---------- */
+  .mb-podcast {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 28px; margin: 36px 0 0;
+  }
+  .mb-podcast h3 { margin: 0; }
+  .mb-ptitle { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .mb-badge {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent-ink); background: var(--accent);
+    border-radius: var(--radius); padding: 3px 8px;
+  }
+  .mb-podcast p { margin: 8px 0 0; font-size: 14.5px; }
+  .mb-podcast audio { width: 100%; margin-top: 18px; }
+  .mb-pmeta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+
+  /* ---------- Tables ---------- */
+  .mb-tblwrap {
+    overflow-x: auto; margin: 26px 0 0;
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+  }
+  .mb-tblwrap table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+  .mb-tblwrap th {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--faint); font-weight: 500;
+    text-align: left; padding: 10px 14px;
+    background: var(--sunken); border-bottom: 1px solid var(--line-soft);
+  }
+  .mb-tblwrap td {
+    padding: 11px 14px; border-bottom: 1px solid var(--line-soft);
+    vertical-align: top; color: var(--muted);
+  }
+  .mb-tblwrap tr:last-child td { border-bottom: none; }
+  .mb-tblwrap td:first-child { color: var(--ink); font-weight: 500; }
+
+  /* ---------- Status pills ---------- */
+  .mb-pill {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em;
+    padding: 2px 7px; border-radius: var(--radius); border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .mb-pill--ok { color: var(--ok); border-color: color-mix(in oklab, var(--ok) 40%, transparent); }
+  .mb-pill--warn { color: var(--warn); border-color: color-mix(in oklab, var(--warn) 40%, transparent); }
+  .mb-pill--danger { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 40%, transparent); }
+
+  /* ---------- Pro / con panels ---------- */
+  .mb-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: 30px 0 0; }
+  .mb-panel {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 22px;
+  }
+  .mb-tag {
+    display: block; font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 10px;
+  }
+  .mb-panel--pro .mb-tag { color: var(--ok); }
+  .mb-panel--con .mb-tag { color: var(--danger); }
+  .mb-panel p { font-size: 14.5px; max-width: none; }
+  .mb-who { margin: 12px 0 0; font-family: var(--font-mono); font-size: 11.5px; color: var(--faint); }
+
+  /* ---------- Code blocks ---------- */
+  .mb-pre {
+    font-family: var(--font-mono); font-size: 12.5px; line-height: 1.65;
+    background: var(--sunken); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 18px; overflow-x: auto;
+    margin: 22px 0 0; color: var(--ink);
+  }
+  .mb-pre .mb-k { color: var(--accent); }
+  .mb-pre .mb-c { color: var(--faint); }
+
+  /* ---------- Figures ---------- */
+  .mb-figure { margin: 30px 0 0; overflow-x: auto; }
+  .mb-figure svg { display: block; width: 100%; min-width: 640px; height: auto; }
+  .mb-figure figcaption {
+    font-family: var(--font-mono); font-size: 11.5px;
+    color: var(--faint); margin-top: 10px; line-height: 1.5;
+  }
+
+  /* ---------- Lab box ---------- */
+  .mb-lab {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 26px; margin: 30px 0 0;
+  }
+  .mb-lab h3 { margin: 0 0 6px; }
+  .mb-lab p { font-size: 14px; max-width: none; }
+  .mb-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 16px; }
+  .mb-row label { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .mb-lab input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); }
+  .mb-threshold { font-family: var(--font-mono); font-size: 14px; color: var(--accent); min-width: 64px; text-align: right; }
+  .mb-outcome {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line-soft); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); overflow: hidden; margin-top: 18px;
+  }
+  .mb-cell { background: var(--bg); padding: 14px; }
+  .mb-cell b { display: block; font-family: var(--font-mono); font-size: 22px; font-weight: 600; }
+  .mb-cell span {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  /* ---------- Timeline ---------- */
+  .mb-timeline { margin: 26px 0 0; border-left: 1px solid var(--line); padding: 0; list-style: none; max-width: var(--measure); }
+  .mb-timeline li { position: relative; padding: 0 0 22px 26px; color: var(--muted); }
+  .mb-timeline li::before {
+    content: ""; position: absolute; left: -5px; top: 8px; width: 9px; height: 9px;
+    background: var(--bg); border: 2px solid var(--accent); border-radius: 50%;
+  }
+  .mb-timeline .mb-t {
+    display: block; font-family: var(--font-mono); font-size: 11.5px;
+    color: var(--accent); margin-bottom: 3px;
+  }
+
+  /* ---------- Share bar ---------- */
+  .mb-sharebar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 34px 0 0; }
+  .mb-share-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .mb-share-row a, .mb-share-row button {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+    color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+    padding: 6px 14px; text-decoration: none; cursor: pointer;
+  }
+  .mb-share-row a:hover, .mb-share-row button:hover { color: var(--ink); border-color: var(--line); }
+
+  /* ---------- Footer / glossary ---------- */
+  .mb-footer { padding: 48px 0 80px; border-top: 1px solid var(--line-soft); }
+  .mb-footer .mb-wrap { font-family: var(--font-mono); font-size: 12px; color: var(--faint); line-height: 1.9; }
+  .mb-footer a { color: var(--muted); }
+  .mb-glossary { margin: 8px 0 0; }
+  .mb-glossary dt { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent); margin-top: 14px; }
+  .mb-glossary dd { margin: 3px 0 0; color: var(--muted); font-size: 14px; max-width: 66ch; }
+
+  /* ---------- Utilities ---------- */
+  .mb-mono { font-family: var(--font-mono); }
+  .mb-measure { max-width: var(--measure); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 800px) {
+    .mb-cols { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .mb-wrap { padding: 0 18px; }
+    .mb-topbar nav { display: none; }
+    .mb-statstrip { grid-template-columns: repeat(2, 1fr); }
+    .mb-outcome { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    :root { color-scheme: light; }
+    .mb-topbar nav, .mb-sharebar, .mb-theme-toggle { display: none; }
+    body { font-size: 11pt; }
+    .mb-panel, .mb-podcast, .mb-lab, .mb-tblwrap { break-inside: avoid; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
