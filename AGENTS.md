@@ -66,6 +66,15 @@ dependency, and no required JavaScript.
   `node tooling/build-registry.mjs <slug>`
 - Pin tested versions in identity.json (`stack.tested`) and state them in
   release notes.
+- The public catalogue site discovers identities by reading this repo's
+  `identities/` directory from a sibling checkout at build time, so an
+  identity change is never done until the website reflects it: new
+  identities appear automatically, but keep the README catalogue tables and
+  the site from disagreeing - update the tables here, keep identity.json
+  (title, description, vibe tags) accurate, since those feed the site's
+  cards and filters. After changing tokens, tags, or names, rebuild the
+  site against this checkout and check the catalogue before considering the
+  change landed.
 
 ## Conventions
 

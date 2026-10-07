@@ -34,8 +34,8 @@ lands, use the copy path above.
 | Identity | Vibe | Status |
 |---|---|---|
 | **ocean-calm** | Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display, generous whitespace. | ✅ v1.0 |
-| **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting. | 🔜 queued |
-| **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces. | 🔜 queued |
+| **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting. | ✅ v0.1 |
+| **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces. | ✅ v0.1 |
 
 Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
 one shared demo app).
