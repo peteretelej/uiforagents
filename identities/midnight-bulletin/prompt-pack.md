@@ -44,7 +44,8 @@ page-specific layout only.
   red (`--danger`) are semantic status in pills, tags, and outcome cells.
   Both schemes share the same hue family.
 - **Dual theme is built in**: every token is a `light-dark()` pair and
-  `:root` sets `color-scheme: light dark` (follows the OS by default).
+  `:root` sets `color-scheme: dark` (the identity leads dark; a toggle
+  flips it).
   `color-scheme` must stay on `html`/`:root`; root-level tokens only
   re-resolve against the root's scheme. Do not create `data-theme` blocks,
   duplicate token lists, or set `color-scheme` on wrappers.

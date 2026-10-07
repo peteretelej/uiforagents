@@ -21,7 +21,7 @@
      the extraction source) and the light scheme is the derived alternative.
      light-dark() slots are fixed by CSS - first slot is the value used
      under the light scheme - so dark-first is provenance, not slot order.
-     Default follows the OS (`light dark`); a toggle flips
+     The initial scheme is the identity's lead scheme: dark; a toggle flips
      html.style.colorScheme to "dark" or "light". There is no data-theme
      attribute and no duplicated token block. color-scheme must stay on
      html/:root - light-dark() tokens re-resolve against the root's scheme
@@ -31,7 +31,7 @@
 
 @layer foundation {
   :root {
-    color-scheme: light dark;
+    color-scheme: dark;
 
     /* Shared semantic vocabulary (dark scheme canonical) */
     --bg: light-dark(oklch(0.965 0.01 85), oklch(0.155 0.006 70));

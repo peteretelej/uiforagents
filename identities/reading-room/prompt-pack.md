@@ -37,7 +37,8 @@ page-specific layout only.
   `--ink` on `--bg`; secondary is `--muted`; tertiary is `--faint`. The
   neutrals are warm-tinted, never pure grey.
 - **Dual theme is built in**: every token is a `light-dark()` pair and
-  `:root` sets `color-scheme: light dark` (follows the OS by default).
+  `:root` sets `color-scheme: light` (the identity leads light; a toggle
+  flips it).
   `color-scheme` must stay on `html`/`:root`; root-level tokens only
   re-resolve against the root's scheme. Do not create `data-theme` blocks,
   duplicate token lists, or set `color-scheme` on wrappers.

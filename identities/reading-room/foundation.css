@@ -7,9 +7,9 @@
    - Everything lives in `@layer foundation`, so unlayered page CSS always
      overrides it without !important. Paste the whole file into a single-file
      <style> block or link it; both modes work.
-   - Dual theme via light-dark() + `color-scheme` on :root. Default follows
-     the OS (`light dark`); a toggle flips html.style.colorScheme to "light"
-     or "dark". There is no data-theme attribute and no duplicated token
+   - Dual theme via light-dark() + `color-scheme` on :root. The initial
+     scheme is the identity's lead scheme: light. A toggle flips
+     html.style.colorScheme to "light" or "dark". There is no data-theme attribute and no duplicated token
      block. color-scheme must stay on html/:root - light-dark() tokens
      re-resolve against the root's scheme only.
    - No JavaScript is required anywhere.
@@ -17,7 +17,7 @@
 
 @layer foundation {
   :root {
-    color-scheme: light dark;
+    color-scheme: light;
 
     /* Shared semantic vocabulary */
     --bg: light-dark(oklch(0.975 0.006 95), oklch(0.205 0.01 140));
