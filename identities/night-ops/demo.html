@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>night-ops · identity demo</title>
+<meta name="description" content="Self-documenting demo of the night-ops artifact identity: rationale, token reference, component gallery, chart vocabulary, build notes.">
+<style>
+/* night-ops - artifact identity foundation
+   A dark ops console: cool near-black ground, azure instrument accent,
+   LED status grammar, hairline panels, mono for every numeral.
+   Seeded from a fidelity pass over Grafana/Datadog/Linear-class ops tools.
+   This file is the entire system: tokens, base, typography, components,
+   utilities, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + the scheme pinned on :root. The identity
+     leads dark: the dark values are canonical (verbatim from the fidelity
+     source) and the light values are the derived alternative, re-gated for
+     contrast. light-dark() slots are fixed by CSS - first slot is the value
+     used under the light scheme - so dark-first is provenance, not slot
+     order. A toggle flips html.style.colorScheme to "dark" or "light".
+     There is no data-theme attribute and no duplicated token block; keep
+     the scheme property on html/:root.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: dark;
+
+    /* Shared semantic vocabulary (dark scheme canonical) */
+    --bg:        light-dark(oklch(0.974 0.004 255), oklch(0.17 0.008 255));
+    --surface:   light-dark(oklch(0.998 0.001 255), oklch(0.205 0.009 255));
+    --surface-2: light-dark(oklch(0.982 0.004 255), oklch(0.235 0.010 255));
+    --ink:       light-dark(oklch(0.26 0.014 260), oklch(0.90 0.008 255));
+    --muted:     light-dark(oklch(0.44 0.014 260), oklch(0.66 0.010 255));
+    --faint:     light-dark(oklch(0.56 0.010 255), oklch(0.48 0.010 255));
+    --line:      light-dark(oklch(0.895 0.008 255), oklch(0.29 0.010 255));
+    --line-soft: light-dark(oklch(0.930 0.006 255), oklch(0.24 0.009 255));
+    --accent:      light-dark(oklch(0.50 0.115 255), oklch(0.72 0.115 255));
+    --accent-ink:  light-dark(oklch(0.995 0 0),      oklch(0.15 0.02 255));
+    --accent-soft: color-mix(in oklab, var(--accent) 10%, transparent);
+    --ok:     light-dark(oklch(0.52 0.11 155),  oklch(0.72 0.13 155));
+    --warn:   light-dark(oklch(0.48 0.115 80),  oklch(0.78 0.13 80));
+    --danger: light-dark(oklch(0.53 0.17 27),   oklch(0.66 0.17 25));
+    --radius: 4px;
+
+    /* Fonts: sans UI, mono for every numeral, label and code path */
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+    /* Identity extras */
+    --sunken:   light-dark(oklch(0.952 0.005 255), oklch(0.145 0.007 255));
+    --r-sm: 3px;
+    --r-lg: 6px;
+    --pop: light-dark(0 8px 24px oklch(0 0 0 / 0.14), 0 8px 24px oklch(0 0 0 / 0.18));
+    --overlay: light-dark(oklch(0.20 0.010 255 / 0.45), oklch(0.09 0.010 255 / 0.60));
+
+    /* Chart, sparkline and log tokens (derive from the palette, never new colors) */
+    --chart-grid: var(--line-soft);
+    --chart-axis: var(--line);
+    --chart-label: var(--faint);
+    --chart-series: var(--accent);
+    --chart-series-dim: var(--faint);
+    --chart-fill: color-mix(in oklab, var(--accent) 8%, transparent);
+    --chart-annotate: var(--warn);
+    --spark-pos: var(--accent);
+    --spark-neg: var(--danger);
+    --log-wash: color-mix(in oklab, var(--danger) 8%, transparent);
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 13px/1.5 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  svg text { font-family: var(--mono); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+  section[id] { scroll-margin-top: 24px; }
+
+  /* ---------- Utilities ---------- */
+  .no-wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px 80px; }
+  .no-cols { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px; min-width: 0; }
+  .no-cols.flip { grid-template-columns: 1fr 1.7fr; }
+  .no-stack { display: grid; gap: 14px; min-width: 0; }
+  .no-mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .no-dim { color: var(--faint); }
+  .no-mut { color: var(--muted); }
+  .no-acc { color: var(--accent); }
+  .no-pos { color: var(--ok); }
+  .no-neg { color: var(--danger); }
+  .no-neu { color: var(--muted); }
+  .no-k {
+    font: 600 10px/1.2 var(--mono); letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--faint);
+  }
+
+  /* ---------- Top bar ---------- */
+  .no-top {
+    display: flex; align-items: center; gap: 12px; padding: 10px 24px;
+    border-bottom: 1px solid var(--line); background: var(--sunken);
+    flex-wrap: wrap;
+  }
+  .no-brand {
+    font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .no-brand i { font-style: normal; color: var(--accent); }
+  .no-env {
+    font: 600 10px/1 var(--mono); letter-spacing: 0.1em; color: var(--accent);
+    border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
+    border-radius: var(--r-sm); padding: 3px 7px;
+  }
+  .no-top .no-right { margin-left: auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .no-sync { display: inline-flex; align-items: center; gap: 7px; font: 11px/1 var(--mono); color: var(--faint); }
+  .no-clock { font: 11px/1 var(--mono); color: var(--faint); letter-spacing: 0.04em; }
+
+  /* ---------- Panels ---------- */
+  .no-panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); min-width: 0; }
+  .no-ph {
+    display: flex; align-items: baseline; gap: 8px; padding: 10px 16px;
+    border-bottom: 1px solid var(--line-soft); flex-wrap: wrap;
+  }
+  .no-ph h3 {
+    margin: 0; font: 600 10px/1.4 var(--mono); letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .no-meta { margin-left: auto; font: 11px/1.4 var(--mono); color: var(--faint); }
+  .no-tools { margin-left: auto; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .no-take { margin: 0; padding: 9px 16px 0; color: var(--muted); font-size: 12px; }
+  .no-chart { display: block; width: 100%; height: auto; padding: 6px 8px 4px; }
+  .no-legend {
+    display: flex; gap: 16px; align-items: center; padding: 8px 16px 0;
+    font: 10.5px/1 var(--mono); color: var(--muted); flex-wrap: wrap;
+  }
+  .no-sw { display: inline-block; width: 16px; border-top: 2px solid var(--accent); vertical-align: middle; margin-right: 6px; }
+  .no-sw.dash { border-top-style: dashed; }
+  .no-sw.dim { border-top-color: var(--faint); border-top-width: 1px; }
+
+  /* ---------- KPI strip ---------- */
+  .no-kpis {
+    display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 1px;
+    background: var(--line-soft); border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .no-kpi { background: var(--surface); padding: 12px 16px; min-width: 0; }
+  .no-v { font: 600 22px/1.1 var(--mono); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .no-kpi.hero .no-v { font-size: 30px; color: var(--accent); }
+  .no-d { font: 500 11px/1.4 var(--mono); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .no-spark { display: block; margin-top: 8px; }
+
+  /* ---------- State grammar ---------- */
+  .no-led { width: 7px; height: 7px; border-radius: 50%; flex: none; display: inline-block; }
+  .no-led.ok { background: var(--ok); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ok) 18%, transparent); }
+  .no-led.warn { background: var(--warn); box-shadow: 0 0 0 3px color-mix(in oklab, var(--warn) 18%, transparent); }
+  .no-led.fail { background: var(--danger); box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 20%, transparent); }
+  .no-led.neu { background: var(--faint); box-shadow: 0 0 0 3px color-mix(in oklab, var(--faint) 15%, transparent); }
+
+  .no-state {
+    display: inline-flex; align-items: center; gap: 5px;
+    font: 600 9px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 7px; border-radius: var(--r-sm); border: 1px solid; white-space: nowrap;
+  }
+  .no-state i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .no-state.ok { color: var(--ok); border-color: color-mix(in oklab, var(--ok) 45%, transparent); background: color-mix(in oklab, var(--ok) 8%, transparent); }
+  .no-state.warn { color: var(--warn); border-color: color-mix(in oklab, var(--warn) 45%, transparent); background: color-mix(in oklab, var(--warn) 8%, transparent); }
+  .no-state.fail { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 50%, transparent); background: color-mix(in oklab, var(--danger) 10%, transparent); }
+  .no-state.info { color: var(--accent); border-color: color-mix(in oklab, var(--accent) 45%, transparent); background: var(--accent-soft); }
+  .no-state.mute { color: var(--muted); border-color: var(--line); background: transparent; }
+  .no-state.fill { color: var(--accent-ink); border-color: transparent; }
+  .no-state.fill.fail { background: var(--danger); }
+  .no-state.fill.warn { background: var(--warn); }
+  .no-state.firing i { animation: no-blink 1.6s ease-in-out infinite; }
+  @keyframes no-blink { 50% { opacity: 0.3; } }
+
+  .no-tag {
+    display: inline-block; font: 600 10px/1 var(--mono); letter-spacing: 0.06em;
+    padding: 3px 8px; border-radius: 99px;
+  }
+  .no-tag.ok { color: var(--ok); background: color-mix(in oklab, var(--ok) 12%, transparent); }
+  .no-tag.warn { color: var(--warn); background: color-mix(in oklab, var(--warn) 12%, transparent); }
+  .no-tag.fail { color: var(--danger); background: color-mix(in oklab, var(--danger) 13%, transparent); }
+  .no-tag.info { color: var(--accent); background: var(--accent-soft); }
+  .no-tag.mute { color: var(--muted); background: var(--sunken); }
+
+  /* ---------- Health rows ---------- */
+  .no-rows { padding: 3px 0; }
+  .no-hrow {
+    display: flex; align-items: center; gap: 9px; padding: 7px 16px;
+    border-top: 1px solid var(--line-soft); font-size: 12.5px;
+  }
+  .no-hrow:first-child { border-top: 0; }
+  .no-hrow .no-n { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .no-hrow .no-m {
+    margin-left: auto; font: 11px/1 var(--mono); color: var(--muted);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .no-rows-foot {
+    padding: 9px 16px; border-top: 1px solid var(--line-soft);
+    font: 11px/1.4 var(--mono); color: var(--faint);
+  }
+
+  /* ---------- Status wall ---------- */
+  .no-sg-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px; padding: 12px 16px;
+  }
+  .no-sg {
+    display: flex; align-items: center; gap: 8px; border: 1px solid var(--line-soft);
+    border-radius: var(--r-sm); padding: 7px 10px; font: 11px/1 var(--mono); min-width: 0;
+  }
+  .no-sg .no-n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .no-sg .no-m { margin-left: auto; color: var(--faint); }
+
+  /* ---------- Filter bar ---------- */
+  .no-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .no-sp { flex: 1; }
+  .no-stamp { display: inline-flex; align-items: center; gap: 7px; font: 11px/1 var(--mono); color: var(--faint); }
+
+  .no-iwrap { position: relative; display: inline-flex; }
+  .no-input {
+    height: 28px; padding: 0 10px; background: var(--sunken); color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    font: 500 12px/1 var(--sans); min-width: 0;
+  }
+  .no-input::placeholder { color: var(--faint); }
+  .no-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent); }
+  .no-input.bad { border-color: var(--danger); box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 14%, transparent); }
+  .no-iwrap .no-input { width: 220px; padding-right: 30px; }
+  .no-iwrap .no-kbd { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); }
+  .no-sel { position: relative; display: inline-flex; }
+  .no-sel select {
+    appearance: none; height: 28px; padding: 0 26px 0 10px; background: var(--sunken); color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--radius); font: 500 12px/1 var(--sans);
+  }
+  .no-sel::after {
+    content: "▾"; position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+    font: 10px/1 var(--mono); color: var(--faint); pointer-events: none;
+  }
+
+  .no-seg {
+    display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; background: var(--sunken);
+  }
+  .no-seg button {
+    padding: 0 11px; height: 26px; font: 600 11px/1 var(--mono); color: var(--muted);
+    background: transparent; border: 0; border-left: 1px solid var(--line-soft);
+  }
+  .no-seg button:first-child { border-left: 0; }
+  .no-seg button:hover { color: var(--ink); }
+  .no-seg button.on { background: var(--accent-soft); color: var(--accent); }
+
+  .no-chip {
+    display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px;
+    border: 1px solid var(--line); border-radius: 99px; background: transparent;
+    font: 500 11px/1 var(--mono); color: var(--muted); white-space: nowrap;
+    text-decoration: none; transition: border-color .12s, color .12s;
+  }
+  .no-chip:hover { border-color: var(--faint); color: var(--ink); }
+  .no-chip.on {
+    color: var(--accent); border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+    background: var(--accent-soft);
+  }
+  .no-chip .x { color: var(--faint); font-size: 12px; line-height: 1; }
+  .no-chip.add { border-style: dashed; color: var(--faint); }
+
+  .no-kbd {
+    display: inline-block; font: 600 10px/1 var(--mono); color: var(--muted);
+    background: var(--surface-2); border: 1px solid var(--line); border-bottom-width: 2px;
+    border-radius: var(--r-sm); padding: 2px 5px; vertical-align: middle;
+  }
+
+  /* ---------- Buttons ---------- */
+  .no-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    height: 28px; padding: 0 12px; border-radius: var(--radius);
+    border: 1px solid var(--line); background: var(--surface);
+    font: 500 12px/1 var(--sans); transition: background .12s, border-color .12s;
+    white-space: nowrap;
+  }
+  .no-btn:hover { background: var(--surface-2); border-color: var(--faint); }
+  .no-btn.pri { background: var(--accent); border-color: transparent; color: var(--accent-ink); font-weight: 600; }
+  .no-btn.pri:hover { background: color-mix(in oklab, var(--accent) 88%, var(--accent-ink)); }
+  .no-btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+  .no-btn.ghost:hover { background: var(--surface-2); color: var(--ink); }
+  .no-btn.danger { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 45%, transparent); background: transparent; }
+  .no-btn.danger:hover { background: color-mix(in oklab, var(--danger) 10%, transparent); border-color: color-mix(in oklab, var(--danger) 65%, transparent); }
+  .no-btn.sm { height: 22px; padding: 0 8px; font-size: 11px; }
+  .no-btn.icon { width: 28px; padding: 0; }
+  .no-btn[disabled] { opacity: 0.45; pointer-events: none; }
+
+  /* switch */
+  .no-ctl { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .no-switch {
+    appearance: none; width: 30px; height: 17px; border-radius: 99px; background: var(--line);
+    position: relative; transition: background .15s; margin: 0; flex: none;
+  }
+  .no-switch::after {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 13px; height: 13px;
+    border-radius: 50%; background: var(--surface); box-shadow: 0 1px 2px oklch(0 0 0 / 0.35);
+    transition: translate .15s;
+  }
+  .no-switch:checked { background: var(--accent); }
+  .no-switch:checked::after { translate: 13px 0; }
+
+  /* ---------- Tables ---------- */
+  .no-twrap { overflow-x: auto; }
+  .no-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .no-tbl th {
+    text-align: left; font: 600 10px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--faint); padding: 9px 16px; border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  .no-tbl td { padding: 8px 16px; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; }
+  .no-tbl tbody tr:last-child td { border-bottom: 0; }
+  .no-tbl td.num, .no-tbl th.num { text-align: right; }
+  .no-tbl td.mono { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+  .no-tbl td.svc { font-weight: 500; white-space: nowrap; }
+  .no-tbl tbody tr:hover td { background: var(--surface-2); }
+  .no-tbl th.sort { cursor: pointer; }
+  .no-tbl th.sort::after { content: "↕"; margin-left: 6px; color: var(--faint); font-weight: 400; }
+  .no-tbl th.asc::after { content: "↑"; color: var(--accent); }
+  .no-tbl th.desc::after { content: "↓"; color: var(--accent); }
+  .no-tbl tfoot td { border-top: 1px solid var(--line); border-bottom: 0; background: var(--sunken); font-weight: 600; }
+  .no-tbl-tools {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    padding: 9px 16px; border-bottom: 1px solid var(--line-soft);
+  }
+  .no-tbl-tools .no-cnt { margin-left: auto; font: 11px/1 var(--mono); color: var(--faint); }
+  .no-tbl-foot {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 8px 16px; border-top: 1px solid var(--line-soft);
+    font: 11px/1 var(--mono); color: var(--faint);
+  }
+  .no-pag { margin-left: auto; display: flex; gap: 3px; }
+  .no-pag button {
+    min-width: 24px; height: 24px; padding: 0 6px; font: 500 11px/1 var(--mono);
+    color: var(--muted); background: transparent; border: 1px solid transparent;
+    border-radius: var(--r-sm);
+  }
+  .no-pag button:hover { border-color: var(--line); }
+  .no-pag button.on { border-color: var(--line); background: var(--surface-2); color: var(--ink); font-weight: 600; }
+
+  /* ---------- Log stream ---------- */
+  .no-log { font: 11.5px/1.7 var(--mono); font-variant-numeric: tabular-nums; padding: 3px 0; }
+  .no-lrow { display: flex; gap: 10px; padding: 3px 16px; align-items: baseline; }
+  .no-lrow:hover { background: var(--surface-2); }
+  .no-lrow time { color: var(--faint); flex: none; white-space: nowrap; }
+  .no-lvl {
+    flex: none; width: 44px; text-align: center; font: 600 9px/1.6 var(--mono);
+    letter-spacing: 0.06em; border-radius: var(--r-sm); border: 1px solid; align-self: center;
+  }
+  .no-lvl.info { color: var(--muted); border-color: var(--line); }
+  .no-lvl.debug { color: var(--faint); border-color: var(--line-soft); }
+  .no-lvl.warn { color: var(--warn); border-color: color-mix(in oklab, var(--warn) 45%, transparent); }
+  .no-lvl.error { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 55%, transparent); }
+  .no-lrow.err { background: var(--log-wash); }
+  .no-lrow .no-src { color: var(--muted); flex: none; width: 118px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .no-lrow .no-msg { color: var(--ink); word-break: break-word; min-width: 0; }
+  .no-log-foot {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 8px 16px; border-top: 1px solid var(--line-soft);
+    font: 11px/1 var(--mono); color: var(--faint);
+  }
+
+  /* ---------- Event timeline ---------- */
+  .no-tl {
+    position: relative; display: grid; grid-template-columns: 44px 9px 1fr;
+    column-gap: 12px; padding: 10px 16px 14px;
+  }
+  .no-tl::before {
+    content: ""; position: absolute; top: 16px; bottom: 20px; left: 76px;
+    width: 1px; background: var(--line-soft);
+  }
+  .no-tlrow { display: contents; }
+  .no-tlrow time { font: 11px/1.6 var(--mono); color: var(--faint); font-variant-numeric: tabular-nums; }
+  .no-node { width: 9px; height: 9px; border-radius: 50%; margin-top: 5px; position: relative; z-index: 1; }
+  .no-node.ok { background: var(--ok); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ok) 16%, transparent); }
+  .no-node.warn { background: var(--warn); box-shadow: 0 0 0 3px color-mix(in oklab, var(--warn) 16%, transparent); }
+  .no-node.neu { background: var(--faint); box-shadow: 0 0 0 3px color-mix(in oklab, var(--faint) 14%, transparent); }
+  .no-tlbody { padding-bottom: 10px; min-width: 0; }
+  .no-tlbody .no-t1 { font-size: 12.5px; font-weight: 500; }
+  .no-tlbody .no-t2 { font: 11px/1.6 var(--mono); color: var(--muted); margin-top: 1px; }
+
+  /* ---------- Resource meters ---------- */
+  .no-meters { padding: 2px 0; }
+  .no-mrow { padding: 9px 16px 10px; border-top: 1px solid var(--line-soft); }
+  .no-mrow:first-child { border-top: 0; }
+  .no-mrow-top { display: flex; align-items: baseline; gap: 8px; }
+  .no-mrow-top .no-n { font-weight: 500; font-size: 12.5px; }
+  .no-mv { margin-left: auto; font: 11px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+  .no-meter { position: relative; height: 6px; border-radius: 2px; background: var(--sunken); margin-top: 7px; }
+  .no-meter i {
+    position: absolute; top: 0; bottom: 0; left: 0; width: var(--w);
+    border-radius: 2px; background: var(--accent);
+  }
+  .no-meter i.warn { background: var(--warn); }
+  .no-meter i.fail { background: var(--danger); }
+  .no-meter b { position: absolute; top: -2px; bottom: -2px; left: 80%; width: 2px; background: var(--faint); opacity: 0.55; }
+  .no-mrow-cap { font: 10px/1.6 var(--mono); color: var(--faint); margin-top: 4px; }
+
+  /* ---------- Top-N bars ---------- */
+  .no-bars { padding: 4px 0; }
+  .no-brow {
+    display: grid; grid-template-columns: 18px 108px 1fr 62px; gap: 10px; align-items: center;
+    padding: 6px 16px; font: 11px/1.4 var(--mono); font-variant-numeric: tabular-nums;
+    border-top: 1px solid var(--line-soft);
+  }
+  .no-brow:first-child { border-top: 0; }
+  .no-brow .no-rk { color: var(--faint); }
+  .no-brow .no-n { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .no-track { height: 8px; border-radius: 2px; background: var(--sunken); overflow: hidden; }
+  .no-track i { display: block; height: 100%; width: var(--w); background: var(--accent); border-radius: 2px; }
+  .no-brow .no-val { text-align: right; color: var(--muted); }
+
+  /* ---------- Uptime strip ---------- */
+  .no-up { display: flex; gap: 3px; padding: 12px 16px 6px; }
+  .no-up i { flex: 1; height: 22px; border-radius: 2px; }
+  .no-up i.ok { background: color-mix(in oklab, var(--ok) 78%, var(--surface)); }
+  .no-up i.warn { background: var(--warn); }
+  .no-up i.fail { background: var(--danger); }
+  .no-up i.nd { background: var(--sunken); }
+  .no-up-cap {
+    display: flex; gap: 12px; flex-wrap: wrap; padding: 2px 16px 12px;
+    font: 11px/1.5 var(--mono); color: var(--faint);
+  }
+  .no-up-cap b { color: var(--muted); font-weight: 500; }
+
+  /* ---------- Alerts ---------- */
+  .no-alert { display: flex; align-items: stretch; border-top: 1px solid var(--line-soft); }
+  .no-alert:first-of-type { border-top: 0; }
+  .no-sevrail { width: 5px; flex: none; }
+  .no-sevrail.sev1 { background: var(--danger); }
+  .no-sevrail.sev2 { background: var(--warn); }
+  .no-sevrail.sev3 { background: color-mix(in oklab, var(--faint) 55%, transparent); }
+  .no-alert-main { flex: 1; padding: 10px 14px; min-width: 220px; }
+  .no-a-title { font-size: 12.5px; font-weight: 500; }
+  .no-a-meta {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 5px;
+    font: 11px/1 var(--mono); color: var(--faint); font-variant-numeric: tabular-nums;
+  }
+  .no-alert-side {
+    display: flex; align-items: center; gap: 6px; padding: 10px 14px;
+    border-left: 1px solid var(--line-soft);
+  }
+  .no-who {
+    width: 20px; height: 20px; border-radius: var(--r-sm); background: var(--sunken);
+    border: 1px solid var(--line-soft); color: var(--muted);
+    font: 600 9px/18px var(--mono); text-align: center; flex: none;
+  }
+
+  /* on-call roster */
+  .no-oc-row {
+    display: flex; align-items: center; gap: 10px; padding: 9px 16px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .no-oc-row:first-child { border-top: 0; }
+  .no-oc-row .no-who { width: 26px; height: 26px; line-height: 24px; font-size: 10px; }
+  .no-oc-row .no-role { font: 600 9px/1.4 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+  .no-oc-row .no-nm { font-size: 12.5px; font-weight: 500; }
+  .no-oc-row .no-till { margin-left: auto; font: 11px/1 var(--mono); color: var(--muted); }
+
+  /* ---------- Table states gallery ---------- */
+  .no-state-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .no-empty { padding: 34px 20px; display: grid; place-items: center; gap: 10px; text-align: center; }
+  .no-eglyph {
+    width: 40px; height: 40px; border: 1px dashed var(--line); border-radius: var(--r-lg);
+    display: grid; place-items: center; color: var(--faint);
+  }
+  .no-nores { padding: 34px 20px; display: grid; place-items: center; gap: 10px; text-align: center; }
+  .no-nores .no-q { font: 12px/1.4 var(--mono); color: var(--muted); }
+  .no-sk-row {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 56px; gap: 12px;
+    padding: 12px 16px; border-top: 1px solid var(--line-soft);
+  }
+  .no-sk-row:first-child { border-top: 0; }
+  .no-skel {
+    height: 10px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--sunken) 25%, var(--surface-2) 50%, var(--sunken) 75%);
+    background-size: 200% 100%; animation: no-shimmer 1.4s linear infinite;
+  }
+  @keyframes no-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+  .no-errbox { padding: 22px 20px; display: flex; gap: 14px; align-items: flex-start; }
+  .no-errbox .no-glyph { color: var(--danger); flex: none; margin-top: 2px; }
+  .no-errbox .no-t { font-weight: 600; font-size: 13px; }
+  .no-errbox .no-code { font: 11px/1.7 var(--mono); color: var(--muted); margin: 3px 0 10px; }
+
+  /* ---------- Control sheet, floating layers ---------- */
+  .no-sheet { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 14px; }
+  .no-sheet .wide { grid-column: 1 / -1; }
+  .no-spec { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 16px; }
+  .no-spec-col { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px 16px; }
+
+  .no-stage {
+    position: relative; border: 1px dashed var(--line); border-radius: var(--radius);
+    background: var(--sunken); padding: 26px 20px; display: flex; justify-content: center;
+    overflow: hidden;
+  }
+  .no-stage::before { content: ""; position: absolute; inset: 0; background: var(--overlay); }
+  .no-stage > .no-hint {
+    position: absolute; top: 8px; left: 10px; z-index: 2;
+    font: 600 9px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+    color: color-mix(in oklab, var(--ink) 55%, transparent);
+  }
+  .no-modal {
+    position: relative; z-index: 1; width: min(380px, 100%); background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--pop);
+  }
+  .no-modal-h {
+    display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+    border-bottom: 1px solid var(--line-soft); font-weight: 600; font-size: 13px;
+  }
+  .no-modal-h .x { margin-left: auto; color: var(--faint); font: 14px/1 var(--mono); }
+  .no-modal-b { padding: 14px 16px; color: var(--muted); font-size: 12.5px; }
+  .no-modal-f { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--line-soft); }
+
+  .no-tipwrap { position: relative; display: inline-block; }
+  .no-tip {
+    position: absolute; bottom: calc(100% + 9px); left: 50%; transform: translateX(-50%);
+    background: var(--surface-2); border: 1px solid var(--line); color: var(--ink);
+    font: 500 11px/1 var(--mono); padding: 6px 9px; border-radius: var(--r-sm);
+    white-space: nowrap; box-shadow: var(--pop); z-index: 2;
+  }
+  .no-tip::after {
+    content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: var(--line);
+  }
+
+  .no-toasts { display: grid; gap: 8px; padding: 14px 16px; }
+  .no-toast {
+    display: flex; align-items: flex-start; gap: 10px; max-width: 460px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 9px 12px; box-shadow: var(--pop);
+  }
+  .no-toast .no-ti {
+    width: 16px; height: 16px; border-radius: var(--r-sm); font: 700 10px/16px var(--mono);
+    text-align: center; flex: none; margin-top: 1px;
+  }
+  .no-toast .no-ti.ok { color: var(--ok); background: color-mix(in oklab, var(--ok) 14%, transparent); }
+  .no-toast .no-ti.warn { color: var(--warn); background: color-mix(in oklab, var(--warn) 16%, transparent); }
+  .no-toast .no-ti.fail { color: var(--accent-ink); background: var(--danger); }
+  .no-toast b { display: block; font-size: 12px; font-weight: 600; }
+  .no-toast small { display: block; color: var(--muted); font-size: 11.5px; margin-top: 1px; }
+  .no-toast .x { margin-left: auto; color: var(--faint); font: 13px/1 var(--mono); }
+
+  /* ---------- Breadcrumbs, tabs, pagination ---------- */
+  .no-crumb { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font: 11px/1 var(--mono); color: var(--faint); }
+  .no-crumb a { color: var(--muted); text-decoration: none; }
+  .no-crumb a:hover { color: var(--ink); }
+  .no-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); padding: 0 2px; }
+  .no-tab {
+    padding: 8px 10px; font: 500 12px/1 var(--sans); color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    background: none; border-top: 0; border-left: 0; border-right: 0;
+  }
+  .no-tab:hover { color: var(--ink); }
+  .no-tab.on { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+  .no-tab .no-cnt {
+    font: 600 9px/1 var(--mono); color: var(--danger);
+    background: color-mix(in oklab, var(--danger) 12%, transparent);
+    border-radius: 99px; padding: 2px 5px; margin-left: 5px; vertical-align: 1px;
+  }
+
+  /* ---------- Command palette ---------- */
+  .no-cmdk {
+    width: min(440px, 100%); background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-lg); box-shadow: var(--pop); overflow: hidden;
+  }
+  .no-cmdk-in {
+    display: flex; align-items: center; gap: 10px; padding: 11px 13px;
+    border-bottom: 1px solid var(--line-soft); font: 500 13px/1 var(--sans); color: var(--ink);
+  }
+  .no-cmdk-in .caret { width: 1px; height: 14px; background: var(--accent); }
+  .no-cmdk-in .no-right { margin-left: auto; display: flex; gap: 5px; }
+  .no-ci { display: flex; align-items: center; gap: 10px; padding: 9px 13px; font-size: 12.5px; color: var(--muted); }
+  .no-ci + .no-ci { border-top: 1px solid var(--line-soft); }
+  .no-ci.on { background: var(--accent-soft); color: var(--ink); box-shadow: inset 2px 0 0 var(--accent); }
+  .no-ci .no-g { color: var(--faint); font: 11px/1 var(--mono); width: 14px; text-align: center; }
+  .no-ci .no-hint { margin-left: auto; font: 10px/1 var(--mono); color: var(--faint); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .no-cols, .no-cols.flip { grid-template-columns: 1fr; }
+    .no-kpis { grid-template-columns: 1fr 1fr; }
+    .no-kpi.hero { grid-column: 1 / -1; }
+    .no-state-grid { grid-template-columns: 1fr; }
+    .no-sheet { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .no-wrap { padding: 0 14px 56px; }
+    .no-top { padding: 10px 14px; }
+    .no-alert { flex-wrap: wrap; }
+    .no-alert-side { width: 100%; border-left: 0; border-top: 1px solid var(--line-soft); padding: 8px 14px; }
+    .no-iwrap .no-input { width: 100%; }
+    .no-iwrap { flex: 1 1 160px; }
+    .no-sk-row { grid-template-columns: 2fr 1fr 56px; }
+    .no-sk-row .no-hide { display: none; }
+    .no-lrow { flex-wrap: wrap; align-items: center; row-gap: 1px; }
+    .no-lrow time { order: 1; }
+    .no-lvl { order: 2; width: auto; padding: 1px 7px; }
+    .no-lrow .no-src { order: 3; width: auto; flex: 1; text-align: right; }
+    .no-lrow .no-msg { order: 4; flex-basis: 100%; }
+    .no-brow { grid-template-columns: 16px 88px 1fr 56px; gap: 8px; }
+  }
+
+  /* ---------- Print ----------
+     One line re-inks the whole identity for paper: the light-dark()
+     tokens follow the light scheme, so every panel, chip, chart and LED
+     flips without hand-recoloring. Chrome and controls hide; panels
+     never split across pages. */
+  @media print {
+    :root { color-scheme: light; }
+    @page { margin: 12mm; }
+    a { text-decoration: none; }
+    .no-print { display: none; }
+    .no-panel, .no-kpis, .no-modal, .no-cmdk, .no-twrap { break-inside: avoid; box-shadow: none; }
+    .no-state.firing i, .no-skel { animation: none; }
+    .no-tip, .no-modal, .no-toast, .no-cmdk { box-shadow: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .no-state.firing i, .no-skel { animation: none; }
+    .no-btn, .no-chip, .no-tab, .no-switch, .no-pag button, .no-sel select { transition: none; }
+  }
+}
+</style>
+<style>
+/* page CSS (unlayered): this demo's own document chrome - headings and
+   section rhythm for the explanation page itself. The identity ships no
+   document-heading components; everything below stays out of the
+   foundation layer and never edits it. */
+.head { padding: 40px 0 8px; }
+.head h1 { font-size: 26px; line-height: 1.15; margin: 10px 0; letter-spacing: -0.01em; }
+.dek { color: var(--muted); max-width: 76ch; margin: 0 0 6px; font-size: 13px; }
+.head .no-k { color: var(--accent); margin: 0; }
+.sec { margin-top: 56px; }
+.sec > .no-k { color: var(--accent); font-size: 11px; letter-spacing: 0.14em; margin: 0 0 8px; }
+.sec-dek { color: var(--muted); max-width: 84ch; margin: 0 0 14px; }
+.foot {
+  margin-top: 72px; border-top: 1px solid var(--line); padding-top: 20px;
+  font: 11px/1.8 var(--mono); color: var(--faint);
+}
+.scheme-light { color-scheme: light; }
+.gap { margin-bottom: 14px; }
+</style>
+</head>
+<body>
+
+<header class="no-top">
+  <span class="no-brand">uiforagents<i>/</i>night-ops</span>
+  <span class="no-env">artifact</span>
+  <div class="no-right">
+    <span class="no-sync"><span class="no-led ok" aria-hidden="true"></span>synced 12s ago</span>
+    <span class="no-clock">fri oct 09 2026 · 09:41 eat</span>
+    <button class="no-btn sm ghost no-print" id="theme-toggle" type="button">Light theme</button>
+  </div>
+</header>
+
+<main class="no-wrap">
+
+  <div class="head">
+    <p class="no-k">uiforagents · artifact identity · night-ops</p>
+    <h1>The night-ops console</h1>
+    <p class="dek">A dark ops-console identity for self-contained operational artifacts: cool
+    near-black ground, one azure instrument accent, LED status grammar, hairline panels, and a
+    mono digit for every count. Everything below is built from <code class="no-mono">foundation.css</code>
+    alone over one fictional fleet.</p>
+    <p class="no-mono no-dim" style="font-size:12px">oct 09 2026 · light-dark() tokens, dark lead · system stacks, mono-forward · hand-authored svg charts · zero required javascript</p>
+  </div>
+
+  <div class="no-kpis gap">
+    <div class="no-kpi hero">
+      <div class="no-k">requests · 24h</div>
+      <div class="no-v">8.42M</div>
+      <div class="no-d no-pos">▲ 3.1% vs tue</div>
+      <svg class="no-spark" width="132" height="30" viewBox="0 0 100 28" role="img" aria-label="Requests trend over 12 hours, rising">
+        <polyline points="0,17 9,15 18,18 27,13 36,12 45,14 54,10 63,12 72,8 81,10 90,5 100,6" fill="none" stroke="var(--spark-pos)" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="no-kpi">
+      <div class="no-k">error rate</div>
+      <div class="no-v">0.42%</div>
+      <div class="no-d no-neg">▲ 0.09pt</div>
+      <svg class="no-spark" width="132" height="30" viewBox="0 0 100 28" role="img" aria-label="Error rate trending up, which is bad">
+        <polyline points="0,21 9,20 18,22 27,19 36,21 45,18 54,20 63,16 72,18 81,13 90,15 100,6" fill="none" stroke="var(--spark-neg)" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="no-kpi">
+      <div class="no-k">p95 latency</div>
+      <div class="no-v">236ms</div>
+      <div class="no-d no-pos">▼ 12ms</div>
+      <svg class="no-spark" width="132" height="30" viewBox="0 0 100 28" role="img" aria-label="p95 latency trending down, which is good">
+        <polyline points="0,7 9,9 18,8 27,11 36,10 45,13 54,12 63,15 72,14 81,17 90,18 100,20" fill="none" stroke="var(--spark-pos)" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="no-kpi">
+      <div class="no-k">uptime · 30d</div>
+      <div class="no-v">99.95%</div>
+      <div class="no-d no-neg">▼ 0.02</div>
+      <svg class="no-spark" width="132" height="30" viewBox="0 0 100 28" role="img" aria-label="Uptime mostly flat with a small dip">
+        <polyline points="0,14 9,14 18,15 27,14 36,14 45,15 54,14 63,14 72,15 81,14 90,14 100,13" fill="none" stroke="var(--spark-pos)" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="no-kpi">
+      <div class="no-k">open incidents</div>
+      <div class="no-v">3</div>
+      <div class="no-d no-neu">2 unacked</div>
+    </div>
+  </div>
+
+  <!-- ==================== 01 RATIONALE ==================== -->
+  <section class="sec" id="rationale">
+    <p class="no-k">01 · design rationale</p>
+    <p class="sec-dek">Why the console looks the way it looks.</p>
+    <div class="no-panel">
+      <div class="no-ph"><h3>decisions, not options</h3></div>
+      <p class="no-take">night-ops exists so an agent building an ops artifact stops making
+      dashboard decisions and starts shipping one. The dark ground is the product: ops consoles
+      are watched for hours in dim rooms, phosphor-cool hue 255 keeps long sessions calm, and
+      elevation is expressed by hairlines and luminance steps - never shadows, which belong to
+      the four floating layers only (tooltip, modal, toast, palette).</p>
+      <p class="no-take">Color is disciplined to two jobs. Azure is the instrument voice: live
+      series, active controls, the one primary action. Green, amber, and red are a status
+      vocabulary that only ever encodes real state - an LED, a lifecycle chip, a semantic delta,
+      a threshold fill. A number going up is not good or bad by itself, so deltas are semantic
+      (<code class="no-mono">.no-pos/.no-neg/.no-neu</code>) and always name their comparison
+      window: ▲ on an error rate reads red.</p>
+      <p class="no-take">Density comes from alignment, not shrinkage: mono tabular figures for
+      every numeral, 10px tracked uppercase mono labels, hairline row rules, and 1px-gap grids
+      where the rule shows through the seams. Type never drops below 9px (status chips), and
+      charts stay hand-authored SVG so any artifact prints and renders with zero JavaScript.</p>
+    </div>
+  </section>
+
+  <!-- ==================== 02 TOKENS ==================== -->
+  <section class="sec" id="tokens">
+    <p class="no-k">02 · token reference</p>
+    <p class="sec-dek">Every color in the identity is one of these light-dark() pairs - dark
+    values are canonical, light values are the derived scheme, re-gated for AA. Washes and
+    hairlines are color-mix() derivations, never new colors.</p>
+    <div class="no-panel">
+      <div class="no-twrap">
+        <table class="no-tbl">
+          <thead>
+            <tr><th scope="col">token</th><th scope="col">swatch</th><th scope="col">light value</th><th scope="col">dark value (canonical)</th><th scope="col">role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">--bg</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--bg)"></i></td><td class="mono num">oklch(0.974 0.004 255)</td><td class="mono num">oklch(0.17 0.008 255)</td><td>page ground</td></tr>
+            <tr><td class="mono">--sunken</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--sunken)"></i></td><td class="mono num">oklch(0.952 0.005 255)</td><td class="mono num">oklch(0.145 0.007 255)</td><td>wells: top bar, inputs, table heads, totals band</td></tr>
+            <tr><td class="mono">--surface</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--surface)"></i></td><td class="mono num">oklch(0.998 0.001 255)</td><td class="mono num">oklch(0.205 0.009 255)</td><td>panels</td></tr>
+            <tr><td class="mono">--surface-2</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--surface-2)"></i></td><td class="mono num">oklch(0.982 0.004 255)</td><td class="mono num">oklch(0.235 0.010 255)</td><td>hover rows, keycaps, tips</td></tr>
+            <tr><td class="mono">--ink</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--ink)"></i></td><td class="mono num">oklch(0.26 0.014 260)</td><td class="mono num">oklch(0.90 0.008 255)</td><td>primary text, values</td></tr>
+            <tr><td class="mono">--muted</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--muted)"></i></td><td class="mono num">oklch(0.44 0.014 260)</td><td class="mono num">oklch(0.66 0.010 255)</td><td>secondary text, prose</td></tr>
+            <tr><td class="mono">--faint</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--faint)"></i></td><td class="mono num">oklch(0.56 0.010 255)</td><td class="mono num">oklch(0.48 0.010 255)</td><td>micro labels, axis text, timestamps</td></tr>
+            <tr><td class="mono">--line</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--line)"></i></td><td class="mono num">oklch(0.895 0.008 255)</td><td class="mono num">oklch(0.29 0.010 255)</td><td>panel borders, axes, strong rules</td></tr>
+            <tr><td class="mono">--line-soft</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--line-soft)"></i></td><td class="mono num">oklch(0.930 0.006 255)</td><td class="mono num">oklch(0.24 0.009 255)</td><td>hairlines: row rules, grids, seams</td></tr>
+            <tr><td class="mono">--accent</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--accent)"></i></td><td class="mono num">oklch(0.50 0.115 255)</td><td class="mono num">oklch(0.72 0.115 255)</td><td>azure instrument: live series, active controls, primary action</td></tr>
+            <tr><td class="mono">--accent-ink</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--accent)"></i></td><td class="mono num">oklch(0.995 0 0)</td><td class="mono num">oklch(0.15 0.02 255)</td><td>text on accent and severity fills</td></tr>
+            <tr><td class="mono">--accent-soft</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--accent)"></i></td><td class="mono num">accent @ 10% wash</td><td class="mono num">accent @ 10% wash</td><td>active-control wash (derived, follows accent)</td></tr>
+            <tr><td class="mono">--ok</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--ok)"></i></td><td class="mono num">oklch(0.52 0.11 155)</td><td class="mono num">oklch(0.72 0.13 155)</td><td>state green: healthy, positive delta</td></tr>
+            <tr><td class="mono">--warn</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--warn)"></i></td><td class="mono num">oklch(0.48 0.115 80)</td><td class="mono num">oklch(0.78 0.13 80)</td><td>state amber: degraded, warn logs, annotations</td></tr>
+            <tr><td class="mono">--danger</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--danger)"></i></td><td class="mono num">oklch(0.53 0.17 27)</td><td class="mono num">oklch(0.66 0.17 25)</td><td>state red: failing, error wash, sev1</td></tr>
+            <tr><td class="mono">--radius</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface-2)"></i></td><td class="mono num">4px</td><td class="mono num">4px</td><td>workhorse radius; --r-sm 3px, --r-lg 6px</td></tr>
+            <tr><td class="mono">--sans / --mono</td><td><span class="no-mono" style="font-size:10px">Aa 0O1</span></td><td class="mono num">system sans</td><td class="mono num">system mono</td><td>UI text vs every numeral, label, code path</td></tr>
+            <tr><td class="mono">--chart-* / --spark-* / --log-wash</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--chart-fill)"></i></td><td class="mono num">derived</td><td class="mono num">derived</td><td>chart grid/axis/label/series/fill/annotation, spark polarity, error wash - all color-mix() over tokens</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="no-rows-foot">17 color tokens on one cool hue (255-260) · one accent · three state colors · floating-layer shadow --pop and modal veil --overlay</div>
+    </div>
+  </section>
+
+  <!-- ==================== 03 FLEET OVERVIEW ==================== -->
+  <section class="sec" id="fleet">
+    <p class="no-k">03 · fleet overview</p>
+    <p class="sec-dek">Filter and time-range grammar, the KPI strip (above), charts with an event
+    annotation, health rows, and the status wall - the NOC glance.</p>
+    <div class="no-filters gap no-print">
+      <span class="no-iwrap"><input class="no-input" type="text" placeholder="filter services or nodes" aria-label="Filter services"><kbd class="no-kbd">/</kbd></span>
+      <span class="no-sel"><select aria-label="Environment"><option>env: prod</option><option>env: staging</option></select></span>
+      <button class="no-chip on" type="button">us-east-1 <span class="x">×</span></button>
+      <button class="no-chip" type="button">eu-west-1</button>
+      <span class="no-sp"></span>
+      <span class="no-seg" role="group" aria-label="Time range">
+        <button type="button">1H</button><button type="button" class="on">24H</button><button type="button">7D</button><button type="button">30D</button>
+      </span>
+      <span class="no-stamp"><span class="no-led ok" aria-hidden="true"></span>updated 12s ago</span>
+    </div>
+
+    <div class="no-cols gap">
+      <div class="no-panel">
+        <div class="no-ph"><h3>traffic · requests/min</h3><span class="no-meta">last 24h · us-east-1</span></div>
+        <p class="no-take">Midday peak 232k/min. Deploy v2.14.0 at 15:40 bought the p95 win; evening
+        taper is normal weekday shape.</p>
+        <svg class="no-chart" viewBox="0 0 720 224" role="img" aria-label="Area chart of requests per minute over 24 hours, peaking at 232k midday, with a deploy annotation at 15:40">
+          <line x1="44" y1="134" x2="704" y2="134" stroke="var(--chart-grid)"/>
+          <line x1="44" y1="74" x2="704" y2="74" stroke="var(--chart-grid)"/>
+          <line x1="44" y1="14" x2="704" y2="14" stroke="var(--chart-grid)"/>
+          <line x1="44" y1="194" x2="704" y2="194" stroke="var(--chart-axis)"/>
+          <text x="38" y="138" text-anchor="end" font-size="10" fill="var(--chart-label)">100k</text>
+          <text x="38" y="78" text-anchor="end" font-size="10" fill="var(--chart-label)">200k</text>
+          <text x="38" y="18" text-anchor="end" font-size="10" fill="var(--chart-label)">300k</text>
+          <line x1="396" y1="14" x2="396" y2="194" stroke="var(--chart-annotate)" stroke-dasharray="3 4" opacity="0.7"/>
+          <text x="402" y="10" font-size="9" fill="var(--chart-annotate)">deploy v2.14.0 · 15:40</text>
+          <path d="M44,194 L44,138.8 L66,143.6 L88,147.2 L110,148.4 L132,146 L154,136.4 L176,119.6 L198,99.2 L220,82.4 L242,71.6 L264,63.2 L286,58.4 L308,54.8 L330,57.2 L352,62.6 L374,68 L396,70.4 L418,65.6 L440,60.8 L462,69.2 L484,88.4 L506,105.2 L528,117.2 L550,126.8 L572,132.8 L594,136.4 L616,140 L638,142.4 L660,141.2 L682,137.6 L704,131.6 L704,194 Z" fill="var(--chart-fill)"/>
+          <polyline points="44,138.8 66,143.6 88,147.2 110,148.4 132,146 154,136.4 176,119.6 198,99.2 220,82.4 242,71.6 264,63.2 286,58.4 308,54.8 330,57.2 352,62.6 374,68 396,70.4 418,65.6 440,60.8 462,69.2 484,88.4 506,105.2 528,117.2 550,126.8 572,132.8 594,136.4 616,140 638,142.4 660,141.2 682,137.6 704,131.6" fill="none" stroke="var(--chart-series)" stroke-width="1.8"/>
+          <circle cx="704" cy="131.6" r="3" fill="var(--chart-series)"/>
+          <text x="700" y="126" text-anchor="end" font-size="10" fill="var(--chart-series)">104k/min</text>
+          <text x="44" y="214" font-size="10" fill="var(--chart-label)">00:00</text>
+          <text x="242" y="214" text-anchor="middle" font-size="10" fill="var(--chart-label)">08:00</text>
+          <text x="440" y="214" text-anchor="middle" font-size="10" fill="var(--chart-label)">16:00</text>
+          <text x="704" y="214" text-anchor="end" font-size="10" fill="var(--chart-label)">now</text>
+        </svg>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>service health</h3><span class="no-meta">p95 · 24h</span></div>
+        <div class="no-rows">
+          <div class="no-hrow"><span class="no-led ok"></span><span class="no-n">auth-core</span><span class="no-m">41ms</span></div>
+          <div class="no-hrow"><span class="no-led warn"></span><span class="no-n">api-gateway</span><span class="no-m">236ms</span></div>
+          <div class="no-hrow"><span class="no-led warn"></span><span class="no-n">ingest-pipeline</span><span class="no-m">lag 8.1k</span></div>
+          <div class="no-hrow"><span class="no-led fail"></span><span class="no-n">billing-worker</span><span class="no-m">err 1.8%</span></div>
+          <div class="no-hrow"><span class="no-led ok"></span><span class="no-n">search-indexer</span><span class="no-m">118ms</span></div>
+          <div class="no-hrow"><span class="no-led ok"></span><span class="no-n">queue-broker</span><span class="no-m">9ms</span></div>
+          <div class="no-hrow"><span class="no-led ok"></span><span class="no-n">edge-cache</span><span class="no-m">18ms</span></div>
+          <div class="no-hrow"><span class="no-led ok"></span><span class="no-n">log-shipper</span><span class="no-m">55ms</span></div>
+        </div>
+        <div class="no-rows-foot">10 services · 7 ok · 2 warn · 1 fail · showing 8</div>
+      </div>
+    </div>
+
+    <div class="no-cols flip">
+      <div class="no-panel">
+        <div class="no-ph"><h3>requests by service</h3><span class="no-meta">24h</span></div>
+        <svg class="no-chart" viewBox="0 0 340 190" role="img" aria-label="Bar chart of requests by service: api-gateway 2.9 million, ingest 1.8 million, edge 1.4 million, search 1.1 million, billing 0.6 million">
+          <line x1="30" y1="156" x2="330" y2="156" stroke="var(--chart-axis)"/>
+          <rect x="43.6" y="22.6" width="33.2" height="133.4" fill="var(--chart-series)"/>
+          <rect x="104.0" y="73.2" width="33.2" height="82.8" fill="var(--chart-series)" opacity="0.55"/>
+          <rect x="164.4" y="91.6" width="33.2" height="64.4" fill="var(--chart-series)" opacity="0.55"/>
+          <rect x="224.8" y="105.4" width="33.2" height="50.6" fill="var(--chart-series)" opacity="0.55"/>
+          <rect x="285.2" y="128.4" width="33.2" height="27.6" fill="var(--chart-series)" opacity="0.55"/>
+          <text x="60.2" y="16" text-anchor="middle" font-size="10" fill="var(--chart-series)">2.9M</text>
+          <text x="60.2" y="172" text-anchor="middle" font-size="9" fill="var(--chart-label)">api</text>
+          <text x="120.6" y="172" text-anchor="middle" font-size="9" fill="var(--chart-label)">ing</text>
+          <text x="181.0" y="172" text-anchor="middle" font-size="9" fill="var(--chart-label)">edge</text>
+          <text x="241.4" y="172" text-anchor="middle" font-size="9" fill="var(--chart-label)">srch</text>
+          <text x="301.8" y="172" text-anchor="middle" font-size="9" fill="var(--chart-label)">bill</text>
+        </svg>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>status wall</h3><span class="no-meta">live · worst state per service</span></div>
+        <div class="no-sg-grid">
+          <div class="no-sg"><span class="no-led warn"></span><span class="no-n">api-gateway</span><span class="no-m">236ms</span></div>
+          <div class="no-sg"><span class="no-led ok"></span><span class="no-n">auth-core</span><span class="no-m">41ms</span></div>
+          <div class="no-sg"><span class="no-led warn"></span><span class="no-n">ingest-pipeline</span><span class="no-m">8.1k</span></div>
+          <div class="no-sg"><span class="no-led ok"></span><span class="no-n">search-indexer</span><span class="no-m">118ms</span></div>
+          <div class="no-sg"><span class="no-led fail"></span><span class="no-n">billing-worker</span><span class="no-m">1.8%</span></div>
+          <div class="no-sg"><span class="no-led ok"></span><span class="no-n">queue-broker</span><span class="no-m">9ms</span></div>
+          <div class="no-sg"><span class="no-led ok"></span><span class="no-n">edge-cache</span><span class="no-m">18ms</span></div>
+          <div class="no-sg"><span class="no-led ok"></span><span class="no-n">log-shipper</span><span class="no-m">55ms</span></div>
+          <div class="no-sg"><span class="no-led ok"></span><span class="no-n">metrics-aggr</span><span class="no-m">12ms</span></div>
+          <div class="no-sg"><span class="no-led ok"></span><span class="no-n">cron-runner</span><span class="no-m">310ms</span></div>
+        </div>
+        <div class="no-rows-foot">rollup: degraded · worst state wins, colors only ever encode state</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 04 SERVICE DETAIL ==================== -->
+  <section class="sec" id="service">
+    <p class="no-k">04 · service detail</p>
+    <p class="sec-dek">Breadcrumbs, tabs with a count badge, resource meters with a threshold
+    tick, the live log stream, the event timeline, and the 30-day uptime strip.</p>
+
+    <div class="no-crumb" style="margin-bottom:10px">
+      <a href="#fleet">fleet</a><span>/</span><a href="#fleet">services</a><span>/</span><span style="color:var(--ink)">ingest-pipeline</span>
+    </div>
+    <div class="no-tabs gap no-print" style="margin-bottom:14px" role="tablist" aria-label="Service sections">
+      <button class="no-tab" type="button" role="tab">overview</button>
+      <button class="no-tab on" type="button" role="tab" aria-selected="true">metrics</button>
+      <button class="no-tab" type="button" role="tab">logs</button>
+      <button class="no-tab" type="button" role="tab">alerts <span class="no-cnt">2</span></button>
+      <button class="no-tab" type="button" role="tab">settings</button>
+    </div>
+
+    <div class="no-cols gap">
+      <div class="no-panel">
+        <div class="no-ph"><h3>resources</h3><span class="no-meta">node-02 · threshold 80%</span></div>
+        <div class="no-meters">
+          <div class="no-mrow">
+            <div class="no-mrow-top"><span class="no-n">cpu</span><span class="no-mv">84% · 8 vcpu</span></div>
+            <div class="no-meter"><i class="warn" style="--w:84%"></i><b></b></div>
+            <div class="no-mrow-cap">sustained 22m · throttle risk</div>
+          </div>
+          <div class="no-mrow">
+            <div class="no-mrow-top"><span class="no-n">memory</span><span class="no-mv">62% · 9.9/16 gb</span></div>
+            <div class="no-meter"><i style="--w:62%"></i><b></b></div>
+          </div>
+          <div class="no-mrow">
+            <div class="no-mrow-top"><span class="no-n">disk</span><span class="no-mv">41% · 328/800 gb</span></div>
+            <div class="no-meter"><i style="--w:41%"></i><b></b></div>
+          </div>
+          <div class="no-mrow">
+            <div class="no-mrow-top"><span class="no-n">network</span><span class="no-mv">23% · 2.3 gbps</span></div>
+            <div class="no-meter"><i style="--w:23%"></i><b></b></div>
+          </div>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>uptime · 30 days</h3><span class="no-meta">worst event per day</span></div>
+        <div class="no-up" role="img" aria-label="30 day uptime strip: 27 healthy days, degradations on day 7 and day 22, outage on day 15">
+          <i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="warn"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="fail"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="warn"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="nd"></i><i class="ok"></i>
+        </div>
+        <div class="no-up-cap"><b>99.86%</b><span>· 27 ok</span><span>· 2 degraded</span><span>· 1 outage (day 15)</span><span>· 1 no-data</span></div>
+      </div>
+    </div>
+
+    <div class="no-cols gap">
+      <div class="no-panel">
+        <div class="no-ph">
+          <h3>logs · live</h3>
+          <span class="no-tools no-print">
+            <button class="no-chip on" type="button">all</button>
+            <button class="no-chip" type="button">warn+</button>
+            <button class="no-chip" type="button">error</button>
+            <button class="no-btn sm ghost" type="button">pause</button>
+          </span>
+        </div>
+        <div class="no-log">
+          <div class="no-lrow"><time>14:02:18.442</time><span class="no-lvl info">info</span><span class="no-src">api-gateway</span><span class="no-msg">GET /v2/streams 200 · 12ms · pool 41/96</span></div>
+          <div class="no-lrow"><time>14:02:19.018</time><span class="no-lvl info">info</span><span class="no-src">ingest-pipeline</span><span class="no-msg">flush 4.2k records → parquet · segment 0042</span></div>
+          <div class="no-lrow"><time>14:02:21.900</time><span class="no-lvl warn">warn</span><span class="no-src">ingest-pipeline</span><span class="no-msg">backpressure: queue depth 8.1k &gt; 8k · shedding debug samples</span></div>
+          <div class="no-lrow err"><time>14:02:24.310</time><span class="no-lvl error">error</span><span class="no-src">ingest-pipeline</span><span class="no-msg">s3 write failed: timeout after 30s · retry 2/5 · bucket kestrel-raw</span></div>
+          <div class="no-lrow"><time>14:02:25.002</time><span class="no-lvl info">info</span><span class="no-src">queue-broker</span><span class="no-msg">commit offset 91842 · consumer lag 214ms</span></div>
+          <div class="no-lrow"><time>14:02:27.777</time><span class="no-lvl debug">debug</span><span class="no-src">metrics-aggr</span><span class="no-msg">sample window 10s emitted · 41 series</span></div>
+        </div>
+        <div class="no-log-foot">
+          <span class="no-led ok" aria-hidden="true"></span><span>streaming · 214 lines/s</span>
+          <span style="margin-left:auto">retention 14d · tail paused at 14:02:27</span>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>events</h3><span class="no-meta">today · utc+3</span></div>
+        <div class="no-tl">
+          <div class="no-tlrow"><time>13:58</time><span class="no-node ok"></span>
+            <div class="no-tlbody"><div class="no-t1">deploy v2.14.0 promoted</div><div class="no-t2">rolling · 8/8 healthy · 4m12s</div></div></div>
+          <div class="no-tlrow"><time>09:41</time><span class="no-node ok"></span>
+            <div class="no-tlbody"><div class="no-t1">alert resolved · p95 &gt; 400ms</div><div class="no-t2">open 24m · auto-cleared</div></div></div>
+          <div class="no-tlrow"><time>06:12</time><span class="no-node neu"></span>
+            <div class="no-tlbody"><div class="no-t1">config change · pool.max 64 → 96</div><div class="no-t2">by m.rowe · reviewed</div></div></div>
+          <div class="no-tlrow"><time>03:47</time><span class="no-node warn"></span>
+            <div class="no-tlbody"><div class="no-t1">node-04 restarted · oom</div><div class="no-t2">2nd restart in 7d · watch</div></div></div>
+          <div class="no-tlrow"><time>01:20</time><span class="no-node neu"></span>
+            <div class="no-tlbody"><div class="no-t1">scaled 6 → 8 replicas</div><div class="no-t2">autoscaler · cpu &gt; 75%</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 05 INCIDENTS ==================== -->
+  <section class="sec" id="incidents">
+    <p class="no-k">05 · incidents &amp; alerts</p>
+    <p class="sec-dek">Severity is a rail plus a filled chip; lifecycle is an outline chip.
+    Firing pulses (disabled under reduced motion). The on-call roster sits beside the queue.</p>
+    <div class="no-cols">
+      <div class="no-panel">
+        <div class="no-ph"><h3>alerts</h3><span class="no-meta">2 firing · 2 acked · 1 resolved · 24h</span></div>
+        <div class="no-alert">
+          <i class="no-sevrail sev1" aria-hidden="true"></i>
+          <div class="no-alert-main">
+            <div class="no-a-title">p99 latency above 400ms <span class="no-mono no-dim">· api-gateway · us-east-1</span></div>
+            <div class="no-a-meta"><span class="no-state fail firing"><i></i>firing · 38m</span><span>AL-2191</span><span>threshold: p99 &gt; 400ms for 5m</span></div>
+          </div>
+          <div class="no-alert-side">
+            <span class="no-who" title="A. Kim">AK</span>
+            <button class="no-btn sm no-print" type="button">Ack</button>
+            <button class="no-btn sm ghost no-print" type="button">Resolve</button>
+          </div>
+        </div>
+        <div class="no-alert">
+          <i class="no-sevrail sev2" aria-hidden="true"></i>
+          <div class="no-alert-main">
+            <div class="no-a-title">queue depth above 8k <span class="no-mono no-dim">· ingest-pipeline · us-east-1</span></div>
+            <div class="no-a-meta"><span class="no-state warn firing"><i></i>firing · 1h12m</span><span>AL-2190</span><span>threshold: depth &gt; 8000 for 10m</span></div>
+          </div>
+          <div class="no-alert-side">
+            <span class="no-who" title="A. Kim">AK</span>
+            <button class="no-btn sm no-print" type="button">Ack</button>
+            <button class="no-btn sm ghost no-print" type="button">Resolve</button>
+          </div>
+        </div>
+        <div class="no-alert">
+          <i class="no-sevrail sev2" aria-hidden="true"></i>
+          <div class="no-alert-main">
+            <div class="no-a-title">error rate 1.8% <span class="no-mono no-dim">· billing-worker · eu-west-1</span></div>
+            <div class="no-a-meta"><span class="no-state mute">acked · 40m ago</span><span>AL-2188</span><span>ack by m.rowe · incident INC-104 open</span></div>
+          </div>
+          <div class="no-alert-side">
+            <span class="no-who" title="M. Rowe">MR</span>
+            <button class="no-btn sm ghost no-print" type="button">Resolve</button>
+          </div>
+        </div>
+        <div class="no-alert">
+          <i class="no-sevrail sev3" aria-hidden="true"></i>
+          <div class="no-alert-main">
+            <div class="no-a-title">cert expires in 6 days <span class="no-mono no-dim">· edge-cache · global</span></div>
+            <div class="no-a-meta"><span class="no-state ok">resolved · 06:03</span><span>AL-2179</span><span>auto-renewed · *.kestrel.internal</span></div>
+          </div>
+          <div class="no-alert-side">
+            <span class="no-who" title="system">SY</span>
+            <button class="no-btn sm ghost no-print" type="button" disabled>Archive</button>
+          </div>
+        </div>
+        <div class="no-rows-foot">escalation: unacked sev1 pages eng-lead after 15m</div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>on-call roster</h3><span class="no-meta">week 41</span></div>
+        <div class="no-oc-row">
+          <span class="no-who">AK</span>
+          <div><div class="no-role">primary</div><div class="no-nm">A. Kim</div></div>
+          <span class="no-till">until 18:00 eat</span>
+        </div>
+        <div class="no-oc-row">
+          <span class="no-who">MR</span>
+          <div><div class="no-role">secondary</div><div class="no-nm">M. Rowe</div></div>
+          <span class="no-till">until 18:00 eat</span>
+        </div>
+        <div class="no-oc-row">
+          <span class="no-who">JO</span>
+          <div><div class="no-role">escalation</div><div class="no-nm">J. Otu · eng-lead</div></div>
+          <span class="no-till">auto-page 15m</span>
+        </div>
+        <div class="no-rows-foot">rotation weekly · handoff fridays 16:00 eat</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 06 COST ==================== -->
+  <section class="sec" id="cost">
+    <p class="no-k">06 · cost view</p>
+    <p class="sec-dek">The dense table grammar: sortable headers, right-aligned mono figures,
+    semantic deltas, a sunken totals band - plus ranked top-N consumers.</p>
+    <div class="no-cols">
+      <div class="no-panel">
+        <div class="no-ph"><h3>spend · mtd by service</h3><span class="no-meta">usd · through oct 09</span></div>
+        <div class="no-twrap">
+          <table class="no-tbl">
+            <thead>
+              <tr>
+                <th scope="col">service</th>
+                <th scope="col" class="num sort desc">mtd</th>
+                <th scope="col" class="num">sep</th>
+                <th scope="col" class="num">Δ mtd</th>
+                <th scope="col" class="num">forecast</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="svc">api-gateway</td><td class="mono num">$412.60</td><td class="mono num">$389.10</td><td class="mono num no-neg">▲ 6.0%</td><td class="mono num">$1,547</td></tr>
+              <tr><td class="svc">ingest-pipeline</td><td class="mono num">$298.44</td><td class="mono num">$276.20</td><td class="mono num no-neg">▲ 8.1%</td><td class="mono num">$1,118</td></tr>
+              <tr><td class="svc">search-indexer</td><td class="mono num">$214.02</td><td class="mono num">$231.80</td><td class="mono num no-pos">▼ 7.7%</td><td class="mono num">$802</td></tr>
+              <tr><td class="svc">edge-cache</td><td class="mono num">$151.30</td><td class="mono num">$140.05</td><td class="mono num no-neg">▲ 8.0%</td><td class="mono num">$567</td></tr>
+              <tr><td class="svc">queue-broker</td><td class="mono num">$98.77</td><td class="mono num">$102.40</td><td class="mono num no-pos">▼ 3.6%</td><td class="mono num">$370</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td class="svc">total</td><td class="mono num">$1,284.38</td><td class="mono num">$1,246.67</td><td class="mono num no-neg">▲ 3.0%</td><td class="mono num">$4,813</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="no-take">Forecast assumes current burn with weekend dips modeled. Budget alert fires at $5,200.</p>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>top consumers</h3><span class="no-meta">share of mtd</span></div>
+        <div class="no-bars">
+          <div class="no-brow"><span class="no-rk">1</span><span class="no-n">api-gateway</span><span class="no-track"><i style="--w:100%"></i></span><span class="no-val">$412.60</span></div>
+          <div class="no-brow"><span class="no-rk">2</span><span class="no-n">ingest-pipeline</span><span class="no-track"><i style="--w:72%"></i></span><span class="no-val">$298.44</span></div>
+          <div class="no-brow"><span class="no-rk">3</span><span class="no-n">search-indexer</span><span class="no-track"><i style="--w:52%"></i></span><span class="no-val">$214.02</span></div>
+          <div class="no-brow"><span class="no-rk">4</span><span class="no-n">edge-cache</span><span class="no-track"><i style="--w:37%"></i></span><span class="no-val">$151.30</span></div>
+          <div class="no-brow"><span class="no-rk">5</span><span class="no-n">queue-broker</span><span class="no-track"><i style="--w:24%"></i></span><span class="no-val">$98.77</span></div>
+        </div>
+        <div class="no-rows-foot">bars scale to the max · rank is stable within the window</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 07 TABLE STATES ==================== -->
+  <section class="sec" id="states">
+    <p class="no-k">07 · table states</p>
+    <p class="sec-dek">Empty means "nothing exists yet" and offers the creating action; no-results
+    means "your filters are too narrow" and offers escape. Skeletons only ever replace rows, never
+    chrome. Errors say what failed and offer the retry.</p>
+    <div class="no-state-grid">
+      <div class="no-panel">
+        <div class="no-ph"><h3>empty</h3><span class="no-meta">nothing exists yet · offer the action</span></div>
+        <div class="no-empty">
+          <span class="no-eglyph" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6.5" fill="none" stroke="currentColor"/><line x1="9" y1="2.5" x2="9" y2="6" stroke="currentColor"/><line x1="9" y1="12" x2="9" y2="15.5" stroke="currentColor"/><line x1="2.5" y1="9" x2="6" y2="9" stroke="currentColor"/><line x1="12" y1="9" x2="15.5" y2="9" stroke="currentColor"/></svg>
+          </span>
+          <div>
+            <div style="font-weight:600; font-size:13px">No alert policies yet</div>
+            <div class="no-mut" style="font-size:12px; margin-top:2px">Policies turn metric thresholds into alerts.</div>
+          </div>
+          <button class="no-btn sm pri no-print" type="button">Create policy</button>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>no results</h3><span class="no-meta">filters too narrow · offer escape</span></div>
+        <div class="no-nores">
+          <div class="no-q">0 services match <span style="color:var(--ink)">"billing-prod-eu"</span></div>
+          <button class="no-btn sm ghost no-print" type="button">Clear filters</button>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>loading</h3><span class="no-meta">skeleton rows · chrome stays put</span></div>
+        <div class="no-sk-row"><span class="no-skel"></span><span class="no-skel"></span><span class="no-skel no-hide"></span><span class="no-skel"></span></div>
+        <div class="no-sk-row"><span class="no-skel"></span><span class="no-skel"></span><span class="no-skel no-hide"></span><span class="no-skel"></span></div>
+        <div class="no-sk-row"><span class="no-skel"></span><span class="no-skel"></span><span class="no-skel no-hide"></span><span class="no-skel"></span></div>
+        <div class="no-rows-foot">fetching metrics · 4 of 12 columns materialized</div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>error</h3><span class="no-meta">say what failed · offer the retry</span></div>
+        <div class="no-errbox">
+          <span class="no-glyph" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2 L16.5 15.5 H1.5 Z" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="9" y1="7" x2="9" y2="11" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="13.4" r="0.9" fill="currentColor"/></svg>
+          </span>
+          <div>
+            <div class="no-t">Metrics query failed</div>
+            <div class="no-code">upstream_timeout (504) · 3 attempts · last 14:02:31</div>
+            <button class="no-btn sm no-print" type="button">Retry</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 08 CONTROLS ==================== -->
+  <section class="sec" id="controls">
+    <p class="no-k">08 · controls &amp; floating layers</p>
+    <p class="sec-dek">The control inventory, rendered statically and labeled: radius maxes at
+    6px; elevation is a hairline everywhere except the floating layers.</p>
+    <div class="no-sheet">
+      <div class="no-panel">
+        <div class="no-ph"><h3>buttons</h3></div>
+        <div class="no-spec no-print">
+          <button class="no-btn pri" type="button">Deploy</button>
+          <button class="no-btn" type="button">Restart</button>
+          <button class="no-btn ghost" type="button">Runbook</button>
+          <button class="no-btn danger" type="button">Drain</button>
+          <button class="no-btn sm" type="button">Small</button>
+          <button class="no-btn icon" type="button" aria-label="More">⋯</button>
+          <button class="no-btn" type="button" disabled>Disabled</button>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>inputs &amp; selects</h3></div>
+        <div class="no-spec no-print">
+          <input class="no-input" type="text" value="api-gateway" aria-label="Text input">
+          <input class="no-input bad" type="text" value="999.999.1.3000" aria-label="Invalid input">
+          <span class="no-sel"><select aria-label="Region select"><option>region: us-east-1</option><option>eu-west-1</option></select></span>
+          <label class="no-ctl"><input class="no-switch" type="checkbox" checked> auto-scale</label>
+          <label class="no-ctl"><input class="no-switch" type="checkbox"> maintenance</label>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>state grammar</h3><span class="no-meta">chips encode state only</span></div>
+        <div class="no-spec">
+          <span class="no-state ok"><i></i>ok</span>
+          <span class="no-state warn"><i></i>degraded</span>
+          <span class="no-state fail"><i></i>fail</span>
+          <span class="no-state info"><i></i>deploying</span>
+          <span class="no-state mute">draining</span>
+          <span class="no-state fill fail">sev1</span>
+          <span class="no-state fill warn">sev2</span>
+          <span class="no-tag ok">99.95%</span>
+          <span class="no-tag warn">lag</span>
+          <span class="no-tag fail">1.8% err</span>
+          <span class="no-tag info">v2.14.0</span>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>filter chips &amp; keys</h3></div>
+        <div class="no-spec no-print">
+          <button class="no-chip on" type="button">env: prod <span class="x">×</span></button>
+          <button class="no-chip" type="button">team: payments</button>
+          <button class="no-chip add" type="button">+ filter</button>
+          <span class="no-dim no-mono" style="font-size:11px">keys:</span>
+          <span class="no-kbd">⌘K</span><span class="no-kbd">/</span><span class="no-kbd">esc</span><span class="no-kbd">↵</span>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>tooltip</h3><span class="no-meta">rendered statically</span></div>
+        <div class="no-stage no-print">
+          <span class="no-hint">hover state</span>
+          <span class="no-tipwrap">
+            <span class="no-tip">replica count · 2 to 16</span>
+            <button class="no-btn" type="button">Scale</button>
+          </span>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>modal · destructive confirm</h3><span class="no-meta">rendered statically</span></div>
+        <div class="no-stage no-print">
+          <span class="no-hint">dialog over page</span>
+          <div class="no-modal">
+            <div class="no-modal-h">Restart ingest-pipeline <span class="x">×</span></div>
+            <div class="no-modal-b">Rolling restart of 8 replicas in us-east-1. In-flight segments
+            drain first; expect ~90s of reduced ingest capacity.</div>
+            <div class="no-modal-f">
+              <button class="no-btn" type="button">Cancel</button>
+              <button class="no-btn danger" type="button">Restart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>breadcrumbs · tabs · pagination</h3></div>
+        <div class="no-spec-col">
+          <div class="no-crumb"><a href="#fleet">fleet</a><span>/</span><a href="#fleet">services</a><span>/</span><span style="color:var(--ink)">ingest-pipeline</span></div>
+          <div class="no-tabs">
+            <button class="no-tab on" type="button">metrics</button>
+            <button class="no-tab" type="button">logs</button>
+            <button class="no-tab" type="button">alerts <span class="no-cnt">3</span></button>
+          </div>
+          <div class="no-pag" style="margin-left:0">
+            <button type="button" aria-label="Previous page">‹</button>
+            <button type="button" class="on">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button" aria-label="Next page">›</button>
+          </div>
+        </div>
+      </div>
+      <div class="no-panel wide">
+        <div class="no-ph"><h3>toasts</h3><span class="no-meta">result grammar: one line, one verb, one state</span></div>
+        <div class="no-toasts no-print">
+          <div class="no-toast"><span class="no-ti ok">✓</span><div><b>Deploy v2.14.1 promoted</b><small>api-gateway · 8/8 healthy · 3m40s</small></div><span class="x">×</span></div>
+          <div class="no-toast"><span class="no-ti warn">!</span><div><b>Queue depth above 8k</b><small>ingest-pipeline · shedding debug samples</small></div><span class="x">×</span></div>
+          <div class="no-toast"><span class="no-ti fail">✕</span><div><b>s3 write failed</b><small>retry 2/5 in 30s · bucket kestrel-raw</small></div><span class="x">×</span></div>
+        </div>
+      </div>
+      <div class="no-panel wide">
+        <div class="no-ph"><h3>command palette</h3><span class="no-meta">⌘K · keyboard-first ops</span></div>
+        <div class="no-stage no-print">
+          <span class="no-hint">open state</span>
+          <div class="no-cmdk">
+            <div class="no-cmdk-in">restart<span class="caret"></span><span class="no-right"><span class="no-kbd">esc</span></span></div>
+            <div class="no-ci on"><span class="no-g">▸</span>restart service<span class="no-hint">ingest-pipeline</span><span class="no-kbd">↵</span></div>
+            <div class="no-ci"><span class="no-g">·</span>scale replicas<span class="no-hint">2 – 16</span></div>
+            <div class="no-ci"><span class="no-g">·</span>ack all firing alerts<span class="no-hint">2</span></div>
+            <div class="no-ci"><span class="no-g">·</span>open runbook<span class="no-hint">docs/ingest</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 09 CHART VOCABULARY ==================== -->
+  <section class="sec" id="charts">
+    <p class="no-k">09 · chart-building vocabulary</p>
+    <p class="sec-dek">Charts are hand-authored inline SVG styled from chart custom properties via
+    presentation attributes - zero JavaScript, print-safe, theme-flipping for free. The
+    percentile chart below shows the full grammar.</p>
+    <div class="no-panel">
+      <div class="no-ph"><h3>latency · percentiles</h3><span class="no-meta">24h · rolling 5m</span></div>
+      <div class="no-legend">
+        <span><span class="no-sw"></span>p50 83ms</span>
+        <span><span class="no-sw dash"></span>p95 180ms</span>
+        <span><span class="no-sw dim"></span>p99 294ms</span>
+      </div>
+      <svg class="no-chart" viewBox="0 0 720 196" role="img" aria-label="Multi-series line chart of p50, p95 and p99 latency over 24 hours; p99 peaks near 370 milliseconds midday">
+        <line x1="44" y1="26" x2="704" y2="26" stroke="var(--chart-grid)"/>
+        <line x1="44" y1="73" x2="704" y2="73" stroke="var(--chart-grid)"/>
+        <line x1="44" y1="119" x2="704" y2="119" stroke="var(--chart-grid)"/>
+        <line x1="44" y1="166" x2="704" y2="166" stroke="var(--chart-axis)"/>
+        <text x="38" y="30" text-anchor="end" font-size="10" fill="var(--chart-label)">450</text>
+        <text x="38" y="77" text-anchor="end" font-size="10" fill="var(--chart-label)">300</text>
+        <text x="38" y="123" text-anchor="end" font-size="10" fill="var(--chart-label)">150</text>
+        <text x="38" y="170" text-anchor="end" font-size="10" fill="var(--chart-label)">0</text>
+        <polyline points="44,69.6 66,73.9 88,76.4 110,78.3 132,78.9 154,77.6 176,75.2 198,70.8 220,65.2 242,59.6 264,55.3 286,52.8 308,51.6 330,53.4 352,57.7 374,62.1 396,64.6 418,60.8 440,55.3 462,63.3 484,73.9 506,78.3 528,80.8 550,82.0 572,82.7 594,83.3 616,82.7 638,81.4 660,79.5 682,77.0 704,74.5" fill="none" stroke="var(--chart-series-dim)" stroke-width="1.2"/>
+        <polyline points="44,104.4 66,106.3 88,107.5 110,108.4 132,108.7 154,108.1 176,106.9 198,104.4 220,100.7 242,96.9 264,93.8 286,92.0 308,90.7 330,92.0 352,94.4 374,96.9 396,98.8 418,96.3 440,92.6 462,98.2 484,107.5 506,110.6 528,112.5 550,113.1 572,113.7 594,114.0 616,113.7 638,113.1 660,112.5 682,111.6 704,110.0" fill="none" stroke="var(--chart-series)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <polyline points="44,140.5 66,141.1 88,141.4 110,141.7 132,141.7 154,141.4 176,140.8 198,139.9 220,138.6 242,137.4 264,136.4 286,135.8 308,135.5 330,135.8 352,136.4 374,137.1 396,137.4 418,136.7 440,136.1 462,137.4 484,139.9 506,141.1 528,141.7 550,142.0 572,142.4 594,142.4 616,142.0 638,141.7 660,141.4 682,140.8 704,140.2" fill="none" stroke="var(--chart-series)" stroke-width="1.8"/>
+        <text x="44" y="190" font-size="10" fill="var(--chart-label)">00:00</text>
+        <text x="242" y="190" text-anchor="middle" font-size="10" fill="var(--chart-label)">08:00</text>
+        <text x="440" y="190" text-anchor="middle" font-size="10" fill="var(--chart-label)">16:00</text>
+        <text x="704" y="190" text-anchor="end" font-size="10" fill="var(--chart-label)">ms</text>
+      </svg>
+      <div class="no-twrap">
+        <table class="no-tbl">
+          <thead><tr><th scope="col">element</th><th scope="col">token</th><th scope="col">note</th></tr></thead>
+          <tbody>
+            <tr><td class="svc">grid line</td><td class="mono">--chart-grid</td><td>one per level, 1px; baseline is --chart-axis</td></tr>
+            <tr><td class="svc">axis label</td><td class="mono">--chart-label</td><td>10px mono, end-anchored on the left margin</td></tr>
+            <tr><td class="svc">primary series</td><td class="mono">--chart-series</td><td>polyline, 1.8px; area fill is --chart-fill</td></tr>
+            <tr><td class="svc">compare series</td><td class="mono">--chart-series-dim</td><td>1.2px, or accent dashed 4 3</td></tr>
+            <tr><td class="svc">annotation</td><td class="mono">--chart-annotate</td><td>dashed vertical 3 4 + 9px label; one per chart</td></tr>
+            <tr><td class="svc">sparkline</td><td class="mono">--spark-pos / --spark-neg</td><td>132x30, viewBox 0 0 100 28; color follows the delta</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 10 THEMES & PRINT ==================== -->
+  <section class="sec" id="print">
+    <p class="no-k">10 · themes &amp; print</p>
+    <p class="sec-dek">Dark leads. The light scheme is the derived alternative - the same tokens
+    re-resolved, re-gated for AA. Print performs the same flip in one line, and motion dies under
+    reduced-motion and in print.</p>
+    <div class="no-cols">
+      <div class="no-panel">
+        <div class="no-ph"><h3>print contract</h3><span class="no-meta">@media print</span></div>
+        <div class="no-spec-col" style="align-items:stretch; gap:7px; color:var(--muted); font-size:12.5px">
+          <div>· The scheme flip re-inks every panel, chip, chart and LED for paper - nothing is hand-recolored.</div>
+          <div>· Chrome hides: filters, tools, action buttons, palette stages (<code class="no-mono">.no-print</code>).</div>
+          <div>· Panels, KPI strips and tables never split across pages (<code class="no-mono">break-inside: avoid</code>).</div>
+          <div>· Pulse, shimmer, transitions and floating shadows are disabled; hairlines carry all structure.</div>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>theme toggle</h3><span class="no-meta">the only sanctioned JS</span></div>
+        <div class="no-spec-col" style="align-items:stretch; gap:7px; color:var(--muted); font-size:12.5px">
+          <div>· One click flips <code class="no-mono">html.style.colorScheme</code> between dark and light; every token re-resolves.</div>
+          <div>· The page renders fully with the script removed - the toggle is a convenience, never a dependency.</div>
+          <div>· No class swapping, no duplicate token lists, no data-theme attributes.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-panel" style="margin-top:14px">
+      <div class="no-ph"><h3>scheme proof · one property, two schemes</h3><span class="no-meta">left: dark lead (default) · right: light flip</span></div>
+      <div class="no-cols" style="padding:14px">
+        <div class="no-panel">
+          <div class="no-ph"><h3>dark lead</h3></div>
+          <div class="no-spec">
+            <span class="no-state ok"><i></i>ok</span>
+            <span class="no-state warn"><i></i>warn</span>
+            <span class="no-state fail"><i></i>fail</span>
+            <span class="no-mono no-acc" style="font:600 18px/1 var(--mono)">1.41M</span>
+            <span class="no-d no-pos">▲ 6.2%</span>
+            <button class="no-btn pri no-print" type="button">Deploy</button>
+          </div>
+        </div>
+        <div class="no-panel">
+          <div class="no-ph"><h3>light flip</h3></div>
+          <div class="no-spec scheme-light">
+            <span class="no-state ok"><i></i>ok</span>
+            <span class="no-state warn"><i></i>warn</span>
+            <span class="no-state fail"><i></i>fail</span>
+            <span class="no-mono no-acc" style="font:600 18px/1 var(--mono)">1.41M</span>
+            <span class="no-d no-pos">▲ 6.2%</span>
+            <button class="no-btn pri no-print" type="button">Deploy</button>
+          </div>
+        </div>
+      </div>
+      <div class="no-rows-foot">the same tokens, re-resolved by the used color scheme · print preview performs the same flip</div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    night-ops v1 · an artifact identity from the uiforagents catalogue · dark ops console with an
+    azure instrument accent and LED status grammar · synthetic kestrel fleet data, no real brands ·
+    one stylesheet, zero required scripts
+  </footer>
+
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var goingDark = root.style.colorScheme === 'light';
+      root.style.colorScheme = goingDark ? 'dark' : 'light';
+      btn.textContent = goingDark ? 'Light theme' : 'Dark theme';
+    });
+  })();
+</script>
+</body>
+</html>

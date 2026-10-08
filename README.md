@@ -52,13 +52,14 @@ in this repo is the whole entrypoint.
 ## The artifact lane
 
 The second lane serves **self-contained HTML artifacts**: articles, briefings,
-reports, any page an agent ships as one file. An artifact identity is a copy-in
+reports, dashboards, any page an agent ships as one file. An artifact identity is a copy-in
 pure-CSS system - no build step, no registry, no npm, no required JavaScript.
 
 | Identity | Vibe | Status |
 |---|---|---|
 | **reading-room** | Warm editorial reader. Paper light, Charter-led serif, ink text, one green accent, built-in dark theme. | ✅ v1.0 |
 | **midnight-bulletin** | Dark-first briefing bulletin. Near-black warm ground, serif display over sans body, mono labels, one amber accent. | ✅ v1.0 |
+| **night-ops** | Dark ops console. Cool near-black ground, azure instrument accent, LED status grammar, hairline panels, mono counts. One-shot PASS 2026-10-09, incident timeline. | ✅ v1.0 |
 
 ```
 identities/<artifact-identity>/
