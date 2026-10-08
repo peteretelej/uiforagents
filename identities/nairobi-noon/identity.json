@@ -1,7 +1,7 @@
 {
   "$schema": "https://schemas.uiforagents.com/identity/1.0.json",
   "name": "nairobi-noon",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "title": "Nairobi Noon",
   "description": "Warm Kenyan daylight. Sand and terracotta, relaxed and inviting, Lilita One display over Inter body.",
   "vibe": ["warm", "daylight", "light", "mtaa"],

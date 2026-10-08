@@ -1,6 +1,6 @@
 {
   "name": "graphite-terminal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "title": "Graphite Terminal",
   "description": "Dark dense ops tooling. Near-black graphite steps, electric lime action, JetBrains Mono data over Inter body, tight radius, flat fast surfaces.",
   "vibe": ["dark", "dense", "technical", "tool"],
@@ -47,6 +47,8 @@
     "warn-soft": "oklch(80% 0.13 85 / 0.14)",
     "warn-fg": "oklch(85% 0.11 85)",
     "danger": "oklch(52% 0.17 25)",
+    "danger-soft": "oklch(52% 0.17 25 / 0.14)",
+    "danger-soft-fg": "oklch(72% 0.15 25)",
     "muted": "oklch(21.5% 0.009 255)",
     "secondary-foreground": "oklch(87% 0.006 255)",
     "destructive-foreground": "oklch(99% 0.005 25)",

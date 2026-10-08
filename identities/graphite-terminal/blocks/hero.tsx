@@ -42,12 +42,12 @@ export function Hero({
         <p className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-muted-foreground">
           {description}
         </p>
-        <div className="mt-6 flex flex-wrap gap-2.5">
-          <Button size="lg" className="h-[44px] rounded-lg px-6 text-[13.5px]">
+        <div className="mt-6 flex flex-wrap gap-2">
+          <Button size="lg" className="h-[44px] rounded-sm px-6 text-[13.5px]">
             {primaryCta} <ArrowRight className="ml-1 size-4" />
           </Button>
           {secondaryCta && (
-            <Button size="lg" variant="outline" className="h-[44px] rounded-lg px-6 text-[13.5px]">
+            <Button size="lg" variant="outline" className="h-[44px] rounded-sm px-6 text-[13.5px]">
               {secondaryCta}
             </Button>
           )}
@@ -56,7 +56,7 @@ export function Hero({
           {stats.map((s) => (
             <div key={s.label}>
               <dt className="sr-only">{s.label}</dt>
-              <dd className="font-mono text-[20px] font-bold tracking-[-0.01em] tabular-nums">
+              <dd className="font-mono text-[22px] font-bold tracking-[-0.01em] tabular-nums">
                 {s.value}
               </dd>
               <dd className="text-[12px] text-muted-foreground">{s.label}</dd>
@@ -66,11 +66,11 @@ export function Hero({
       </div>
       <div
         aria-hidden
-        className="relative flex min-h-[360px] items-center justify-center overflow-hidden rounded-lg bg-[linear-gradient(150deg,var(--color-primary),var(--identity-gradient-to))] shadow-[var(--shadow-identity)]"
+        className="relative flex min-h-[360px] items-start justify-start overflow-hidden rounded-lg bg-[linear-gradient(150deg,var(--primary),var(--identity-gradient-to))] p-6 shadow-[var(--shadow-identity)]"
       >
-        {/* Identity signature: a live prompt line over the lime-to-deep-green field. */}
-        <div className="absolute -right-20 -top-24 size-72 rounded-full bg-white/[0.05]" />
-        <p className="font-mono text-[13px] text-primary-foreground/80">~/ops $ tail -f fleet.log ▌</p>
+        {/* Identity signature: a live prompt line on the lime end of the field
+            (dark-on-lime, the pack's highest-contrast pair). */}
+        <p className="font-mono text-[13px] text-primary-foreground">~/ops $ tail -f fleet.log ▌</p>
       </div>
     </section>
   )

@@ -27,6 +27,8 @@
   --color-warn: var(--warn);
   --color-warn-soft: var(--warn-soft);
   --color-warn-foreground: var(--warn-foreground);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-soft-foreground: var(--danger-soft-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -63,6 +65,10 @@
   --warn: oklch(80% 0.13 85);
   --warn-soft: oklch(80% 0.13 85 / 0.14);
   --warn-foreground: oklch(85% 0.11 85);
+  /* Soft danger chip pair: the solid --destructive red cannot carry text on
+     dark surfaces (2.6:1); this lightened foreground clears 4.5:1 on its tint. */
+  --danger-soft: oklch(52% 0.17 25 / 0.14);
+  --danger-soft-foreground: oklch(72% 0.15 25);
   --border: oklch(88% 0.006 255 / 0.22);
   --input: oklch(88% 0.006 255 / 0.22);
   --ring: oklch(82% 0.12 118);

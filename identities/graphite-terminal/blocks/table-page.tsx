@@ -1,4 +1,5 @@
-import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { DashboardShell, StatBadge } from "./dashboard-shell"
 
 type Stat = { value: string; label: string }
@@ -46,28 +47,51 @@ export function TablePage({
 } = {}) {
   return (
     <DashboardShell title={title} nav={nav} stats={stats}>
-      <h2 className="mb-3.5 font-display text-[16px] font-bold tracking-[-0.01em]">{heading}</h2>
+      <h2 className="mb-3 font-display text-[19px] font-bold tracking-[-0.01em]">{heading}</h2>
       <div className="overflow-x-auto rounded-lg border border-border bg-card">
-        <table className="w-full text-[13px]">
+        <table className="w-full min-w-[560px] text-[13px]">
           <thead className="bg-secondary/50">
             <tr>
-              {columns.map((h) => (
-                <th key={h} className="px-3 py-2 text-left text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+              {columns.map((h, i) => (
+                <th
+                  key={h}
+                  className={`px-3 py-2 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted-foreground ${
+                    i === columns.length - 1 ? "text-right" : "text-left"
+                  }`}
+                >
                   {h}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {rows.map((s) => (
-              <tr key={s.id} className="transition-colors hover:bg-accent/30">
-                <td className="px-3 py-2 font-mono text-[12px]">{s.id}</td>
-                <td>{s.service}</td>
-                <td>{s.owner}</td>
-                <td><StatBadge label={s.status} tone={s.tone} /></td>
-                <td className="font-mono tabular-nums">{s.p99}</td>
+            {rows.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="px-3 py-8">
+                  <div className="mx-auto max-w-sm text-center">
+                    <h3 className="font-display text-[15px] font-semibold">Nothing here yet</h3>
+                    <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">
+                      When a service registers it shows up here with live status.
+                    </p>
+                    <Button size="sm" className="mt-4">
+                      Register service
+                    </Button>
+                  </div>
+                </td>
               </tr>
-            ))}
+            ) : (
+              rows.map((s) => (
+                <tr key={s.id} className="transition-colors hover:bg-accent/30">
+                  <td className="px-3 py-2 font-mono text-[12px]">{s.id}</td>
+                  <td className="px-3 py-2">{s.service}</td>
+                  <td className="px-3 py-2">{s.owner}</td>
+                  <td className="px-3 py-2">
+                    <StatBadge label={s.status} tone={s.tone} />
+                  </td>
+                  <td className="px-3 py-2 text-right font-mono tabular-nums">{s.p99}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -77,11 +101,16 @@ export function TablePage({
 
 export function ReportEmpty() {
   return (
-    <Card className="mx-auto max-w-md p-8 text-center">
-      <h3 className="font-display text-[15px] font-bold">Nothing here yet</h3>
-      <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-        When a service registers it shows up here with live status.
-      </p>
+    <Card className="mx-auto max-w-md py-8">
+      <CardContent className="px-8 text-center">
+        <h3 className="font-display text-[15px] font-semibold">Nothing here yet</h3>
+        <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">
+          When a service registers it shows up here with live status.
+        </p>
+        <Button size="sm" className="mt-4">
+          Register service
+        </Button>
+      </CardContent>
     </Card>
   )
 }

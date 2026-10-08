@@ -36,27 +36,27 @@ export function Hero({
         <p className="text-[11.5px] font-extrabold uppercase tracking-[0.16em] text-primary">
           {eyebrow}
         </p>
-        <h1 className="mt-3.5 font-display text-[clamp(36px,5vw,52px)] font-extrabold leading-[1.05] tracking-[-0.035em]">
+        <h1 className="mt-3 font-display text-[clamp(34px,4.6vw,48px)] leading-[1.05]">
           {title} {accent && <em className="not-italic text-primary">{accent}</em>}
         </h1>
-        <p className="mt-4.5 max-w-[46ch] text-[17px] leading-relaxed text-muted-foreground">
+        <p className="mt-4 max-w-[46ch] text-[16px] leading-relaxed text-muted-foreground">
           {description}
         </p>
-        <div className="mt-7 flex flex-wrap gap-3">
-          <Button size="lg" className="h-[50px] rounded-xl px-7 text-[15px]">
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button size="lg" className="h-[50px] rounded-md px-6 text-[15px]">
             {primaryCta} <ArrowRight className="ml-1 size-4" />
           </Button>
           {secondaryCta && (
-            <Button size="lg" variant="outline" className="h-[50px] rounded-xl px-7 text-[15px]">
+            <Button size="lg" variant="outline" className="h-[50px] rounded-md px-6 text-[15px]">
               {secondaryCta}
             </Button>
           )}
         </div>
-        <dl className="mt-9 flex flex-wrap gap-8 border-t border-border pt-5">
+        <dl className="mt-8 flex flex-wrap gap-8 border-t border-border pt-4">
           {stats.map((s) => (
             <div key={s.label}>
               <dt className="sr-only">{s.label}</dt>
-              <dd className="font-display text-[22px] font-bold tracking-[-0.02em] tabular-nums">
+              <dd className="font-display text-[22px] tabular-nums">
                 {s.value}
               </dd>
               <dd className="text-[12.5px] text-muted-foreground">{s.label}</dd>
@@ -66,9 +66,9 @@ export function Hero({
       </div>
       <div
         aria-hidden
-        className="relative flex min-h-[400px] items-center justify-center overflow-hidden rounded-[20px] bg-[linear-gradient(150deg,var(--color-primary),var(--identity-gradient-to))] shadow-[var(--shadow-identity)]"
+        className="relative flex min-h-[400px] items-center justify-center overflow-hidden rounded-[20px] bg-[linear-gradient(150deg,var(--primary),var(--identity-gradient-to))] shadow-[var(--shadow-identity)]"
       >
-        {/* Identity signature: white 6-8% circles over the azure gradient. */}
+        {/* Identity signature: white 6-8% circles over the warm gradient. */}
         <div className="absolute -right-20 -top-24 size-72 rounded-full bg-white/[0.08]" />
         <div className="absolute -bottom-24 -left-16 size-56 rounded-full bg-white/[0.06]" />
       </div>

@@ -2,7 +2,15 @@
    Layer AFTER shadcn styles. Each rule is a deliberate identity decision. */
 
 /* Buttons are terminal controls: mono face, flat and fast. No lift; feedback is
-   glow on the primary action only. */
+   glow on the primary action only. Controls sit at the 4px step (pack: controls
+   4px) - stock primitives emit 6px, so the identity radius is pinned here and
+   blocks never carry radius of their own. */
+[data-identity="graphite-terminal"] [data-slot="button"],
+[data-identity="graphite-terminal"] input,
+[data-identity="graphite-terminal"] textarea,
+[data-identity="graphite-terminal"] select {
+  border-radius: calc(var(--radius) - 4px);
+}
 [data-identity="graphite-terminal"] [data-slot="button"] {
   font-family: var(--font-mono);
   font-weight: 600;

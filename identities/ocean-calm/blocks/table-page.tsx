@@ -1,4 +1,5 @@
-import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { DashboardShell, StatBadge } from "./dashboard-shell"
 
 type Stat = { value: string; label: string }
@@ -46,28 +47,51 @@ export function TablePage({
 } = {}) {
   return (
     <DashboardShell title={title} nav={nav} stats={stats}>
-      <h2 className="mb-4 font-display text-[19px] font-bold tracking-[-0.01em]">{heading}</h2>
+      <h2 className="mb-4 font-display text-[22px] font-bold tracking-[-0.02em]">{heading}</h2>
       <div className="overflow-x-auto rounded-[14px] border border-border bg-card">
-        <table className="w-full text-[13.5px]">
+        <table className="w-full min-w-[560px] text-[13px]">
           <thead className="bg-secondary/60">
             <tr>
-              {columns.map((h) => (
-                <th key={h} className="px-3.5 py-2.5 text-left text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+              {columns.map((h, i) => (
+                <th
+                  key={h}
+                  className={`px-3 py-2 text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground ${
+                    i === columns.length - 1 ? "text-right" : "text-left"
+                  }`}
+                >
                   {h}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {rows.map((j) => (
-              <tr key={j.code} className="transition-colors hover:bg-accent/40">
-                <td className="px-3.5 py-3 font-mono text-[12.5px]">{j.code}</td>
-                <td>{j.trade}</td>
-                <td>{j.customer}</td>
-                <td><StatBadge label={j.status} tone={j.tone} /></td>
-                <td className="font-semibold tabular-nums">{j.price}</td>
+            {rows.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="px-3 py-10">
+                  <div className="mx-auto max-w-sm text-center">
+                    <h3 className="font-display text-[16px] font-bold">Nothing here yet</h3>
+                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+                      When a request comes in it lands here with live status.
+                    </p>
+                    <Button size="sm" className="mt-4">
+                      New request
+                    </Button>
+                  </div>
+                </td>
               </tr>
-            ))}
+            ) : (
+              rows.map((j) => (
+                <tr key={j.code} className="transition-colors hover:bg-accent/40">
+                  <td className="px-3 py-3 font-mono text-[12.5px]">{j.code}</td>
+                  <td className="px-3 py-3">{j.trade}</td>
+                  <td className="px-3 py-3">{j.customer}</td>
+                  <td className="px-3 py-3">
+                    <StatBadge label={j.status} tone={j.tone} />
+                  </td>
+                  <td className="px-3 py-3 text-right font-semibold tabular-nums">{j.price}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -77,11 +101,16 @@ export function TablePage({
 
 export function ReportEmpty() {
   return (
-    <Card className="mx-auto max-w-md p-10 text-center">
-      <h3 className="font-display text-[17px] font-bold">Nothing here yet</h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-        When a request comes in it lands here with live status.
-      </p>
+    <Card className="mx-auto max-w-md py-10">
+      <CardContent className="px-10 text-center">
+        <h3 className="font-display text-[16px] font-bold">Nothing here yet</h3>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          When a request comes in it lands here with live status.
+        </p>
+        <Button size="sm" className="mt-4">
+          New request
+        </Button>
+      </CardContent>
     </Card>
   )
 }

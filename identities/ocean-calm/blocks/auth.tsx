@@ -13,7 +13,7 @@ export function AuthCard({
   primaryCta?: string
 }) {
   return (
-    <Card className="w-full max-w-sm rounded-2xl shadow-[var(--shadow-identity)]">
+    <Card className="w-full max-w-sm shadow-[var(--shadow-identity)]">
       <CardHeader>
         <CardTitle className="font-display text-[20px] font-bold tracking-[-0.02em]">
           {title}
@@ -22,15 +22,15 @@ export function AuthCard({
       </CardHeader>
       <CardContent>
         <form className="flex flex-col gap-4">
-          <div className="grid gap-2.5">
+          <div className="grid gap-3">
             <Label htmlFor="email">Email or phone</Label>
             <Input id="email" type="text" placeholder="you@example.com" autoCapitalize="none" />
           </div>
-          <div className="grid gap-2.5">
+          <div className="grid gap-3">
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" />
           </div>
-          <Button type="submit" className="mt-2 h-11 rounded-xl font-semibold">
+          <Button type="submit" className="mt-2 h-11 rounded-md">
             {primaryCta}
           </Button>
         </form>
