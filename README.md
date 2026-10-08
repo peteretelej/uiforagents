@@ -2,14 +2,14 @@
 
 **Design identities for agent-built apps.**
 
-uiforagents is a catalogue of complete, opinionated design systems - *identities* -
-so an AI (or human) can ship a premium UI without making a single design decision.
-It is a **design system factory**: use an identity as-is, or derive your own from
-the nearest one when nothing fits - see [DERIVE.md](DERIVE.md). The React lane is
-built on shadcn/ui, Tailwind v4, and Base UI: theme tokens, component treatment
-overrides, composed blocks, fonts, motion defaults, and an agent prompt-pack. The
-artifact lane serves self-contained HTML artifacts with a copy-in pure-CSS
-foundation (see [the artifact lane](#the-artifact-lane)).
+uiforagents is a design system factory: complete, opinionated design systems -
+*identities* - that let an AI (or human) ship a premium UI without making a
+single design decision. Two lanes: **React** (shadcn/ui, Tailwind v4, Base UI -
+theme tokens, component overrides, composed blocks, fonts, motion, agent
+prompt-pack) and **vanilla HTML/CSS** (self-contained single-file pages with a
+copy-in pure-CSS foundation - see [the artifact lane](#the-artifact-lane)). Use
+an identity as-is, or derive your own from the nearest one when nothing fits -
+see [DERIVE.md](DERIVE.md).
 
 **Build the theme + overrides + blocks into a shadcn registry payload:**
 
