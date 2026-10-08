@@ -40,8 +40,10 @@ lands, use the copy path above.
 Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
 one shared demo app).
 
-**Agents**: install the skill once - `npx skills add peteretelej/uiforagents` -
-then just ask ("use Nairobi Noon for this app"). The skill discovers the
+**Agents**: install the skill once - `npx skills add peteretelej/uiforagents -g` -
+then just ask ("use Nairobi Noon for this app"). The `-g` installs it globally so
+every project sees it; without the flag the CLI targets the current directory
+(and nesting happens if run from inside a skills folder). The skill discovers the
 catalogue, picks identities, and follows the lane contracts; `skills/uiforagents/SKILL.md`
 in this repo is the whole entrypoint.
 

@@ -7,7 +7,7 @@ overrides, blocks, and an agent prompt-pack. The artifact lane ships pure-CSS
 identities for self-contained HTML (see "Building a single-file artifact" below).
 The repo root package.json is a private workspace root - nothing here publishes
 to npm. `skills/uiforagents/SKILL.md` is the public agent entrypoint
-(`npx skills add peteretelej/uiforagents`): it routes agents into these same
+(`npx skills add peteretelej/uiforagents -g`): it routes agents into these same
 contracts and must stay lean - instructions only, catalogue data lives on the
 website (llms.txt, identity-metadata.json), never inlined into the skill.
 
