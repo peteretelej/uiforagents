@@ -31,6 +31,11 @@ and vibe tags. Shortlist the best 2-3 and present them with one line each;
 let the human choose unless they named an identity or clearly described one
 already. `lane` decides which usage section below applies.
 
+If nothing fits, do not improvise: **derive** from the nearest identity -
+follow the derive guide (`DERIVE.md` in the repo; published at
+`https://uiforagents.com/derive/`). Retune the tuning surface, inherit the
+structure, record provenance.
+
 ## 3. Use - artifact lane (`lane: artifact`)
 
 For self-contained single-file pages: articles, briefings, reports.

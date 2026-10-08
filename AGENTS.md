@@ -5,6 +5,10 @@ design systems. The React lane ships shadcn/ui (Tailwind v4, Base UI
 primitives) identities under `identities/<slug>/` with a theme, component
 overrides, blocks, and an agent prompt-pack. The artifact lane ships pure-CSS
 identities for self-contained HTML (see "Building a single-file artifact" below).
+It operates as a **design system factory**: identities are starting points -
+when no identity fits a project, agents derive a project-local system from the
+nearest parent per [DERIVE.md](DERIVE.md) instead of improvising, and promotion
+of recurring derived systems into the catalogue stays Peter-curated.
 The repo root package.json is a private workspace root - nothing here publishes
 to npm. `skills/uiforagents/SKILL.md` is the public agent entrypoint
 (`npx skills add peteretelej/uiforagents -g`): it routes agents into these same
