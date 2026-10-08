@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>paper-ledger · identity demo</title>
+<meta name="description" content="Self-documenting demo of the paper-ledger artifact identity: rationale, token reference, a full quarterly statement, the print proof, table states, component sheet, and the 390px treatment.">
+<style>
+/* paper-ledger - artifact identity foundation
+   A light print-precision analytics identity: cool paper, near-black ink,
+   one deep ink-blue accent, accounting double rules, tabular mono figures.
+   Seeded from a fidelity pass over financial statements, ledger books,
+   Stripe-class dashboards and FT/WSJ print tables. This file is the entire
+   system: tokens, base, typography, components, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + the scheme pinned light on :root. The
+     identity leads light: the light values are canonical (verbatim from the
+     fidelity source) and the dark values are the derived alternative,
+     re-gated for contrast. light-dark() slots are fixed by CSS - first slot
+     is the value used under the light scheme. A toggle flips
+     html.style.colorScheme to "dark" or "light". There is no data-theme
+     attribute and no duplicated token block; keep the scheme property on
+     html/:root.
+   - Print is the signature: the same document is the screen and the
+     printout. The print block pins the light scheme at :root, repeats table
+     heads, never tears a row, and sets folios via a @page margin box.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light;
+
+    /* Shared semantic vocabulary (light scheme canonical) */
+    --bg:          light-dark(oklch(0.977 0.003 250), oklch(0.205 0.010 260));
+    --surface:     light-dark(oklch(1 0 0),           oklch(0.245 0.011 260));
+    --ink:         light-dark(oklch(0.250 0.012 260), oklch(0.930 0.008 260));
+    --muted:       light-dark(oklch(0.500 0.012 260), oklch(0.720 0.012 260));
+    --faint:       light-dark(oklch(0.620 0.010 250), oklch(0.545 0.012 260));
+    --line:        light-dark(oklch(0.905 0.006 250), oklch(0.335 0.012 260));
+    --line-strong: light-dark(oklch(0.760 0.010 250), oklch(0.460 0.014 260));
+    --accent:      light-dark(oklch(0.420 0.130 262), oklch(0.720 0.115 262));
+    --accent-ink:  light-dark(oklch(0.985 0.002 250), oklch(0.180 0.020 262));
+    --accent-soft: light-dark(oklch(0.420 0.130 262 / 0.07), oklch(0.720 0.115 262 / 0.14));
+    --ok:     light-dark(oklch(0.520 0.110 155), oklch(0.760 0.120 155));
+    --warn:   light-dark(oklch(0.550 0.120 75),  oklch(0.800 0.120 75));
+    --danger: light-dark(oklch(0.520 0.170 27),  oklch(0.720 0.150 27));
+    --radius: 4px;
+
+    /* Fonts: sans statement text, mono for every numeral and label */
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+    /* Ledger extras: the rule hierarchy is arithmetic notation.
+       hairline --line separates rows, --line-strong bounds blocks and
+       column groups, --rule-sub is the single accounting rule under
+       subtotal figures; the double rule under proved totals is drawn in
+       --ink (grand total) or --line-strong (statement boundaries). */
+    --rule-sub: light-dark(oklch(0.380 0.014 260), oklch(0.820 0.010 260));
+    --r-sm: 2px;
+
+    /* Chart tokens (derive from the palette, never new colors) */
+    --chart-grid: var(--line);
+    --chart-axis: var(--line-strong);
+    --chart-label: var(--faint);
+    --chart-value: var(--muted);
+    --chart-series: var(--accent);
+    --chart-series-dim: var(--faint);
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 14px/1.55 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  svg text { font-family: var(--mono); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 24px; }
+
+  /* ---------- Layout ---------- */
+  .pl-wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px 80px; }
+  .pl-sec { padding-top: 6px; }
+  .pl-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 30px; }
+  .pl-cols > div { min-width: 0; }
+  .pl-cols > div + div { border-left: 1px solid var(--line); padding-left: 30px; }
+
+  /* ---------- Masthead + statement heading ---------- */
+  .pl-masthead {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    padding: 20px 0 14px; border-bottom: 3px double var(--ink); background: var(--surface);
+  }
+  .pl-brand { font-size: 15px; font-weight: 650; letter-spacing: 0.01em; }
+  .pl-brand span { color: var(--accent); }
+  .pl-masthead .pl-stmt {
+    font: 600 10.5px/1 var(--mono); letter-spacing: 0.10em; text-transform: uppercase; color: var(--faint);
+  }
+  .pl-masthead .pl-date { margin-left: auto; font: 11px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
+
+  .pl-statement { padding: 22px 0 4px; }
+  .pl-statement .pl-entity { font: 650 19px/1.2 var(--sans); letter-spacing: 0.005em; }
+  .pl-statement .pl-title { font-size: 14px; color: var(--muted); margin-top: 3px; }
+  .pl-statement .pl-period {
+    font: 10.5px/1.7 var(--mono); letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--faint); margin-top: 6px;
+  }
+
+  /* ---------- Block heads ---------- */
+  .pl-h { display: flex; align-items: baseline; gap: 10px; margin: 26px 0 4px; }
+  .pl-h h3 { margin: 0; font: 650 11px/1 var(--sans); letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink); }
+  .pl-h small { margin-left: auto; font: 10px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); }
+  .pl-take { color: var(--muted); font-size: 12.5px; margin: 3px 0 10px; max-width: 78ch; }
+
+  /* ---------- KPI summary row ---------- */
+  .pl-kpis {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line);
+    margin-top: 18px;
+  }
+  .pl-kpi { padding: 15px 18px 13px; border-left: 1px solid var(--line); min-width: 0; }
+  .pl-kpi:first-child { border-left: 0; padding-left: 0; }
+  .pl-k { font: 600 10px/1.5 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .pl-v {
+    font: 500 25px/1.05 var(--mono); letter-spacing: -0.01em; margin-top: 7px;
+    font-variant-numeric: lining-nums tabular-nums; white-space: nowrap;
+  }
+  .pl-v small { font-size: 13.5px; color: var(--muted); }
+  .pl-d { font: 500 11px/1.5 var(--mono); margin-top: 4px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pl-d.up { color: var(--ok); } .pl-d.down { color: var(--danger); } .pl-d.flat { color: var(--muted); }
+
+  /* ---------- Chart frames ---------- */
+  .pl-figblock { padding: 4px 0 6px; }
+  .pl-fig { padding: 4px 0 6px; break-inside: avoid; }
+  .pl-chart { display: block; width: 100%; height: auto; }
+  .pl-figcap { font: 10.5px/1.6 var(--mono); letter-spacing: 0.04em; color: var(--faint); margin-top: 6px; }
+
+  /* ---------- Tables: shared grammar ---------- */
+  .pl-tblwrap { overflow-x: auto; margin-top: 6px; }
+  .pl-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .pl-tbl th {
+    text-align: left; font: 600 10px/1.4 var(--mono); letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--muted); padding: 8px 14px 7px; border-bottom: 3px double var(--line-strong);
+    vertical-align: bottom;
+  }
+  .pl-tbl td {
+    padding: 8px 14px; border-bottom: 1px solid var(--line);
+    font-variant-numeric: lining-nums tabular-nums; vertical-align: top;
+  }
+  .pl-tbl td.mono { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .pl-tbl td.strong, .pl-tbl td.lbl { font-weight: 500; }
+  .pl-tbl .num { text-align: right; font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+  .pl-tbl th.num { text-align: right; }
+  .pl-tbl .neg { color: var(--ink); }
+  .pl-tbl .pos { color: var(--accent); }
+  .pl-tbl td.dim { color: var(--muted); }
+
+  /* simple tables close with a double rule */
+  .pl-tbl--simple tbody tr:last-child td { border-bottom: 3px double var(--line-strong); }
+
+  /* ---------- Statement rows: the accounting ruling ----------
+     Row-type rules out-rank the shared td borders by specificity
+     (no !important): rules run under figure columns only. */
+  .pl-tbl .pl-grp td {
+    border-bottom: 0; padding-top: 22px; padding-bottom: 4px; height: auto;
+    font: 650 10.5px/1.4 var(--sans); letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted);
+  }
+  .pl-tbl .pl-grp:first-child td { padding-top: 14px; }
+  .pl-tbl .pl-sub td { border-bottom: 0; }
+  .pl-tbl .pl-sub td.lbl { font-weight: 600; padding-top: 2px; }
+  .pl-tbl .pl-sub td.num { border-bottom: 2px solid var(--rule-sub); padding-top: 2px; }
+  .pl-tbl .pl-total td { border-bottom: 0; }
+  .pl-tbl .pl-total td.lbl { font-weight: 650; padding-top: 2px; }
+  .pl-tbl .pl-total td.num { border-bottom: 3px double var(--ink); font-weight: 600; padding-top: 2px; }
+  .pl-tbl .pl-close td { border-bottom: 0; }
+  .pl-tbl .pl-close td.num { border-bottom: 3px double var(--ink); font-weight: 600; padding-top: 2px; }
+  .pl-tbl .pl-close td.lbl { font-weight: 600; font-style: normal; color: var(--ink); padding-top: 2px; }
+
+  /* ledger table: fixed 34px rows, indent grammar, balance columns */
+  .pl-tbl--ledger td { padding-top: 0; padding-bottom: 0; vertical-align: middle; }
+  .pl-tbl--ledger tbody tr { height: 34px; }
+  .pl-tbl--ledger td.lbl { padding-left: 0; }
+  .pl-tbl--ledger td.indent { padding-left: 20px; }
+  .pl-tbl--ledger .pl-open td.lbl { font-style: italic; color: var(--muted); }
+
+  /* ---------- Footnote markers + note zone ---------- */
+  .pl-fnref { font-size: 9px; vertical-align: super; color: var(--accent); margin-left: 2px; font-family: var(--mono); }
+  .pl-notes { border-top: 1px solid var(--line-strong); margin-top: 16px; padding-top: 8px; }
+  .pl-notes p { font: 11px/1.7 var(--mono); color: var(--muted); margin: 2px 0; }
+  .pl-notes b { font-weight: 600; color: var(--faint); }
+  .pl-src {
+    font: 10.5px/1.7 var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--faint); margin-top: 14px; display: flex; gap: 18px; flex-wrap: wrap;
+  }
+
+  /* ---------- Variance grammar ---------- */
+  .pl-var { font: 500 11.5px/1 var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pl-var.up { color: var(--ok); } .pl-var.down { color: var(--danger); } .pl-var.flat { color: var(--muted); }
+  .pl-var small { color: var(--faint); font-size: 10px; }
+
+  /* ---------- Sparklines ---------- */
+  .pl-spark { display: block; }
+  .pl-spark polyline { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+  .pl-spark circle { fill: var(--accent); }
+  .pl-spark--dim polyline { stroke: var(--faint); }
+
+  /* ---------- Period tabs ---------- */
+  .pl-tabs { display: inline-flex; gap: 4px; border: 1px solid var(--line); padding: 3px; border-radius: var(--radius); background: var(--surface); }
+  .pl-tabs span {
+    font: 500 11px/1 var(--mono); letter-spacing: 0.06em; color: var(--muted);
+    padding: 7px 12px; border-radius: 3px; text-transform: uppercase;
+  }
+  .pl-tabs .on { color: var(--ink); background: var(--bg); box-shadow: inset 0 -2px 0 var(--accent); }
+  .pl-tabs span:not(.on):not(.off):hover { color: var(--ink); }
+  .pl-tabs .off { color: var(--faint); }
+
+  /* ---------- Badges / state dots ---------- */
+  .pl-badge {
+    display: inline-block; font: 600 9.5px/1 var(--mono); letter-spacing: 0.09em; text-transform: uppercase;
+    padding: 3px 7px; border: 1px solid currentColor; border-radius: var(--r-sm); white-space: nowrap;
+  }
+  .pl-badge.ok { color: var(--ok); } .pl-badge.warn { color: var(--warn); }
+  .pl-badge.fail { color: var(--danger); } .pl-badge.neutral { color: var(--muted); }
+  .pl-badge.accent { color: var(--accent); }
+
+  .pl-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: baseline; }
+  .pl-dot.ok { background: var(--ok); } .pl-dot.warn { background: var(--warn); } .pl-dot.fail { background: var(--danger); }
+
+  /* ---------- Filter chips ---------- */
+  .pl-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 2px; }
+  .pl-chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 500 11px/1 var(--mono); letter-spacing: 0.04em; color: var(--ink);
+    border: 1px solid var(--line-strong); border-radius: 99px; padding: 5px 11px; background: var(--surface);
+  }
+  .pl-chip i { font-style: normal; color: var(--faint); }
+  .pl-chip .x { color: var(--accent); font-weight: 600; }
+
+  /* ---------- Pager ---------- */
+  .pl-pager {
+    display: flex; align-items: center; gap: 6px; padding: 11px 0;
+    border-top: 1px solid var(--line); margin-top: 0;
+    font: 11.5px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums;
+  }
+  .pl-pager .pl-page {
+    min-width: 26px; text-align: center; padding: 5px 6px; border-radius: 3px;
+    border: 1px solid transparent; color: var(--muted);
+  }
+  .pl-pager .pl-page.on { border-color: var(--line-strong); color: var(--ink); background: var(--surface); }
+  .pl-pager .gap { color: var(--faint); padding: 0 2px; }
+  .pl-pager .end { margin-left: auto; }
+
+  /* ---------- States: loading, empty, error ---------- */
+  .pl-skrow { display: flex; gap: 14px; align-items: center; height: 36px; border-bottom: 1px solid var(--line); }
+  .pl-skrow i { display: block; height: 9px; border-radius: var(--r-sm); background: var(--line); animation: pl-pulse 1.6s ease-in-out infinite; }
+  .pl-skrow i:nth-child(1) { width: 18%; }
+  .pl-skrow i:nth-child(2) { width: 30%; }
+  .pl-skrow i:nth-child(3) { width: 10%; margin-left: auto; }
+  .pl-skrow i:nth-child(4) { width: 14%; }
+  @keyframes pl-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+  .pl-empty { text-align: center; padding: 34px 0 30px; border-bottom: 1px solid var(--line); }
+  .pl-empty .pl-e { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+  .pl-empty .pl-e b { font-weight: 600; color: var(--ink); }
+  .pl-empty .pl-dash { font: 500 20px/1 var(--mono); color: var(--faint); margin-bottom: 10px; }
+
+  .pl-alert {
+    display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;
+    border: 1px solid var(--danger); border-left-width: 3px; border-radius: var(--radius);
+    background: var(--surface); padding: 13px 15px; margin-top: 10px;
+  }
+  .pl-alert .t { font-weight: 600; color: var(--danger); font-size: 13px; }
+  .pl-alert .m { color: var(--muted); font-size: 12.5px; }
+  .pl-alert .ref { margin-left: auto; font: 10.5px/1 var(--mono); color: var(--faint); letter-spacing: 0.05em; }
+
+  /* ---------- Buttons ---------- */
+  .pl-btn {
+    display: inline-block; font: 550 12.5px/1 var(--sans); letter-spacing: 0.01em;
+    border-radius: var(--radius); padding: 9px 15px; border: 1px solid transparent; cursor: pointer;
+    transition: background-color .15s, border-color .15s, color .15s;
+  }
+  .pl-btn--primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .pl-btn--primary:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .pl-btn--secondary { background: var(--surface); color: var(--ink); border-color: var(--line-strong); }
+  .pl-btn--secondary:hover { border-color: var(--ink); }
+  .pl-btn--quiet { background: none; color: var(--accent); padding-left: 2px; padding-right: 2px; }
+  .pl-btn--quiet:hover { text-decoration: underline; }
+  .pl-btn[disabled] { color: var(--faint); background: var(--surface); border-color: var(--line); cursor: not-allowed; }
+  .pl-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pl-btnrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 6px 0; }
+
+  /* ---------- Inputs ---------- */
+  .pl-field { max-width: 340px; padding: 6px 0; }
+  .pl-label { display: block; font: 600 10px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .pl-hint { font: 11px/1.5 var(--mono); color: var(--faint); margin-top: 5px; }
+  .pl-input, .pl-select {
+    width: 100%; font: 400 13.5px/1.4 var(--sans); color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    padding: 9px 11px;
+  }
+  .pl-input::placeholder { color: var(--faint); }
+  .pl-input:focus-visible, .pl-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+  .pl-select {
+    appearance: none; -webkit-appearance: none; padding-right: 30px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 16px) 55%, calc(100% - 11px) 55%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+  }
+  .pl-input--err { border-color: var(--danger); }
+  .pl-errmsg { font: 11px/1.5 var(--mono); color: var(--danger); margin-top: 5px; }
+
+  /* ---------- Page furniture ---------- */
+  .pl-runhead {
+    display: flex; align-items: baseline; gap: 12px; padding: 9px 0 8px;
+    border-bottom: 1px solid var(--line-strong);
+    font: 10px/1 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint);
+  }
+  .pl-runhead b { color: var(--muted); font-weight: 600; }
+  .pl-runhead span:last-child { margin-left: auto; }
+  .pl-folio {
+    display: flex; align-items: baseline; padding: 8px 0 0; border-top: 1px solid var(--line);
+    font: 10px/1 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint);
+  }
+  .pl-folio span:last-child { margin-left: auto; }
+  .pl-pagebox { border: 1px solid var(--line); border-radius: var(--radius); padding: 0 16px 10px; background: var(--surface); max-width: 560px; }
+  .pl-pagebox .pl-inner { padding-top: 8px; color: var(--muted); font-size: 12px; }
+
+  /* ---------- Rule ladder ---------- */
+  .pl-rules { display: grid; grid-template-columns: 200px 1fr; gap: 0 22px; max-width: 620px; }
+  .pl-rules dt {
+    font: 600 10px/1.4 var(--mono); letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted);
+    padding: 13px 0 3px;
+  }
+  .pl-rules dd { margin: 0; padding: 13px 0 9px; }
+  .pl-rules .r-hairline { border-bottom: 1px solid var(--line); }
+  .pl-rules .r-strong { border-bottom: 1px solid var(--line-strong); }
+  .pl-rules .r-single { border-bottom: 2px solid var(--rule-sub); }
+  .pl-rules .r-double { border-bottom: 3px double var(--ink); }
+  .pl-rules small { display: block; font: 11px/1.5 var(--mono); color: var(--faint); text-transform: none; letter-spacing: 0; }
+
+  /* ---------- Token swatches ---------- */
+  .pl-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px 18px; margin-top: 8px; }
+  .pl-swatch .sw { height: 30px; border: 1px solid var(--line); border-radius: 3px; }
+  .pl-swatch .nm { font: 600 9.5px/2.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* ---------- Tabular figure proof ---------- */
+  .pl-tnum { display: grid; grid-template-columns: 1fr 1fr; gap: 0 34px; max-width: 460px; }
+  .pl-tnum h4 { margin: 10px 0 4px; font: 600 10px/1 var(--mono); letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); }
+  .pl-tnum ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .pl-tnum li { font: 500 13px/2 var(--mono); text-align: right; border-bottom: 1px solid var(--line); }
+  .pl-tnum li:last-child { border-bottom: 3px double var(--line-strong); }
+  .pl-tnum .prop { font-family: var(--sans); font-variant-numeric: normal; }
+  .pl-tnum .tab { font-family: var(--mono); font-variant-numeric: lining-nums tabular-nums; }
+
+  /* ---------- Dark proof strip (shows the second half of every token) ---------- */
+  .pl-darkproof { color-scheme: dark; color: var(--ink); background: var(--bg); border-radius: var(--radius); padding: 2px 18px 14px; margin-top: 6px; border: 1px solid var(--line); }
+  .pl-darkproof .cap { font: 600 9.5px/1 var(--mono); letter-spacing: 0.10em; text-transform: uppercase; color: var(--faint); padding-top: 12px; }
+
+  /* ---------- Compact treatment (narrow containers, small screens) ---------- */
+  .pl-mob { padding: 0 16px 14px; }
+  .pl-mob .pl-kpis { grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+  .pl-mob .pl-kpi { padding: 12px 12px 10px; }
+  .pl-mob .pl-kpi:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .pl-mob .pl-v { font-size: 20px; }
+  .pl-mob .pl-h { margin-top: 20px; }
+  .pl-mob .pl-tbl { font-size: 12.5px; }
+  .pl-mob .pl-tbl th { padding: 7px 10px 6px; }
+  .pl-mob .pl-tbl td { padding: 7px 10px; }
+  .pl-mob .pl-src { margin-top: 16px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .pl-kpis { grid-template-columns: 1fr 1fr; }
+    .pl-kpi:nth-child(odd) { border-left: 0; padding-left: 0; }
+    .pl-cols { grid-template-columns: 1fr; }
+    .pl-cols > div + div { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); margin-top: 18px; }
+    .pl-rules { grid-template-columns: 150px 1fr; }
+    .pl-tnum { grid-template-columns: 1fr; max-width: 340px; }
+  }
+  @media (max-width: 560px) {
+    .pl-kpis { grid-template-columns: 1fr; }
+    .pl-kpi { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+    .pl-kpi:first-child { border-top: 0; }
+  }
+
+  /* ---------- Print: the signature ----------
+     A4 statement pagination: the screen document is the printout. The
+     scheme pins light at the root (a dark-lead derivative flips here),
+     real theads repeat on continued pages, rows never tear, headings bind
+     forward, and the folio rides the @page margin box. Ink lightens one
+     step for paper via the line-token override. */
+  @media print {
+    :root {
+      color-scheme: light;
+      --line: oklch(0.90 0.006 250);
+      --line-strong: oklch(0.72 0.010 250);
+    }
+    .pl-darkproof { color-scheme: light; }
+    @page {
+      size: A4 portrait;
+      margin: 16mm 14mm 18mm;
+      @bottom-center {
+        content: counter(page) " of " counter(pages);
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 7.5pt;
+        letter-spacing: 0.08em;
+        color: #666;
+      }
+    }
+    body {
+      background: #fff;
+      font-size: 10.5pt;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+    a { color: inherit; text-decoration: none; }
+    .pl-noprint { display: none; }
+    .pl-sheet { padding: 0; }
+    .pl-masthead { padding-top: 0; }
+
+    /* never strand a heading; never tear a row or a figure */
+    .pl-h, .pl-statement, .pl-masthead { break-after: avoid; }
+    .pl-figblock { break-inside: avoid; }
+    tr, .pl-fig, .pl-kpis, .pl-kpi, .pl-notes, .pl-src, .pl-alert, .pl-chips, .pl-pager { break-inside: avoid; }
+    p, .pl-take { orphans: 3; widows: 3; }
+
+    /* real thead repeats on every continued page; tfoot renders once at the end */
+    .pl-tbl thead { display: table-header-group; }
+    .pl-tbl tfoot { display: table-footer-group; }
+
+    .pl-skrow i { animation: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .pl-skrow i { animation: none; }
+    .pl-btn { transition: none; }
+  }
+}
+
+</style>
+<style>
+/* page CSS (unlayered): this demo's own document chrome - headings and
+   section rhythm for the explanation page itself, the phone frame, and the
+   branded print folio. Everything below stays out of the foundation layer
+   and never edits it. */
+.head { padding: 34px 0 8px; }
+.head h1 { font-size: 26px; line-height: 1.15; margin: 10px 0; letter-spacing: -0.01em; }
+.dek { color: var(--muted); max-width: 78ch; margin: 0 0 6px; font-size: 13px; }
+.head .pl-k { color: var(--accent); margin: 0; }
+.sec { margin-top: 52px; }
+.sec > .pl-k { color: var(--accent); font-size: 11px; letter-spacing: 0.14em; margin: 0 0 8px; }
+.sec-dek { color: var(--muted); max-width: 84ch; margin: 0 0 14px; }
+.foot {
+  margin-top: 72px; border-top: 1px solid var(--line); padding-top: 20px;
+  font: 11px/1.8 var(--mono); color: var(--faint);
+}
+.gap { margin-bottom: 14px; }
+
+/* phone frame chrome for the 390 proof (screen only) */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line-strong); border-radius: 14px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line-strong); }
+.mob-note { text-align: center; color: var(--faint); font-size: 12px; margin: 10px 0 0; }
+
+/* branded folio for this document's printout; the foundation ships the
+   plain page counter and this replaces the text. Each statement section
+   opens a page, mirroring the artifact's page map. */
+@media print {
+  #ledger, #comparison, #charts { break-before: page; }
+  @page {
+    @bottom-center {
+      content: "fernbrook software ltd. · quarterly statement · page " counter(page) " of " counter(pages);
+    }
+  }
+}
+</style>
+</head>
+<body>
+
+<main class="pl-wrap">
+
+  <div class="pl-sheet">
+    <div class="pl-masthead">
+      <span class="pl-brand">uiforagents <span>·</span> paper-ledger</span>
+      <span class="pl-stmt">identity demo</span>
+      <span class="pl-date">prepared oct 09 2026 · eat</span>
+      <button class="pl-btn pl-btn--secondary pl-noprint" id="theme-toggle" type="button">Dark theme</button>
+    </div>
+  </div>
+
+  <header class="head pl-noprint">
+    <p class="pl-k">uiforagents · artifact identity · paper-ledger</p>
+    <h1>The paper-ledger statement</h1>
+    <p class="dek">A light print-precision analytics identity: cool paper, near-black ink, one deep
+    ink-blue accent, accounting double rules, and a mono tabular digit for every figure. Everything
+    below is built from <code>foundation.css</code> alone - the screen document is the printout.</p>
+    <p class="pl-src" style="margin-top:8px"><span>oct 09 2026 · light-dark() tokens, light lead</span><span>system stacks, mono-forward</span><span>hand-authored svg charts</span><span>zero required javascript</span></p>
+  </header>
+
+  <!-- ==================== 01 RATIONALE ==================== -->
+  <section class="sec pl-noprint" id="rationale">
+    <p class="pl-k">01 · design rationale</p>
+    <div class="pl-h"><h3>decisions, not options</h3></div>
+    <p class="pl-take">paper-ledger exists so an agent building a cost report or a board pack stops
+    making layout decisions and starts making statement decisions. The masthead, the three-part
+    statement heading, the KPI row, the ledger tables, and the print stylesheet are fixed grammar.
+    You choose the figures, the periods, and the words; the identity does the rest.</p>
+    <p class="pl-take">The signature is the rule hierarchy. Rules are arithmetic notation: a hairline
+    separates rows, a strong rule bounds a block, a single accounting rule under a subtotal says the
+    figures above sum to the figure below, and the double rule says the number is proved and nothing
+    prints beneath it. Rules run under figure columns, never across labels - a rule under numbers is
+    arithmetic, a rule across the row is a divider.</p>
+    <p class="pl-take">Precision is enforced typographically: every numeral is mono and tabular, so
+    columns of figures form a hard right edge and digits align down the page. Negatives print in
+    parentheses, zeros print as a dash, currency appears on the first figure of a column and on
+    totals, units live in the column heads, and a statement that does not foot carries a rounding
+    note. Color is state, never decoration: one ink-blue accent for the rubric voice, green/amber/red
+    only where a figure or a badge genuinely changes meaning.</p>
+  </section>
+
+  <!-- ==================== 02 TOKENS ==================== -->
+  <section class="sec pl-noprint" id="tokens">
+    <p class="pl-k">02 · token reference</p>
+    <p class="sec-dek">Every token is a <code>light-dark()</code> pair: light is the canonical lead,
+    dark is the derived alternative re-gated for contrast. The scheme is pinned light on the root;
+    the toggle in the masthead flips it, and print re-pins it for paper.</p>
+    <div class="pl-swatches">
+      <div class="pl-swatch"><div class="sw" style="background:var(--bg)"></div><div class="nm">bg 0.977</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--surface)"></div><div class="nm">surface 1.00</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--line)"></div><div class="nm">line 0.905</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--line-strong)"></div><div class="nm">line-strong 0.76</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--ink)"></div><div class="nm">ink 0.25</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--accent)"></div><div class="nm">accent 0.42·0.13·262</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--accent-soft)"></div><div class="nm">accent-soft 7%</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--ok)"></div><div class="nm">ok 0.52·155</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--warn)"></div><div class="nm">warn 0.55·75</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--danger)"></div><div class="nm">danger 0.52·27</div></div>
+      <div class="pl-swatch"><div class="sw" style="background:var(--rule-sub)"></div><div class="nm">rule-sub 0.38</div></div>
+    </div>
+    <div class="pl-tblwrap">
+      <table class="pl-tbl pl-tbl--simple">
+        <thead>
+          <tr><th scope="col">token</th><th scope="col" class="num">light (lead)</th><th scope="col" class="num">dark (derived)</th><th scope="col">job</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">--bg / --surface</td><td class="num">0.977 / 1.00</td><td class="num">0.205 / 0.245</td><td>cool paper ground, raised sheet</td></tr>
+          <tr><td class="mono">--ink / --muted / --faint</td><td class="num">0.25 / 0.50 / 0.62</td><td class="num">0.93 / 0.72 / 0.545</td><td>text ladder; faint is micro-label voice</td></tr>
+          <tr><td class="mono">--line / --line-strong</td><td class="num">0.905 / 0.76</td><td class="num">0.335 / 0.46</td><td>hairline separates, strong rule bounds</td></tr>
+          <tr><td class="mono">--rule-sub</td><td class="num">0.38</td><td class="num">0.82</td><td>single accounting rule under subtotals</td></tr>
+          <tr><td class="mono">--accent / --accent-ink</td><td class="num">0.42·262 / 0.985</td><td class="num">0.72·262 / 0.18</td><td>ink-blue rubric voice; text on accent fills</td></tr>
+          <tr><td class="mono">--accent-soft</td><td class="num">7% wash</td><td class="num">14% wash</td><td>accent tint when a fill is unavoidable</td></tr>
+          <tr><td class="mono">--ok / --warn / --danger</td><td class="num">0.52 / 0.55 / 0.52</td><td class="num">0.76 / 0.80 / 0.72</td><td>state only: badges, dots, variance</td></tr>
+          <tr><td class="mono">--chart-grid / --chart-axis</td><td class="num" colspan="2">line / line-strong</td><td>dashed gridlines, solid baseline</td></tr>
+          <tr><td class="mono">--chart-label / --chart-value</td><td class="num" colspan="2">faint / muted</td><td>axis text vs printed values</td></tr>
+          <tr><td class="mono">--chart-series / --chart-series-dim</td><td class="num" colspan="2">accent / faint</td><td>leader series, comparison series</td></tr>
+          <tr><td class="mono">--radius / --r-sm</td><td class="num">4px / 2px</td><td class="num">4px / 2px</td><td>controls and boxes; badges and skeleton</td></tr>
+          <tr><td class="mono">--sans / --mono</td><td class="num" colspan="2">system sans / system mono</td><td>prose vs every numeral and label</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== 03 EXECUTIVE SUMMARY ==================== -->
+  <section class="sec" id="summary">
+    <p class="pl-k pl-noprint">03 · statement · executive summary</p>
+    <div class="pl-sheet">
+      <div class="pl-statement">
+        <div class="pl-entity">Fernbrook Software Ltd.</div>
+        <div class="pl-title">Condensed statement of operations and key operating measures</div>
+        <div class="pl-period">for the quarter ended september 30 2026 · usd, whole dollars · unaudited</div>
+      </div>
+
+      <div class="pl-kpis">
+        <div class="pl-kpi">
+          <div class="pl-k">arr · sep 30 ($)</div>
+          <div class="pl-v">23.41<small>M</small></div>
+          <div class="pl-d up">▲ 8.5% vs jun 30</div>
+        </div>
+        <div class="pl-kpi">
+          <div class="pl-k">revenue · q3 ($)</div>
+          <div class="pl-v">5,573,400</div>
+          <div class="pl-d up">▲ 8.5% vs q2</div>
+        </div>
+        <div class="pl-kpi">
+          <div class="pl-k">gross margin</div>
+          <div class="pl-v">78.1<small>%</small></div>
+          <div class="pl-d up">▲ 1.6pp vs q2</div>
+        </div>
+        <div class="pl-kpi">
+          <div class="pl-k">net income · q3 ($)</div>
+          <div class="pl-v">894,300</div>
+          <div class="pl-d up">▲ 27.5% vs q2</div>
+        </div>
+        <div class="pl-kpi">
+          <div class="pl-k">customers</div>
+          <div class="pl-v">1,286</div>
+          <div class="pl-d up">▲ 37 vs jun 30</div>
+        </div>
+      </div>
+
+      <div class="pl-figblock">
+      <div class="pl-h"><h3>revenue by quarter</h3><small>q2 fy25 – q3 fy26 · $</small></div>
+      <p class="pl-take">Six consecutive quarters of growth; q3 sets the record at $5.57M while operating
+      margin reached 17.2%, its highest level. Bars carry quarter revenue; margin is printed beneath each quarter.</p>
+      <figure class="pl-fig">
+        <svg class="pl-chart" viewBox="0 0 720 244" role="img" aria-label="Bar chart of quarterly revenue across six quarters, rising from 3.37 million dollars in q2 fy25 to a record 5.57 million dollars in q3 fy26; operating margin beneath each bar rises from 9.8 percent to 17.2 percent">
+          <line x1="44" y1="139.3" x2="704" y2="139.3" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="82.7" x2="704" y2="82.7" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="26" x2="704" y2="26" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="196" x2="704" y2="196" stroke="var(--chart-axis)"/>
+          <text x="38" y="143" text-anchor="end" font-size="10" fill="var(--chart-label)">2.0M</text>
+          <text x="38" y="86" text-anchor="end" font-size="10" fill="var(--chart-label)">4.0M</text>
+          <text x="38" y="30" text-anchor="end" font-size="10" fill="var(--chart-label)">6.0M</text>
+
+          <rect x="71"  y="100.6" width="56" height="95.4"  fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="181" y="92.9"  width="56" height="103.1" fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="291" y="81.2"  width="56" height="114.8" fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="401" y="66.6"  width="56" height="129.4" fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="511" y="50.5"  width="56" height="145.5" fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="621" y="38.1"  width="56" height="157.9" fill="var(--chart-series)"/>
+
+          <text x="99"  y="94.6" text-anchor="middle" font-size="10" fill="var(--chart-value)">3.37</text>
+          <text x="209" y="86.9" text-anchor="middle" font-size="10" fill="var(--chart-value)">3.64</text>
+          <text x="319" y="75.2" text-anchor="middle" font-size="10" fill="var(--chart-value)">4.05</text>
+          <text x="429" y="60.6" text-anchor="middle" font-size="10" fill="var(--chart-value)">4.57</text>
+          <text x="539" y="44.5" text-anchor="middle" font-size="10" fill="var(--chart-value)">5.14</text>
+          <text x="649" y="32.1" text-anchor="middle" font-size="11" fill="var(--chart-series)">5.57</text>
+
+          <text x="99"  y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q2·25</text>
+          <text x="209" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q3·25</text>
+          <text x="319" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q4·25</text>
+          <text x="429" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q1·26</text>
+          <text x="539" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q2·26</text>
+          <text x="649" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q3·26</text>
+
+          <text x="99"  y="228" text-anchor="middle" font-size="9" fill="var(--chart-label)">9.8%</text>
+          <text x="209" y="228" text-anchor="middle" font-size="9" fill="var(--chart-label)">11.2%</text>
+          <text x="319" y="228" text-anchor="middle" font-size="9" fill="var(--chart-label)">12.4%</text>
+          <text x="429" y="228" text-anchor="middle" font-size="9" fill="var(--chart-label)">13.8%</text>
+          <text x="539" y="228" text-anchor="middle" font-size="9" fill="var(--chart-label)">15.2%</text>
+          <text x="649" y="228" text-anchor="middle" font-size="9" fill="var(--chart-series)">17.2%</text>
+          <text x="44" y="240" font-size="8.5" fill="var(--chart-label)">op margin</text>
+        </svg>
+        <figcaption class="pl-figcap">fig. 1 · quarterly revenue ($M) with operating margin beneath; dashed rules at 2M steps, solid rule at baseline.</figcaption>
+      </figure>
+      </div>
+
+      <div class="pl-notes">
+        <p><b>1.</b> figures are synthetic demonstration data for design purposes only.</p>
+      </div>
+      <div class="pl-src"><span>source: general ledger extract · unaudited</span><span>prepared by finance ops</span><span>page 1 · executive summary</span></div>
+    </div>
+  </section>
+
+  <!-- ==================== 04 LEDGER DETAIL ==================== -->
+  <section class="sec" id="ledger">
+    <p class="pl-k pl-noprint">04 · statement · ledger detail (the signature)</p>
+    <div class="pl-sheet">
+
+      <div class="pl-runhead"><b>Fernbrook Software Ltd.</b><span>quarterly statement · q3 fy2026</span><span>ledger detail</span></div>
+
+      <div class="pl-h"><h3>mrr movements</h3><small>jul 1 – sep 30 2026 · $</small></div>
+      <p class="pl-take">Movements posted to monthly recurring revenue. Increases and decreases keep
+      separate columns; the balance column verifies every row. The closing balance is double-ruled: proved, closed.</p>
+
+      <div class="pl-tblwrap">
+        <table class="pl-tbl pl-tbl--ledger">
+          <thead>
+            <tr>
+              <th scope="col" class="lbl">description</th>
+              <th scope="col" class="num">increase ($)</th>
+              <th scope="col" class="num">decrease ($)</th>
+              <th scope="col" class="num">balance ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pl-open">
+              <td class="lbl">opening balance · july 1 2026</td>
+              <td class="num"></td><td class="num"></td>
+              <td class="num">$1,814,900</td>
+            </tr>
+            <tr>
+              <td class="lbl indent">new business</td>
+              <td class="num pos">118,400</td><td class="num"></td>
+              <td class="num dim">1,933,300</td>
+            </tr>
+            <tr>
+              <td class="lbl indent">expansion · seat upgrades</td>
+              <td class="num pos">64,800</td><td class="num"></td>
+              <td class="num dim">1,998,100</td>
+            </tr>
+            <tr>
+              <td class="lbl indent">reactivation</td>
+              <td class="num pos">12,900</td><td class="num"></td>
+              <td class="num dim">2,011,000</td>
+            </tr>
+            <tr>
+              <td class="lbl indent">contraction · downgrades<span class="pl-fnref">1</span></td>
+              <td class="num"></td><td class="num neg">(31,200)</td>
+              <td class="num dim">1,979,800</td>
+            </tr>
+            <tr>
+              <td class="lbl indent">churn · cancellations</td>
+              <td class="num"></td><td class="num neg">(28,900)</td>
+              <td class="num dim">1,950,800</td>
+            </tr>
+            <tr class="pl-sub">
+              <td class="lbl">net new mrr</td>
+              <td class="num">196,100</td><td class="num">(60,100)</td>
+              <td class="num">136,000</td>
+            </tr>
+            <tr class="pl-close">
+              <td class="lbl">closing balance · september 30 2026</td>
+              <td class="num"></td><td class="num"></td>
+              <td class="num">$1,950,800</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pl-h"><h3>operations statement</h3><small>q3 fy2026 · $ · share of revenue</small></div>
+      <p class="pl-take">Groups open with a label row, line items indent one level, and each subtotal
+      carries a single rule beneath its figures only - the rule means the column above it sums. The net
+      income line takes the double rule: the bottom line, and nothing prints beneath it.</p>
+
+      <div class="pl-tblwrap">
+        <table class="pl-tbl pl-tbl--ledger">
+          <thead>
+            <tr>
+              <th scope="col" class="lbl">description</th>
+              <th scope="col" class="num">q3 fy2026 ($)</th>
+              <th scope="col" class="num">share</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pl-grp"><td class="lbl" colspan="3">revenue</td></tr>
+            <tr><td class="lbl indent">subscriptions</td><td class="num">4,812,400</td><td class="num dim">86.3%</td></tr>
+            <tr><td class="lbl indent">professional services</td><td class="num">642,800</td><td class="num dim">11.5%</td></tr>
+            <tr><td class="lbl indent">marketplace fees</td><td class="num">118,200</td><td class="num dim">2.1%</td></tr>
+            <tr class="pl-sub"><td class="lbl">total revenue</td><td class="num">$5,573,400</td><td class="num">100.0%</td></tr>
+
+            <tr class="pl-grp"><td class="lbl" colspan="3">cost of revenue</td></tr>
+            <tr><td class="lbl indent">hosting &amp; infrastructure</td><td class="num neg">(512,300)</td><td class="num dim">9.2%</td></tr>
+            <tr><td class="lbl indent">customer support &amp; success</td><td class="num neg">(448,600)</td><td class="num dim">8.0%</td></tr>
+            <tr><td class="lbl indent">payment processing<span class="pl-fnref">2</span></td><td class="num neg">(261,900)</td><td class="num dim">4.7%</td></tr>
+            <tr class="pl-sub"><td class="lbl">total cost of revenue</td><td class="num neg">(1,222,800)</td><td class="num">21.9%</td></tr>
+            <tr class="pl-sub"><td class="lbl">gross profit</td><td class="num">4,350,600</td><td class="num">78.1%</td></tr>
+
+            <tr class="pl-grp"><td class="lbl" colspan="3">operating expenses</td></tr>
+            <tr><td class="lbl indent">engineering</td><td class="num neg">(1,128,400)</td><td class="num dim">20.2%</td></tr>
+            <tr><td class="lbl indent">product design</td><td class="num neg">(214,300)</td><td class="num dim">3.8%</td></tr>
+            <tr><td class="lbl indent">security &amp; compliance</td><td class="num neg">(143,500)</td><td class="num dim">2.6%</td></tr>
+            <tr class="pl-sub"><td class="lbl indent">total research &amp; development</td><td class="num neg">(1,486,200)</td><td class="num">26.7%</td></tr>
+            <tr><td class="lbl indent">sales</td><td class="num neg">(689,700)</td><td class="num dim">12.4%</td></tr>
+            <tr><td class="lbl indent">marketing</td><td class="num neg">(412,300)</td><td class="num dim">7.4%</td></tr>
+            <tr><td class="lbl indent">partnerships</td><td class="num neg">(166,400)</td><td class="num dim">3.0%</td></tr>
+            <tr class="pl-sub"><td class="lbl indent">total sales &amp; marketing</td><td class="num neg">(1,268,400)</td><td class="num">22.8%</td></tr>
+            <tr><td class="lbl indent">executive &amp; administration</td><td class="num neg">(298,200)</td><td class="num dim">5.4%</td></tr>
+            <tr><td class="lbl indent">finance &amp; legal</td><td class="num neg">(196,700)</td><td class="num dim">3.5%</td></tr>
+            <tr><td class="lbl indent">workplace &amp; it</td><td class="num neg">(140,000)</td><td class="num dim">2.5%</td></tr>
+            <tr class="pl-sub"><td class="lbl indent">total general &amp; administrative</td><td class="num neg">(634,900)</td><td class="num">11.4%</td></tr>
+            <tr class="pl-sub"><td class="lbl">total operating expenses</td><td class="num neg">(3,389,500)</td><td class="num">60.8%</td></tr>
+            <tr class="pl-sub"><td class="lbl">operating income</td><td class="num">961,100</td><td class="num">17.2%</td></tr>
+
+            <tr><td class="lbl indent">other income, net<span class="pl-fnref">3</span></td><td class="num pos">18,400</td><td class="num dim">0.3%</td></tr>
+            <tr><td class="lbl indent">provision for income taxes</td><td class="num neg">(85,200)</td><td class="num dim">1.5%</td></tr>
+            <tr class="pl-total"><td class="lbl">net income</td><td class="num">$894,300</td><td class="num">16.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pl-notes">
+        <p><b>1.</b> contraction is recognized when a downgrade takes effect mid-cycle.</p>
+        <p><b>2.</b> payment processing is allocated by transaction volume.</p>
+        <p><b>3.</b> primarily interest income on operating cash balances.</p>
+        <p><b>4.</b> figures may not sum precisely due to rounding.</p>
+      </div>
+      <div class="pl-src"><span>source: general ledger extract · unaudited</span><span>double rules mark proved totals</span><span>page 2 · ledger detail</span></div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 05 COMPARISON ==================== -->
+  <section class="sec" id="comparison">
+    <p class="pl-k pl-noprint">05 · statement · comparison view</p>
+    <div class="pl-sheet">
+
+      <div class="pl-runhead"><b>Fernbrook Software Ltd.</b><span>quarterly statement · q3 fy2026</span><span>comparison</span></div>
+
+      <div class="pl-h">
+        <h3>quarter over quarter</h3>
+        <small>q3 fy2026 vs q2 fy2026</small>
+      </div>
+      <div class="pl-tabs pl-noprint" role="group" aria-label="Period selection">
+        <span class="off">q1·26</span><span class="off">q2·26</span><span class="on">q3·26</span><span>q4·26e</span><span>fy26</span>
+      </div>
+
+      <div class="pl-tblwrap">
+        <table class="pl-tbl pl-tbl--simple">
+          <thead>
+            <tr>
+              <th scope="col">measure</th>
+              <th scope="col" class="num">q3 fy2026</th>
+              <th scope="col" class="num">q2 fy2026</th>
+              <th scope="col" class="num">variance</th>
+              <th scope="col" class="num" style="text-align:center">trend · 6q</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pl-grp"><td class="lbl" colspan="5">growth</td></tr>
+            <tr>
+              <td class="lbl">arr ($)</td>
+              <td class="num">23,409,600</td><td class="num dim">21,579,600</td>
+              <td class="num"><span class="pl-var up">▲ 8.5%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="ARR trend across six quarters, rising steadily"><polyline points="4,20 21.6,17.7 39.2,14.2 56.8,12.1 74.4,9.4 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+            <tr>
+              <td class="lbl">revenue ($)</td>
+              <td class="num">5,573,400</td><td class="num dim">5,135,800</td>
+              <td class="num"><span class="pl-var up">▲ 8.5%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Quarterly revenue trend, rising"><polyline points="4,20 21.6,18.0 39.2,15.0 56.8,11.3 74.4,7.2 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+            <tr>
+              <td class="lbl">customers (#)</td>
+              <td class="num">1,286</td><td class="num dim">1,249</td>
+              <td class="num"><span class="pl-var up">▲ 3.0%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Customer count trend, rising"><polyline points="4,20 21.6,17.0 39.2,13.9 56.8,10.3 74.4,6.0 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+
+            <tr class="pl-grp"><td class="lbl" colspan="5">profitability</td></tr>
+            <tr>
+              <td class="lbl">gross profit ($)</td>
+              <td class="num">4,350,600</td><td class="num dim">3,928,500</td>
+              <td class="num"><span class="pl-var up">▲ 10.7%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Gross profit trend, rising"><polyline points="4,20 21.6,18.0 39.2,15.1 56.8,11.6 74.4,7.7 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+            <tr>
+              <td class="lbl">operating income ($)</td>
+              <td class="num">961,100</td><td class="num dim">780,200</td>
+              <td class="num"><span class="pl-var up">▲ 23.2%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Operating income trend, rising"><polyline points="4,20 21.6,18.0 39.2,15.6 56.8,12.4 74.4,8.5 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+            <tr>
+              <td class="lbl">net income ($)</td>
+              <td class="num">894,300</td><td class="num dim">701,200</td>
+              <td class="num"><span class="pl-var up">▲ 27.5%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Net income trend, rising"><polyline points="4,20 21.6,18.2 39.2,15.1 56.8,12.6 74.4,9.6 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+            <tr>
+              <td class="lbl">operating cash flow<span class="pl-fnref">1</span> ($)</td>
+              <td class="num">752,000</td><td class="num dim">611,000</td>
+              <td class="num"><span class="pl-var up">▲ 23.1%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Operating cash flow trend, rising"><polyline points="4,20 21.6,17.3 39.2,14.8 56.8,12.4 74.4,9.2 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+
+            <tr class="pl-grp"><td class="lbl" colspan="5">operations</td></tr>
+            <tr>
+              <td class="lbl">arpa<span class="pl-fnref">2</span> ($/yr)</td>
+              <td class="num">18,200</td><td class="num dim">17,300</td>
+              <td class="num"><span class="pl-var up">▲ 5.2%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Average revenue per account, fluctuating then rising to a high"><polyline points="4,18.2 21.6,18.2 39.2,11.1 56.8,16.4 74.4,20 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+            <tr>
+              <td class="lbl">net revenue retention</td>
+              <td class="num">114%</td><td class="num dim">112%</td>
+              <td class="num"><span class="pl-var up">▲ 2.0pp</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Net revenue retention, rising gently"><polyline points="4,20 21.6,17.3 39.2,12.0 56.8,12.0 74.4,8.0 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+            <tr>
+              <td class="lbl">customer churn (#)</td>
+              <td class="num">32</td><td class="num dim">41</td>
+              <td class="num"><span class="pl-var up">▼ 22.0%</span></td>
+              <td class="num"><svg class="pl-spark pl-spark--dim" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Churned customers trend, declining"><polyline points="4,20 21.6,16.0 39.2,13.6 56.8,8.8 74.4,11.2 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+            <tr>
+              <td class="lbl">headcount (#)</td>
+              <td class="num">103</td><td class="num dim">99</td>
+              <td class="num"><span class="pl-var up">▲ 4.0%</span></td>
+              <td class="num"><svg class="pl-spark" width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Headcount trend, rising"><polyline points="4,20 21.6,16.6 39.2,13.3 56.8,10.7 74.4,7.4 92,4"/><circle cx="92" cy="4" r="1.8"/></svg></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pl-notes">
+        <p><b>1.</b> operating cash flow is shown for the quarter, not trailing twelve months.</p>
+        <p><b>2.</b> arpa = arr ÷ customers at period end. variance color reads favorable/unfavorable, not direction; churn falling is favorable.</p>
+      </div>
+      <div class="pl-src"><span>source: general ledger extract · unaudited</span><span>page 3 · comparison</span></div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 06 CHARTS ==================== -->
+  <section class="sec" id="charts">
+    <p class="pl-k pl-noprint">06 · statement · charts-as-print</p>
+    <div class="pl-sheet">
+
+      <div class="pl-runhead"><b>Fernbrook Software Ltd.</b><span>quarterly statement · q3 fy2026</span><span>charts</span></div>
+
+      <div class="pl-figblock">
+      <div class="pl-h"><h3>revenue by line · grouped</h3><small>q4 fy25 – q3 fy26 · $</small></div>
+      <p class="pl-take">Three series hold one hue at three ink weights: solid, 45% wash, and a 45° hatch
+      pattern. Hue never carries series identity - lightness and pattern do, so the chart photocopies cleanly.</p>
+      <figure class="pl-fig">
+        <svg class="pl-chart" viewBox="0 0 720 240" role="img" aria-label="Grouped bar chart of revenue by line across four quarters: subscriptions dominate and rise from 3.57 to 4.81 million, services rise from 0.42 to 0.64 million, marketplace fees rise from 63 thousand to 118 thousand dollars">
+          <defs>
+            <pattern id="pl-hatch" width="5" height="5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="5" stroke="var(--chart-series)" stroke-width="1.4"/>
+            </pattern>
+          </defs>
+          <line x1="44" y1="139.3" x2="704" y2="139.3" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="82.7" x2="704" y2="82.7" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="26" x2="704" y2="26" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="196" x2="704" y2="196" stroke="var(--chart-axis)"/>
+          <text x="38" y="143" text-anchor="end" font-size="10" fill="var(--chart-label)">2.0M</text>
+          <text x="38" y="86" text-anchor="end" font-size="10" fill="var(--chart-label)">4.0M</text>
+          <text x="38" y="30" text-anchor="end" font-size="10" fill="var(--chart-label)">6.0M</text>
+
+          <rect x="72"  y="68.7" width="40" height="121.3" fill="var(--chart-series)"/>
+          <rect x="117" y="175.7" width="40" height="14.3" fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="162" y="187.8" width="40" height="2.2"  fill="url(#pl-hatch)"/>
+
+          <rect x="237" y="54.3" width="40" height="135.7" fill="var(--chart-series)"/>
+          <rect x="282" y="173.1" width="40" height="16.9" fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="327" y="187.3" width="40" height="2.7"  fill="url(#pl-hatch)"/>
+
+          <rect x="402" y="38.7" width="40" height="151.3" fill="var(--chart-series)"/>
+          <rect x="447" y="170.0" width="40" height="20.0" fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="492" y="186.7" width="40" height="3.3"  fill="url(#pl-hatch)"/>
+
+          <rect x="567" y="26.4" width="40" height="163.6" fill="var(--chart-series)"/>
+          <rect x="612" y="168.1" width="40" height="21.9" fill="var(--chart-series)" opacity="0.45"/>
+          <rect x="657" y="186.0" width="40" height="4.0"  fill="url(#pl-hatch)"/>
+
+          <text x="587" y="20.4" text-anchor="middle" font-size="10" fill="var(--chart-series)">4.81</text>
+          <text x="632" y="162.1" text-anchor="middle" font-size="10" fill="var(--chart-value)">0.64</text>
+          <text x="677" y="180.0" text-anchor="middle" font-size="10" fill="var(--chart-value)">0.12</text>
+
+          <text x="137" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q4·25</text>
+          <text x="302" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q1·26</text>
+          <text x="467" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q2·26</text>
+          <text x="632" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q3·26</text>
+        </svg>
+        <figcaption class="pl-figcap">fig. 2 · subscriptions (solid) · services (45% wash) · marketplace (hatch); leading values labeled, $M.</figcaption>
+      </figure>
+      </div>
+
+      <div class="pl-figblock">
+      <div class="pl-h"><h3>mrr by month · annotated line</h3><small>jul 2025 – sep 2026 · $K</small></div>
+      <p class="pl-take">Quarter-close points are pinned with ring markers and the final value printed at the
+      line's end. Gridlines are dashed hairlines; the baseline is the only solid rule, matching table grammar.</p>
+      <figure class="pl-fig">
+        <svg class="pl-chart" viewBox="0 0 720 226" role="img" aria-label="Line chart of monthly recurring revenue over fifteen months, rising from 1.43 million to 1.95 million dollars with quarter-end markers">
+          <line x1="44" y1="161.7" x2="704" y2="161.7" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="90.8" x2="704" y2="90.8" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="20" x2="704" y2="20" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="190" x2="704" y2="190" stroke="var(--chart-axis)"/>
+          <text x="38" y="165.7" text-anchor="end" font-size="10" fill="var(--chart-label)">1.5M</text>
+          <text x="38" y="94.8" text-anchor="end" font-size="10" fill="var(--chart-label)">1.75M</text>
+          <text x="38" y="24" text-anchor="end" font-size="10" fill="var(--chart-label)">2.0M</text>
+
+          <polyline points="44,182.1 91.1,175.5 138.3,167.6 185.4,161.0 232.6,153.8 279.7,142.3 326.9,135.0 374.0,127.7 421.1,123.7 468.3,113.9 515.4,97.2 562.6,77.1 609.7,72.4 656.9,56.4 704,33.9" fill="none" stroke="var(--chart-series)" stroke-width="1.8"/>
+
+          <circle cx="138.3" cy="167.6" r="2.6" fill="var(--surface)" stroke="var(--chart-series)" stroke-width="1.4"/>
+          <circle cx="279.7" cy="142.3" r="2.6" fill="var(--surface)" stroke="var(--chart-series)" stroke-width="1.4"/>
+          <circle cx="421.1" cy="123.7" r="2.6" fill="var(--surface)" stroke="var(--chart-series)" stroke-width="1.4"/>
+          <circle cx="562.6" cy="77.1" r="2.6" fill="var(--surface)" stroke="var(--chart-series)" stroke-width="1.4"/>
+          <circle cx="704" cy="33.9" r="3.4" fill="var(--chart-series)"/>
+          <text x="698" y="50" text-anchor="end" font-size="11" fill="var(--chart-series)">1,950.8</text>
+
+          <text x="44" y="208" font-size="9.5" fill="var(--chart-label)">jul 25</text>
+          <text x="185.4" y="208" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">oct 25</text>
+          <text x="326.9" y="208" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">jan 26</text>
+          <text x="468.3" y="208" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">apr 26</text>
+          <text x="609.7" y="208" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">jul 26</text>
+          <text x="704" y="208" text-anchor="end" font-size="9.5" fill="var(--chart-label)">sep 26</text>
+        </svg>
+        <figcaption class="pl-figcap">fig. 3 · rings mark quarter closes; annotation prints the closing mrr in dollars-thousands.</figcaption>
+      </figure>
+      </div>
+
+      <div class="pl-figblock">
+      <div class="pl-h"><h3>operating expense mix · stacked</h3><small>q4 fy25 – q3 fy26 · $</small></div>
+      <p class="pl-take">Stacks read bottom-up in descending size: r&amp;d solid, sales &amp; marketing 55%,
+      g&amp;a 25%. Totals print above each stack; the mix legend repeats the tones as a small table row.</p>
+      <figure class="pl-fig">
+        <svg class="pl-chart" viewBox="0 0 720 240" role="img" aria-label="Stacked bar chart of operating expenses across four quarters, growing from 2.67 million to 3.39 million dollars, composed of research and development, sales and marketing, and general and administrative expense">
+          <line x1="44" y1="147.4" x2="704" y2="147.4" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="98.9" x2="704" y2="98.9" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="50.3" x2="704" y2="50.3" stroke="var(--chart-grid)" stroke-dasharray="2 4"/>
+          <line x1="44" y1="196" x2="704" y2="196" stroke="var(--chart-axis)"/>
+          <text x="38" y="151.2" text-anchor="end" font-size="10" fill="var(--chart-label)">1.0M</text>
+          <text x="38" y="102.7" text-anchor="end" font-size="10" fill="var(--chart-label)">2.0M</text>
+          <text x="38" y="54.1" text-anchor="end" font-size="10" fill="var(--chart-label)">3.0M</text>
+
+          <rect x="81.5"  y="134.2" width="90" height="55.8"  fill="var(--chart-series)"/>
+          <rect x="81.5"  y="86.3"  width="90" height="47.9"  fill="var(--chart-series)" opacity="0.55"/>
+          <rect x="81.5"  y="60.5"  width="90" height="25.8"  fill="var(--chart-series)" opacity="0.25"/>
+
+          <rect x="246.5" y="129.2" width="90" height="60.8" fill="var(--chart-series)"/>
+          <rect x="246.5" y="77.0"  width="90" height="52.2" fill="var(--chart-series)" opacity="0.55"/>
+          <rect x="246.5" y="49.7"  width="90" height="27.3" fill="var(--chart-series)" opacity="0.25"/>
+
+          <rect x="411.5" y="123.7" width="90" height="66.3" fill="var(--chart-series)"/>
+          <rect x="411.5" y="66.2"  width="90" height="57.5" fill="var(--chart-series)" opacity="0.55"/>
+          <rect x="411.5" y="37.0"  width="90" height="29.2" fill="var(--chart-series)" opacity="0.25"/>
+
+          <rect x="576.5" y="117.8" width="90" height="72.2" fill="var(--chart-series)"/>
+          <rect x="576.5" y="56.2"  width="90" height="61.6" fill="var(--chart-series)" opacity="0.55"/>
+          <rect x="576.5" y="25.4"  width="90" height="30.8" fill="var(--chart-series)" opacity="0.25"/>
+
+          <text x="126.5" y="54.5" text-anchor="middle" font-size="10" fill="var(--chart-value)">2.67</text>
+          <text x="291.5" y="43.7" text-anchor="middle" font-size="10" fill="var(--chart-value)">2.89</text>
+          <text x="456.5" y="31.0" text-anchor="middle" font-size="10" fill="var(--chart-value)">3.15</text>
+          <text x="621.5" y="19.4" text-anchor="middle" font-size="10.5" fill="var(--chart-series)">3.39</text>
+
+          <text x="126.5" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q4·25</text>
+          <text x="291.5" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q1·26</text>
+          <text x="456.5" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q2·26</text>
+          <text x="621.5" y="212" text-anchor="middle" font-size="9.5" fill="var(--chart-label)">q3·26</text>
+        </svg>
+        <figcaption class="pl-figcap">fig. 4 · r&amp;d (solid) · s&amp;m (55%) · g&amp;a (25%); stack totals printed in $M.</figcaption>
+      </figure>
+      </div>
+
+      <div class="pl-src"><span>charts drawn as inline svg from identity custom properties</span><span>grayscale-safe: lightness + pattern, never hue alone</span><span>page 4 · charts</span></div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 07 PRINT PROOF (screen only) ==================== -->
+  <section class="sec pl-noprint" id="print">
+    <p class="pl-k">07 · print proof</p>
+    <p class="sec-dek">The signature: sections 03-06 are the statement, and this browser document is
+    the printout. Print-preview or print this page to PDF - the pages follow the map below, every
+    continued table page opens on a repeated column head, and no row tears across a break.</p>
+    <div class="pl-tblwrap">
+      <table class="pl-tbl pl-tbl--simple">
+        <thead>
+          <tr><th scope="col">folio</th><th scope="col">page</th><th scope="col">carries</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">p 1</td><td class="lbl">executive summary</td><td>masthead, statement heading, KPI row, revenue figure</td></tr>
+          <tr><td class="mono">p 2</td><td class="lbl">ledger detail i</td><td>mrr movements with running balance</td></tr>
+          <tr><td class="mono">p 3</td><td class="lbl">ledger detail ii</td><td>operations statement; thead repeats if the table continues</td></tr>
+          <tr><td class="mono">p 4</td><td class="lbl">comparison</td><td>qoq variance table with sparklines</td></tr>
+          <tr><td class="mono">p 5–6</td><td class="lbl">charts</td><td>grouped bar, annotated line, stacked mix</td></tr>
+          <tr><td class="mono">n/a</td><td class="lbl">screen only</td><td>rationale, tokens, this proof, states, component sheet, mobile</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pl-h"><h3>print decisions</h3></div>
+    <div class="pl-notes">
+      <p><b>1.</b> folio and running foot set via <b>@page</b> margin box, counter(page) of counter(pages).</p>
+      <p><b>2.</b> real thead elements: browsers repeat column heads on every continued page.</p>
+      <p><b>3.</b> tr break-inside avoid: no row ever tears; subtotal and total rules travel with their figures.</p>
+      <p><b>4.</b> headings bind forward (break-after avoid); orphans and widows held at 3.</p>
+      <p><b>5.</b> the scheme pins light at the root for paper; print-color-adjust exact keeps the ink-blue and hatches.</p>
+      <p><b>6.</b> ink lightens for paper: the line tokens soften one step inside the print block.</p>
+      <p><b>7.</b> everything marked .pl-noprint drops out; the statement prints alone.</p>
+    </div>
+    <div class="pl-src"><span>paper-ledger · print benchmark for the catalogue</span></div>
+  </section>
+
+  <!-- ==================== 08 TABLE STATES (screen only) ==================== -->
+  <section class="sec pl-noprint" id="states">
+    <p class="pl-k">08 · table states</p>
+    <p class="sec-dek">One table grammar carries every state: sort glyph in the head, removable filter
+    chips, pagination with an entry count, and dash-led empty, skeleton loading, and reference-coded
+    error states.</p>
+
+    <div class="pl-h"><h3>sorted + paginated</h3><small>amount ▼ · entries 1–8 of 42</small></div>
+    <div class="pl-tblwrap">
+      <table class="pl-tbl pl-tbl--simple">
+        <thead>
+          <tr>
+            <th scope="col">date</th>
+            <th scope="col">customer</th>
+            <th scope="col">plan</th>
+            <th scope="col" class="num">amount <span style="color:var(--accent)">▼</span></th>
+            <th scope="col">status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">2026-09-30</td><td class="lbl">hidranga co</td><td class="mono">annual</td><td class="num">$47,900</td><td><span class="pl-badge ok">paid</span></td></tr>
+          <tr><td class="mono">2026-09-24</td><td class="lbl">norrland geodata</td><td class="mono">annual</td><td class="num">$31,200</td><td><span class="pl-badge ok">paid</span></td></tr>
+          <tr><td class="mono">2026-09-17</td><td class="lbl">kavango logistics</td><td class="mono">annual</td><td class="num">$28,750</td><td><span class="pl-badge ok">paid</span></td></tr>
+          <tr><td class="mono">2026-09-21</td><td class="lbl">atlas fieldworks</td><td class="mono">monthly</td><td class="num">$2,410</td><td><span class="pl-badge fail">overdue</span></td></tr>
+          <tr><td class="mono">2026-09-28</td><td class="lbl">bear-creek supply</td><td class="mono">monthly</td><td class="num">$1,240</td><td><span class="pl-badge ok">paid</span></td></tr>
+          <tr><td class="mono">2026-09-19</td><td class="lbl">cedarline studios</td><td class="mono">monthly</td><td class="num">$1,240</td><td><span class="pl-badge ok">paid</span></td></tr>
+          <tr><td class="mono">2026-09-15</td><td class="lbl">mosswood labs</td><td class="mono">monthly</td><td class="num">$940</td><td><span class="pl-badge neutral">draft</span></td></tr>
+          <tr><td class="mono">2026-09-26</td><td class="lbl">quill &amp; post</td><td class="mono">monthly</td><td class="num">$860</td><td><span class="pl-badge warn">pending</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pl-pager">
+      <span class="pl-page">‹</span><span class="pl-page on">1</span><span class="pl-page">2</span><span class="pl-page">3</span><span class="gap">…</span><span class="pl-page">6</span><span class="pl-page">›</span>
+      <span class="end">entries 1–8 of 42</span>
+    </div>
+
+    <div class="pl-cols">
+      <div>
+        <div class="pl-h"><h3>filtered</h3><small>facets as removable chips</small></div>
+        <div class="pl-chips">
+          <span class="pl-chip">status: paid <span class="x">×</span></span>
+          <span class="pl-chip">quarter: q3 <span class="x">×</span></span>
+          <span class="pl-chip" style="border-style:dashed"><i>+ add filter</i></span>
+        </div>
+        <div class="pl-tblwrap">
+          <table class="pl-tbl pl-tbl--simple">
+            <thead>
+              <tr><th scope="col">date</th><th scope="col">customer</th><th scope="col" class="num">amount</th><th scope="col">status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">2026-09-30</td><td class="lbl">hidranga co</td><td class="num">$47,900</td><td><span class="pl-badge ok">paid</span></td></tr>
+              <tr><td class="mono">2026-09-24</td><td class="lbl">norrland geodata</td><td class="num">$31,200</td><td><span class="pl-badge ok">paid</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="pl-h"><h3>empty</h3><small>no matching entries</small></div>
+        <div class="pl-empty">
+          <div class="pl-dash">–</div>
+          <p class="pl-e"><b>No entries match the current filter.</b><br>Loosen a facet or clear filters to see the full ledger.</p>
+          <button class="pl-btn pl-btn--secondary" type="button">clear filters</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pl-cols" style="margin-top:8px">
+      <div>
+        <div class="pl-h"><h3>loading</h3><small>fetching entries…</small></div>
+        <div class="pl-tblwrap">
+          <div class="pl-skrow"><i></i><i></i><i></i><i></i></div>
+          <div class="pl-skrow"><i></i><i></i><i></i><i></i></div>
+          <div class="pl-skrow"><i></i><i></i><i></i><i></i></div>
+          <div class="pl-skrow"><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+      <div>
+        <div class="pl-h"><h3>error</h3><small>load failed</small></div>
+        <div class="pl-alert">
+          <span class="t">Ledger entries could not be loaded.</span>
+          <span class="m">The statement service returned an error. Your view is unchanged.</span>
+          <span class="ref">ref err_ledger_502</span>
+        </div>
+        <div class="pl-btnrow"><button class="pl-btn pl-btn--primary" type="button">retry</button><button class="pl-btn pl-btn--quiet" type="button">view status →</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 09 COMPONENT SHEET (screen only) ==================== -->
+  <section class="sec pl-noprint" id="components">
+    <p class="pl-k">09 · component sheet</p>
+    <div class="pl-cols">
+      <div>
+        <div class="pl-h"><h3>buttons</h3></div>
+        <div class="pl-btnrow">
+          <button class="pl-btn pl-btn--primary" type="button">export pdf</button>
+          <button class="pl-btn pl-btn--secondary" type="button">compare periods</button>
+          <button class="pl-btn pl-btn--quiet" type="button">view general ledger →</button>
+          <button class="pl-btn pl-btn--secondary" type="button" disabled>post to books</button>
+        </div>
+
+        <div class="pl-h"><h3>inputs</h3></div>
+        <div class="pl-field">
+          <label class="pl-label" for="f-cust">customer search</label>
+          <input class="pl-input" id="f-cust" type="text" placeholder="e.g. norrland geodata">
+          <p class="pl-hint">matches name, plan, or invoice number.</p>
+        </div>
+        <div class="pl-field">
+          <label class="pl-label" for="f-period">period</label>
+          <select class="pl-select" id="f-period">
+            <option>q1 fy2026</option><option>q2 fy2026</option><option selected>q3 fy2026</option>
+          </select>
+        </div>
+        <div class="pl-field">
+          <label class="pl-label" for="f-mail">billing email</label>
+          <input class="pl-input pl-input--err" id="f-mail" type="text" value="accounts@fernbrook">
+          <p class="pl-errmsg">enter a complete address, e.g. accounts@fernbrook.example</p>
+        </div>
+
+        <div class="pl-h"><h3>badges</h3></div>
+        <div class="pl-btnrow">
+          <span class="pl-badge ok">paid</span>
+          <span class="pl-badge warn">pending</span>
+          <span class="pl-badge fail">overdue</span>
+          <span class="pl-badge neutral">draft</span>
+          <span class="pl-badge accent">new</span>
+          <span class="pl-dot ok"></span><span class="pl-dot warn"></span><span class="pl-dot fail"></span>
+        </div>
+
+        <div class="pl-h"><h3>variance grammar</h3></div>
+        <div class="pl-btnrow">
+          <span class="pl-var up">▲ 8.5% <small>vs q2</small></span>
+          <span class="pl-var down">▼ (2.1%) <small>vs q2</small></span>
+          <span class="pl-var flat">─ 0.0% <small>flat</small></span>
+          <span class="pl-var up">▲ 1.6pp <small>margin</small></span>
+        </div>
+      </div>
+
+      <div>
+        <div class="pl-h"><h3>rule ladder</h3><small>arithmetic notation, not decoration</small></div>
+        <dl class="pl-rules">
+          <dt>hairline</dt><dd class="r-hairline"><small>row separators, chart gridlines</small></dd>
+          <dt>strong rule</dt><dd class="r-strong"><small>column rules, block boundaries</small></dd>
+          <dt>single accounting</dt><dd class="r-single"><small>subtotal: the figures above sum to the figure below</small></dd>
+          <dt>double rule</dt><dd class="r-double"><small>proved total · statement boundary · nothing below</small></dd>
+        </dl>
+
+        <div class="pl-h"><h3>page furniture</h3><small>running head + folio</small></div>
+        <div class="pl-pagebox">
+          <div class="pl-runhead"><b>Fernbrook Software Ltd.</b><span>quarterly statement</span><span>ledger detail</span></div>
+          <div class="pl-inner">Statement body prints here. Running heads repeat on every printed page; the folio closes each one.</div>
+          <div class="pl-folio"><span>unaudited · usd</span><span>page 4 of 8</span></div>
+        </div>
+
+        <div class="pl-h"><h3>tabular figures</h3><small>why every figure is mono</small></div>
+        <div class="pl-tnum">
+          <div>
+            <h4>proportional</h4>
+            <ul class="prop">
+              <li>1,412.80</li><li>982.05</li><li>117.30</li><li>84,120.00</li>
+            </ul>
+          </div>
+          <div>
+            <h4>tabular lining</h4>
+            <ul class="tab">
+              <li>1,412.80</li><li>982.05</li><li>117.30</li><li>84,120.00</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pl-h"><h3>notes &amp; source lines</h3></div>
+    <div class="pl-notes">
+      <p><b>a.</b> footnotes sit in a mono zone beneath a strong rule; markers are superscript in accent blue.</p>
+      <p><b>b.</b> source lines are tracked uppercase micro-type: provenance, method, page.</p>
+    </div>
+    <div class="pl-src"><span>source: general ledger extract · unaudited</span><span>synthetic demonstration data</span></div>
+
+    <div class="pl-h"><h3>dark proof</h3><small>same tokens, dark scheme on this strip only - zero js</small></div>
+    <div class="pl-darkproof">
+      <div class="cap">derived dark · same gates · the toggle flips the whole page</div>
+      <div class="pl-kpis" style="grid-template-columns:1fr 1fr 1fr;margin-top:10px">
+        <div class="pl-kpi"><div class="pl-k">arr · sep 30 ($)</div><div class="pl-v">23.41<small>M</small></div><div class="pl-d up">▲ 8.5%</div></div>
+        <div class="pl-kpi"><div class="pl-k">gross margin</div><div class="pl-v">78.1<small>%</small></div><div class="pl-d up">▲ 1.6pp</div></div>
+        <div class="pl-kpi"><div class="pl-k">overdue</div><div class="pl-v" style="font-size:18px;line-height:1.6">1,240</div><div class="pl-d down">▼ 2 vs q2</div></div>
+      </div>
+      <div class="pl-btnrow">
+        <span class="pl-badge ok">paid</span><span class="pl-badge warn">pending</span><span class="pl-badge fail">overdue</span>
+        <button class="pl-btn pl-btn--primary" type="button">export pdf</button>
+        <button class="pl-btn pl-btn--secondary" type="button">compare periods</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 10 MOBILE 390 (screen only) ==================== -->
+  <section class="sec pl-noprint" id="mobile">
+    <p class="pl-k">10 · mobile · 390px</p>
+    <p class="sec-dek">KPIs drop to a 2-up ledger list, tables keep their columns and scroll, and the
+    same rules navigate. The page itself is responsive at 860px/560px; this is the framed 390 proof.</p>
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div class="pl-mob">
+
+        <div class="pl-masthead" style="padding-top:14px">
+          <span class="pl-brand" style="font-size:13.5px">Fernbrook <span>·</span> Statement</span>
+          <span class="pl-date" style="font-size:10px">q3 fy2026</span>
+        </div>
+
+        <div class="pl-kpis" style="margin-top:14px">
+          <div class="pl-kpi"><div class="pl-k">arr ($)</div><div class="pl-v">23.41<small>M</small></div><div class="pl-d up">▲ 8.5%</div></div>
+          <div class="pl-kpi"><div class="pl-k">revenue</div><div class="pl-v">5.57<small>M</small></div><div class="pl-d up">▲ 8.5%</div></div>
+          <div class="pl-kpi"><div class="pl-k">gross margin</div><div class="pl-v">78.1<small>%</small></div><div class="pl-d up">▲ 1.6pp</div></div>
+          <div class="pl-kpi"><div class="pl-k">net income</div><div class="pl-v">894.3<small>K</small></div><div class="pl-d up">▲ 27.5%</div></div>
+        </div>
+
+        <div class="pl-h"><h3>revenue by quarter</h3><small>$M</small></div>
+        <figure class="pl-fig">
+          <svg class="pl-chart" viewBox="0 0 358 150" role="img" aria-label="Mini bar chart of quarterly revenue across five quarters, rising from 3.64 million to a record 5.57 million dollars">
+            <line x1="8" y1="120" x2="350" y2="120" stroke="var(--chart-axis)"/>
+            <rect x="26"  y="55.1" width="34" height="64.9" fill="var(--chart-series)" opacity="0.45"/>
+            <rect x="94"  y="47.7" width="34" height="72.3" fill="var(--chart-series)" opacity="0.45"/>
+            <rect x="162" y="38.6" width="34" height="81.4" fill="var(--chart-series)" opacity="0.45"/>
+            <rect x="230" y="28.4" width="34" height="91.6" fill="var(--chart-series)" opacity="0.45"/>
+            <rect x="298" y="20.6" width="34" height="99.4" fill="var(--chart-series)"/>
+            <text x="315" y="16" text-anchor="middle" font-size="9" fill="var(--chart-series)">5.57</text>
+            <text x="43"  y="134" text-anchor="middle" font-size="8" fill="var(--chart-label)">q3·25</text>
+            <text x="111" y="134" text-anchor="middle" font-size="8" fill="var(--chart-label)">q4·25</text>
+            <text x="179" y="134" text-anchor="middle" font-size="8" fill="var(--chart-label)">q1·26</text>
+            <text x="247" y="134" text-anchor="middle" font-size="8" fill="var(--chart-label)">q2·26</text>
+            <text x="315" y="134" text-anchor="middle" font-size="8" fill="var(--chart-label)">q3·26</text>
+          </svg>
+        </figure>
+
+        <div class="pl-h"><h3>mrr movements</h3><small>jul – sep · $</small></div>
+        <div class="pl-tblwrap">
+          <table class="pl-tbl pl-tbl--ledger">
+            <thead><tr><th class="lbl">description</th><th class="num">movement</th><th class="num">balance</th></tr></thead>
+            <tbody>
+              <tr class="pl-open"><td class="lbl">opening · jul 1</td><td class="num"></td><td class="num">1,814,900</td></tr>
+              <tr><td class="lbl indent">new business</td><td class="num pos">+118,400</td><td class="num dim">1,933,300</td></tr>
+              <tr><td class="lbl indent">expansion</td><td class="num pos">+64,800</td><td class="num dim">1,998,100</td></tr>
+              <tr><td class="lbl indent">contraction</td><td class="num neg">(31,200)</td><td class="num dim">1,979,800</td></tr>
+              <tr><td class="lbl indent">churn</td><td class="num neg">(28,900)</td><td class="num dim">1,950,800</td></tr>
+              <tr class="pl-close"><td class="lbl">closing · sep 30</td><td class="num">+136,000</td><td class="num">1,950,800</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pl-src"><span>swipe tables sideways · figures scroll under a sticky rule</span></div>
+
+      </div>
+    </div>
+    <p class="mob-note">The same markup stacks via the identity's 860px / 560px rules at real 390px viewports.</p>
+  </section>
+
+  <footer class="foot pl-noprint">
+    paper-ledger v1 · an artifact identity from the uiforagents catalogue · light print-precision
+    analytics with accounting double rules and tabular mono figures · synthetic fernbrook software
+    ltd. data, no real brands · one stylesheet, zero required scripts · print this page: the
+    statement is the proof
+  </footer>
+
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var goingLight = root.style.colorScheme === 'dark';
+      root.style.colorScheme = goingLight ? 'light' : 'dark';
+      btn.textContent = goingLight ? 'Dark theme' : 'Light theme';
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+/* paper-ledger - artifact identity foundation
+   A light print-precision analytics identity: cool paper, near-black ink,
+   one deep ink-blue accent, accounting double rules, tabular mono figures.
+   Seeded from a fidelity pass over financial statements, ledger books,
+   Stripe-class dashboards and FT/WSJ print tables. This file is the entire
+   system: tokens, base, typography, components, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + the scheme pinned light on :root. The
+     identity leads light: the light values are canonical (verbatim from the
+     fidelity source) and the dark values are the derived alternative,
+     re-gated for contrast. light-dark() slots are fixed by CSS - first slot
+     is the value used under the light scheme. A toggle flips
+     html.style.colorScheme to "dark" or "light". There is no data-theme
+     attribute and no duplicated token block; keep the scheme property on
+     html/:root.
+   - Print is the signature: the same document is the screen and the
+     printout. The print block pins the light scheme at :root, repeats table
+     heads, never tears a row, and sets folios via a @page margin box.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light;
+
+    /* Shared semantic vocabulary (light scheme canonical) */
+    --bg:          light-dark(oklch(0.977 0.003 250), oklch(0.205 0.010 260));
+    --surface:     light-dark(oklch(1 0 0),           oklch(0.245 0.011 260));
+    --ink:         light-dark(oklch(0.250 0.012 260), oklch(0.930 0.008 260));
+    --muted:       light-dark(oklch(0.500 0.012 260), oklch(0.720 0.012 260));
+    --faint:       light-dark(oklch(0.620 0.010 250), oklch(0.545 0.012 260));
+    --line:        light-dark(oklch(0.905 0.006 250), oklch(0.335 0.012 260));
+    --line-strong: light-dark(oklch(0.760 0.010 250), oklch(0.460 0.014 260));
+    --accent:      light-dark(oklch(0.420 0.130 262), oklch(0.720 0.115 262));
+    --accent-ink:  light-dark(oklch(0.985 0.002 250), oklch(0.180 0.020 262));
+    --accent-soft: light-dark(oklch(0.420 0.130 262 / 0.07), oklch(0.720 0.115 262 / 0.14));
+    --ok:     light-dark(oklch(0.520 0.110 155), oklch(0.760 0.120 155));
+    --warn:   light-dark(oklch(0.550 0.120 75),  oklch(0.800 0.120 75));
+    --danger: light-dark(oklch(0.520 0.170 27),  oklch(0.720 0.150 27));
+    --radius: 4px;
+
+    /* Fonts: sans statement text, mono for every numeral and label */
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+    /* Ledger extras: the rule hierarchy is arithmetic notation.
+       hairline --line separates rows, --line-strong bounds blocks and
+       column groups, --rule-sub is the single accounting rule under
+       subtotal figures; the double rule under proved totals is drawn in
+       --ink (grand total) or --line-strong (statement boundaries). */
+    --rule-sub: light-dark(oklch(0.380 0.014 260), oklch(0.820 0.010 260));
+    --r-sm: 2px;
+
+    /* Chart tokens (derive from the palette, never new colors) */
+    --chart-grid: var(--line);
+    --chart-axis: var(--line-strong);
+    --chart-label: var(--faint);
+    --chart-value: var(--muted);
+    --chart-series: var(--accent);
+    --chart-series-dim: var(--faint);
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 14px/1.55 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  svg text { font-family: var(--mono); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 24px; }
+
+  /* ---------- Layout ---------- */
+  .pl-wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px 80px; }
+  .pl-sec { padding-top: 6px; }
+  .pl-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 30px; }
+  .pl-cols > div { min-width: 0; }
+  .pl-cols > div + div { border-left: 1px solid var(--line); padding-left: 30px; }
+
+  /* ---------- Masthead + statement heading ---------- */
+  .pl-masthead {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    padding: 20px 0 14px; border-bottom: 3px double var(--ink); background: var(--surface);
+  }
+  .pl-brand { font-size: 15px; font-weight: 650; letter-spacing: 0.01em; }
+  .pl-brand span { color: var(--accent); }
+  .pl-masthead .pl-stmt {
+    font: 600 10.5px/1 var(--mono); letter-spacing: 0.10em; text-transform: uppercase; color: var(--faint);
+  }
+  .pl-masthead .pl-date { margin-left: auto; font: 11px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
+
+  .pl-statement { padding: 22px 0 4px; }
+  .pl-statement .pl-entity { font: 650 19px/1.2 var(--sans); letter-spacing: 0.005em; }
+  .pl-statement .pl-title { font-size: 14px; color: var(--muted); margin-top: 3px; }
+  .pl-statement .pl-period {
+    font: 10.5px/1.7 var(--mono); letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--faint); margin-top: 6px;
+  }
+
+  /* ---------- Block heads ---------- */
+  .pl-h { display: flex; align-items: baseline; gap: 10px; margin: 26px 0 4px; }
+  .pl-h h3 { margin: 0; font: 650 11px/1 var(--sans); letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink); }
+  .pl-h small { margin-left: auto; font: 10px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); }
+  .pl-take { color: var(--muted); font-size: 12.5px; margin: 3px 0 10px; max-width: 78ch; }
+
+  /* ---------- KPI summary row ---------- */
+  .pl-kpis {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line);
+    margin-top: 18px;
+  }
+  .pl-kpi { padding: 15px 18px 13px; border-left: 1px solid var(--line); min-width: 0; }
+  .pl-kpi:first-child { border-left: 0; padding-left: 0; }
+  .pl-k { font: 600 10px/1.5 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .pl-v {
+    font: 500 25px/1.05 var(--mono); letter-spacing: -0.01em; margin-top: 7px;
+    font-variant-numeric: lining-nums tabular-nums; white-space: nowrap;
+  }
+  .pl-v small { font-size: 13.5px; color: var(--muted); }
+  .pl-d { font: 500 11px/1.5 var(--mono); margin-top: 4px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pl-d.up { color: var(--ok); } .pl-d.down { color: var(--danger); } .pl-d.flat { color: var(--muted); }
+
+  /* ---------- Chart frames ---------- */
+  .pl-figblock { padding: 4px 0 6px; }
+  .pl-fig { padding: 4px 0 6px; break-inside: avoid; }
+  .pl-chart { display: block; width: 100%; height: auto; }
+  .pl-figcap { font: 10.5px/1.6 var(--mono); letter-spacing: 0.04em; color: var(--faint); margin-top: 6px; }
+
+  /* ---------- Tables: shared grammar ---------- */
+  .pl-tblwrap { overflow-x: auto; margin-top: 6px; }
+  .pl-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .pl-tbl th {
+    text-align: left; font: 600 10px/1.4 var(--mono); letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--muted); padding: 8px 14px 7px; border-bottom: 3px double var(--line-strong);
+    vertical-align: bottom;
+  }
+  .pl-tbl td {
+    padding: 8px 14px; border-bottom: 1px solid var(--line);
+    font-variant-numeric: lining-nums tabular-nums; vertical-align: top;
+  }
+  .pl-tbl td.mono { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .pl-tbl td.strong, .pl-tbl td.lbl { font-weight: 500; }
+  .pl-tbl .num { text-align: right; font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+  .pl-tbl th.num { text-align: right; }
+  .pl-tbl .neg { color: var(--ink); }
+  .pl-tbl .pos { color: var(--accent); }
+  .pl-tbl td.dim { color: var(--muted); }
+
+  /* simple tables close with a double rule */
+  .pl-tbl--simple tbody tr:last-child td { border-bottom: 3px double var(--line-strong); }
+
+  /* ---------- Statement rows: the accounting ruling ----------
+     Row-type rules out-rank the shared td borders by specificity
+     (no !important): rules run under figure columns only. */
+  .pl-tbl .pl-grp td {
+    border-bottom: 0; padding-top: 22px; padding-bottom: 4px; height: auto;
+    font: 650 10.5px/1.4 var(--sans); letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted);
+  }
+  .pl-tbl .pl-grp:first-child td { padding-top: 14px; }
+  .pl-tbl .pl-sub td { border-bottom: 0; }
+  .pl-tbl .pl-sub td.lbl { font-weight: 600; padding-top: 2px; }
+  .pl-tbl .pl-sub td.num { border-bottom: 2px solid var(--rule-sub); padding-top: 2px; }
+  .pl-tbl .pl-total td { border-bottom: 0; }
+  .pl-tbl .pl-total td.lbl { font-weight: 650; padding-top: 2px; }
+  .pl-tbl .pl-total td.num { border-bottom: 3px double var(--ink); font-weight: 600; padding-top: 2px; }
+  .pl-tbl .pl-close td { border-bottom: 0; }
+  .pl-tbl .pl-close td.num { border-bottom: 3px double var(--ink); font-weight: 600; padding-top: 2px; }
+  .pl-tbl .pl-close td.lbl { font-weight: 600; font-style: normal; color: var(--ink); padding-top: 2px; }
+
+  /* ledger table: fixed 34px rows, indent grammar, balance columns */
+  .pl-tbl--ledger td { padding-top: 0; padding-bottom: 0; vertical-align: middle; }
+  .pl-tbl--ledger tbody tr { height: 34px; }
+  .pl-tbl--ledger td.lbl { padding-left: 0; }
+  .pl-tbl--ledger td.indent { padding-left: 20px; }
+  .pl-tbl--ledger .pl-open td.lbl { font-style: italic; color: var(--muted); }
+
+  /* ---------- Footnote markers + note zone ---------- */
+  .pl-fnref { font-size: 9px; vertical-align: super; color: var(--accent); margin-left: 2px; font-family: var(--mono); }
+  .pl-notes { border-top: 1px solid var(--line-strong); margin-top: 16px; padding-top: 8px; }
+  .pl-notes p { font: 11px/1.7 var(--mono); color: var(--muted); margin: 2px 0; }
+  .pl-notes b { font-weight: 600; color: var(--faint); }
+  .pl-src {
+    font: 10.5px/1.7 var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--faint); margin-top: 14px; display: flex; gap: 18px; flex-wrap: wrap;
+  }
+
+  /* ---------- Variance grammar ---------- */
+  .pl-var { font: 500 11.5px/1 var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pl-var.up { color: var(--ok); } .pl-var.down { color: var(--danger); } .pl-var.flat { color: var(--muted); }
+  .pl-var small { color: var(--faint); font-size: 10px; }
+
+  /* ---------- Sparklines ---------- */
+  .pl-spark { display: block; }
+  .pl-spark polyline { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+  .pl-spark circle { fill: var(--accent); }
+  .pl-spark--dim polyline { stroke: var(--faint); }
+
+  /* ---------- Period tabs ---------- */
+  .pl-tabs { display: inline-flex; gap: 4px; border: 1px solid var(--line); padding: 3px; border-radius: var(--radius); background: var(--surface); }
+  .pl-tabs span {
+    font: 500 11px/1 var(--mono); letter-spacing: 0.06em; color: var(--muted);
+    padding: 7px 12px; border-radius: 3px; text-transform: uppercase;
+  }
+  .pl-tabs .on { color: var(--ink); background: var(--bg); box-shadow: inset 0 -2px 0 var(--accent); }
+  .pl-tabs span:not(.on):not(.off):hover { color: var(--ink); }
+  .pl-tabs .off { color: var(--faint); }
+
+  /* ---------- Badges / state dots ---------- */
+  .pl-badge {
+    display: inline-block; font: 600 9.5px/1 var(--mono); letter-spacing: 0.09em; text-transform: uppercase;
+    padding: 3px 7px; border: 1px solid currentColor; border-radius: var(--r-sm); white-space: nowrap;
+  }
+  .pl-badge.ok { color: var(--ok); } .pl-badge.warn { color: var(--warn); }
+  .pl-badge.fail { color: var(--danger); } .pl-badge.neutral { color: var(--muted); }
+  .pl-badge.accent { color: var(--accent); }
+
+  .pl-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: baseline; }
+  .pl-dot.ok { background: var(--ok); } .pl-dot.warn { background: var(--warn); } .pl-dot.fail { background: var(--danger); }
+
+  /* ---------- Filter chips ---------- */
+  .pl-chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 2px; }
+  .pl-chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    font: 500 11px/1 var(--mono); letter-spacing: 0.04em; color: var(--ink);
+    border: 1px solid var(--line-strong); border-radius: 99px; padding: 5px 11px; background: var(--surface);
+  }
+  .pl-chip i { font-style: normal; color: var(--faint); }
+  .pl-chip .x { color: var(--accent); font-weight: 600; }
+
+  /* ---------- Pager ---------- */
+  .pl-pager {
+    display: flex; align-items: center; gap: 6px; padding: 11px 0;
+    border-top: 1px solid var(--line); margin-top: 0;
+    font: 11.5px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums;
+  }
+  .pl-pager .pl-page {
+    min-width: 26px; text-align: center; padding: 5px 6px; border-radius: 3px;
+    border: 1px solid transparent; color: var(--muted);
+  }
+  .pl-pager .pl-page.on { border-color: var(--line-strong); color: var(--ink); background: var(--surface); }
+  .pl-pager .gap { color: var(--faint); padding: 0 2px; }
+  .pl-pager .end { margin-left: auto; }
+
+  /* ---------- States: loading, empty, error ---------- */
+  .pl-skrow { display: flex; gap: 14px; align-items: center; height: 36px; border-bottom: 1px solid var(--line); }
+  .pl-skrow i { display: block; height: 9px; border-radius: var(--r-sm); background: var(--line); animation: pl-pulse 1.6s ease-in-out infinite; }
+  .pl-skrow i:nth-child(1) { width: 18%; }
+  .pl-skrow i:nth-child(2) { width: 30%; }
+  .pl-skrow i:nth-child(3) { width: 10%; margin-left: auto; }
+  .pl-skrow i:nth-child(4) { width: 14%; }
+  @keyframes pl-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+  .pl-empty { text-align: center; padding: 34px 0 30px; border-bottom: 1px solid var(--line); }
+  .pl-empty .pl-e { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+  .pl-empty .pl-e b { font-weight: 600; color: var(--ink); }
+  .pl-empty .pl-dash { font: 500 20px/1 var(--mono); color: var(--faint); margin-bottom: 10px; }
+
+  .pl-alert {
+    display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;
+    border: 1px solid var(--danger); border-left-width: 3px; border-radius: var(--radius);
+    background: var(--surface); padding: 13px 15px; margin-top: 10px;
+  }
+  .pl-alert .t { font-weight: 600; color: var(--danger); font-size: 13px; }
+  .pl-alert .m { color: var(--muted); font-size: 12.5px; }
+  .pl-alert .ref { margin-left: auto; font: 10.5px/1 var(--mono); color: var(--faint); letter-spacing: 0.05em; }
+
+  /* ---------- Buttons ---------- */
+  .pl-btn {
+    display: inline-block; font: 550 12.5px/1 var(--sans); letter-spacing: 0.01em;
+    border-radius: var(--radius); padding: 9px 15px; border: 1px solid transparent; cursor: pointer;
+    transition: background-color .15s, border-color .15s, color .15s;
+  }
+  .pl-btn--primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .pl-btn--primary:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .pl-btn--secondary { background: var(--surface); color: var(--ink); border-color: var(--line-strong); }
+  .pl-btn--secondary:hover { border-color: var(--ink); }
+  .pl-btn--quiet { background: none; color: var(--accent); padding-left: 2px; padding-right: 2px; }
+  .pl-btn--quiet:hover { text-decoration: underline; }
+  .pl-btn[disabled] { color: var(--faint); background: var(--surface); border-color: var(--line); cursor: not-allowed; }
+  .pl-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pl-btnrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 6px 0; }
+
+  /* ---------- Inputs ---------- */
+  .pl-field { max-width: 340px; padding: 6px 0; }
+  .pl-label { display: block; font: 600 10px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .pl-hint { font: 11px/1.5 var(--mono); color: var(--faint); margin-top: 5px; }
+  .pl-input, .pl-select {
+    width: 100%; font: 400 13.5px/1.4 var(--sans); color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    padding: 9px 11px;
+  }
+  .pl-input::placeholder { color: var(--faint); }
+  .pl-input:focus-visible, .pl-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+  .pl-select {
+    appearance: none; -webkit-appearance: none; padding-right: 30px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 16px) 55%, calc(100% - 11px) 55%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+  }
+  .pl-input--err { border-color: var(--danger); }
+  .pl-errmsg { font: 11px/1.5 var(--mono); color: var(--danger); margin-top: 5px; }
+
+  /* ---------- Page furniture ---------- */
+  .pl-runhead {
+    display: flex; align-items: baseline; gap: 12px; padding: 9px 0 8px;
+    border-bottom: 1px solid var(--line-strong);
+    font: 10px/1 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint);
+  }
+  .pl-runhead b { color: var(--muted); font-weight: 600; }
+  .pl-runhead span:last-child { margin-left: auto; }
+  .pl-folio {
+    display: flex; align-items: baseline; padding: 8px 0 0; border-top: 1px solid var(--line);
+    font: 10px/1 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint);
+  }
+  .pl-folio span:last-child { margin-left: auto; }
+  .pl-pagebox { border: 1px solid var(--line); border-radius: var(--radius); padding: 0 16px 10px; background: var(--surface); max-width: 560px; }
+  .pl-pagebox .pl-inner { padding-top: 8px; color: var(--muted); font-size: 12px; }
+
+  /* ---------- Rule ladder ---------- */
+  .pl-rules { display: grid; grid-template-columns: 200px 1fr; gap: 0 22px; max-width: 620px; }
+  .pl-rules dt {
+    font: 600 10px/1.4 var(--mono); letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted);
+    padding: 13px 0 3px;
+  }
+  .pl-rules dd { margin: 0; padding: 13px 0 9px; }
+  .pl-rules .r-hairline { border-bottom: 1px solid var(--line); }
+  .pl-rules .r-strong { border-bottom: 1px solid var(--line-strong); }
+  .pl-rules .r-single { border-bottom: 2px solid var(--rule-sub); }
+  .pl-rules .r-double { border-bottom: 3px double var(--ink); }
+  .pl-rules small { display: block; font: 11px/1.5 var(--mono); color: var(--faint); text-transform: none; letter-spacing: 0; }
+
+  /* ---------- Token swatches ---------- */
+  .pl-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px 18px; margin-top: 8px; }
+  .pl-swatch .sw { height: 30px; border: 1px solid var(--line); border-radius: 3px; }
+  .pl-swatch .nm { font: 600 9.5px/2.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* ---------- Tabular figure proof ---------- */
+  .pl-tnum { display: grid; grid-template-columns: 1fr 1fr; gap: 0 34px; max-width: 460px; }
+  .pl-tnum h4 { margin: 10px 0 4px; font: 600 10px/1 var(--mono); letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); }
+  .pl-tnum ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .pl-tnum li { font: 500 13px/2 var(--mono); text-align: right; border-bottom: 1px solid var(--line); }
+  .pl-tnum li:last-child { border-bottom: 3px double var(--line-strong); }
+  .pl-tnum .prop { font-family: var(--sans); font-variant-numeric: normal; }
+  .pl-tnum .tab { font-family: var(--mono); font-variant-numeric: lining-nums tabular-nums; }
+
+  /* ---------- Dark proof strip (shows the second half of every token) ---------- */
+  .pl-darkproof { color-scheme: dark; color: var(--ink); background: var(--bg); border-radius: var(--radius); padding: 2px 18px 14px; margin-top: 6px; border: 1px solid var(--line); }
+  .pl-darkproof .cap { font: 600 9.5px/1 var(--mono); letter-spacing: 0.10em; text-transform: uppercase; color: var(--faint); padding-top: 12px; }
+
+  /* ---------- Compact treatment (narrow containers, small screens) ---------- */
+  .pl-mob { padding: 0 16px 14px; }
+  .pl-mob .pl-kpis { grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+  .pl-mob .pl-kpi { padding: 12px 12px 10px; }
+  .pl-mob .pl-kpi:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .pl-mob .pl-v { font-size: 20px; }
+  .pl-mob .pl-h { margin-top: 20px; }
+  .pl-mob .pl-tbl { font-size: 12.5px; }
+  .pl-mob .pl-tbl th { padding: 7px 10px 6px; }
+  .pl-mob .pl-tbl td { padding: 7px 10px; }
+  .pl-mob .pl-src { margin-top: 16px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .pl-kpis { grid-template-columns: 1fr 1fr; }
+    .pl-kpi:nth-child(odd) { border-left: 0; padding-left: 0; }
+    .pl-cols { grid-template-columns: 1fr; }
+    .pl-cols > div + div { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); margin-top: 18px; }
+    .pl-rules { grid-template-columns: 150px 1fr; }
+    .pl-tnum { grid-template-columns: 1fr; max-width: 340px; }
+  }
+  @media (max-width: 560px) {
+    .pl-kpis { grid-template-columns: 1fr; }
+    .pl-kpi { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+    .pl-kpi:first-child { border-top: 0; }
+  }
+
+  /* ---------- Print: the signature ----------
+     A4 statement pagination: the screen document is the printout. The
+     scheme pins light at the root (a dark-lead derivative flips here),
+     real theads repeat on continued pages, rows never tear, headings bind
+     forward, and the folio rides the @page margin box. Ink lightens one
+     step for paper via the line-token override. */
+  @media print {
+    :root {
+      color-scheme: light;
+      --line: oklch(0.90 0.006 250);
+      --line-strong: oklch(0.72 0.010 250);
+    }
+    .pl-darkproof { color-scheme: light; }
+    @page {
+      size: A4 portrait;
+      margin: 16mm 14mm 18mm;
+      @bottom-center {
+        content: counter(page) " of " counter(pages);
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 7.5pt;
+        letter-spacing: 0.08em;
+        color: #666;
+      }
+    }
+    body {
+      background: #fff;
+      font-size: 10.5pt;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+    a { color: inherit; text-decoration: none; }
+    .pl-noprint { display: none; }
+    .pl-sheet { padding: 0; }
+    .pl-masthead { padding-top: 0; }
+
+    /* never strand a heading; never tear a row or a figure */
+    .pl-h, .pl-statement, .pl-masthead { break-after: avoid; }
+    .pl-figblock { break-inside: avoid; }
+    tr, .pl-fig, .pl-kpis, .pl-kpi, .pl-notes, .pl-src, .pl-alert, .pl-chips, .pl-pager { break-inside: avoid; }
+    p, .pl-take { orphans: 3; widows: 3; }
+
+    /* real thead repeats on every continued page; tfoot renders once at the end */
+    .pl-tbl thead { display: table-header-group; }
+    .pl-tbl tfoot { display: table-footer-group; }
+
+    .pl-skrow i { animation: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .pl-skrow i { animation: none; }
+    .pl-btn { transition: none; }
+  }
+}
