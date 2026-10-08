@@ -119,8 +119,9 @@ must fully render with this script removed.
 ## Print and reduced motion
 
 Print rules ship in the file: chrome (TOC, toggle) drops out, the shell
-collapses to one column, body prints light at 11.5pt, cards and callouts
-avoid page breaks. Do not add print overrides. `prefers-reduced-motion`
+collapses to one column, print forces the light scheme via `color-scheme` so
+body prints light at 11.5pt, and cards and callouts avoid page breaks. Do not
+add print overrides. `prefers-reduced-motion`
 disables smooth scrolling; the identity has no other motion.
 
 ## Do not

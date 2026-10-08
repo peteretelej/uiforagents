@@ -21,8 +21,8 @@
      the extraction source) and the light scheme is the derived alternative.
      light-dark() slots are fixed by CSS - first slot is the value used
      under the light scheme - so dark-first is provenance, not slot order.
-     The initial scheme is the identity's lead scheme: dark; a toggle flips
-     html.style.colorScheme to "dark" or "light". There is no data-theme
+     The initial scheme is the identity's lead scheme: dark. A toggle
+     flips html.style.colorScheme to "dark" or "light". There is no data-theme
      attribute and no duplicated token block. color-scheme must stay on
      html/:root - light-dark() tokens re-resolve against the root's scheme
      only.
@@ -92,12 +92,12 @@
   .mb-topbar a { color: var(--muted); text-decoration: none; }
   .mb-topbar a:hover { color: var(--ink); }
   .mb-brand { color: var(--accent); font-weight: 600; white-space: nowrap; }
-  .mb-crumb { color: var(--faint); }
+  .mb-crumb { color: var(--faint); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mb-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
   .mb-theme-toggle {
     font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
     color: var(--muted); background: none; border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 4px 10px; cursor: pointer;
+    border-radius: var(--radius); padding: 4px 10px; cursor: pointer; white-space: nowrap;
   }
   .mb-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
 
@@ -149,7 +149,7 @@
   .mb-section h3 { font-family: var(--font-sans); font-weight: 600; font-size: 16px; margin: 28px 0 8px; }
   .mb-lede { font-family: var(--font-serif); font-size: 19px; line-height: 1.55; color: var(--ink); }
   .mb-small { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
-  .mb-plain { list-style: none; max-width: var(--measure); margin: 0; padding: 0; }
+  .mb-plain { list-style: none; max-width: var(--measure); margin: 0 0 14px; padding: 0; }
   .mb-plain li { position: relative; padding-left: 18px; margin-top: 10px; color: var(--muted); }
   .mb-plain li::before { content: "›"; position: absolute; left: 0; color: var(--accent); }
 
@@ -281,7 +281,7 @@
   .mb-footer { padding: 48px 0 80px; border-top: 1px solid var(--line-soft); }
   .mb-footer .mb-wrap { font-family: var(--font-mono); font-size: 12px; color: var(--faint); line-height: 1.9; }
   .mb-footer a { color: var(--muted); }
-  .mb-glossary { margin: 8px 0 0; }
+  .mb-glossary { margin: 8px 0 24px; }
   .mb-glossary dt { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent); margin-top: 14px; }
   .mb-glossary dd { margin: 3px 0 0; color: var(--muted); font-size: 14px; max-width: 66ch; }
 
@@ -395,25 +395,25 @@
           <tr><th>Token</th><th>Dark (canonical)</th><th>Light (derived)</th><th>Role</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>--bg</code></td><td>oklch(0.155 0.006 70)</td><td>oklch(0.965 0.01 85)</td><td>page ground: warm near-black / warm cream</td></tr>
-          <tr><td><code>--surface</code></td><td>oklch(0.19 0.008 70)</td><td>oklch(0.995 0.005 85)</td><td>raised boxes: panels, podcast, lab</td></tr>
-          <tr><td><code>--sunken</code></td><td>oklch(0.125 0.005 70)</td><td>oklch(0.94 0.012 85)</td><td>wells: table headers, pre, inline code</td></tr>
-          <tr><td><code>--ink</code></td><td>oklch(0.92 0.008 80)</td><td>oklch(0.21 0.01 80)</td><td>primary text and strong values</td></tr>
-          <tr><td><code>--muted</code></td><td>oklch(0.72 0.01 80)</td><td>oklch(0.42 0.015 80)</td><td>body copy, dek, cell text</td></tr>
-          <tr><td><code>--faint</code></td><td>oklch(0.6 0.01 80)</td><td>oklch(0.52 0.015 80)</td><td>meta, table headers, captions</td></tr>
-          <tr><td><code>--line</code></td><td>oklch(0.32 0.01 80)</td><td>oklch(0.86 0.012 80)</td><td>timeline rail, hover borders</td></tr>
-          <tr><td><code>--line-soft</code></td><td>oklch(0.26 0.01 80)</td><td>oklch(0.9 0.01 80)</td><td>hairline band and box rules</td></tr>
-          <tr><td><code>--accent</code></td><td>oklch(0.8 0.15 75)</td><td>oklch(0.49 0.115 70)</td><td>links, kickers, eyebrows, badge</td></tr>
-          <tr><td><code>--accent-ink</code></td><td>oklch(0.24 0.06 70)</td><td>oklch(0.98 0.02 85)</td><td>text on the solid badge</td></tr>
-          <tr><td><code>--accent-soft</code></td><td>oklch(0.27 0.05 75)</td><td>oklch(0.93 0.055 85)</td><td>accent tint (reserved fills)</td></tr>
-          <tr><td><code>--ok</code> / <code>--ok-soft</code></td><td>oklch(0.78 0.14 145)</td><td>oklch(0.46 0.12 150)</td><td>positive status</td></tr>
-          <tr><td><code>--warn</code> / <code>--warn-soft</code></td><td>oklch(0.8 0.15 75)</td><td>oklch(0.49 0.115 70)</td><td>caution status (shares the accent family)</td></tr>
-          <tr><td><code>--danger</code> / <code>--danger-soft</code></td><td>oklch(0.7 0.16 25)</td><td>oklch(0.5 0.17 25)</td><td>negative status</td></tr>
-          <tr><td><code>--radius</code></td><td colspan="2">3px</td><td>the one radius; crisp, nothing rounder</td></tr>
+          <tr><td><code>--bg</code></td><td><code>oklch(0.155 0.006 70)</code></td><td><code>oklch(0.965 0.01 85)</code></td><td>page ground: warm near-black / warm cream</td></tr>
+          <tr><td><code>--surface</code></td><td><code>oklch(0.19 0.008 70)</code></td><td><code>oklch(0.995 0.005 85)</code></td><td>raised boxes: panels, podcast, lab</td></tr>
+          <tr><td><code>--sunken</code></td><td><code>oklch(0.125 0.005 70)</code></td><td><code>oklch(0.94 0.012 85)</code></td><td>wells: table headers, pre, inline code</td></tr>
+          <tr><td><code>--ink</code></td><td><code>oklch(0.92 0.008 80)</code></td><td><code>oklch(0.21 0.01 80)</code></td><td>primary text and strong values</td></tr>
+          <tr><td><code>--muted</code></td><td><code>oklch(0.72 0.01 80)</code></td><td><code>oklch(0.42 0.015 80)</code></td><td>body copy, dek, cell text</td></tr>
+          <tr><td><code>--faint</code></td><td><code>oklch(0.6 0.01 80)</code></td><td><code>oklch(0.52 0.015 80)</code></td><td>meta, table headers, captions</td></tr>
+          <tr><td><code>--line</code></td><td><code>oklch(0.32 0.01 80)</code></td><td><code>oklch(0.86 0.012 80)</code></td><td>timeline rail, hover borders</td></tr>
+          <tr><td><code>--line-soft</code></td><td><code>oklch(0.26 0.01 80)</code></td><td><code>oklch(0.9 0.01 80)</code></td><td>hairline band and box rules</td></tr>
+          <tr><td><code>--accent</code></td><td><code>oklch(0.8 0.15 75)</code></td><td><code>oklch(0.49 0.115 70)</code></td><td>links, kickers, eyebrows, badge</td></tr>
+          <tr><td><code>--accent-ink</code></td><td><code>oklch(0.24 0.06 70)</code></td><td><code>oklch(0.98 0.02 85)</code></td><td>text on the solid badge</td></tr>
+          <tr><td><code>--accent-soft</code></td><td><code>oklch(0.27 0.05 75)</code></td><td><code>oklch(0.93 0.055 85)</code></td><td>accent tint (reserved fills)</td></tr>
+          <tr><td><code>--ok</code> / <code>--ok-soft</code></td><td><code>oklch(0.78 0.14 145)</code></td><td><code>oklch(0.46 0.12 150)</code></td><td>positive status</td></tr>
+          <tr><td><code>--warn</code> / <code>--warn-soft</code></td><td><code>oklch(0.8 0.15 75)</code></td><td><code>oklch(0.49 0.115 70)</code></td><td>caution status (shares the accent family)</td></tr>
+          <tr><td><code>--danger</code> / <code>--danger-soft</code></td><td><code>oklch(0.7 0.16 25)</code></td><td><code>oklch(0.5 0.17 25)</code></td><td>negative status</td></tr>
+          <tr><td><code>--radius</code></td><td colspan="2"><code>3px</code></td><td>the one radius; crisp, nothing rounder</td></tr>
           <tr><td><code>--font-serif</code></td><td colspan="2">Charter, Iowan Old Style, Georgia, Times New Roman, serif</td><td>display: h1, h2, dek, lede</td></tr>
           <tr><td><code>--font-sans</code></td><td colspan="2">system-ui stack</td><td>body copy</td></tr>
           <tr><td><code>--font-mono</code></td><td colspan="2">ui-monospace stack</td><td>labels, numbers, code</td></tr>
-          <tr><td><code>--measure</code></td><td colspan="2">68ch</td><td>reading measure for prose</td></tr>
+          <tr><td><code>--measure</code></td><td colspan="2"><code>68ch</code></td><td>reading measure for prose</td></tr>
         </tbody>
       </table>
     </div>
@@ -589,9 +589,10 @@ comment = <span class="mb-k">"# everything else stays full ink on --sunken"</spa
       or served next to a linked copy.</li>
       <li><strong>The theme toggle is the only JavaScript.</strong> It flips
       <code>color-scheme</code> on <code>html</code>, and every
-      <code>light-dark()</code> token re-resolves. Without JS the page renders fully
-      in the OS-preferred scheme. Dark leads: the default OS-dark rendering is the
-      canonical look.</li>
+      <code>light-dark()</code> token re-resolves. Without JS the page renders in
+      the identity's lead scheme, dark - the root pin sets it, not the OS
+      preference, and dark is the canonical look; the toggle is how visitors
+      reach the light scheme.</li>
       <li><strong>No attributes, no per-theme blocks.</strong> There is no
       <code>data-theme</code> attribute anywhere and no duplicated dark token list.
       Dark is canonical: its tokens are verbatim from the extraction source, and
@@ -609,22 +610,26 @@ comment = <span class="mb-k">"# everything else stays full ink on --sunken"</spa
   </div>
 </section>
 
+<div class="mb-wrap">
+  <div class="mb-sharebar">
+    <span class="mb-small">SHARE /</span>
+    <div class="mb-share-row">
+      <a href="#top">Copy link</a>
+      <a href="#top">Print</a>
+    </div>
+  </div>
+</div>
+
 <footer class="mb-footer">
   <div class="mb-wrap">
-    <div class="mb-sharebar">
-      <span class="mb-small">SHARE /</span>
-      <div class="mb-share-row">
-        <a href="#top">Copy link</a>
-        <a href="#top">Print</a>
-      </div>
-    </div>
     <dl class="mb-glossary">
       <dt>bulletin</dt>
       <dd>A short, factual briefing shipped as one file: numbers up top, evidence in
       bands, no decoration between.</dd>
       <dt>dark-first</dt>
-      <dd>Every <code>light-dark()</code> pair lists the dark value first; the light
-      scheme is derived and always re-checked against contrast gates.</dd>
+      <dd>The dark scheme is canonical: its token values are recorded verbatim from
+      the extraction source; the light scheme is derived and always re-checked
+      against contrast gates.</dd>
       <dt>sunken</dt>
       <dd>The well color for wells that hold content: table headers, code blocks,
       inline code. Raised surfaces hold boxes; the ground holds bands.</dd>

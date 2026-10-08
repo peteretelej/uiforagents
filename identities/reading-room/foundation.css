@@ -85,7 +85,7 @@
   .rr-theme-toggle {
     font-family: var(--font-sans); font-size: 0.78rem; color: var(--muted);
     background: none; border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 0.25rem 0.6rem; cursor: pointer;
+    padding: 0.25rem 0.6rem; cursor: pointer; white-space: nowrap;
   }
   .rr-theme-toggle:hover { color: var(--ink); border-color: var(--faint); }
 
@@ -163,7 +163,7 @@
   /* ---------- Tables ---------- */
   .rr-table-wrap { overflow-x: auto; margin: 1.3rem 0; }
   .rr-table-wrap table {
-    border-collapse: collapse; width: 100%;
+    border-collapse: collapse; width: 100%; min-width: 640px;
     font-family: var(--font-sans); font-size: 0.85rem;
   }
   .rr-table-wrap th {
@@ -255,6 +255,7 @@
 
   /* ---------- Print ---------- */
   @media print {
+    :root { color-scheme: light; }
     .rr-toc, .rr-toc-mobile, .rr-theme-toggle { display: none; }
     .rr-shell { display: block; }
     body { background: #fff; color: #111; font-size: 11.5pt; }

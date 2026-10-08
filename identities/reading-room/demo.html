@@ -15,9 +15,9 @@
    - Everything lives in `@layer foundation`, so unlayered page CSS always
      overrides it without !important. Paste the whole file into a single-file
      <style> block or link it; both modes work.
-   - Dual theme via light-dark() + `color-scheme` on :root. Default follows
-     the identity's lead scheme: light; a toggle flips html.style.colorScheme to "light"
-     or "dark". There is no data-theme attribute and no duplicated token
+   - Dual theme via light-dark() + `color-scheme` on :root. The initial
+     scheme is the identity's lead scheme: light. A toggle flips
+     html.style.colorScheme to "light" or "dark". There is no data-theme attribute and no duplicated token
      block. color-scheme must stay on html/:root - light-dark() tokens
      re-resolve against the root's scheme only.
    - No JavaScript is required anywhere.
@@ -90,11 +90,10 @@
     font-family: var(--font-sans); font-size: 0.72rem; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
   }
-  a.rr-kicker { text-decoration: none; }
   .rr-theme-toggle {
     font-family: var(--font-sans); font-size: 0.78rem; color: var(--muted);
     background: none; border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 0.25rem 0.6rem; cursor: pointer;
+    padding: 0.25rem 0.6rem; cursor: pointer; white-space: nowrap;
   }
   .rr-theme-toggle:hover { color: var(--ink); border-color: var(--faint); }
 
@@ -172,7 +171,7 @@
   /* ---------- Tables ---------- */
   .rr-table-wrap { overflow-x: auto; margin: 1.3rem 0; }
   .rr-table-wrap table {
-    border-collapse: collapse; width: 100%;
+    border-collapse: collapse; width: 100%; min-width: 640px;
     font-family: var(--font-sans); font-size: 0.85rem;
   }
   .rr-table-wrap th {
@@ -264,6 +263,7 @@
 
   /* ---------- Print ---------- */
   @media print {
+    :root { color-scheme: light; }
     .rr-toc, .rr-toc-mobile, .rr-theme-toggle { display: none; }
     .rr-shell { display: block; }
     body { background: #fff; color: #111; font-size: 11.5pt; }
@@ -277,12 +277,18 @@
   }
 }
 </style>
+<style>
+/* page CSS (unlayered): the masthead kicker is a link; it keeps
+   every other link's underline nowhere. Unlayered rules win over
+   the foundation layer without !important. */
+a.rr-kicker { text-decoration: none; }
+</style>
 </head>
 <body>
 
 <header class="rr-masthead">
   <div class="rr-masthead-inner">
-    <a class="rr-kicker" href="https://uiforagents.com/">uiforagents · artifact identities</a>
+    <a class="rr-kicker" href="https://uiforagents.com/">uiforagents</a>
     <button class="rr-theme-toggle" id="theme-toggle" type="button">Dark theme</button>
   </div>
 </header>
@@ -291,7 +297,7 @@
   <h1>reading-room</h1>
   <p class="rr-dek">A warm editorial reader for long-form artifacts: paper background,
   Charter-led serif body, ink text, one green accent reserved for action. This page is
-  the identity's own documentation, styled by nothing but its foundation stylesheet.</p>
+  the identity's own documentation, styled by its foundation stylesheet.</p>
   <div class="rr-meta-row">
     <span><strong>Status</strong> v1</span>
     <span><strong>Lane</strong> artifact (pure CSS)</span>
@@ -370,25 +376,25 @@
             <tr><th>Token</th><th>Light</th><th>Dark</th><th>Role</th></tr>
           </thead>
           <tbody>
-            <tr><td><code>--bg</code></td><td>oklch(0.975 0.006 95)</td><td>oklch(0.205 0.01 140)</td><td>page background: warm paper / warm near-black</td></tr>
-            <tr><td><code>--surface</code></td><td>oklch(1 0 0)</td><td>oklch(0.24 0.012 140)</td><td>cards, masthead, colophon</td></tr>
-            <tr><td><code>--ink</code></td><td>oklch(0.24 0.012 110)</td><td>oklch(0.92 0.008 110)</td><td>body text</td></tr>
-            <tr><td><code>--muted</code></td><td>oklch(0.47 0.012 110)</td><td>oklch(0.72 0.01 110)</td><td>secondary text: dek, lede, summaries</td></tr>
-            <tr><td><code>--faint</code></td><td>oklch(0.62 0.01 110)</td><td>oklch(0.55 0.01 110)</td><td>tertiary text: meta rows, table headers</td></tr>
-            <tr><td><code>--line</code></td><td>oklch(0.895 0.01 110)</td><td>oklch(0.34 0.015 140)</td><td>rules and borders</td></tr>
-            <tr><td><code>--line-soft</code></td><td>oklch(0.92 0.008 110)</td><td>oklch(0.29 0.012 140)</td><td>softer rules (derived, sits just under --line)</td></tr>
-            <tr><td><code>--accent</code></td><td>oklch(0.46 0.115 152)</td><td>oklch(0.78 0.13 152)</td><td>links, active TOC, section eyebrows</td></tr>
-            <tr><td><code>--accent-ink</code></td><td>oklch(0.30 0.09 152)</td><td>oklch(0.85 0.11 152)</td><td>text on --accent-soft</td></tr>
-            <tr><td><code>--accent-soft</code></td><td>oklch(0.93 0.035 152)</td><td>oklch(0.30 0.05 152)</td><td>accent tint: chips, callout fills</td></tr>
-            <tr><td><code>--ok</code> / <code>--ok-soft</code></td><td>oklch(0.47 0.115 152) / oklch(0.93 0.035 152)</td><td>oklch(0.78 0.13 152) / oklch(0.30 0.05 152)</td><td>positive status (shares the accent green family)</td></tr>
-            <tr><td><code>--warn</code> / <code>--warn-soft</code></td><td>oklch(0.55 0.11 75) / oklch(0.95 0.045 85)</td><td>oklch(0.80 0.11 85) / oklch(0.30 0.05 85)</td><td>caution status</td></tr>
-            <tr><td><code>--danger</code> / <code>--danger-soft</code></td><td>oklch(0.50 0.14 25) / oklch(0.95 0.03 25)</td><td>oklch(0.75 0.12 25) / oklch(0.30 0.05 25)</td><td>negative status</td></tr>
-            <tr><td><code>--radius</code></td><td colspan="2">8px</td><td>box radius (pills use 99px, inline code 4px)</td></tr>
+            <tr><td><code>--bg</code></td><td><code>oklch(0.975 0.006 95)</code></td><td><code>oklch(0.205 0.01 140)</code></td><td>page background: warm paper / warm near-black</td></tr>
+            <tr><td><code>--surface</code></td><td><code>oklch(1 0 0)</code></td><td><code>oklch(0.24 0.012 140)</code></td><td>cards, masthead, colophon</td></tr>
+            <tr><td><code>--ink</code></td><td><code>oklch(0.24 0.012 110)</code></td><td><code>oklch(0.92 0.008 110)</code></td><td>body text</td></tr>
+            <tr><td><code>--muted</code></td><td><code>oklch(0.47 0.012 110)</code></td><td><code>oklch(0.72 0.01 110)</code></td><td>secondary text: dek, lede, summaries</td></tr>
+            <tr><td><code>--faint</code></td><td><code>oklch(0.62 0.01 110)</code></td><td><code>oklch(0.55 0.01 110)</code></td><td>tertiary text: meta rows, table headers</td></tr>
+            <tr><td><code>--line</code></td><td><code>oklch(0.895 0.01 110)</code></td><td><code>oklch(0.34 0.015 140)</code></td><td>rules and borders</td></tr>
+            <tr><td><code>--line-soft</code></td><td><code>oklch(0.92 0.008 110)</code></td><td><code>oklch(0.29 0.012 140)</code></td><td>softer rules (derived, sits just under --line)</td></tr>
+            <tr><td><code>--accent</code></td><td><code>oklch(0.46 0.115 152)</code></td><td><code>oklch(0.78 0.13 152)</code></td><td>links, active TOC, section eyebrows</td></tr>
+            <tr><td><code>--accent-ink</code></td><td><code>oklch(0.30 0.09 152)</code></td><td><code>oklch(0.85 0.11 152)</code></td><td>text on --accent-soft</td></tr>
+            <tr><td><code>--accent-soft</code></td><td><code>oklch(0.93 0.035 152)</code></td><td><code>oklch(0.30 0.05 152)</code></td><td>accent tint: chips, callout fills</td></tr>
+            <tr><td><code>--ok</code> / <code>--ok-soft</code></td><td><code>oklch(0.47 0.115 152)</code> / <code>oklch(0.93 0.035 152)</code></td><td><code>oklch(0.78 0.13 152)</code> / <code>oklch(0.30 0.05 152)</code></td><td>positive status (shares the accent green family)</td></tr>
+            <tr><td><code>--warn</code> / <code>--warn-soft</code></td><td><code>oklch(0.55 0.11 75)</code> / <code>oklch(0.95 0.045 85)</code></td><td><code>oklch(0.80 0.11 85)</code> / <code>oklch(0.30 0.05 85)</code></td><td>caution status</td></tr>
+            <tr><td><code>--danger</code> / <code>--danger-soft</code></td><td><code>oklch(0.50 0.14 25)</code> / <code>oklch(0.95 0.03 25)</code></td><td><code>oklch(0.75 0.12 25)</code> / <code>oklch(0.30 0.05 25)</code></td><td>negative status</td></tr>
+            <tr><td><code>--radius</code></td><td colspan="2"><code>8px</code></td><td>box radius (pills use 99px, inline code 4px)</td></tr>
             <tr><td><code>--font-serif</code></td><td colspan="2">Charter, Bitstream Charter, Sitka Text, Cambria, Georgia, serif</td><td>body and headings</td></tr>
             <tr><td><code>--font-sans</code></td><td colspan="2">system-ui stack</td><td>UI chrome</td></tr>
             <tr><td><code>--font-mono</code></td><td colspan="2">ui-monospace stack</td><td>code</td></tr>
-            <tr><td><code>--wash</code></td><td>oklch(0.945 0.012 130)</td><td>oklch(0.25 0.02 150)</td><td>hover wash, inline code background</td></tr>
-            <tr><td><code>--measure</code></td><td colspan="2">70ch</td><td>reading measure for prose</td></tr>
+            <tr><td><code>--wash</code></td><td><code>oklch(0.945 0.012 130)</code></td><td><code>oklch(0.25 0.02 150)</code></td><td>hover wash, inline code background</td></tr>
+            <tr><td><code>--measure</code></td><td colspan="2"><code>70ch</code></td><td>reading measure for prose</td></tr>
           </tbody>
         </table>
       </div>
@@ -505,14 +511,19 @@
     <section class="rr-section" id="build">
       <h2><span class="rr-secnum">Section 9</span>How this page was built</h2>
       <ul>
-        <li><strong>One stylesheet.</strong> The entire <code>&lt;style&gt;</code>
-          block above is <code>foundation.css</code> pasted in verbatim. No other
-          CSS exists on this page, so the demo renders identically pasted into a
-          single file or served next to a linked copy.</li>
+        <li><strong>One stylesheet.</strong> The first <code>&lt;style&gt;</code>
+          block above is <code>foundation.css</code> pasted in verbatim; the only
+          page CSS is a one-line unlayered override that removes the underline
+          from the linked masthead kicker, using the escape hatch the pack
+          reserves for page-specific needs. Nothing else styles this page, so it
+          renders identically pasted into a single file or served next to a
+          linked copy.</li>
         <li><strong>The theme toggle is the only JavaScript.</strong> It flips
           <code>color-scheme</code> on <code>html</code>, and every
           <code>light-dark()</code> token re-resolves. Without JS the page renders
-          fully in the OS-preferred scheme. <code>color-scheme</code> must stay on
+          in the identity's lead scheme, light - the root pin sets it, not the OS
+          preference; the toggle is how visitors reach the other scheme.
+          <code>color-scheme</code> must stay on
           <code>html</code>: root-level tokens only re-resolve against the root's
           scheme.</li>
         <li><strong>No attributes, no per-theme blocks.</strong> There is no

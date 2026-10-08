@@ -84,12 +84,12 @@
   .mb-topbar a { color: var(--muted); text-decoration: none; }
   .mb-topbar a:hover { color: var(--ink); }
   .mb-brand { color: var(--accent); font-weight: 600; white-space: nowrap; }
-  .mb-crumb { color: var(--faint); }
+  .mb-crumb { color: var(--faint); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mb-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
   .mb-theme-toggle {
     font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
     color: var(--muted); background: none; border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 4px 10px; cursor: pointer;
+    border-radius: var(--radius); padding: 4px 10px; cursor: pointer; white-space: nowrap;
   }
   .mb-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
 
@@ -141,7 +141,7 @@
   .mb-section h3 { font-family: var(--font-sans); font-weight: 600; font-size: 16px; margin: 28px 0 8px; }
   .mb-lede { font-family: var(--font-serif); font-size: 19px; line-height: 1.55; color: var(--ink); }
   .mb-small { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
-  .mb-plain { list-style: none; max-width: var(--measure); margin: 0; padding: 0; }
+  .mb-plain { list-style: none; max-width: var(--measure); margin: 0 0 14px; padding: 0; }
   .mb-plain li { position: relative; padding-left: 18px; margin-top: 10px; color: var(--muted); }
   .mb-plain li::before { content: "›"; position: absolute; left: 0; color: var(--accent); }
 
@@ -273,7 +273,7 @@
   .mb-footer { padding: 48px 0 80px; border-top: 1px solid var(--line-soft); }
   .mb-footer .mb-wrap { font-family: var(--font-mono); font-size: 12px; color: var(--faint); line-height: 1.9; }
   .mb-footer a { color: var(--muted); }
-  .mb-glossary { margin: 8px 0 0; }
+  .mb-glossary { margin: 8px 0 24px; }
   .mb-glossary dt { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent); margin-top: 14px; }
   .mb-glossary dd { margin: 3px 0 0; color: var(--muted); font-size: 14px; max-width: 66ch; }
 
