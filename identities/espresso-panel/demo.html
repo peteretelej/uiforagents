@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>espresso-panel · identity demo</title>
+<meta name="description" content="Self-documenting demo of the espresso-panel artifact identity: rationale, token reference, a full quayside exchange instrument wall (readouts, stepped chart, dot-matrix volume, LED meters, ticker tape, bracket readings, event feed), states, component sheet, print proof, and the 390px treatment.">
+<style>
+/* espresso-panel - artifact identity foundation
+   An amber instrument panel: one phosphor hue on warm black, all-mono type,
+   intensity as hierarchy, readout strip walls, dot-matrix/LED fills, bracket
+   states, stepped crisp charts, a ticker tape.
+   Seeded from a fidelity pass over market instruments and machine rooms
+   (arena #phosphor + the census instrument band). This file is the entire
+   system: tokens, base, typography, components, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + the scheme pinned on :root. The identity
+     leads dark: the dark values are canonical (verbatim from the fidelity
+     artifact) and the light values are the derived alternative, re-gated for
+     contrast. light-dark() slots are fixed by CSS - first slot is the value
+     used under the light scheme - so dark-first is provenance, not slot
+     order. A toggle flips html.style.colorScheme to "dark" or "light".
+     There is no data-theme attribute and no duplicated token block; keep
+     the scheme property on html/:root.
+   - One hue, no second color. Severity is brightness, not color: [ OK ] is
+     the outline rung, [WARN] the mid fill, [FAIL] the accent fill. The
+     ladder direction flips in the light scheme (severity darkens); the
+     semantics do not.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: dark;
+
+    /* Semantic vocabulary (dark scheme canonical) */
+    --bg:        light-dark(oklch(0.965 0.012 88), oklch(0.14 0.006 90));
+    --surface:   light-dark(oklch(0.988 0.008 90), oklch(0.17 0.008 90));
+    --surface-2: light-dark(oklch(0.945 0.016 86), oklch(0.21 0.010 90));
+    --sunken:    light-dark(oklch(0.920 0.020 84), oklch(0.115 0.005 90));
+    --line:      light-dark(oklch(0.845 0.028 84), oklch(0.27 0.012 90));
+    --line-soft: light-dark(oklch(0.905 0.018 86), oklch(0.22 0.010 90));
+    --ink:       light-dark(oklch(0.30 0.045 70), oklch(0.62 0.095 80));
+    --muted:     light-dark(oklch(0.42 0.055 72), oklch(0.59 0.050 80));
+    --faint:     light-dark(oklch(0.52 0.048 76), oklch(0.44 0.045 80));
+    --accent:      light-dark(oklch(0.46 0.105 72), oklch(0.80 0.125 80));
+    --accent-ink:  light-dark(oklch(0.965 0.012 88), oklch(0.14 0.006 90));
+    --accent-soft: color-mix(in oklab, var(--accent) 8%, transparent);
+    --ok:     light-dark(oklch(0.42 0.055 72), oklch(0.59 0.050 80));
+    --warn:   light-dark(oklch(0.52 0.115 75), oklch(0.62 0.095 80));
+    --danger: light-dark(oklch(0.46 0.105 72), oklch(0.80 0.125 80));
+    --radius: 2px;
+    --r-sm: 1px;
+
+    /* Font: mono is the whole voice - UI, labels, numerals, prose */
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+    /* Instrument extras (derive from the palette, never new colors) */
+    --chart-grid: var(--line-soft);
+    --chart-axis: var(--line);
+    --chart-label: var(--muted);
+    --chart-series: var(--accent);
+    --chart-series-dim: var(--muted);
+    --chart-fill: color-mix(in oklab, var(--accent) 8%, transparent);
+    --chart-annotate: var(--muted);
+    --matrix-dim: color-mix(in oklab, var(--accent) 55%, transparent);
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 12.5px/1.6 var(--mono);
+    -webkit-font-smoothing: antialiased;
+  }
+  svg text { font-family: var(--mono); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 24px; }
+
+  /* ---------- Layout ---------- */
+  .ep-wrap { max-width: 1180px; margin: 0 auto; padding: 0 18px 26px; }
+  .ep-cols { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px; min-width: 0; }
+  .ep-cols.flip { grid-template-columns: 1fr 1.7fr; }
+  .ep-stack { display: grid; gap: 14px; min-width: 0; }
+  .ep-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; min-width: 0; }
+
+  /* ---------- Utilities ---------- */
+  .ep-acc { color: var(--accent); }
+  .ep-mut { color: var(--muted); }
+  .ep-dim { color: var(--faint); }
+  .ep-k {
+    font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Top bar ---------- */
+  .ep-top {
+    display: flex; align-items: center; gap: 14px; padding: 9px 18px;
+    border-bottom: 1px solid var(--line); background: var(--surface-2);
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
+    flex-wrap: wrap;
+  }
+  .ep-top .ep-brand { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .ep-top .ep-right { margin-left: auto; color: var(--ink); letter-spacing: 0.06em; text-transform: none; }
+
+  /* ---------- Readout strip wall (the signature) ---------- */
+  .ep-readout {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); margin-bottom: 14px;
+  }
+  .ep-cell { background: var(--surface); padding: 10px 14px 12px; min-width: 0; }
+  .ep-v {
+    font-size: 21px; font-weight: 600; color: var(--accent); margin-top: 5px;
+    font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+  }
+  .ep-cell:first-child .ep-v { font-size: 27px; }
+  .ep-d { font-size: 10px; letter-spacing: 0.05em; margin-top: 2px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .ep-d.up { color: var(--accent); }
+  .ep-d.down { color: var(--ink); }
+  .ep-cell.ep-sel {
+    background: color-mix(in oklab, var(--accent) 8%, var(--surface));
+    outline: 1px solid var(--line); outline-offset: -1px;
+  }
+  .ep-cell.ep-sel .ep-k { color: var(--ink); }
+
+  /* ---------- Panels ---------- */
+  .ep-panel { border: 1px solid var(--line); background: var(--surface); min-width: 0; }
+  .ep-ph {
+    display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .ep-ph::before { content: "//"; color: var(--faint); }
+  .ep-ph small { margin-left: auto; letter-spacing: 0.05em; color: var(--muted); text-transform: none; }
+  .ep-take { margin: 0; padding: 8px 12px 0; color: var(--ink); font-size: 11px; }
+  .ep-chart { display: block; width: 100%; height: auto; padding: 4px 6px 2px; }
+
+  /* ---------- Bracket states (severity = brightness, never a new hue) ---------- */
+  .ep-state { font-size: 9.5px; letter-spacing: 0.06em; padding: 1px 5px; flex: none; white-space: nowrap; }
+  .ep-state.ok { color: var(--ok); border: 1px solid var(--line); }
+  .ep-state.warn { color: var(--accent-ink); background: var(--warn); font-weight: 600; }
+  .ep-state.fail { color: var(--accent-ink); background: var(--danger); font-weight: 600; }
+
+  /* ---------- Readout rows (machine readings; bracket rows, no LED dots) ---------- */
+  .ep-rows { padding: 2px 0 4px; }
+  .ep-row {
+    display: flex; align-items: center; gap: 10px; padding: 6px 12px;
+    border-top: 1px solid var(--line-soft); font-size: 11.5px;
+  }
+  .ep-row:first-child { border-top: 0; }
+  .ep-row .n { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ep-row .m { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---------- LED meters (dot-matrix fills, CSS) ---------- */
+  .ep-meters { padding: 4px 0 8px; }
+  .ep-mrow {
+    display: grid; grid-template-columns: 96px 1fr 52px; gap: 10px; align-items: center;
+    padding: 6px 12px; border-top: 1px solid var(--line-soft); font-size: 11px;
+  }
+  .ep-mrow:first-child { border-top: 0; }
+  .ep-mrow .n { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ep-led { height: 9px; position: relative; background: var(--sunken); }
+  .ep-led i {
+    position: absolute; top: 0; bottom: 0; left: 0; width: var(--w);
+    background: radial-gradient(circle, var(--accent) 1.1px, transparent 1.3px);
+    background-size: 5px 5px; background-position: 1px 50%;
+  }
+  .ep-led i.dim {
+    background: radial-gradient(circle, var(--matrix-dim) 1.1px, transparent 1.3px);
+    background-size: 5px 5px; background-position: 1px 50%;
+  }
+  .ep-mrow .m { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  /* ---------- Event feed ---------- */
+  .ep-ev { padding: 2px 0 4px; }
+  .ep-evrow {
+    display: flex; gap: 10px; padding: 6px 12px; border-top: 1px solid var(--line-soft);
+    font-size: 11px; align-items: baseline;
+  }
+  .ep-evrow:first-child { border-top: 0; }
+  .ep-evrow time { color: var(--muted); flex: none; }
+  .ep-evrow .t { color: var(--ink); min-width: 0; }
+  .ep-evrow.fail { background: var(--chart-fill); }
+  .ep-evrow.fail .t, .ep-evrow.fail time { color: light-dark(var(--ink), var(--accent)); }
+  .ep-evfoot {
+    padding: 7px 12px; border-top: 1px solid var(--line-soft);
+    font-size: 10px; letter-spacing: 0.08em; color: var(--muted);
+  }
+
+  /* ---------- Ticker band ---------- */
+  .ep-ticker {
+    display: flex; align-items: center; gap: 14px; overflow: hidden;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    background: var(--surface-2); padding: 7px 0;
+    font-size: 11px; letter-spacing: 0.05em;
+  }
+  .ep-ticker .ep-live {
+    flex: none; padding: 0 12px; color: var(--accent);
+    letter-spacing: 0.14em; text-transform: uppercase; border-right: 1px solid var(--line);
+  }
+  .ep-tape { display: inline-flex; gap: 28px; white-space: nowrap; animation: ep-tape 48s linear infinite; }
+  .ep-tape span { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .ep-tape b { color: var(--accent); font-weight: 600; margin-right: 6px; }
+  .ep-tape .dn { color: light-dark(var(--muted), var(--ink)); }
+  @keyframes ep-tape { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- Cursor + scanning bar (live / loading) ---------- */
+  .ep-cursor {
+    display: inline-block; width: 7px; height: 13px; background: var(--accent);
+    vertical-align: -2px; animation: ep-blink 1.1s steps(1) infinite;
+  }
+  @keyframes ep-blink { 50% { opacity: 0; } }
+  .ep-scan { position: relative; height: 3px; background: var(--sunken); overflow: hidden; }
+  .ep-scan i {
+    position: absolute; top: 0; bottom: 0; width: 56px; background: var(--accent);
+    animation: ep-sweep 1.4s ease-in-out infinite alternate;
+  }
+  @keyframes ep-sweep { from { left: 0; } to { left: calc(100% - 56px); } }
+  .ep-wait { display: grid; gap: 10px; padding: 22px 16px; color: var(--muted); font-size: 11px; letter-spacing: 0.06em; }
+
+  /* ---------- States: terse system lines ---------- */
+  .ep-empty { padding: 26px 16px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.06em; }
+  .ep-errline {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 10px 12px; border-top: 1px solid var(--line-soft); font-size: 11px;
+  }
+  .ep-errline .t { color: var(--ink); }
+
+  /* ---------- Bracket controls ---------- */
+  .ep-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: transparent; border: 0; padding: 3px 2px;
+    font: 600 10.5px/1.4 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); cursor: pointer; white-space: nowrap;
+    transition: color .12s;
+  }
+  .ep-btn::before { content: "[ "; color: var(--faint); }
+  .ep-btn::after { content: " ]"; color: var(--faint); }
+  .ep-btn:hover, .ep-btn:focus-visible { color: var(--accent); outline: none; }
+  .ep-btn:hover::before, .ep-btn:hover::after,
+  .ep-btn:focus-visible::before, .ep-btn:focus-visible::after { color: var(--accent); }
+  .ep-btn.pri { color: var(--accent); }
+  .ep-btn.pri::before, .ep-btn.pri::after { color: var(--accent); }
+  .ep-btn.fill { background: var(--accent); color: var(--accent-ink); padding: 4px 8px; }
+  .ep-btn.fill::before { content: none; }
+  .ep-btn.fill::after { content: none; }
+  .ep-btn.fill:hover { background: color-mix(in oklab, var(--accent) 88%, var(--accent-ink)); }
+  .ep-btn[disabled] { color: var(--faint); cursor: default; }
+  .ep-btn[disabled]::before, .ep-btn[disabled]::after { color: var(--faint); }
+
+  .ep-iwrap { display: inline-flex; align-items: center; gap: 5px; }
+  .ep-iwrap::before { content: "["; color: var(--faint); }
+  .ep-iwrap::after { content: "]"; color: var(--faint); }
+  .ep-input {
+    height: 24px; padding: 0 8px; background: var(--sunken); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 0;
+    font: 500 11.5px/1 var(--mono); min-width: 0;
+  }
+  .ep-input::placeholder { color: var(--muted); }
+  .ep-input:focus { outline: none; border-color: var(--accent); }
+  .ep-sel { position: relative; display: inline-flex; }
+  .ep-sel select {
+    appearance: none; height: 24px; padding: 0 22px 0 8px; background: var(--sunken); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 0; font: 500 11.5px/1 var(--mono);
+  }
+  .ep-sel::after {
+    content: "▾"; position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
+    font: 10px/1 var(--mono); color: var(--muted); pointer-events: none;
+  }
+
+  .ep-chip {
+    display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px;
+    border: 1px solid var(--line); background: transparent;
+    font: 500 10.5px/1 var(--mono); letter-spacing: 0.06em; color: var(--muted);
+    white-space: nowrap; transition: border-color .12s, color .12s;
+  }
+  .ep-chip:hover { border-color: var(--muted); color: var(--ink); }
+  .ep-chip.on { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+  .ep-kbd {
+    display: inline-block; font: 600 10px/1 var(--mono); color: var(--muted);
+    background: var(--sunken); border: 1px solid var(--line); border-bottom-width: 2px;
+    border-radius: 0; padding: 2px 5px; vertical-align: middle;
+  }
+
+  .ep-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    padding: 9px 12px; border-bottom: 1px solid var(--line-soft);
+  }
+  .ep-sp { flex: 1; }
+  .ep-stamp { display: inline-flex; align-items: center; gap: 7px; font: 11px/1 var(--mono); color: var(--muted); }
+
+  /* ---------- Component sheet ---------- */
+  .ep-sheet { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+  .ep-spec { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px 16px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .ep-readout { grid-template-columns: 1fr 1fr; }
+    .ep-cell:first-child { grid-column: 1 / -1; }
+    .ep-cols, .ep-cols.flip, .ep-grid2 { grid-template-columns: 1fr; }
+    .ep-sheet { grid-template-columns: 1fr; }
+    .ep-wrap { padding: 0 12px 20px; }
+  }
+
+  /* ---------- Print ----------
+     One line re-inks the whole identity for paper: the light-dark()
+     tokens follow the light scheme, so every readout, bracket and dot
+     flips without hand-recoloring. Motion dies, chrome hides, panels
+     never split across pages. */
+  @media print {
+    :root { color-scheme: light; }
+    @page { margin: 12mm; @bottom-center { content: counter(page) " of " counter(pages); } }
+    a { text-decoration: none; }
+    .ep-noprint { display: none; }
+    .ep-panel, .ep-readout { break-inside: avoid; }
+    .ep-cursor, .ep-scan i, .ep-tape { animation: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .ep-cursor, .ep-scan i, .ep-tape { animation: none; }
+    .ep-btn, .ep-chip { transition: none; }
+  }
+}
+
+</style>
+<style>
+/* page CSS (unlayered): this demo's own document chrome - headings and
+   section rhythm for the explanation page itself, the phone frame, and the
+   branded print folio. Everything below stays out of the foundation layer
+   and never edits it. */
+.head { padding: 34px 0 8px; }
+.head h1 { font-size: 26px; line-height: 1.15; margin: 10px 0; font-weight: 600; }
+.dek { color: var(--muted); max-width: 78ch; margin: 0 0 6px; font-size: 12px; }
+.head .ep-eyebrow { color: var(--accent); margin: 0; }
+.sec { margin-top: 52px; }
+.sec > .ep-eyebrow { margin: 0 0 8px; }
+.sec-dek { color: var(--muted); max-width: 84ch; margin: 0 0 14px; font-size: 12px; }
+.foot {
+  margin-top: 72px; border-top: 1px solid var(--line); padding-top: 20px;
+  font-size: 12px; color: var(--muted);
+}
+.ep-eyebrow { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.ep-eyebrow::before { content: "// "; color: var(--faint); }
+
+/* demo-only grid for explanation pairings */
+.demo-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.demo-cols > * { min-width: 0; }
+@media (max-width: 860px) { .demo-cols { grid-template-columns: 1fr; } }
+
+/* phone frame chrome for the 390 proof (screen only) */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line);
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line-soft);
+}
+.phone .notch i { width: 74px; height: 5px; background: var(--line); }
+.mob-note { text-align: center; color: var(--muted); font-size: 11px; margin: 10px 0 0; }
+
+/* branded folio for this document's printout; the foundation ships the
+   plain page counter and this replaces the text. */
+@media print {
+  @page {
+    @bottom-center {
+      content: "quayside instrument · identity demo · page " counter(page) " of " counter(pages);
+    }
+  }
+}
+</style>
+</head>
+<body>
+
+<main class="ep-wrap">
+
+  <div class="ep-top">
+    <span class="ep-brand">uiforagents <i>//</i> espresso-panel</span>
+    <span class="ep-right">
+      <button class="ep-btn ep-noprint" id="theme-toggle" type="button">light scheme</button>
+    </span>
+  </div>
+
+  <header class="head ep-noprint">
+    <p class="ep-eyebrow">uiforagents · artifact identity · espresso-panel</p>
+    <h1>The quayside instrument</h1>
+    <p class="dek">An amber instrument panel: one phosphor hue on warm black, all-mono everything,
+    intensity as hierarchy. Readout strip walls, dot-matrix fills, bracket states, stepped crisp
+    charts, a ticker tape. Built for instrument jobs - tickers, price watchers, machine rooms.
+    Everything below is built from <b>foundation.css</b> alone.</p>
+    <p class="ep-d">oct 09 2026 · light-dark() tokens, dark lead · one hue, no second color anywhere · hand-authored svg · zero required javascript</p>
+  </header>
+
+  <!-- ==================== 01 RATIONALE ==================== -->
+  <section class="sec ep-noprint" id="rationale">
+    <p class="ep-eyebrow">01 · design rationale</p>
+    <p class="sec-dek">Ops consoles watch systems; instruments watch <b>quantities</b>. This identity is
+    the terminal on the trading floor or the machine-room wall: it reports, it does not chat. One
+    amber hue does all the work - brightness is hierarchy, brackets are the state language, and the
+    type is mono because instruments count.</p>
+    <div class="demo-cols">
+      <div class="ep-panel">
+        <div class="ep-ph">what makes it espresso-panel</div>
+        <div class="ep-spec" style="gap:6px; padding:12px 16px">
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>Single hue</b> - every color is amber over warm black; a second hue is the one unforgivable move.</span></span>
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>Readout walls</b> - the five-cell strip is the signature; values are big, accent, tabular.</span></span>
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>Bracket states</b> - [ OK ] / [WARN] / [FAIL] as brightness rungs, never colors.</span></span>
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>Dot-matrix fills</b> - bars and meters are made of visible dots, like real hardware.</span></span>
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>The tape</b> - a ticker band that reads statically and marquees as decoration.</span></span>
+        </div>
+      </div>
+      <div class="ep-panel">
+        <div class="ep-ph">what stays out</div>
+        <div class="ep-spec" style="gap:6px; padding:12px 16px">
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>Ops furniture</b> - no severity rails, no log-level facets, no dense tables with sort/filter/pagination. That is night-ops' job.</span></span>
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>Health dots</b> - readings are bracket rows; LEDs only as meter fills.</span></span>
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>Warmth</b> - no rounded bento, no soft pills, no encouragement. tally-board owns friendly.</span></span>
+          <span class="ep-row" style="border:0; padding:2px 0"><span class="t"><b>Proportional type</b> - no sans anywhere. The ledger's books stay in paper-ledger.</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 02 TOKENS ==================== -->
+  <section class="sec ep-noprint" id="tokens">
+    <p class="ep-eyebrow">02 · token reference</p>
+    <p class="sec-dek">Every token is a <b>light-dark()</b> pair: dark is the canonical lead, light is a
+    derived amber-on-paper scheme where severity darkens instead of brightens. One hue end to end.</p>
+    <div class="ep-panel">
+      <div class="ep-ph">semantic tokens <small>slot 2 = canonical dark · slot 1 = derived light</small></div>
+      <div class="ep-sheet">
+        <div class="ep-spec">
+          <span class="ep-k">grounds</span>
+          <div class="ep-rows" style="padding:0; align-self:stretch">
+            <div class="ep-row"><span class="n" style="background:var(--bg); padding:2px 8px; border:1px solid var(--line)">--bg</span><span class="m">the warm black</span></div>
+            <div class="ep-row"><span class="n" style="background:var(--surface); padding:2px 8px; border:1px solid var(--line)">--surface</span><span class="m">panels, cells</span></div>
+            <div class="ep-row"><span class="n" style="background:var(--surface-2); padding:2px 8px; border:1px solid var(--line)">--surface-2</span><span class="m">chrome bands</span></div>
+            <div class="ep-row"><span class="n" style="background:var(--sunken); padding:2px 8px; border:1px solid var(--line)">--sunken</span><span class="m">wells, tracks</span></div>
+          </div>
+        </div>
+        <div class="ep-spec">
+          <span class="ep-k">the ladder</span>
+          <div class="ep-rows" style="padding:0; align-self:stretch">
+            <div class="ep-row"><span class="n ep-acc">--accent</span><span class="m">values, [FAIL], live</span></div>
+            <div class="ep-row"><span class="n">--ink</span><span class="m">body, [WARN] fill</span></div>
+            <div class="ep-row"><span class="n ep-mut">--muted</span><span class="m">captions, [ OK ]</span></div>
+            <div class="ep-row"><span class="n ep-dim">--faint</span><span class="m">ornaments only</span></div>
+          </div>
+        </div>
+        <div class="ep-spec">
+          <span class="ep-k">lines + washes</span>
+          <div class="ep-rows" style="padding:0; align-self:stretch">
+            <div class="ep-row"><span class="n" style="border-top:2px solid var(--line); width:32px">&nbsp;</span><span class="m">--line</span></div>
+            <div class="ep-row"><span class="n" style="border-top:2px solid var(--line-soft); width:32px">&nbsp;</span><span class="m">--line-soft</span></div>
+            <div class="ep-row"><span class="n" style="background:var(--accent-soft); padding:2px 8px; border:1px solid var(--line)">accent-soft</span><span class="m">8% wash</span></div>
+            <div class="ep-row"><span class="n" style="background:var(--chart-fill); padding:2px 8px; border:1px solid var(--line)">chart-fill</span><span class="m">fail-row wash</span></div>
+          </div>
+        </div>
+        <div class="ep-spec">
+          <span class="ep-k">state rungs</span>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <span class="ep-state ok">[ OK ]</span>
+            <span class="ep-state warn">[WARN]</span>
+            <span class="ep-state fail">[FAIL]</span>
+          </div>
+          <span class="ep-d">severity = brightness distance from the ground, flipped in light</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 03 READOUT WALL ==================== -->
+  <section class="sec" id="readouts">
+    <p class="ep-eyebrow">03 · the readout wall</p>
+    <p class="sec-dek">Five cells per row, 1px grid gaps, the lead cell larger. The watched instrument
+    takes <b>.ep-sel</b>. Deltas name their comparison; the kicker names the window.</p>
+    <div class="ep-readout">
+      <div class="ep-cell"><div class="ep-k">quayside composite</div><div class="ep-v">1,412.08</div><div class="ep-d up">+6.2 vs open</div></div>
+      <div class="ep-cell"><div class="ep-k">session vol</div><div class="ep-v">2.84M</div><div class="ep-d">-9% vs 30d</div></div>
+      <div class="ep-cell ep-sel"><div class="ep-k">gullway air</div><div class="ep-v">84.12</div><div class="ep-d up">+1.8</div></div>
+      <div class="ep-cell"><div class="ep-k">bight energy</div><div class="ep-v">212.40</div><div class="ep-d down">-18 halt</div></div>
+      <div class="ep-cell"><div class="ep-k">feed lag</div><div class="ep-v">212ms</div><div class="ep-d">p95 · 24h</div></div>
+    </div>
+    <div class="ep-readout">
+      <div class="ep-cell"><div class="ep-k">sable agro</div><div class="ep-v">38.06</div><div class="ep-d up">+0.44</div></div>
+      <div class="ep-cell"><div class="ep-k">meridian lines</div><div class="ep-v">9.88</div><div class="ep-d down">-0.12</div></div>
+      <div class="ep-cell"><div class="ep-k">kestrel semi</div><div class="ep-v">411.90</div><div class="ep-d up">+9.6</div></div>
+      <div class="ep-cell"><div class="ep-k">cormorant</div><div class="ep-v">57.31</div><div class="ep-d">flat</div></div>
+      <div class="ep-cell"><div class="ep-k">halted</div><div class="ep-v">1</div><div class="ep-d down">bight · [LULD]</div></div>
+    </div>
+  </section>
+
+  <!-- ==================== 04 CHARTS ==================== -->
+  <section class="sec" id="charts">
+    <p class="ep-eyebrow">04 · stepped charts + sparks</p>
+    <p class="sec-dek">Steps, never curves - the instrument reports. Dot-grid levels, a square end
+    marker with the live value, at most one dashed annotation. Sparks follow the verdict:
+    bright favorable, dim unfavorable.</p>
+    <div class="ep-cols">
+      <div class="ep-panel">
+        <div class="ep-ph">quayside composite · intraday<small>utc · 5m steps</small></div>
+        <p class="ep-take">open gap filled by 10:00 · session high 1,418 into the close · 13:42 halt on bight</p>
+        <svg class="ep-chart" viewBox="0 0 720 220" role="img" aria-label="Stepped line chart of the quayside composite index intraday, recovering from an early dip to close near the session high of 1,418">
+          <defs>
+            <pattern id="dm-grid" width="4" height="4" patternUnits="userSpaceOnUse">
+              <rect width="1.4" height="1.4" fill="var(--chart-grid)"/>
+            </pattern>
+          </defs>
+          <rect x="44" y="134" width="660" height="1" fill="url(#dm-grid)"/>
+          <rect x="44" y="74" width="660" height="1" fill="url(#dm-grid)"/>
+          <rect x="44" y="14" width="660" height="1" fill="url(#dm-grid)"/>
+          <rect x="44" y="194" width="660" height="1" fill="var(--chart-axis)"/>
+          <text x="38" y="138" text-anchor="end" font-size="9" fill="var(--chart-label)">1,390</text>
+          <text x="38" y="78" text-anchor="end" font-size="9" fill="var(--chart-label)">1,400</text>
+          <text x="38" y="18" text-anchor="end" font-size="9" fill="var(--chart-label)">1,410</text>
+          <path d="M44.0 96 H66.8 V88 H89.5 V108 H112.3 V100 H135.0 V92 H157.8 V76 H180.6 V84 H203.3 V68 H226.1 V60 H248.8 V72 H271.6 V64 H294.3 V52 H317.1 V92 H339.9 V104 H362.6 V48 H385.4 V40 H408.1 V56 H430.9 V44 H453.7 V36 H476.4 V48 H499.2 V88 H521.9 V99 H544.7 V32 H567.4 V24 H590.2 V38 H613.0 V30 H635.7 V26 H658.5 V82 H681.2 V92 H704.0 V22"
+            fill="none" stroke="var(--chart-series)" stroke-width="1.6" shape-rendering="crispEdges"/>
+          <rect x="698" y="16" width="7" height="7" fill="var(--chart-series)"/>
+          <text x="700" y="40" text-anchor="end" font-size="10" fill="var(--chart-series)">1,412.08</text>
+          <line x1="362.6" y1="14" x2="362.6" y2="194" stroke="var(--chart-annotate)" stroke-dasharray="2 4" opacity="0.8"/>
+          <text x="366" y="24" font-size="9" fill="var(--chart-label)">halt · bight 13:42</text>
+          <text x="44" y="210" font-size="9" fill="var(--chart-label)">09:30</text>
+          <text x="203" y="210" text-anchor="middle" font-size="9" fill="var(--chart-label)">11:00</text>
+          <text x="362" y="210" text-anchor="middle" font-size="9" fill="var(--chart-label)">13:00</text>
+          <text x="521" y="210" text-anchor="middle" font-size="9" fill="var(--chart-label)">15:00</text>
+          <text x="704" y="210" text-anchor="end" font-size="9" fill="var(--chart-label)">16:58</text>
+        </svg>
+      </div>
+      <div class="ep-stack">
+        <div class="ep-panel">
+          <div class="ep-ph">movers · 24h</div>
+          <div class="ep-rows">
+            <div class="ep-row"><span class="n">kestrel semi</span><span class="m">411.90</span>
+              <svg width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Upward stepped sparkline">
+                <path d="M2 19 H16 V17 H30 V15 H44 V12 H58 V10 H72 V7 H86 V4" fill="none" stroke="var(--chart-series)" stroke-width="1.5" shape-rendering="crispEdges"/>
+                <rect x="90" y="2" width="4" height="4" fill="var(--chart-series)"/>
+              </svg></div>
+            <div class="ep-row"><span class="n">meridian lines</span><span class="m">9.88</span>
+              <svg width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Downward stepped sparkline">
+                <path d="M2 5 H16 V7 H30 V6 H44 V10 H58 V13 H72 V16 H86 V19" fill="none" stroke="var(--chart-series-dim)" stroke-width="1.5" shape-rendering="crispEdges"/>
+                <rect x="90" y="17" width="4" height="4" fill="var(--chart-series-dim)"/>
+              </svg></div>
+            <div class="ep-row"><span class="n">cormorant</span><span class="m">57.31</span>
+              <svg width="96" height="24" viewBox="0 0 96 24" role="img" aria-label="Flat stepped sparkline">
+                <path d="M2 12 H16 V11 H30 V13 H44 V12 H58 V12 H72 V11 H86 V12" fill="none" stroke="var(--chart-series-dim)" stroke-width="1.5" shape-rendering="crispEdges"/>
+                <rect x="90" y="10" width="4" height="4" fill="var(--chart-series-dim)"/>
+              </svg></div>
+          </div>
+        </div>
+        <div class="ep-panel">
+          <div class="ep-ph">quayside composite · 30 sessions</div>
+          <svg class="ep-chart" viewBox="0 0 340 84" role="img" aria-label="Dot-matrix strip of 30 sessions; most bright, two dim down sessions, gaps on closed days">
+            <rect x="12" y="20" width="6" height="6" fill="var(--accent)"/><rect x="22" y="20" width="6" height="6" fill="var(--accent)"/><rect x="32" y="20" width="6" height="6" fill="var(--accent)"/><rect x="42" y="20" width="6" height="6" fill="var(--accent)"/><rect x="52" y="20" width="6" height="6" fill="var(--matrix-dim)"/><rect x="72" y="20" width="6" height="6" fill="var(--accent)"/><rect x="82" y="20" width="6" height="6" fill="var(--accent)"/><rect x="92" y="20" width="6" height="6" fill="var(--accent)"/><rect x="102" y="20" width="6" height="6" fill="var(--accent)"/>
+            <rect x="12" y="32" width="6" height="6" fill="var(--accent)"/><rect x="22" y="32" width="6" height="6" fill="var(--accent)"/><rect x="32" y="32" width="6" height="6" fill="var(--matrix-dim)"/><rect x="42" y="32" width="6" height="6" fill="var(--accent)"/><rect x="52" y="32" width="6" height="6" fill="var(--accent)"/><rect x="72" y="32" width="6" height="6" fill="var(--accent)"/><rect x="82" y="32" width="6" height="6" fill="var(--accent)"/><rect x="92" y="32" width="6" height="6" fill="var(--accent)"/><rect x="102" y="32" width="6" height="6" fill="var(--accent)"/>
+            <rect x="122" y="20" width="6" height="6" fill="var(--accent)"/><rect x="132" y="20" width="6" height="6" fill="var(--accent)"/><rect x="142" y="20" width="6" height="6" fill="var(--accent)"/><rect x="152" y="20" width="6" height="6" fill="var(--accent)"/><rect x="162" y="20" width="6" height="6" fill="var(--accent)"/><rect x="182" y="20" width="6" height="6" fill="var(--accent)"/><rect x="192" y="20" width="6" height="6" fill="var(--accent)"/><rect x="202" y="20" width="6" height="6" fill="var(--accent)"/><rect x="212" y="20" width="6" height="6" fill="var(--accent)"/>
+            <rect x="122" y="32" width="6" height="6" fill="var(--accent)"/><rect x="132" y="32" width="6" height="6" fill="var(--accent)"/><rect x="142" y="32" width="6" height="6" fill="var(--accent)"/><rect x="152" y="32" width="6" height="6" fill="var(--accent)"/><rect x="162" y="32" width="6" height="6" fill="var(--accent)"/><rect x="182" y="32" width="6" height="6" fill="var(--accent)"/><rect x="192" y="32" width="6" height="6" fill="var(--accent)"/><rect x="202" y="32" width="6" height="6" fill="var(--matrix-dim)"/><rect x="212" y="32" width="6" height="6" fill="var(--accent)"/>
+            <text x="12" y="64" font-size="9" fill="var(--chart-label)">sep 08</text>
+            <text x="328" y="64" text-anchor="end" font-size="9" fill="var(--chart-label)">oct 08</text>
+            <text x="12" y="78" font-size="9" fill="var(--muted)">bright = up · dim = down · gap = closed</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 05 DOT-MATRIX + LED ==================== -->
+  <section class="sec" id="matrix">
+    <p class="ep-eyebrow">05 · dot-matrix bars + LED meters</p>
+    <p class="sec-dek">Fills are made of visible dots - the leader at full brightness, the rest dimmed,
+    never re-hued. LED meters are CSS dot fields; set only <b>--w</b> and the .dim rung.</p>
+    <div class="ep-cols flip">
+      <div class="ep-panel">
+        <div class="ep-ph">session volume by instrument<small>shares · m</small></div>
+        <svg class="ep-chart" viewBox="0 0 340 180" role="img" aria-label="Dot-matrix bar chart of session volume: gullway air 1.12 million shares, bight energy 0.61, kestrel semi 0.44, sable agro 0.38, meridian lines 0.29 million">
+          <defs>
+            <pattern id="dm-led" width="5" height="5" patternUnits="userSpaceOnUse">
+              <rect width="3" height="3" fill="var(--accent)"/>
+            </pattern>
+          </defs>
+          <line x1="30" y1="156" x2="330" y2="156" stroke="var(--chart-axis)"/>
+          <rect x="43.6" y="17.8" width="33.2" height="138.2" fill="url(#dm-led)"/>
+          <rect x="104.0" y="80.2" width="33.2" height="75.8" fill="url(#dm-led)" opacity="0.55"/>
+          <rect x="164.4" y="110.6" width="33.2" height="45.4" fill="url(#dm-led)" opacity="0.55"/>
+          <rect x="224.8" y="124.0" width="33.2" height="32.0" fill="url(#dm-led)" opacity="0.55"/>
+          <rect x="285.2" y="144.6" width="33.2" height="11.4" fill="url(#dm-led)" opacity="0.55"/>
+          <text x="60.2" y="12" text-anchor="middle" font-size="9" fill="var(--accent)">1.12M</text>
+          <text x="60.2" y="172" text-anchor="middle" font-size="8" fill="var(--chart-label)">GULL</text>
+          <text x="120.6" y="172" text-anchor="middle" font-size="8" fill="var(--chart-label)">BITE</text>
+          <text x="181.0" y="172" text-anchor="middle" font-size="8" fill="var(--chart-label)">KSSL</text>
+          <text x="241.4" y="172" text-anchor="middle" font-size="8" fill="var(--chart-label)">SABL</text>
+          <text x="301.8" y="172" text-anchor="middle" font-size="8" fill="var(--chart-label)">MERI</text>
+        </svg>
+        <div class="ep-rows">
+          <div class="ep-row"><span class="n">gullway air</span><span class="m">1.12M · 39% of tape</span></div>
+          <div class="ep-row"><span class="n">bight energy</span><span class="m">0.61M · halted 13:42</span></div>
+          <div class="ep-row"><span class="n">kestrel semi</span><span class="m">0.44M</span></div>
+        </div>
+      </div>
+      <div class="ep-stack">
+        <div class="ep-panel">
+          <div class="ep-ph">feed links · utilization<small>5m window</small></div>
+          <div class="ep-meters">
+            <div class="ep-mrow"><span class="n">gw-alpha</span><span class="ep-led"><i style="--w:78%"></i></span><span class="m">78%</span></div>
+            <div class="ep-mrow"><span class="n">gw-beta</span><span class="ep-led"><i class="dim" style="--w:41%"></i></span><span class="m">41%</span></div>
+            <div class="ep-mrow"><span class="n">archiver</span><span class="ep-led"><i class="dim" style="--w:12%"></i></span><span class="m">12%</span></div>
+          </div>
+        </div>
+        <div class="ep-panel">
+          <div class="ep-ph">reading semantics</div>
+          <div class="ep-rows">
+            <div class="ep-row"><span class="ep-state ok">[ OK ]</span><span class="m">outline rung · nominal</span></div>
+            <div class="ep-row"><span class="ep-state warn">[WARN]</span><span class="m">mid fill · degraded</span></div>
+            <div class="ep-row"><span class="ep-state fail">[FAIL]</span><span class="m">accent fill · loudest</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 06 TICKER ==================== -->
+  <section class="sec" id="ticker">
+    <p class="ep-eyebrow">06 · the tape</p>
+    <p class="sec-dek">A ticker band on the chrome ground: symbol in accent, quote in ink, down cells
+    dimmed in light. The marquee is decoration - the band reads statically, and the motion dies under
+    reduced-motion and print.</p>
+    <div class="ep-ticker">
+      <span class="ep-live">live<span class="ep-cursor" aria-hidden="true"></span></span>
+      <div class="ep-tape">
+        <span><b>GULL</b>84.12 +1.8</span>
+        <span><b>QSY</b>1,412.08 +6.2</span>
+        <span class="dn"><b>BITE</b>212.40 -18</span>
+        <span><b>KSSL</b>411.90 +9.6</span>
+        <span class="dn"><b>MERI</b>9.88 -0.12</span>
+        <span><b>SABL</b>38.06 +0.44</span>
+        <span><b>CORM</b>57.31 0.00</span>
+        <span aria-hidden="true"><b>GULL</b>84.12 +1.8</span>
+        <span aria-hidden="true"><b>QSY</b>1,412.08 +6.2</span>
+        <span aria-hidden="true" class="dn"><b>BITE</b>212.40 -18</span>
+        <span aria-hidden="true"><b>KSSL</b>411.90 +9.6</span>
+        <span aria-hidden="true" class="dn"><b>MERI</b>9.88 -0.12</span>
+        <span aria-hidden="true"><b>SABL</b>38.06 +0.44</span>
+        <span aria-hidden="true"><b>CORM</b>57.31 0.00</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 07 READINGS + EVENTS ==================== -->
+  <section class="sec" id="readings">
+    <p class="ep-eyebrow">07 · bracket readings + event feed</p>
+    <p class="sec-dek">Machine readings as bracket rows - no LED dots, no dense tables. Event lines
+    carry timestamps and flags; a fail row takes the 8% wash and brightens its text.</p>
+    <div class="ep-cols">
+      <div class="ep-panel">
+        <div class="ep-ph">feed services<small>readings · 24h</small></div>
+        <div class="ep-rows">
+          <div class="ep-row"><span class="n">match-engine</span><span class="m">212µs · queue 4</span><span class="ep-state ok">[ OK ]</span></div>
+          <div class="ep-row"><span class="n">gw-alpha</span><span class="m">38ms · 78% util</span><span class="ep-state ok">[ OK ]</span></div>
+          <div class="ep-row"><span class="n">gw-beta</span><span class="m">610ms · failover</span><span class="ep-state warn">[WARN]</span></div>
+          <div class="ep-row"><span class="n">bight feed</span><span class="m">halted 13:42</span><span class="ep-state fail">[FAIL]</span></div>
+          <div class="ep-row"><span class="n">archiver</span><span class="m">12% · lag 0</span><span class="ep-state ok">[ OK ]</span></div>
+        </div>
+        <div class="ep-evfoot">5 services · 1 halted · window 24h</div>
+      </div>
+      <div class="ep-panel">
+        <div class="ep-ph">events · last 12h<small>utc</small></div>
+        <div class="ep-ev">
+          <div class="ep-evrow"><time>14:02:11</time><span class="t">composite snapshot republished · seq 88,412</span><span class="ep-state ok">[ OK ]</span></div>
+          <div class="ep-evrow"><time>13:57:00</time><span class="t">bight energy trading resumed · auction print 212.40</span><span class="ep-state ok">[ OK ]</span></div>
+          <div class="ep-evrow fail"><time>13:42:09</time><span class="t">downstream quote tape stale · failing over to gw-alpha</span><span class="ep-state fail">[FAIL]</span></div>
+          <div class="ep-evrow"><time>13:42:07</time><span class="t">LULD halt bight energy · limit band breached</span><span class="ep-state warn">[WARN]</span></div>
+          <div class="ep-evrow"><time>09:30:00</time><span class="t">session open · quayside composite 1,398.44</span><span class="ep-state ok">[ OK ]</span></div>
+        </div>
+        <div class="ep-evfoot">5 events · window 12h · tail <span class="ep-cursor" aria-hidden="true"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 08 STATES ==================== -->
+  <section class="sec" id="states">
+    <p class="ep-eyebrow">08 · empty · loading · error</p>
+    <p class="sec-dek">Terse system lines. Loading is a scanning bar and a named cause. Error is the
+    inverted [FAIL] flag line with a bracket retry - the instrument states the fault, it never
+    apologizes.</p>
+    <div class="ep-grid2">
+      <div class="ep-stack">
+        <div class="ep-panel">
+          <div class="ep-ph">depth · cormorant</div>
+          <div class="ep-empty">no quotes in window · [ WIDEN ]</div>
+        </div>
+        <div class="ep-panel">
+          <div class="ep-ph">depth · meridian lines</div>
+          <div class="ep-wait">
+            <span>acquiring feed · gw-beta</span>
+            <span class="ep-scan" role="progressbar" aria-label="acquiring feed"><i></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="ep-panel">
+        <div class="ep-ph">depth · bight energy</div>
+        <div class="ep-errline">
+          <span class="ep-state fail">[FAIL]</span>
+          <span class="t">upstream quotes unavailable · halted</span>
+          <span class="ep-sp"></span>
+          <button class="ep-btn" type="button">retry</button>
+        </div>
+        <div class="ep-evfoot">flags are fills; retries are brackets</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 09 COMPONENT SHEET ==================== -->
+  <section class="sec" id="components">
+    <p class="ep-eyebrow">09 · component sheet</p>
+    <p class="sec-dek">All-mono controls. Buttons and inputs are bracket elements; the one filled
+    button is the one primary action. Focus is an accent outline.</p>
+    <div class="ep-panel">
+      <div class="ep-ph">instrument controls</div>
+      <div class="ep-sheet">
+        <div class="ep-spec">
+          <span class="ep-k">buttons</span>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+            <button class="ep-btn pri" type="button">arm feed</button>
+            <button class="ep-btn" type="button">filter</button>
+            <button class="ep-btn" type="button" disabled>halted</button>
+          </div>
+          <button class="ep-btn fill" type="button">execute</button>
+        </div>
+        <div class="ep-spec">
+          <span class="ep-k">inputs + select</span>
+          <span class="ep-iwrap"><input class="ep-input" type="text" value="gullway" aria-label="instrument filter"></span>
+          <span class="ep-iwrap"><input class="ep-input" type="text" placeholder="symbol…" aria-label="symbol search"> <kbd class="ep-kbd">/</kbd></span>
+          <span class="ep-sel"><select aria-label="window"><option>24h</option><option>7d</option><option>30d</option></select></span>
+        </div>
+        <div class="ep-spec">
+          <span class="ep-k">chips + keycap</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <span class="ep-chip on">equities</span>
+            <span class="ep-chip">futures</span>
+            <span class="ep-chip">fx</span>
+          </div>
+          <div><span class="ep-kbd">⌘K</span> <span class="ep-d">command line</span></div>
+        </div>
+        <div class="ep-spec">
+          <span class="ep-k">states</span>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+            <span class="ep-state ok">[ OK ]</span>
+            <span class="ep-state warn">[WARN]</span>
+            <span class="ep-state fail">[FAIL]</span>
+          </div>
+          <span class="ep-d">brackets are part of the copy · uppercase only</span>
+        </div>
+      </div>
+      <div class="ep-bar">
+        <span class="ep-stamp"><span class="ep-cursor" aria-hidden="true"></span> feed live · updated 4s ago</span>
+        <span class="ep-sp"></span>
+        <span class="ep-iwrap"><input class="ep-input" type="text" placeholder="jump to instrument…" aria-label="jump to instrument"></span>
+        <button class="ep-btn pri" type="button">go</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 10 PRINT ==================== -->
+  <section class="sec ep-noprint" id="print">
+    <p class="ep-eyebrow">10 · print, modestly</p>
+    <p class="sec-dek">Print forces the light values at the root - nothing is hand-recolored. The tape
+    stops, the cursor dies, chrome drops via <b>.ep-noprint</b>, panels never split across pages, and
+    a folio ships via the @page margin box. Print this page: the wall is the proof.</p>
+  </section>
+
+  <!-- ==================== 11 390 ==================== -->
+  <section class="sec" id="mobile">
+    <p class="ep-eyebrow">11 · the 390 treatment</p>
+    <p class="sec-dek">The readout collapses to hero + 2×2, panels stack, the tape keeps running. Same
+    classes, no re-styling.</p>
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div class="ep-top">
+        <span class="ep-brand">QUAYSIDE/FEED</span>
+        <span class="ep-right">[PROD]</span>
+      </div>
+      <div class="ep-wrap" style="padding-top:14px">
+        <div class="ep-readout" style="margin-bottom:14px">
+          <div class="ep-cell"><div class="ep-k">quayside composite</div><div class="ep-v">1,412.08</div><div class="ep-d up">+6.2 vs open</div></div>
+          <div class="ep-cell"><div class="ep-k">session vol</div><div class="ep-v">2.84M</div><div class="ep-d">-9% vs 30d</div></div>
+          <div class="ep-cell"><div class="ep-k">feed lag</div><div class="ep-v">212ms</div><div class="ep-d">p95 · 24h</div></div>
+        </div>
+        <div class="ep-panel">
+          <div class="ep-ph">feed services</div>
+          <div class="ep-rows">
+            <div class="ep-row"><span class="n">match-engine</span><span class="m">212µs</span><span class="ep-state ok">[ OK ]</span></div>
+            <div class="ep-row"><span class="n">gw-beta</span><span class="m">610ms</span><span class="ep-state warn">[WARN]</span></div>
+            <div class="ep-row"><span class="n">bight feed</span><span class="m">halted</span><span class="ep-state fail">[FAIL]</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ep-ticker" style="margin-top:14px">
+        <span class="ep-live">live</span>
+        <div class="ep-tape">
+          <span><b>GULL</b>84.12 +1.8</span>
+          <span class="dn"><b>BITE</b>212.40 -18</span>
+          <span><b>QSY</b>1,412.08 +6.2</span>
+          <span aria-hidden="true"><b>GULL</b>84.12 +1.8</span>
+          <span aria-hidden="true" class="dn"><b>BITE</b>212.40 -18</span>
+          <span aria-hidden="true"><b>QSY</b>1,412.08 +6.2</span>
+        </div>
+      </div>
+    </div>
+    <p class="mob-note">390px frame · readout hero + 2×2 · same classes, no re-styling</p>
+  </section>
+
+  <footer class="foot ep-noprint">
+    espresso-panel · artifact identity demo · fully fictional quayside exchange data, no real brands ·
+    one stylesheet, zero required scripts · one amber hue, all mono, brackets for states ·
+    print this page: the wall is the proof
+  </footer>
+
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var goingDark = root.style.colorScheme === 'light';
+      root.style.colorScheme = goingDark ? 'dark' : 'light';
+      btn.textContent = goingDark ? 'light scheme' : 'dark scheme';
+    });
+  })();
+</script>
+</body>
+</html>
