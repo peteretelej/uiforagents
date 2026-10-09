@@ -55,8 +55,10 @@ edit to the canonical `identities/<slug>/` files in the uiforagents repo.
    token names; keep every `light-dark()` pair ordered light-first (slot 1 is
    always the light value).
 3. Rename the component class prefix to your system's slug (`.mb-` becomes
-   `.yours-`). Mechanical find-and-replace; do it everywhere, including the
-   prompt-pack references.
+   `.yw-`). The parent pack's lane mechanics set the shape - every artifact
+   pack mandates a two-letter namespace, keyframes included. Mechanical
+   find-and-replace; do it everywhere, including the prompt-pack references
+   and keyframe names.
 4. Prune components you don't need. Add new ones only by the pack's conventions:
    namespaced, inside the `@layer foundation` block, documented in the pack.
    Page CSS stays unlayered and wins without `!important`.
@@ -70,7 +72,13 @@ checklist: what it lists retunes, everything it declares inherited stays.
 Run every gate against the derived system, not the parent:
 
 - **Contrast AA, both schemes**: body text and key pairs clear 4.5:1
-  (boundaries 3:1) in both schemes.
+  (boundaries 3:1) in both schemes. Key pairs are the text-and-ground
+  combinations your pages actually ship: body, muted, and accent text on
+  their grounds, text on accent and state fills, state text on its own
+  wash over its ground, and chrome-band text. If a pair fails on an
+  inherited value the parent's tuning surface cannot retune, prune the
+  component (artifact lane) or report it - never retune outside the
+  surface.
 - **Headless check**: zero console errors at ~1280px and ~390px widths.
 - **No-JS render** (artifact lane): the page renders completely with
   JavaScript disabled.
