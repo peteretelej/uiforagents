@@ -3,7 +3,12 @@
   "version": "0.2.0",
   "title": "Graphite Terminal",
   "description": "Dark dense ops tooling. Near-black graphite steps, electric lime action, JetBrains Mono data over Inter body, tight radius, flat fast surfaces.",
-  "vibe": ["dark", "dense", "technical", "tool"],
+  "vibe": [
+    "dark",
+    "data-dense",
+    "technical",
+    "terminal"
+  ],
   "author": "uiforagents",
   "license": "Apache-2.0",
   "stack": {
@@ -59,10 +64,20 @@
     "gradient-to": "oklch(22% 0.06 155)"
   },
   "fonts": {
-    "packages": ["@fontsource/jetbrains-mono", "@fontsource/inter"],
+    "packages": [
+      "@fontsource/jetbrains-mono",
+      "@fontsource/inter"
+    ],
     "install": "(JetBrains Mono 400-700, Inter 400-600)."
   },
-  "blocks": ["hero", "auth", "dashboard-shell", "table-page", "article", "states"],
+  "blocks": [
+    "hero",
+    "auth",
+    "dashboard-shell",
+    "table-page",
+    "article",
+    "states"
+  ],
   "registry": "@uiforagents/graphite-terminal",
   "notes": "Density is tight (ops tooling): 15px base, 36-40px rows, 4px grid. JetBrains Mono carries headings, numbers, ids, and latency columns; Inter carries prose. Lime is for action only. Surfaces are stepped graphite (bg 14.5% < card 17.5% < muted 21.5%); feedback is border/glow, never lift. Theme is scoped to [data-theme]/[data-identity] (no :root claim) so multiple identities can be imported side by side. One-shot test 2026-10-05: PASS - fresh agent given only prompt-pack + theme + overrides built a log-audit view (event log table, severity chips, filters, stat strip), identity-faithful, zero console errors, desktop 1280 + mobile 390 verified."
 }

@@ -4,7 +4,11 @@
   "version": "0.2.0",
   "title": "Nairobi Noon",
   "description": "Warm Kenyan daylight. Sand and terracotta, relaxed and inviting, Lilita One display over Inter body.",
-  "vibe": ["warm", "daylight", "light", "mtaa"],
+  "vibe": [
+    "warm",
+    "light",
+    "product"
+  ],
   "author": "uiforagents",
   "license": "Apache-2.0",
   "stack": {
@@ -49,7 +53,14 @@
     "shadow": "0 1px 2px oklch(28% 0.02 60 / 0.08), 0 4px 12px oklch(28% 0.02 60 / 0.06)",
     "gradient-to": "oklch(38% 0.12 40)"
   },
-  "blocks": ["hero", "auth", "dashboard-shell", "table-page", "article", "states"],
+  "blocks": [
+    "hero",
+    "auth",
+    "dashboard-shell",
+    "table-page",
+    "article",
+    "states"
+  ],
   "registry": "@uiforagents/nairobi-noon",
   "notes": "Warm relaxed product UI. Terracotta is for action. Lilita One carries headings with its own personality - never letterspace it tight, never use it for body. Warm neutrals everywhere; no cool blues."
 }

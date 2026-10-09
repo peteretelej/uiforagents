@@ -142,9 +142,9 @@
     },
     "vibe": [
       "dark",
-      "dense",
+      "data-dense",
       "technical",
-      "tool"
+      "terminal"
     ]
   }
 }

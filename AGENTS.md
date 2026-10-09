@@ -76,6 +76,13 @@ dependency, and no required JavaScript.
   design improvisation. Record the result in the identity's entry.
 - Regenerate registry payloads after any change:
   `node tooling/build-registry.mjs <slug>`
+- Vibe tags are a controlled search vocabulary, not flavor words. Every tag
+  must read as a look (`dark`, `light`, `editorial`, `terminal`, `print`), a
+  feel (`calm`, `warm`, `trust`, `technical`, `retro`), density
+  (`data-dense`), or a use case (`product`, `dashboard`, `ops`, `ledger`,
+  `tracker`, `briefing`, `long-form`, `monitoring`). Reuse existing tags
+  before coining new ones; three or four per identity; never proper nouns or
+  novelty words. The tags feed the site's filter chips and tile search.
 - Pin tested versions in identity.json (`stack.tested`) and state them in
   release notes.
 - The public catalogue site discovers identities by reading this repo's
