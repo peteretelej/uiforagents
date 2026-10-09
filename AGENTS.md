@@ -76,6 +76,13 @@ dependency, and no required JavaScript.
   design improvisation. Record the result in the identity's entry.
 - Regenerate registry payloads after any change:
   `node tooling/build-registry.mjs <slug>`
+- Releases are version-bump-and-push: set `package.json` version, push main,
+  and trusted publishing publishes npm automatically (`release.yml`; a `v*`
+  tag additionally creates the GitHub release). Semver for the catalogue:
+  new identity = minor; prompt-pack/demo/metadata fixes = patch; renamed or
+  removed tokens, classes, identities, or CLI behavior = major (derived
+  systems fork at derive time, but consumers re-reading `node_modules` see
+  every change).
 - Vibe tags are a controlled search vocabulary, not flavor words. Every tag
   must be a word a buyer would type or a quality visible at a glance: a look
   (`dark`, `light`, `editorial`, `terminal`, `print`), a feel (`calm`, `warm`,

@@ -1,16 +1,51 @@
-# Creates the GitHub release whenever a v* tag is pushed.
-# The tag annotation IS the release notes - write them in the tag.
+# Two release paths:
+# - push to main: npm publish when package.json version is new (trusted
+#   publishing via OIDC; the npm trusted publisher is bound to this file).
+# - push a v* tag: create the GitHub release. The tag annotation IS the
+#   release notes - write them in the tag.
 name: release
 
 on:
   push:
+    branches: [main]
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
-  release:
+  npm-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Node 22 ships npm 10.x which cannot do trusted publishing; jump
+      # through 11.11.0 first (npm/cli#9151 fails on a direct 10.x -> 11.12+ hop).
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@11.11.0 && npm install -g npm@latest
+
+      - name: Publish when the version is new
+        run: |
+          LOCAL=$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")
+          PUBLISHED=$(npm view uiforagents version 2>/dev/null || echo "none")
+          echo "local=$LOCAL published=$PUBLISHED"
+          if [ "$LOCAL" = "$PUBLISHED" ]; then
+            echo "Version $LOCAL already published; nothing to do."
+            exit 0
+          fi
+          node tooling/cli.mjs list > /dev/null
+          node tooling/cli.mjs show night-ops > /dev/null
+          npm publish --provenance --access public
+
+  github-release:
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
