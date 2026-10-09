@@ -76,3 +76,44 @@ When the deliverable is a single HTML file, inline the fonts: base64 woff2
 @font-face for Lilita One (400) and Inter 400/500/600 (latin subsets, ~30KB
 each). For app installs, use `@fontsource/lilita-one` + `@fontsource/inter`.
 Never fall back to system sans as the display face.
+
+## Tuning surface
+
+Retuning happens in the theme's token block (`theme/theme.css`) - values
+only, token names never change. Everything else in the identity inherits.
+
+- **Accent**: swap the terracotta `--primary` (`oklch(52% 0.15 45)`), then
+  retune what hangs off it in step: `--ring` (the focus halo), `--accent`/
+  `--accent-foreground` (hover and selected washes), `--secondary`, and
+  `--identity-gradient-to` (the hero gradient). `--primary-foreground` is
+  the text that sits ON the accent - keep it passing contrast. `--ok`,
+  `--warn`, and `--destructive` are semantic and only move if the new
+  accent collides with one of them.
+- **Neutral tint**: the sand family sits on hue 60-80. Re-tint by changing
+  the hue component of `--background`, `--foreground`, `--card`, `--muted`,
+  `--border`, and `--input` together; keep the luminance steps so the
+  daylight warmth stays visible. Never pure black or pure white.
+- **Fonts**: Lilita One on display, Inter on body is the contract. Lilita
+  One has one weight - never fake-bold it, never track it tight. A variant
+  may swap the display face for another rounded display face (same upgrade
+  path as documented above); body stays Inter.
+- **Radius**: `--radius` (0.625rem) is the base the whole ladder derives
+  from (`--radius-sm` through `--radius-xl` are calculated off it); buttons
+  sit at 10px. Retune the base; the ladder follows. Do not mix sharp and
+  very-round in one view.
+- **Density**: 16px base, 44-56px interactive rows, the 8px spacing grid,
+  unhurried section gaps. A denser variant is a density retune (base size,
+  row heights, section gaps) - never a component redesign.
+- **Scheme lead**: the theme pins `color-scheme: light` and ships one
+  scheme. Leading dark instead is a whole-block retune: re-derive every
+  value against a warm dark ground (terracotta goes lighter, sand keeps
+  the hue) and pin `color-scheme: dark`.
+- **What inherits untouched**: the blocks' component structure, the layout
+  rules and section-header grammar, the pack's decision logic (component
+  choices, copy voice, the do-nots), and the lane contracts (shadcn token
+  names, overrides discipline, `prefers-reduced-motion`). Adapt block
+  content, never block styles.
+- **Lane mechanics**: a derivation forks `identities/nairobi-noon/` into
+  your project: retune `theme/theme.css`, keep `overrides/` and `blocks/`
+  as they are, and update `identity.json` (name, accent, and a
+  `derivedFrom` note).

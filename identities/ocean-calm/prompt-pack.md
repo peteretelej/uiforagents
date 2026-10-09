@@ -77,3 +77,46 @@ When the deliverable is a single HTML file, inline the fonts: base64 woff2
 @font-face for Plus Jakarta Sans 700/800 and Inter 400/500/600 (latin subsets,
 ~30KB each). For app installs, use `@fontsource/plus-jakarta-sans` +
 `@fontsource/inter`. Never fall back to system sans as the display face.
+
+## Tuning surface
+
+Retuning happens in the theme's token block (`theme/theme.css`) - values
+only, token names never change. Everything else in the identity inherits.
+
+- **Accent**: swap the azure `--primary` (`oklch(52% 0.2 258)`), then
+  retune what hangs off it in step: `--ring` (the focus halo), `--accent`/
+  `--accent-foreground` (hover and selected washes), `--secondary` (the
+  tinted band), `--identity-gradient-to` (hero/CTA gradient), and the azure
+  cast inside `--shadow-identity`. `--primary-foreground` is the text that
+  sits ON the accent - keep it passing contrast. `--ok`, `--warn`, and
+  `--destructive` are semantic and only move if the new accent collides
+  with one of them.
+- **Neutral tint**: the cool family sits on hue 240-255. Re-tint by changing
+  the hue component of `--background`, `--foreground`, `--card`, `--muted`,
+  `--border`, and `--input` together; keep the luminance steps. Never pure
+  black or pure white.
+- **Fonts**: Plus Jakarta Sans on display, Inter on body is the contract.
+  The upgrade path is documented above ("Fonts in self-contained output"
+  for single-file deliverables, `@fontsource` for app installs). A variant
+  may swap the display face for another geometric sans - body stays Inter,
+  and the negative tracking rules follow the new face.
+- **Radius**: `--radius` (0.625rem) is the base the whole ladder derives
+  from (`--radius-sm` through `--radius-xl` are calculated off it). Retune
+  the base; the ladder follows. Pills stay capsules and only for
+  badges/avatars.
+- **Density**: 16px base, 44-56px interactive rows, the 8px spacing grid.
+  A denser variant is a density retune (base size, row heights, section
+  gaps) - never a component redesign.
+- **Scheme lead**: the theme pins `color-scheme: light` and ships one
+  scheme. Leading dark instead is a whole-block retune: re-derive every
+  value against a dark cool ground (azure goes lighter, neutrals keep the
+  hue) and pin `color-scheme: dark`.
+- **What inherits untouched**: the blocks' component structure, the layout
+  rules and section-header grammar, the pack's decision logic (component
+  choices, copy voice, the do-nots), and the lane contracts (shadcn token
+  names, overrides discipline, `prefers-reduced-motion`). Adapt block
+  content, never block styles.
+- **Lane mechanics**: a derivation forks `identities/ocean-calm/` into your
+  project: retune `theme/theme.css`, keep `overrides/` and `blocks/` as
+  they are, and update `identity.json` (name, accent, and a `derivedFrom`
+  note).

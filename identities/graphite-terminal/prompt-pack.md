@@ -94,3 +94,48 @@ When the deliverable is a single HTML file, inline the fonts: base64 woff2
 subsets, ~30KB each). For app installs, use `@fontsource/jetbrains-mono` +
 `@fontsource/inter`. The mono stack in the theme is a preload fallback only -
 never ship system mono as the final display face.
+
+## Tuning surface
+
+Retuning happens in the theme's token block (`theme/theme.css`) - values
+only, token names never change. Everything else in the identity inherits.
+
+- **Accent**: swap the electric lime `--primary` (`oklch(82% 0.12 118)`),
+  then retune what hangs off it in step: `--primary-foreground` (the
+  dark-on-lime action text), `--ring`, the `--secondary`/`--accent` lime
+  washes, and `--identity-gradient-to` (the hero panel's deep green). The
+  measured contrast floor is part of the contract: new pairs clear 4.5:1
+  for text and 3:1 for boundaries. `--ok`, `--warn`, `--destructive`, and
+  the `--danger-soft` chip pair are semantic status - keep the dark-theme
+  red paired with its near-white foreground.
+- **Neutral tint**: the stepped graphite family sits on hue 255. Re-tint by
+  changing the hue component of `--background`, `--foreground`, `--card`,
+  `--popover`, `--muted`, `--border`, and `--input` together; keep the
+  surface steps (page 14.5%, card 17.5%, popover 18.5%, muted 21.5%) and
+  the hairline borders. Depth is a lighter step, never pure black.
+- **Fonts**: JetBrains Mono on every heading, number, and id, Inter on body
+  prose is the contract. The upgrade path is documented above ("Fonts in
+  self-contained output" for single-file deliverables, `@fontsource` for
+  app installs). A variant may swap the mono face for another mono - the
+  all-mono data contract is the identity, and body stays Inter.
+- **Radius**: `--radius` (0.5rem) is the base the whole ladder derives from
+  (`--radius-sm` through `--radius-xl` are calculated off it). Retune the
+  base; the ladder follows. Nothing softer than 8px except pills; no
+  rounded-2xl softness.
+- **Density**: 15px base, 36-40px interactive rows, the 4px spacing grid.
+  A denser variant is a density retune (base size, row heights, section
+  gaps) - never a component redesign. Dense means efficient, not cramped.
+- **Scheme lead**: the theme pins `color-scheme: dark` and ships one
+  scheme. Leading light instead is a whole-block retune: re-derive every
+  value against a light ground (lime drops in lightness so action text
+  stays dark-on-lime, the graphite steps invert) and pin
+  `color-scheme: light`.
+- **What inherits untouched**: the blocks' component structure, the layout
+  rules and section-header grammar, the pack's decision logic (component
+  choices, copy voice, the do-nots, the contrast floor), and the lane
+  contracts (shadcn token names, overrides discipline,
+  `prefers-reduced-motion`). Adapt block content, never block styles.
+- **Lane mechanics**: a derivation forks `identities/graphite-terminal/`
+  into your project: retune `theme/theme.css`, keep `overrides/` and
+  `blocks/` as they are, and update `identity.json` (name, accent, and a
+  `derivedFrom` note).

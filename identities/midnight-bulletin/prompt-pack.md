@@ -115,6 +115,51 @@ page-specific layout only.
 6. `.mb-footer` (glossary `dl` if terms were used, then the what/when/who
    colophon line).
 
+## Tuning surface
+
+Retuning happens in the `:root` token block only; everything below
+inherits. Values only - never token names; keep every `light-dark()` pair
+ordered light-first (slot 1 is always the light value).
+
+- **Accent**: swap the amber pair (`--accent`; slot 1 = derived light
+  bronze, slot 2 = canonical dark amber) and retune `--accent-ink` and
+  `--accent-soft` in step - hand-tuned pairs, keep each slot passing
+  contrast on its ground. Amber is also `--warn`; if the new accent hue
+  collides with a status color, move `--ok`/`--danger` clear instead of
+  the accent.
+- **Neutral tint**: the warm ground family sits on hue 70-85 in both
+  schemes (dark canonical, light the derived cream). Re-tint by changing
+  the hue component of `--bg`, `--surface`, `--sunken`, `--ink`, `--muted`,
+  `--faint`, `--line`, and `--line-soft` together; keep the luminance
+  steps. Both schemes share the same hue family - never split them.
+- **Fonts**: serif displays, sans reads, mono counts. The stacks are
+  canonical and the page must be correct with zero webfonts. The upgrade
+  path is the one sanctioned external family from "Optional webfont
+  upgrade" below - a Charter-alike first in `--font-serif`; never add a
+  second family and never touch `--font-mono` (the counting contract).
+- **Radius**: `--radius` (3px) is the whole ladder - boxes, pills, and code
+  share it. Retune it as one value; nothing goes rounder, no capsule pills.
+- **Density**: tabloid - 16px/1.6 body, `--measure` (68ch), hairline
+  `--line-soft` borders, 1px-gap grids, full-width bands, `.mb-wrap`
+  (1060px). A denser variant is a density retune (type size, measure, band
+  padding), not new components.
+- **Scheme lead**: the file pins dark (the canonical side). To lead light
+  instead, swap the pin on `:root` and make the light column canonical -
+  keep both value sets, keep light-dark() slot 1 = light, and leave the
+  print block's light pin alone (paper prints light either way).
+- **What inherits unchanged**: the component inventory and `.mb-` class
+  grammar, the briefing-identity boundary (no marketing pages or app UI),
+  the pack's decision logic and do-nots, print and reduced-motion
+  behavior, and the lane contracts (`@layer foundation`, `light-dark()`,
+  no required JavaScript).
+- **Lane mechanics**: forking this identity into a derived one means
+  renaming the `.mb-` prefix (pick a new two-letter namespace and rename
+  every class consistently, pack included), pruning inventory you don't
+  need (drop a component's rules and its pack line together), and adding
+  new components only by the pack's conventions: namespaced, inside the
+  `@layer foundation` block, documented. Record provenance in a header
+  comment at the top of `foundation.css`.
+
 ## Optional webfont upgrade
 
 The system stacks are canonical and required in the base file: the page must

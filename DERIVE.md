@@ -27,6 +27,10 @@ inherited a tested one.
 | scheme lead (light-first vs dark-first)|                                                 |
 | artifact lane only: component inventory (prune/extend within contract) and class prefix | |
 
+Every catalogue identity's prompt-pack carries a `## Tuning surface`
+section - the per-identity instance of this table. Read it first: it names
+exactly which tokens retune and what inherits for that parent.
+
 ## How to derive
 
 Work in your own project - a derivation is a fork into your project, never an
@@ -58,13 +62,21 @@ edit to the canonical `identities/<slug>/` files in the uiforagents repo.
    Page CSS stays unlayered and wins without `!important`.
 5. Record provenance in a header comment at the top of `foundation.css`.
 
+In both lanes the parent's `## Tuning surface` section is the retuning
+checklist: what it lists retunes, everything it declares inherited stays.
+
 ## Gates before you ship a derived system
 
-- Contrast at AA on body text and key pairs, in **both** schemes.
-- Renders clean: zero console errors at desktop and ~390px widths.
-- Artifact lane: the page must render completely with JavaScript disabled; run
-  the print check if you claim print support.
-- One-shot check: an agent given only your retuned pack + stylesheet builds
+Run every gate against the derived system, not the parent:
+
+- **Contrast AA, both schemes**: body text and key pairs clear 4.5:1
+  (boundaries 3:1) in both schemes.
+- **Headless check**: zero console errors at ~1280px and ~390px widths.
+- **No-JS render** (artifact lane): the page renders completely with
+  JavaScript disabled.
+- **Print, when claimed**: run the print check only if the derived system
+  claims print support.
+- **One-shot**: an agent given only your retuned pack and stylesheet builds
   identity-faithful pages with no improvisation.
 
 ## Where derived systems live
@@ -82,6 +94,6 @@ page, and a site card. That is how the catalogue grows.
 
 ## Status
 
-This is the factory contract v0. Per-identity tuning-surface notes are landing
-in each identity's prompt-pack as identities ship them; until then, this file
-and the parent's pack are the contract.
+This is the factory contract v1. Every catalogue identity's prompt-pack
+carries its `## Tuning surface` section; this file and that section are the
+contract for a derivation.

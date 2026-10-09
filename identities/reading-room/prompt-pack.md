@@ -93,6 +93,47 @@ page-specific layout only.
 4. Callouts, tables, chips, cards used where the content needs them; sparse.
 5. `.rr-colophon` (what this is, when it was set, in what type).
 
+## Tuning surface
+
+Retuning happens in the `:root` token block only; everything below
+inherits. Values only - never token names; keep every `light-dark()` pair
+ordered light-first (slot 1 is always the light value).
+
+- **Accent**: swap the green pair (`--accent`; slot 1 = canonical light,
+  slot 2 = derived dark) and retune `--accent-ink` and `--accent-soft` in
+  step - they are hand-tuned pairs, so keep each slot passing contrast on
+  its ground. `--ok`/`--ok-soft` share the accent hue; move them with it
+  or accept that status and action share the new hue.
+- **Neutral tint**: the paper/ink family sits on warm hues (95-140 across
+  the two schemes). Re-tint by changing the hue component of `--bg`,
+  `--surface`, `--ink`, `--muted`, `--faint`, `--line`, `--line-soft`, and
+  `--wash` together; keep the luminance steps. Never pure grey.
+- **Fonts**: the Charter-led serif for reading, system sans for chrome, and
+  system mono for code are the contract; the stacks are canonical and the
+  page must be correct with zero webfonts. The upgrade path is the one
+  sanctioned external family from "Optional webfont upgrade" below - a
+  Charter-alike first in `--font-serif`. Never more than one family.
+- **Radius**: `--radius` (8px) for boxes, 99px pills for chips, 4px for
+  inline code. Retune `--radius`; pills stay pills, one radius per element.
+- **Density**: editorial - 18px/1.7 body, `--measure` (70ch), 3.5rem
+  section rhythm, 1.4rem around callouts/cards. A denser variant is a
+  density retune (type size, measure, rhythm), not new components.
+- **Scheme lead**: the file pins light (the canonical side). To lead dark
+  instead, swap the pin on `:root` and make the dark column canonical -
+  keep both value sets, keep light-dark() slot 1 = light, and leave the
+  print block's light pin alone (paper prints light).
+- **What inherits unchanged**: the component inventory and `.rr-` class
+  grammar, the reading-identity boundary (no app UI), the pack's decision
+  logic and do-nots, print and reduced-motion behavior, and the lane
+  contracts (`@layer foundation`, `light-dark()`, no required JavaScript).
+- **Lane mechanics**: forking this identity into a derived one means
+  renaming the `.rr-` prefix (pick a new two-letter namespace and rename
+  every class consistently, pack included), pruning inventory you don't
+  need (drop a component's rules and its pack line together), and adding
+  new components only by the pack's conventions: namespaced, inside the
+  `@layer foundation` block, documented. Record provenance in a header
+  comment at the top of `foundation.css`.
+
 ## Optional webfont upgrade
 
 The system stacks are canonical and required in the base file: the page must
