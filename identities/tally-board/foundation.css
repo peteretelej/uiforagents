@@ -1,0 +1,389 @@
+/* tally-board - artifact identity foundation
+   A warm-light personal tracking identity: cream ground, terracotta accent,
+   rounded bento cards, bold rounded numerals, progress grammar (tracks,
+   fills, target ticks, rings, streak heat) and a friendly, encouraging voice.
+   Seeded from a fidelity pass over personal trackers - habit loops, budgets,
+   training weeks (arena #tally + the census tally band). This file is the
+   entire system: tokens, base, typography, components, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + the scheme pinned light on :root. The
+     identity leads light: the light values are canonical (the fidelity
+     artifact's AA-tuned palette) and the dark values are the derived
+     alternative, re-gated for contrast. light-dark() slots are fixed by CSS -
+     first slot is the value used under the light scheme. A toggle flips
+     html.style.colorScheme to "dark" or "light". There is no data-theme
+     attribute and no duplicated token block; keep the scheme property on
+     html/:root.
+   - The state ladder has exactly two warm steps: ok and warn. There is no
+     danger token and no severity grammar anywhere - a miss is a warn with a
+     next step, never an alarm. That is the census verdict's gate, not a
+     limitation to work around.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light;
+
+    /* Shared semantic vocabulary (light scheme canonical) */
+    --bg:          light-dark(oklch(0.965 0.011 78), oklch(0.220 0.012 70));
+    --surface:     light-dark(oklch(0.995 0.006 85), oklch(0.262 0.014 72));
+    --sunken:      light-dark(oklch(0.938 0.014 78), oklch(0.245 0.013 70));
+    --line:        light-dark(oklch(0.900 0.015 78), oklch(0.335 0.016 72));
+    --line-soft:   light-dark(oklch(0.925 0.012 78), oklch(0.300 0.014 72));
+    --ink:         light-dark(oklch(0.300 0.020 60), oklch(0.920 0.014 80));
+    --muted:       light-dark(oklch(0.530 0.018 65), oklch(0.760 0.016 78));
+    --faint:       light-dark(oklch(0.660 0.014 70), oklch(0.585 0.016 76));
+    --accent:      light-dark(oklch(0.600 0.150 40), oklch(0.720 0.135 45));
+    --accent-deep: light-dark(oklch(0.500 0.130 40), oklch(0.800 0.125 48));
+    --accent-ink:  light-dark(oklch(0.995 0.006 85), oklch(0.240 0.014 70));
+    --accent-soft: light-dark(oklch(0.600 0.150 40 / 0.10), oklch(0.800 0.125 48 / 0.16));
+    --ok:     light-dark(oklch(0.510 0.110 150), oklch(0.780 0.120 150));
+    --ok-soft:     light-dark(oklch(0.520 0.110 150 / 0.12), oklch(0.780 0.120 150 / 0.16));
+    --warn:   light-dark(oklch(0.520 0.120 70), oklch(0.800 0.120 75));
+    --warn-soft:   light-dark(oklch(0.520 0.120 70 / 0.13), oklch(0.800 0.120 75 / 0.16));
+    --radius: 14px;
+    --r-md: 12px;
+    --r-sm: 6px;
+
+    /* Fonts: sans prose and labels, rounded display numerals */
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --display: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    /* Chart tokens (derive from the palette, never new colors) */
+    --chart-grid: var(--line-soft);
+    --chart-axis: var(--line);
+    --chart-label: var(--faint);
+    --chart-value: var(--muted);
+    --chart-series: var(--accent);
+    --chart-series-dim: var(--faint);
+    --ring-track: var(--sunken);
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.55 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  svg text { font-family: var(--sans); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: var(--accent-deep); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 24px; }
+
+  /* ---------- Layout ---------- */
+  .tb-wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px 80px; }
+  .tb-sec { padding-top: 6px; }
+  .tb-bento { display: grid; grid-template-columns: 1.55fr 1fr; gap: 14px; }
+  .tb-stack { display: grid; gap: 14px; grid-template-rows: 1fr 1fr; min-width: 0; }
+  .tb-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tb-cols > * { min-width: 0; }
+  .tb-gap { margin-bottom: 14px; }
+
+  /* ---------- Topbar ---------- */
+  .tb-top { display: flex; align-items: center; gap: 12px; padding: 22px 4px 16px; flex-wrap: wrap; }
+  .tb-brand { font: 800 21px/1 var(--display); letter-spacing: -0.02em; }
+  .tb-brand span { color: var(--accent); }
+  .tb-cheer { color: var(--muted); font-size: 13.5px; margin: -8px 4px 14px; max-width: 66ch; }
+  .tb-top .tb-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .tb-date {
+    font: 700 12px/1 var(--sans); color: var(--accent-deep);
+    background: var(--accent-soft); border-radius: 99px; padding: 8px 14px; white-space: nowrap;
+  }
+
+  /* ---------- Period switcher ---------- */
+  .tb-period { display: inline-flex; gap: 4px; background: var(--sunken); border-radius: 99px; padding: 4px; }
+  .tb-period span {
+    font: 700 12px/1 var(--sans); color: var(--muted); padding: 7px 14px;
+    border-radius: 99px; cursor: pointer; transition: color .15s;
+  }
+  .tb-period span:hover { color: var(--ink); }
+  .tb-period .on {
+    background: var(--surface); color: var(--accent-deep);
+    box-shadow: 0 1px 3px oklch(0.30 0.02 60 / 0.10);
+  }
+
+  /* ---------- Cards: the soft bento ---------- */
+  .tb-card {
+    background: var(--surface); border-radius: var(--radius); padding: 18px 20px 16px; min-width: 0;
+    box-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.05), 0 8px 22px oklch(0.30 0.02 60 / 0.06);
+  }
+  .tb-card > h3 {
+    margin: 0 0 2px; font: 700 11.5px/1.4 var(--sans);
+    letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
+  }
+  .tb-take { color: var(--muted); font-size: 13px; margin: 2px 0 10px; max-width: 58ch; }
+  .tb-record {
+    display: inline-block; font: 800 10.5px/1 var(--sans); letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--accent-deep); background: var(--accent-soft);
+    border-radius: 99px; padding: 4px 9px; margin-left: 8px; vertical-align: 3px; white-space: nowrap;
+  }
+
+  /* ---------- Numerals: bold and rounded ---------- */
+  .tb-v { font: 800 34px/1 var(--display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tb-v small { font: 700 15px/1 var(--sans); color: var(--muted); margin-left: 7px; letter-spacing: 0; }
+  .tb-mini { font: 800 24px/1.1 var(--display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin-top: 8px; }
+  .tb-mini small { font: 700 12.5px/1 var(--sans); color: var(--muted); margin-left: 3px; letter-spacing: 0; }
+  .tb-d { font: 700 12px/1.5 var(--sans); margin-top: 5px; font-variant-numeric: tabular-nums; }
+  .tb-d.up { color: var(--ok); } .tb-d.down { color: var(--warn); } .tb-d.flat { color: var(--muted); }
+
+  /* ---------- Stats row ---------- */
+  .tb-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .tb-stat {
+    background: var(--surface); border-radius: var(--radius); padding: 14px 18px 12px; min-width: 0;
+    box-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.05), 0 8px 22px oklch(0.30 0.02 60 / 0.06);
+  }
+  .tb-stat .k {
+    font: 700 10.5px/1.4 var(--sans); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
+  }
+  .tb-stat .tb-v { font-size: 26px; margin-top: 6px; }
+
+  /* ---------- Progress grammar: track + fill + target tick ----------
+     fill = actual; the target tick marks where you meant to be by today;
+     the track is the period's whole capacity. fill short of the tick reads
+     behind at a glance. */
+  .tb-track { position: relative; height: 10px; border-radius: 99px; background: var(--sunken); overflow: hidden; }
+  .tb-fill { height: 100%; border-radius: 99px; background: var(--accent); }
+  .tb-fill.ok { background: var(--ok); }
+  .tb-fill.warn { background: var(--warn); }
+  .tb-target {
+    position: absolute; top: -3px; bottom: -3px; width: 3px;
+    border-radius: 2px; background: var(--ink); left: var(--target, 100%);
+  }
+  .tb-prog { margin-top: 12px; }
+  .tb-prog-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 0 0 6px; }
+  .tb-prog-row b { font-size: 13.5px; font-weight: 700; }
+  .tb-prog-row span {
+    font: 700 12px/1 var(--sans); color: var(--muted);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .tb-mini-track { display: block; width: 76px; height: 6px; border-radius: 99px; background: var(--sunken); overflow: hidden; }
+  .tb-mini-track i { display: block; height: 100%; border-radius: 99px; background: var(--accent); }
+  .tb-mini-track.ok i { background: var(--ok); }
+  .tb-mini-track.warn i { background: var(--warn); }
+
+  /* ---------- Rings: pacing gauges ----------
+     --p is the fraction done; --ring carries the verdict color (accent on
+     pace, ok done, warn behind). The arc is one circle with a dash offset. */
+  .tb-rings { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 6px; }
+  .tb-ringwrap { text-align: center; flex: 1; min-width: 120px; margin: 0; }
+  .tb-ring { position: relative; width: 118px; height: 118px; margin: 0 auto; }
+  .tb-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .tb-ring circle { fill: none; stroke-width: 11; }
+  .tb-ring .track { stroke: var(--ring-track); }
+  .tb-ring .arc {
+    stroke: var(--ring, var(--accent)); stroke-linecap: round;
+    stroke-dasharray: 326.7; stroke-dashoffset: calc(326.7 * (1 - var(--p, 0)));
+  }
+  .tb-ring-c { position: absolute; inset: 0; display: grid; place-content: center; }
+  .tb-ring-c b { font: 800 22px/1 var(--display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .tb-ring-c span { font: 700 10px/1.4 var(--sans); color: var(--faint); text-transform: uppercase; letter-spacing: 0.07em; }
+  .tb-ringwrap figcaption { margin-top: 8px; }
+  .tb-ringwrap figcaption b { display: block; font-size: 13px; font-weight: 700; }
+  .tb-ringwrap figcaption span { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  /* ---------- Streak heatmap ----------
+     h0 is the bare well; h1-h4 mix accent into the well at 25/45/70/100%. */
+  .tb-heat {
+    display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 11px);
+    gap: 3px; margin-top: 10px; justify-content: start;
+  }
+  .tb-heat i, .tb-heat-key i { border-radius: 3.5px; background: var(--sunken); }
+  .tb-heat i { width: 11px; height: 11px; }
+  .tb-heat i.h1, .tb-heat-key i.h1 { background: color-mix(in oklab, var(--accent) 25%, var(--sunken)); }
+  .tb-heat i.h2, .tb-heat-key i.h2 { background: color-mix(in oklab, var(--accent) 45%, var(--sunken)); }
+  .tb-heat i.h3, .tb-heat-key i.h3 { background: color-mix(in oklab, var(--accent) 70%, var(--sunken)); }
+  .tb-heat i.h4, .tb-heat-key i.h4 { background: var(--accent); }
+  .tb-heat-cap {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+    font: 700 11px/1.4 var(--sans); color: var(--faint); flex-wrap: wrap;
+  }
+  .tb-heat-key { display: inline-flex; gap: 3px; align-items: center; }
+  .tb-heat-key i { width: 9px; height: 9px; }
+
+  /* ---------- Charts ---------- */
+  .tb-chart { display: block; width: 100%; height: auto; }
+  .tb-figcap { font: 700 11px/1.5 var(--sans); color: var(--faint); margin-top: 6px; }
+
+  /* ---------- Budget-vs-actual: a friendly table ----------
+     Small tables only. Hairlines, generous padding, mini tracks under the
+     names, pills carry the verdict. No audit density. */
+  .tb-tblwrap { overflow-x: auto; margin-top: 4px; }
+  .tb-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 4px; }
+  .tb-tbl th {
+    text-align: left; font: 700 10.5px/1.4 var(--sans); letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--faint); padding: 8px 12px 7px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tb-tbl td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+  .tb-tbl tr:last-child td { border-bottom: 0; }
+  .tb-tbl .what b { display: block; font-size: 13.5px; font-weight: 700; }
+  .tb-tbl .what .tb-mini-track { margin-top: 5px; }
+  .tb-tbl .num {
+    text-align: right; font: 700 13.5px/1.2 var(--display);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .tb-tbl .num small { font: 600 11px/1 var(--sans); color: var(--faint); }
+  .tb-tbl th.num { text-align: right; font-family: var(--sans); }
+
+  /* ---------- Soft pills: ok / warn only ---------- */
+  .tb-pill {
+    display: inline-block; font: 800 11px/1 var(--sans); border-radius: 99px;
+    padding: 4px 11px; white-space: nowrap; border: 0; cursor: default;
+  }
+  .tb-pill.ok { color: var(--ok); background: var(--ok-soft); }
+  .tb-pill.warn { color: var(--warn); background: var(--warn-soft); }
+  button.tb-pill { cursor: pointer; }
+  button.tb-pill.ok { color: var(--accent-deep); background: var(--accent-soft); }
+  button.tb-pill.ok:hover { background: color-mix(in oklab, var(--accent) 18%, var(--surface)); }
+
+  /* ---------- Ranked top list ---------- */
+  .tb-toplist { margin-top: 4px; }
+  .tb-rank { position: relative; display: flex; align-items: baseline; gap: 10px; padding: 9px 0 8px; }
+  .tb-rank .bar {
+    position: absolute; left: 0; bottom: 4px; height: 22px; border-radius: 7px;
+    background: var(--accent-soft); width: var(--w, 50%); max-width: 62%;
+  }
+  .tb-rank .n { position: relative; font-weight: 700; font-size: 13px; }
+  .tb-rank .v { position: relative; margin-left: auto; font: 700 13px/1 var(--display); font-variant-numeric: tabular-nums; }
+  .tb-rank .v small { font: 600 10.5px/1 var(--sans); color: var(--faint); margin-left: 4px; }
+
+  /* ---------- Friendly rows: goals and lobes ---------- */
+  .tb-rowlist { margin-top: 2px; }
+  .tb-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); font-size: 13.5px; }
+  .tb-row:last-child { border-bottom: 0; }
+  .tb-row .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .tb-row .dot.ok { background: var(--ok); } .tb-row .dot.warn { background: var(--warn); }
+  .tb-row .n { font-weight: 700; }
+  .tb-row .m { margin-left: auto; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---------- Lately: the friendly timeline ---------- */
+  .tb-ev { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); font-size: 13px; align-items: baseline; }
+  .tb-ev:last-of-type { border-bottom: 0; }
+  .tb-ev time { font: 800 11px/1.6 var(--sans); color: var(--faint); text-transform: uppercase; letter-spacing: 0.05em; flex: none; width: 38px; }
+  .tb-ev .t { color: var(--muted); }
+  .tb-ev .t b { color: var(--ink); font-weight: 700; }
+
+  /* ---------- States: friendly empty, soft pulse, gentle retry ---------- */
+  .tb-empty { text-align: center; padding: 26px 10px 22px; }
+  .tb-empty .e { color: var(--muted); font-size: 13.5px; margin: 0 0 12px; max-width: 40ch; margin-inline: auto; }
+  .tb-empty .e b { color: var(--ink); font-weight: 700; }
+  .tb-v.pulse { animation: tb-pulse 1.8s ease-in-out infinite; }
+  @keyframes tb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .tb-retry { text-align: center; padding: 20px 10px 16px; }
+  .tb-retry .e { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+
+  /* ---------- Buttons ---------- */
+  .tb-btn {
+    display: inline-block; font: 700 13px/1 var(--sans); border-radius: var(--r-md);
+    padding: 10px 16px; border: 0; cursor: pointer;
+    transition: background-color .15s, color .15s, box-shadow .15s;
+  }
+  .tb-btn--primary { background: var(--accent-deep); color: var(--accent-ink); box-shadow: 0 2px 8px oklch(0.50 0.13 40 / 0.25); }
+  .tb-btn--primary:hover { background: color-mix(in oklab, var(--accent-deep) 88%, var(--ink)); }
+  .tb-btn--ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+  .tb-btn--ghost:hover { border-color: var(--faint); }
+  .tb-btn--quiet { background: none; color: var(--accent-deep); padding-left: 4px; padding-right: 4px; }
+  .tb-btn--quiet:hover { text-decoration: underline; }
+  .tb-btn[disabled] { background: var(--sunken); color: var(--faint); box-shadow: none; cursor: not-allowed; }
+  .tb-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tb-btnrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 4px 0; }
+
+  /* ---------- Inputs ---------- */
+  .tb-field { max-width: 320px; padding: 6px 0; }
+  .tb-label { display: block; font: 700 11px/1 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .tb-hint { font: 600 12px/1.5 var(--sans); color: var(--faint); margin-top: 6px; }
+  .tb-input, .tb-select {
+    width: 100%; font: 600 14px/1.4 var(--sans); color: var(--ink);
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--r-md);
+    padding: 10px 13px;
+  }
+  .tb-input::placeholder { color: var(--faint); font-weight: 500; }
+  .tb-input:focus-visible, .tb-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+  .tb-select {
+    appearance: none; -webkit-appearance: none; padding-right: 32px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%;
+    background-size: 5px 5px; background-repeat: no-repeat;
+  }
+
+  /* ---------- Token swatches ---------- */
+  .tb-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px 18px; margin-top: 10px; }
+  .tb-swatch .sw { height: 30px; border-radius: 9px; box-shadow: inset 0 0 0 1px oklch(0.30 0.02 60 / 0.08); }
+  .tb-swatch .nm { font: 700 10.5px/2.4 var(--sans); letter-spacing: 0.05em; color: var(--muted); }
+
+  /* ---------- Dark proof strip (shows the second half of every token) ---------- */
+  .tb-darkproof {
+    color-scheme: dark; color: var(--ink); background: var(--bg);
+    border-radius: var(--radius); padding: 4px 20px 18px; margin-top: 14px;
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .tb-darkproof .cap { font: 700 10.5px/1 var(--sans); letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint); padding: 14px 0 10px; }
+
+  /* ---------- Compact treatment (narrow containers, small screens) ---------- */
+  .tb-mob .tb-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tb-mob .tb-stat { padding: 12px 14px 10px; }
+  .tb-mob .tb-stat .tb-v { font-size: 22px; }
+  .tb-mob .tb-bento, .tb-mob .tb-cols { grid-template-columns: 1fr; }
+  .tb-mob .tb-v { font-size: 30px; }
+  .tb-mob .tb-tbl { font-size: 13px; }
+  .tb-mob .tb-tbl th, .tb-mob .tb-tbl td { padding-left: 8px; padding-right: 8px; }
+  .tb-mob .tb-tbl .left { display: none; }
+  .tb-mob .tb-card { padding: 16px 16px 14px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .tb-bento { grid-template-columns: 1fr; }
+    .tb-stats { grid-template-columns: 1fr 1fr; }
+    .tb-top { padding-top: 16px; }
+  }
+  @media (max-width: 560px) {
+    .tb-cols { grid-template-columns: 1fr; }
+    .tb-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .tb-date { display: none; }
+  }
+
+  /* ---------- Print: a light section, modestly ----------
+     The scheme pins light at the root (a dark-lead derivative flips here),
+     shadows drop for hairline borders, cards and rows never tear, chrome
+     hides, and the folio rides the @page margin box. */
+  @media print {
+    :root {
+      color-scheme: light;
+    }
+    @page {
+      size: A4 portrait;
+      margin: 14mm 13mm 16mm;
+      @bottom-center {
+        content: counter(page) " of " counter(pages);
+        font-family: system-ui, sans-serif;
+        font-size: 7.5pt;
+        color: #8a7f74;
+      }
+    }
+    body { background: #fff; font-size: 10.5pt; }
+    .tb-card, .tb-stat { box-shadow: none; border: 1px solid #e5ddd2; }
+    .tb-noprint, .tb-top .tb-right { display: none; }
+    .tb-card, .tb-stat, .tb-ev, .tb-row, .tb-tbl tr, .tb-rings { break-inside: avoid; }
+    p, .tb-take { orphans: 3; widows: 3; }
+    .tb-v.pulse { animation: none; }
+    .tb-btnrow { display: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .tb-v.pulse { animation: none; }
+    .tb-btn, .tb-period span { transition: none; }
+  }
+}

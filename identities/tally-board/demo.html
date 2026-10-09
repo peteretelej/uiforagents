@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tally-board · identity demo</title>
+<meta name="description" content="Self-documenting demo of the tally-board artifact identity: rationale, token reference, a full october tracking board (stats, rings, weekly bars, streak heat, budget-vs-actual, progress lists, lately), states, print proof, component sheet, and the 390px treatment.">
+<style>
+/* tally-board - artifact identity foundation
+   A warm-light personal tracking identity: cream ground, terracotta accent,
+   rounded bento cards, bold rounded numerals, progress grammar (tracks,
+   fills, target ticks, rings, streak heat) and a friendly, encouraging voice.
+   Seeded from a fidelity pass over personal trackers - habit loops, budgets,
+   training weeks (arena #tally + the census tally band). This file is the
+   entire system: tokens, base, typography, components, print.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + the scheme pinned light on :root. The
+     identity leads light: the light values are canonical (the fidelity
+     artifact's AA-tuned palette) and the dark values are the derived
+     alternative, re-gated for contrast. light-dark() slots are fixed by CSS -
+     first slot is the value used under the light scheme. A toggle flips
+     html.style.colorScheme to "dark" or "light". There is no data-theme
+     attribute and no duplicated token block; keep the scheme property on
+     html/:root.
+   - The state ladder has exactly two warm steps: ok and warn. There is no
+     danger token and no severity grammar anywhere - a miss is a warn with a
+     next step, never an alarm. That is the census verdict's gate, not a
+     limitation to work around.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light;
+
+    /* Shared semantic vocabulary (light scheme canonical) */
+    --bg:          light-dark(oklch(0.965 0.011 78), oklch(0.220 0.012 70));
+    --surface:     light-dark(oklch(0.995 0.006 85), oklch(0.262 0.014 72));
+    --sunken:      light-dark(oklch(0.938 0.014 78), oklch(0.245 0.013 70));
+    --line:        light-dark(oklch(0.900 0.015 78), oklch(0.335 0.016 72));
+    --line-soft:   light-dark(oklch(0.925 0.012 78), oklch(0.300 0.014 72));
+    --ink:         light-dark(oklch(0.300 0.020 60), oklch(0.920 0.014 80));
+    --muted:       light-dark(oklch(0.530 0.018 65), oklch(0.760 0.016 78));
+    --faint:       light-dark(oklch(0.660 0.014 70), oklch(0.585 0.016 76));
+    --accent:      light-dark(oklch(0.600 0.150 40), oklch(0.720 0.135 45));
+    --accent-deep: light-dark(oklch(0.500 0.130 40), oklch(0.800 0.125 48));
+    --accent-ink:  light-dark(oklch(0.995 0.006 85), oklch(0.240 0.014 70));
+    --accent-soft: light-dark(oklch(0.600 0.150 40 / 0.10), oklch(0.800 0.125 48 / 0.16));
+    --ok:     light-dark(oklch(0.510 0.110 150), oklch(0.780 0.120 150));
+    --ok-soft:     light-dark(oklch(0.520 0.110 150 / 0.12), oklch(0.780 0.120 150 / 0.16));
+    --warn:   light-dark(oklch(0.520 0.120 70), oklch(0.800 0.120 75));
+    --warn-soft:   light-dark(oklch(0.520 0.120 70 / 0.13), oklch(0.800 0.120 75 / 0.16));
+    --radius: 14px;
+    --r-md: 12px;
+    --r-sm: 6px;
+
+    /* Fonts: sans prose and labels, rounded display numerals */
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --display: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    /* Chart tokens (derive from the palette, never new colors) */
+    --chart-grid: var(--line-soft);
+    --chart-axis: var(--line);
+    --chart-label: var(--faint);
+    --chart-value: var(--muted);
+    --chart-series: var(--accent);
+    --chart-series-dim: var(--faint);
+    --ring-track: var(--sunken);
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.55 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  svg text { font-family: var(--sans); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: var(--accent-deep); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 24px; }
+
+  /* ---------- Layout ---------- */
+  .tb-wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px 80px; }
+  .tb-sec { padding-top: 6px; }
+  .tb-bento { display: grid; grid-template-columns: 1.55fr 1fr; gap: 14px; }
+  .tb-stack { display: grid; gap: 14px; grid-template-rows: 1fr 1fr; min-width: 0; }
+  .tb-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tb-cols > * { min-width: 0; }
+  .tb-gap { margin-bottom: 14px; }
+
+  /* ---------- Topbar ---------- */
+  .tb-top { display: flex; align-items: center; gap: 12px; padding: 22px 4px 16px; flex-wrap: wrap; }
+  .tb-brand { font: 800 21px/1 var(--display); letter-spacing: -0.02em; }
+  .tb-brand span { color: var(--accent); }
+  .tb-cheer { color: var(--muted); font-size: 13.5px; margin: -8px 4px 14px; max-width: 66ch; }
+  .tb-top .tb-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .tb-date {
+    font: 700 12px/1 var(--sans); color: var(--accent-deep);
+    background: var(--accent-soft); border-radius: 99px; padding: 8px 14px; white-space: nowrap;
+  }
+
+  /* ---------- Period switcher ---------- */
+  .tb-period { display: inline-flex; gap: 4px; background: var(--sunken); border-radius: 99px; padding: 4px; }
+  .tb-period span {
+    font: 700 12px/1 var(--sans); color: var(--muted); padding: 7px 14px;
+    border-radius: 99px; cursor: pointer; transition: color .15s;
+  }
+  .tb-period span:hover { color: var(--ink); }
+  .tb-period .on {
+    background: var(--surface); color: var(--accent-deep);
+    box-shadow: 0 1px 3px oklch(0.30 0.02 60 / 0.10);
+  }
+
+  /* ---------- Cards: the soft bento ---------- */
+  .tb-card {
+    background: var(--surface); border-radius: var(--radius); padding: 18px 20px 16px; min-width: 0;
+    box-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.05), 0 8px 22px oklch(0.30 0.02 60 / 0.06);
+  }
+  .tb-card > h3 {
+    margin: 0 0 2px; font: 700 11.5px/1.4 var(--sans);
+    letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
+  }
+  .tb-take { color: var(--muted); font-size: 13px; margin: 2px 0 10px; max-width: 58ch; }
+  .tb-record {
+    display: inline-block; font: 800 10.5px/1 var(--sans); letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--accent-deep); background: var(--accent-soft);
+    border-radius: 99px; padding: 4px 9px; margin-left: 8px; vertical-align: 3px; white-space: nowrap;
+  }
+
+  /* ---------- Numerals: bold and rounded ---------- */
+  .tb-v { font: 800 34px/1 var(--display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tb-v small { font: 700 15px/1 var(--sans); color: var(--muted); margin-left: 7px; letter-spacing: 0; }
+  .tb-mini { font: 800 24px/1.1 var(--display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin-top: 8px; }
+  .tb-mini small { font: 700 12.5px/1 var(--sans); color: var(--muted); margin-left: 3px; letter-spacing: 0; }
+  .tb-d { font: 700 12px/1.5 var(--sans); margin-top: 5px; font-variant-numeric: tabular-nums; }
+  .tb-d.up { color: var(--ok); } .tb-d.down { color: var(--warn); } .tb-d.flat { color: var(--muted); }
+
+  /* ---------- Stats row ---------- */
+  .tb-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .tb-stat {
+    background: var(--surface); border-radius: var(--radius); padding: 14px 18px 12px; min-width: 0;
+    box-shadow: 0 1px 2px oklch(0.30 0.02 60 / 0.05), 0 8px 22px oklch(0.30 0.02 60 / 0.06);
+  }
+  .tb-stat .k {
+    font: 700 10.5px/1.4 var(--sans); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
+  }
+  .tb-stat .tb-v { font-size: 26px; margin-top: 6px; }
+
+  /* ---------- Progress grammar: track + fill + target tick ----------
+     fill = actual; the target tick marks where you meant to be by today;
+     the track is the period's whole capacity. fill short of the tick reads
+     behind at a glance. */
+  .tb-track { position: relative; height: 10px; border-radius: 99px; background: var(--sunken); overflow: hidden; }
+  .tb-fill { height: 100%; border-radius: 99px; background: var(--accent); }
+  .tb-fill.ok { background: var(--ok); }
+  .tb-fill.warn { background: var(--warn); }
+  .tb-target {
+    position: absolute; top: -3px; bottom: -3px; width: 3px;
+    border-radius: 2px; background: var(--ink); left: var(--target, 100%);
+  }
+  .tb-prog { margin-top: 12px; }
+  .tb-prog-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 0 0 6px; }
+  .tb-prog-row b { font-size: 13.5px; font-weight: 700; }
+  .tb-prog-row span {
+    font: 700 12px/1 var(--sans); color: var(--muted);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .tb-mini-track { display: block; width: 76px; height: 6px; border-radius: 99px; background: var(--sunken); overflow: hidden; }
+  .tb-mini-track i { display: block; height: 100%; border-radius: 99px; background: var(--accent); }
+  .tb-mini-track.ok i { background: var(--ok); }
+  .tb-mini-track.warn i { background: var(--warn); }
+
+  /* ---------- Rings: pacing gauges ----------
+     --p is the fraction done; --ring carries the verdict color (accent on
+     pace, ok done, warn behind). The arc is one circle with a dash offset. */
+  .tb-rings { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 6px; }
+  .tb-ringwrap { text-align: center; flex: 1; min-width: 120px; margin: 0; }
+  .tb-ring { position: relative; width: 118px; height: 118px; margin: 0 auto; }
+  .tb-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .tb-ring circle { fill: none; stroke-width: 11; }
+  .tb-ring .track { stroke: var(--ring-track); }
+  .tb-ring .arc {
+    stroke: var(--ring, var(--accent)); stroke-linecap: round;
+    stroke-dasharray: 326.7; stroke-dashoffset: calc(326.7 * (1 - var(--p, 0)));
+  }
+  .tb-ring-c { position: absolute; inset: 0; display: grid; place-content: center; }
+  .tb-ring-c b { font: 800 22px/1 var(--display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .tb-ring-c span { font: 700 10px/1.4 var(--sans); color: var(--faint); text-transform: uppercase; letter-spacing: 0.07em; }
+  .tb-ringwrap figcaption { margin-top: 8px; }
+  .tb-ringwrap figcaption b { display: block; font-size: 13px; font-weight: 700; }
+  .tb-ringwrap figcaption span { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  /* ---------- Streak heatmap ----------
+     h0 is the bare well; h1-h4 mix accent into the well at 25/45/70/100%. */
+  .tb-heat {
+    display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 11px);
+    gap: 3px; margin-top: 10px; justify-content: start;
+  }
+  .tb-heat i, .tb-heat-key i { border-radius: 3.5px; background: var(--sunken); }
+  .tb-heat i { width: 11px; height: 11px; }
+  .tb-heat i.h1, .tb-heat-key i.h1 { background: color-mix(in oklab, var(--accent) 25%, var(--sunken)); }
+  .tb-heat i.h2, .tb-heat-key i.h2 { background: color-mix(in oklab, var(--accent) 45%, var(--sunken)); }
+  .tb-heat i.h3, .tb-heat-key i.h3 { background: color-mix(in oklab, var(--accent) 70%, var(--sunken)); }
+  .tb-heat i.h4, .tb-heat-key i.h4 { background: var(--accent); }
+  .tb-heat-cap {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+    font: 700 11px/1.4 var(--sans); color: var(--faint); flex-wrap: wrap;
+  }
+  .tb-heat-key { display: inline-flex; gap: 3px; align-items: center; }
+  .tb-heat-key i { width: 9px; height: 9px; }
+
+  /* ---------- Charts ---------- */
+  .tb-chart { display: block; width: 100%; height: auto; }
+  .tb-figcap { font: 700 11px/1.5 var(--sans); color: var(--faint); margin-top: 6px; }
+
+  /* ---------- Budget-vs-actual: a friendly table ----------
+     Small tables only. Hairlines, generous padding, mini tracks under the
+     names, pills carry the verdict. No audit density. */
+  .tb-tblwrap { overflow-x: auto; margin-top: 4px; }
+  .tb-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 4px; }
+  .tb-tbl th {
+    text-align: left; font: 700 10.5px/1.4 var(--sans); letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--faint); padding: 8px 12px 7px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tb-tbl td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+  .tb-tbl tr:last-child td { border-bottom: 0; }
+  .tb-tbl .what b { display: block; font-size: 13.5px; font-weight: 700; }
+  .tb-tbl .what .tb-mini-track { margin-top: 5px; }
+  .tb-tbl .num {
+    text-align: right; font: 700 13.5px/1.2 var(--display);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .tb-tbl .num small { font: 600 11px/1 var(--sans); color: var(--faint); }
+  .tb-tbl th.num { text-align: right; font-family: var(--sans); }
+
+  /* ---------- Soft pills: ok / warn only ---------- */
+  .tb-pill {
+    display: inline-block; font: 800 11px/1 var(--sans); border-radius: 99px;
+    padding: 4px 11px; white-space: nowrap; border: 0; cursor: default;
+  }
+  .tb-pill.ok { color: var(--ok); background: var(--ok-soft); }
+  .tb-pill.warn { color: var(--warn); background: var(--warn-soft); }
+  button.tb-pill { cursor: pointer; }
+  button.tb-pill.ok { color: var(--accent-deep); background: var(--accent-soft); }
+  button.tb-pill.ok:hover { background: color-mix(in oklab, var(--accent) 18%, var(--surface)); }
+
+  /* ---------- Ranked top list ---------- */
+  .tb-toplist { margin-top: 4px; }
+  .tb-rank { position: relative; display: flex; align-items: baseline; gap: 10px; padding: 9px 0 8px; }
+  .tb-rank .bar {
+    position: absolute; left: 0; bottom: 4px; height: 22px; border-radius: 7px;
+    background: var(--accent-soft); width: var(--w, 50%); max-width: 62%;
+  }
+  .tb-rank .n { position: relative; font-weight: 700; font-size: 13px; }
+  .tb-rank .v { position: relative; margin-left: auto; font: 700 13px/1 var(--display); font-variant-numeric: tabular-nums; }
+  .tb-rank .v small { font: 600 10.5px/1 var(--sans); color: var(--faint); margin-left: 4px; }
+
+  /* ---------- Friendly rows: goals and lobes ---------- */
+  .tb-rowlist { margin-top: 2px; }
+  .tb-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); font-size: 13.5px; }
+  .tb-row:last-child { border-bottom: 0; }
+  .tb-row .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .tb-row .dot.ok { background: var(--ok); } .tb-row .dot.warn { background: var(--warn); }
+  .tb-row .n { font-weight: 700; }
+  .tb-row .m { margin-left: auto; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---------- Lately: the friendly timeline ---------- */
+  .tb-ev { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line-soft); font-size: 13px; align-items: baseline; }
+  .tb-ev:last-of-type { border-bottom: 0; }
+  .tb-ev time { font: 800 11px/1.6 var(--sans); color: var(--faint); text-transform: uppercase; letter-spacing: 0.05em; flex: none; width: 38px; }
+  .tb-ev .t { color: var(--muted); }
+  .tb-ev .t b { color: var(--ink); font-weight: 700; }
+
+  /* ---------- States: friendly empty, soft pulse, gentle retry ---------- */
+  .tb-empty { text-align: center; padding: 26px 10px 22px; }
+  .tb-empty .e { color: var(--muted); font-size: 13.5px; margin: 0 0 12px; max-width: 40ch; margin-inline: auto; }
+  .tb-empty .e b { color: var(--ink); font-weight: 700; }
+  .tb-v.pulse { animation: tb-pulse 1.8s ease-in-out infinite; }
+  @keyframes tb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .tb-retry { text-align: center; padding: 20px 10px 16px; }
+  .tb-retry .e { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+
+  /* ---------- Buttons ---------- */
+  .tb-btn {
+    display: inline-block; font: 700 13px/1 var(--sans); border-radius: var(--r-md);
+    padding: 10px 16px; border: 0; cursor: pointer;
+    transition: background-color .15s, color .15s, box-shadow .15s;
+  }
+  .tb-btn--primary { background: var(--accent-deep); color: var(--accent-ink); box-shadow: 0 2px 8px oklch(0.50 0.13 40 / 0.25); }
+  .tb-btn--primary:hover { background: color-mix(in oklab, var(--accent-deep) 88%, var(--ink)); }
+  .tb-btn--ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+  .tb-btn--ghost:hover { border-color: var(--faint); }
+  .tb-btn--quiet { background: none; color: var(--accent-deep); padding-left: 4px; padding-right: 4px; }
+  .tb-btn--quiet:hover { text-decoration: underline; }
+  .tb-btn[disabled] { background: var(--sunken); color: var(--faint); box-shadow: none; cursor: not-allowed; }
+  .tb-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tb-btnrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 4px 0; }
+
+  /* ---------- Inputs ---------- */
+  .tb-field { max-width: 320px; padding: 6px 0; }
+  .tb-label { display: block; font: 700 11px/1 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .tb-hint { font: 600 12px/1.5 var(--sans); color: var(--faint); margin-top: 6px; }
+  .tb-input, .tb-select {
+    width: 100%; font: 600 14px/1.4 var(--sans); color: var(--ink);
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--r-md);
+    padding: 10px 13px;
+  }
+  .tb-input::placeholder { color: var(--faint); font-weight: 500; }
+  .tb-input:focus-visible, .tb-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+  .tb-select {
+    appearance: none; -webkit-appearance: none; padding-right: 32px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%;
+    background-size: 5px 5px; background-repeat: no-repeat;
+  }
+
+  /* ---------- Token swatches ---------- */
+  .tb-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px 18px; margin-top: 10px; }
+  .tb-swatch .sw { height: 30px; border-radius: 9px; box-shadow: inset 0 0 0 1px oklch(0.30 0.02 60 / 0.08); }
+  .tb-swatch .nm { font: 700 10.5px/2.4 var(--sans); letter-spacing: 0.05em; color: var(--muted); }
+
+  /* ---------- Dark proof strip (shows the second half of every token) ---------- */
+  .tb-darkproof {
+    color-scheme: dark; color: var(--ink); background: var(--bg);
+    border-radius: var(--radius); padding: 4px 20px 18px; margin-top: 14px;
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .tb-darkproof .cap { font: 700 10.5px/1 var(--sans); letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint); padding: 14px 0 10px; }
+
+  /* ---------- Compact treatment (narrow containers, small screens) ---------- */
+  .tb-mob .tb-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tb-mob .tb-stat { padding: 12px 14px 10px; }
+  .tb-mob .tb-stat .tb-v { font-size: 22px; }
+  .tb-mob .tb-bento, .tb-mob .tb-cols { grid-template-columns: 1fr; }
+  .tb-mob .tb-v { font-size: 30px; }
+  .tb-mob .tb-tbl { font-size: 13px; }
+  .tb-mob .tb-tbl th, .tb-mob .tb-tbl td { padding-left: 8px; padding-right: 8px; }
+  .tb-mob .tb-tbl .left { display: none; }
+  .tb-mob .tb-card { padding: 16px 16px 14px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .tb-bento { grid-template-columns: 1fr; }
+    .tb-stats { grid-template-columns: 1fr 1fr; }
+    .tb-top { padding-top: 16px; }
+  }
+  @media (max-width: 560px) {
+    .tb-cols { grid-template-columns: 1fr; }
+    .tb-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .tb-date { display: none; }
+  }
+
+  /* ---------- Print: a light section, modestly ----------
+     The scheme pins light at the root (a dark-lead derivative flips here),
+     shadows drop for hairline borders, cards and rows never tear, chrome
+     hides, and the folio rides the @page margin box. */
+  @media print {
+    :root {
+      color-scheme: light;
+    }
+    @page {
+      size: A4 portrait;
+      margin: 14mm 13mm 16mm;
+      @bottom-center {
+        content: counter(page) " of " counter(pages);
+        font-family: system-ui, sans-serif;
+        font-size: 7.5pt;
+        color: #8a7f74;
+      }
+    }
+    body { background: #fff; font-size: 10.5pt; }
+    .tb-card, .tb-stat { box-shadow: none; border: 1px solid #e5ddd2; }
+    .tb-noprint, .tb-top .tb-right { display: none; }
+    .tb-card, .tb-stat, .tb-ev, .tb-row, .tb-tbl tr, .tb-rings { break-inside: avoid; }
+    p, .tb-take { orphans: 3; widows: 3; }
+    .tb-v.pulse { animation: none; }
+    .tb-btnrow { display: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .tb-v.pulse { animation: none; }
+    .tb-btn, .tb-period span { transition: none; }
+  }
+}
+
+</style>
+<style>
+/* page CSS (unlayered): this demo's own document chrome - headings and
+   section rhythm for the explanation page itself, the phone frame, and the
+   branded print folio. Everything below stays out of the foundation layer
+   and never edits it. */
+.head { padding: 34px 0 8px; }
+.head h1 { font-size: 26px; line-height: 1.15; margin: 10px 0; letter-spacing: -0.01em; font-weight: 800; }
+.dek { color: var(--muted); max-width: 78ch; margin: 0 0 6px; font-size: 13px; }
+.head .tb-eyebrow { color: var(--accent-deep); margin: 0; }
+.sec { margin-top: 52px; }
+.sec > .tb-eyebrow { font: 700 11px/1.4 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-deep); margin: 0 0 8px; }
+.sec-dek { color: var(--muted); max-width: 84ch; margin: 0 0 14px; font-size: 13px; }
+.foot {
+  margin-top: 72px; border-top: 1px solid var(--line); padding-top: 20px;
+  font: 600 12px/1.8 var(--sans); color: var(--faint);
+}
+.tb-eyebrow { font: 700 11px/1.4 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+/* demo-only grid for explanation pairings */
+.demo-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.demo-cols > * { min-width: 0; }
+@media (max-width: 860px) { .demo-cols { grid-template-columns: 1fr; } }
+
+/* phone frame chrome for the 390 proof (screen only) */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line); border-radius: 22px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+  box-shadow: 0 10px 30px oklch(0.30 0.02 60 / 0.08);
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line-soft);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+.mob-note { text-align: center; color: var(--faint); font-size: 12px; margin: 10px 0 0; }
+
+/* branded folio for this document's printout; the foundation ships the
+   plain page counter and this replaces the text. */
+@media print {
+  @page {
+    @bottom-center {
+      content: "october tally · identity demo · page " counter(page) " of " counter(pages);
+    }
+  }
+}
+</style>
+</head>
+<body>
+
+<main class="tb-wrap">
+
+  <div class="tb-top">
+    <span class="tb-brand">uiforagents <span>·</span> tally-board</span>
+    <div class="tb-right">
+      <button class="tb-btn tb-btn--ghost tb-noprint" id="theme-toggle" type="button">Dark theme</button>
+    </div>
+  </div>
+
+  <header class="head tb-noprint">
+    <p class="tb-eyebrow">uiforagents · artifact identity · tally-board</p>
+    <h1>The october board</h1>
+    <p class="dek">A warm-light personal tracking identity: cream ground, terracotta accent,
+    rounded bento cards, bold rounded numerals, and a progress grammar that reads goals,
+    budgets, and streaks at a glance - with a voice that encourages. Everything below is built
+    from <code style="font: 600 12px var(--sans)">foundation.css</code> alone.</p>
+    <p class="tb-figcap" style="margin-top:8px">oct 09 2026 · light-dark() tokens, light lead · system stacks, rounded numerals · hand-authored svg charts · zero required javascript</p>
+  </header>
+
+  <!-- ==================== 01 RATIONALE ==================== -->
+  <section class="sec tb-noprint" id="rationale">
+    <p class="tb-eyebrow">01 · design rationale</p>
+    <p class="sec-dek">Dashboards for one person read differently from consoles for teams. The
+    ops identities score systems; the ledger scores documents. This one scores <b>you against
+    your own intentions</b> - which takes warmth, roundness, and a state ladder with exactly two
+    steps. A missed week is information, not an incident.</p>
+    <div class="demo-cols">
+      <div class="tb-card">
+        <h3>What makes it tally-board</h3>
+        <ul style="margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.85">
+          <li><b style="color:var(--ink)">Progress grammar</b> - track = the period, fill = actual,
+          target tick = today's pacing line. The same three parts render budgets, loops, and rings.</li>
+          <li><b style="color:var(--ink)">Two warm states</b> - ok and warn. No red anywhere; the
+          gentle retry pill handles the one error case a personal board has.</li>
+          <li><b style="color:var(--ink)">Rounded numerals</b> - the display stack at weight 800
+          is the loudest voice on the page; no mono, ever.</li>
+          <li><b style="color:var(--ink)">Encouragement as grammar</b> - every card gets a
+          <code>.tb-take</code> reading; records get flagged once; copy names the next step.</li>
+          <li><b style="color:var(--ink)">Soft bento</b> - the only identity with a soft shadow;
+          cards float on cream instead of sitting in ruled sheets.</li>
+        </ul>
+      </div>
+      <div class="tb-card">
+        <h3>What stays out</h3>
+        <ul style="margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.85">
+          <li><b style="color:var(--ink)">Severity grammar</b> - no danger token, no FAIL rows,
+          no alarm lists. The census verdict keeps ops grammar out of this identity.</li>
+          <li><b style="color:var(--ink)">Audit density</b> - tables stay small and friendly:
+          hairlines, mini tracks, pills. Accounting rulings live in paper-ledger.</li>
+          <li><b style="color:var(--ink)">Mono figures</b> - ledger tables and ops consoles own
+          the mono voice; here numerals stay rounded and warm.</li>
+          <li><b style="color:var(--ink)">Shame</b> - the flu week still landed 19 loops, and the
+          board says so. Coaching copy never scolds.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 02 TOKENS ==================== -->
+  <section class="sec tb-noprint" id="tokens">
+    <p class="tb-eyebrow">02 · token reference</p>
+    <p class="sec-dek">Every token is a <code>light-dark()</code> pair: light is the canonical lead,
+    dark is a warm-dark derivative re-gated for contrast. Accent works as a split - <code>--accent</code>
+    fills, <code>--accent-deep</code> carries text - and there is no danger token by design.</p>
+    <div class="tb-card">
+      <h3>Semantic tokens</h3>
+      <div class="tb-swatches">
+        <div class="tb-swatch"><div class="sw" style="background:var(--bg)"></div><div class="nm">--bg · the cream ground</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--surface)"></div><div class="nm">--surface · cards</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--sunken)"></div><div class="nm">--sunken · wells, tracks</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--line)"></div><div class="nm">--line · hairlines</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--line-soft)"></div><div class="nm">--line-soft · row rules</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--ink)"></div><div class="nm">--ink · text</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--muted)"></div><div class="nm">--muted · secondary</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--faint)"></div><div class="nm">--faint · captions</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--accent)"></div><div class="nm">--accent · fills only</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--accent-deep)"></div><div class="nm">--accent-deep · accent text</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--accent-soft)"></div><div class="nm">--accent-soft · washes</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--ok)"></div><div class="nm">--ok · done / good</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--ok-soft)"></div><div class="nm">--ok-soft · pill ground</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--warn)"></div><div class="nm">--warn · behind / slow</div></div>
+        <div class="tb-swatch"><div class="sw" style="background:var(--warn-soft)"></div><div class="nm">--warn-soft · pill ground</div></div>
+      </div>
+      <p class="tb-hint" style="margin-top:14px">Radius ladder: <code>--radius</code> 14px cards ·
+      <code>--r-md</code> 12px controls · <code>--r-sm</code> 6px specimens · 99px for pills and
+      tracks. Chart tokens (<code>--chart-grid</code>, <code>--chart-axis</code>,
+      <code>--chart-label</code>, <code>--chart-value</code>, <code>--chart-series</code>,
+      <code>--chart-series-dim</code>, <code>--ring-track</code>) all derive from the palette.</p>
+    </div>
+    <div class="tb-darkproof">
+      <div class="cap">derived dark · the second half of every token, zero js</div>
+      <div class="tb-stats" style="margin:0 0 12px">
+        <div class="tb-stat"><div class="k">streak</div><div class="tb-v">12<small>days</small></div><div class="tb-d up">best since june</div></div>
+        <div class="tb-stat"><div class="k">left to spend</div><div class="tb-v">$626<small>.40</small></div><div class="tb-d flat">of $810</div></div>
+      </div>
+      <div class="tb-cols">
+        <div class="tb-card">
+          <h3>Groceries budget</h3>
+          <div class="tb-prog">
+            <div class="tb-prog-row"><b>month budget</b><span>35% · on pace</span></div>
+            <div class="tb-track"><div class="tb-fill" style="width:35%"></div><span class="tb-target" style="--target:29%"></span></div>
+          </div>
+          <div class="tb-btnrow" style="margin-top:12px">
+            <span class="tb-pill ok">on track</span>
+            <span class="tb-pill warn">lagging</span>
+            <button class="tb-btn tb-btn--primary">log today</button>
+          </div>
+        </div>
+        <div class="tb-card">
+          <h3>Eating out</h3>
+          <div class="tb-mini">$74<small>.00 / $90</small></div>
+          <div class="tb-prog">
+            <div class="tb-prog-row"><b>month budget</b><span>82% used</span></div>
+            <div class="tb-track"><div class="tb-fill warn" style="width:82%"></div><span class="tb-target" style="--target:70%"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 03 OVERVIEW BOARD ==================== -->
+  <section class="sec" id="overview">
+    <p class="tb-eyebrow tb-noprint">03 · overview board</p>
+    <p class="sec-dek tb-noprint">The workhorse view: headline stats row, the training hero with
+    its record flag, the budget card pacing under its target tick, and the streak heat with its
+    key. One cream page, one honest cheer.</p>
+
+    <div class="tb-top" style="padding-top:8px">
+      <span class="tb-brand">october tally<span>.</span></span>
+      <div class="tb-right">
+        <div class="tb-period"><span>week</span><span class="on">month</span><span>year</span></div>
+        <span class="tb-date">october, week 41</span>
+      </div>
+    </div>
+    <p class="tb-cheer">Week two of eating in more, and the morning-walk streak is one sleep
+    away from two weeks. The board below is honest; you are mostly winning.</p>
+
+    <div class="tb-stats tb-gap">
+      <div class="tb-stat">
+        <div class="k">current streak</div>
+        <div class="tb-v">12<small>days</small><span class="tb-record">best since june</span></div>
+        <div class="tb-d up">best run in 5 months</div>
+      </div>
+      <div class="tb-stat">
+        <div class="k">loops this week</div>
+        <div class="tb-v">24<small>of 28</small></div>
+        <div class="tb-d flat">sunday still open</div>
+      </div>
+      <div class="tb-stat">
+        <div class="k">left to spend</div>
+        <div class="tb-v">$626<small>.40</small></div>
+        <div class="tb-d flat">of $810 budgets · 9 days left</div>
+      </div>
+      <div class="tb-stat">
+        <div class="k">books this year</div>
+        <div class="tb-v">21<small>of 24</small></div>
+        <div class="tb-d up">two ahead of last year's pace</div>
+      </div>
+    </div>
+
+    <div class="tb-bento">
+      <div class="tb-card">
+        <h3>Running · october</h3>
+        <p class="tb-take">Sunday long runs are carrying the month - the 8th set your distance
+        record at 12.4 km.</p>
+        <div class="tb-v">62.4<small>km this month</small><span class="tb-record">record 12.4 km</span></div>
+        <svg class="tb-chart" viewBox="0 0 720 190" role="img" aria-label="Smooth line chart of kilometres run each day in October, rising to a record 12.4 kilometre long run on the eighth">
+          <line x1="44" y1="125" x2="704" y2="125" stroke="var(--chart-grid)" stroke-dasharray="2 5"/>
+          <line x1="44" y1="60" x2="704" y2="60" stroke="var(--chart-grid)" stroke-dasharray="2 5"/>
+          <line x1="44" y1="189.5" x2="704" y2="189.5" stroke="var(--chart-axis)"/>
+          <text x="38" y="128" text-anchor="end" font-size="10" fill="var(--chart-label)">5 km</text>
+          <text x="38" y="63" text-anchor="end" font-size="10" fill="var(--chart-label)">10 km</text>
+          <path d="M44,190 L44,148.4 L126.5,184 L209,123.7 L291.5,143.2 L374,184 L456.5,106.8 L539,135.4 L621.5,75.6 L704,28.8 L704,190 Z" fill="var(--chart-series)" opacity="0.08"/>
+          <polyline points="44,148.4 126.5,184 209,123.7 291.5,143.2 374,184 456.5,106.8 539,135.4 621.5,75.6 704,28.8" fill="none" stroke="var(--chart-series)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="704" cy="28.8" r="4.5" fill="var(--chart-series)" stroke="var(--surface)" stroke-width="2"/>
+          <text x="698" y="18" text-anchor="end" font-size="11" font-weight="700" fill="var(--accent-deep)">12.4 km · sun</text>
+          <text x="44" y="181" font-size="10" fill="var(--chart-label)" dx="-12">01</text>
+          <text x="209" y="181" text-anchor="middle" font-size="10" fill="var(--chart-label)">03</text>
+          <text x="374" y="181" text-anchor="middle" font-size="10" fill="var(--chart-label)">05</text>
+          <text x="539" y="181" text-anchor="middle" font-size="10" fill="var(--chart-label)">07</text>
+          <text x="704" y="181" text-anchor="middle" font-size="10" fill="var(--chart-label)">09</text>
+        </svg>
+        <p class="tb-figcap">daily km · rest days sit on the floor on purpose</p>
+      </div>
+      <div class="tb-stack">
+        <div class="tb-card">
+          <h3>Groceries budget</h3>
+          <div class="tb-mini">$118<small>.60 / $340</small></div>
+          <div class="tb-prog">
+            <div class="tb-prog-row"><b>month budget</b><span>35% used · on pace</span></div>
+            <div class="tb-track"><div class="tb-fill" style="width:35%"></div><span class="tb-target" style="--target:29%"></span></div>
+          </div>
+          <p class="tb-take" style="margin:9px 0 0">Pacing 9% under september. The meal-prep
+          habit is quietly paying rent.</p>
+        </div>
+        <div class="tb-card">
+          <h3>Morning walk streak</h3>
+          <div class="tb-mini">12<small>days</small></div>
+          <div class="tb-heat" role="img" aria-label="Last thirteen weeks of daily loops as heat cells; the current twelve-day streak is solid terracotta">
+            <i class="h1"></i><i></i><i class="h2"></i><i class="h2"></i><i class="h1"></i><i class="h2"></i><i class="h3"></i>
+            <i class="h2"></i><i class="h2"></i><i></i><i class="h2"></i><i class="h3"></i><i class="h2"></i><i class="h3"></i>
+            <i class="h3"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i><i class="h3"></i><i></i><i class="h2"></i>
+            <i class="h2"></i><i class="h3"></i><i class="h3"></i><i class="h2"></i><i class="h3"></i><i class="h3"></i><i class="h2"></i>
+            <i class="h3"></i><i class="h4"></i><i class="h3"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i><i class="h3"></i>
+            <i class="h3"></i><i class="h3"></i><i class="h4"></i><i class="h3"></i><i class="h4"></i><i class="h4"></i><i class="h3"></i>
+            <i class="h4"></i><i class="h4"></i><i class="h3"></i><i class="h4"></i><i class="h4"></i><i class="h3"></i><i class="h4"></i>
+            <i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h3"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i>
+            <i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i>
+            <i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i>
+            <i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i></i>
+            <i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i>
+            <i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i><i class="h4"></i>
+          </div>
+          <div class="tb-heat-cap"><span>last 13 weeks</span><span class="tb-heat-key"><i></i><i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i></span><span>light → all loops done</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 04 RINGS ==================== -->
+  <section class="sec" id="rings">
+    <p class="tb-eyebrow tb-noprint">04 · year-goal rings</p>
+    <p class="sec-dek tb-noprint">Ring color is the pacing verdict: terracotta on pace, green
+    done, amber behind. The arc comes from <code>--p</code>; the center carries the percentage
+    and the count; the caption names the next step.</p>
+    <div class="tb-card">
+      <h3>Year goals</h3>
+      <p class="tb-take">Two rings are basically home. Strength is the honest one - two sessions
+      behind, and october still has nine days to fix it.</p>
+      <div class="tb-rings">
+        <figure class="tb-ringwrap">
+          <div class="tb-ring" style="--p:0.875; --ring: var(--accent)">
+            <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/></svg>
+            <div class="tb-ring-c"><b>88%</b><span>21 of 24</span></div>
+          </div>
+          <figcaption><b>Books</b><span>two to go - december is for the fun ones</span></figcaption>
+        </figure>
+        <figure class="tb-ringwrap">
+          <div class="tb-ring" style="--p:1; --ring: var(--ok)">
+            <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/></svg>
+            <div class="tb-ring-c"><b>100%</b><span>$180 saved</span></div>
+          </div>
+          <figcaption><b>Save 15%</b><span>done, first month since may</span></figcaption>
+        </figure>
+        <figure class="tb-ringwrap">
+          <div class="tb-ring" style="--p:0.55; --ring: var(--warn)">
+            <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/></svg>
+            <div class="tb-ring-c"><b>55%</b><span>6 of 11</span></div>
+          </div>
+          <figcaption><b>Strength</b><span>two sessions behind - thursday?</span></figcaption>
+        </figure>
+        <figure class="tb-ringwrap">
+          <div class="tb-ring" style="--p:0.89; --ring: var(--accent)">
+            <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/></svg>
+            <div class="tb-ring-c"><b>89%</b><span>446 km</span></div>
+          </div>
+          <figcaption><b>Run 500 km</b><span>a november long run closes it</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 05 WEEKLY BARS ==================== -->
+  <section class="sec" id="bars">
+    <p class="tb-eyebrow tb-noprint">05 · weekly bars</p>
+    <p class="sec-dek tb-noprint">Bar color carries the weekly outcome - the pill grammar in bar
+    form: terracotta in progress, green full week, amber missed week. The target is a dashed
+    line with its label at the right end.</p>
+    <div class="tb-card">
+      <h3>Habit loops · by week</h3>
+      <p class="tb-take">Week 3 caught the flu and still landed 19. Week 2 was a perfect 28 -
+      the only full board this quarter.</p>
+      <svg class="tb-chart" viewBox="0 0 720 176" role="img" aria-label="Bar chart of habit loops completed per week in October against a target of twenty-eight; week two hit the target, week three fell short">
+        <line x1="44" y1="26.25" x2="704" y2="26.25" stroke="var(--accent-deep)" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <text x="704" y="18" text-anchor="end" font-size="10.5" font-weight="700" fill="var(--accent-deep)">target 28</text>
+        <line x1="44" y1="140" x2="704" y2="140" stroke="var(--chart-axis)"/>
+        <rect x="70" y="34.4" width="90" height="105.6" rx="8" fill="var(--chart-series)"/>
+        <rect x="250" y="26.25" width="90" height="113.75" rx="8" fill="var(--ok)"/>
+        <rect x="430" y="62.8" width="90" height="77.2" rx="8" fill="var(--warn)"/>
+        <rect x="610" y="42.5" width="90" height="97.5" rx="8" fill="var(--chart-series)"/>
+        <text x="115" y="26" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--chart-value)">26</text>
+        <text x="295" y="18" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ok)">28</text>
+        <text x="475" y="54" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--warn)">19</text>
+        <text x="655" y="34" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--chart-value)">24 so far</text>
+        <text x="115" y="158" text-anchor="middle" font-size="10.5" fill="var(--chart-label)">wk 1</text>
+        <text x="295" y="158" text-anchor="middle" font-size="10.5" fill="var(--chart-label)">wk 2</text>
+        <text x="475" y="158" text-anchor="middle" font-size="10.5" fill="var(--chart-label)">wk 3</text>
+        <text x="655" y="158" text-anchor="middle" font-size="10.5" fill="var(--chart-label)">wk 4</text>
+      </svg>
+      <p class="tb-figcap">28 loops = 4 daily habits × 7 days · green full, amber short</p>
+    </div>
+  </section>
+
+  <!-- ==================== 06 BUDGET VS ACTUAL ==================== -->
+  <section class="sec" id="budgets">
+    <p class="tb-eyebrow tb-noprint">06 · budget vs actual</p>
+    <p class="sec-dek tb-noprint">Friendly, not audit-dense: hairlines, generous padding, a mini
+    track under each name, rounded figures right-aligned, and pills carrying the verdict. The
+    <code>.tb-take</code> reads the month before the table does.</p>
+    <div class="tb-card">
+      <h3>October budgets</h3>
+      <p class="tb-take">Groceries are pacing 9% under september. Eat-out money needs a leash -
+      $16 left with nine days to go, and fun money is already home for the month.</p>
+      <div class="tb-tblwrap">
+      <table class="tb-tbl">
+        <thead><tr><th>category</th><th class="num">budget</th><th class="num">spent</th><th class="num left">left</th><th>how it's going</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="what"><b>Groceries</b><span class="tb-mini-track"><i style="width:35%"></i></span></td>
+            <td class="num">$340</td><td class="num">$118.60</td><td class="num left">$221.40</td>
+            <td><span class="tb-pill ok">on track</span></td>
+          </tr>
+          <tr>
+            <td class="what"><b>Transport</b><span class="tb-mini-track"><i style="width:26%"></i></span></td>
+            <td class="num">$120</td><td class="num">$31.00</td><td class="num left">$89.00</td>
+            <td><span class="tb-pill ok">on track</span></td>
+          </tr>
+          <tr>
+            <td class="what"><b>Eating out</b><span class="tb-mini-track warn"><i style="width:82%"></i></span></td>
+            <td class="num">$90</td><td class="num">$74.00</td><td class="num left">$16.00</td>
+            <td><span class="tb-pill warn">slow down</span></td>
+          </tr>
+          <tr>
+            <td class="what"><b>Fun money</b><span class="tb-mini-track warn"><i style="width:100%"></i></span></td>
+            <td class="num">$60</td><td class="num">$60.00</td><td class="num left">$0</td>
+            <td><span class="tb-pill warn">done · renews nov 1</span></td>
+          </tr>
+          <tr>
+            <td class="what"><b>Savings</b><span class="tb-mini-track ok"><i style="width:100%"></i></span></td>
+            <td class="num">$180</td><td class="num">$180.00</td><td class="num left">goal met</td>
+            <td><span class="tb-pill ok">done</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 07 PROGRESS LISTS ==================== -->
+  <section class="sec" id="lists">
+    <p class="tb-eyebrow tb-noprint">07 · progress lists</p>
+    <p class="sec-dek tb-noprint">The ranked bar-in-row list reads where the money went; the
+    friendly goal rows read the week. Dots and pills carry state; counts name the denominator.</p>
+    <div class="tb-cols">
+      <div class="tb-card">
+        <h3>Where the money went</h3>
+        <div class="tb-toplist">
+          <div class="tb-rank"><span class="bar" style="--w:100%"></span><span class="n">Groceries</span><span class="v">118.60<small>market + bulk run</small></span></div>
+          <div class="tb-rank"><span class="bar" style="--w:62%"></span><span class="n">Eating out</span><span class="v">74.00<small>4 lunches, 2 dinners</small></span></div>
+          <div class="tb-rank"><span class="bar" style="--w:26%"></span><span class="n">Transport</span><span class="v">31.00<small>fuel</small></span></div>
+          <div class="tb-rank"><span class="bar" style="--w:10%"></span><span class="n">Pharmacy</span><span class="v">12.40<small>flu rounds two</small></span></div>
+        </div>
+        <p class="tb-figcap">october so far · bars relative to the biggest line</p>
+      </div>
+      <div class="tb-card">
+        <h3>This week's loops</h3>
+        <div class="tb-rowlist">
+          <div class="tb-row"><span class="dot ok"></span><span class="n">Morning walk</span><span class="m">6 of 7</span><span class="tb-pill ok">on track</span></div>
+          <div class="tb-row"><span class="dot ok"></span><span class="n">Read 20 min</span><span class="m">5 of 7</span><span class="tb-pill ok">on track</span></div>
+          <div class="tb-row"><span class="dot ok"></span><span class="n">Water · 8 glasses</span><span class="m">6 of 7</span><span class="tb-pill ok">on track</span></div>
+          <div class="tb-row"><span class="dot warn"></span><span class="n">Stretch</span><span class="m">2 of 7</span><span class="tb-pill warn">lagging</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 08 LATELY ==================== -->
+  <section class="sec" id="lately">
+    <p class="tb-eyebrow tb-noprint">08 · lately</p>
+    <p class="sec-dek tb-noprint">Not an event log - a diary line per real thing that happened,
+    with the numbers bolded in ink.</p>
+    <div class="tb-card">
+      <h3>Lately</h3>
+      <div class="tb-ev"><time>wed</time><span class="t">finished book <b>21</b> - the year goal is two away</span></div>
+      <div class="tb-ev"><time>tue</time><span class="t">ran <b>6.4 km</b> before work, best easy pace this month</span></div>
+      <div class="tb-ev"><time>mon</time><span class="t">market run <b>$38.20</b> - tomatoes were a mistake, again</span></div>
+      <div class="tb-ev"><time>sun</time><span class="t">meal-prepped <b>five lunches</b>, which is why eat-out is the only amber row</span></div>
+    </div>
+  </section>
+
+  <!-- ==================== 09 STATES ==================== -->
+  <section class="sec" id="states">
+    <p class="tb-eyebrow tb-noprint">09 · states</p>
+    <p class="sec-dek tb-noprint">Empty states invite with a small first step; loading breathes
+    on the value instead of building skeletons; the one error a personal board gets is a gentle
+    retry - never a severity flag.</p>
+    <div class="tb-cols tb-gap">
+      <div class="tb-card">
+        <h3>Language practice</h3>
+        <div class="tb-empty">
+          <p class="e"><b>No goal set yet.</b> Pick a small one - five minutes a day counts, and
+          the board will keep the streak for you.</p>
+          <button class="tb-pill ok">set a goal</button>
+        </div>
+      </div>
+      <div class="tb-card">
+        <h3>Reading · loading</h3>
+        <div class="tb-v pulse">···<small>pages this week</small></div>
+        <p class="tb-take" style="margin-top:8px">Counting your pages. Usually this takes a
+        second or two.</p>
+      </div>
+      <div class="tb-card">
+        <h3>Calendar sync</h3>
+        <div class="tb-retry">
+          <p class="e">Couldn't reach your calendar just now. <b>Nothing is lost</b> - every
+          tick so far is saved on this device.</p>
+          <button class="tb-pill ok">try again</button>
+        </div>
+      </div>
+      <div class="tb-card">
+        <h3>Stretch · empty week</h3>
+        <div class="tb-empty">
+          <p class="e">A clean slate this week. <b>Two minutes before bed</b> is a perfectly
+          respectable start.</p>
+          <button class="tb-pill ok">log the first one</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 10 PRINT PROOF (screen only) ==================== -->
+  <section class="sec tb-noprint" id="print">
+    <p class="tb-eyebrow">10 · print, modestly</p>
+    <p class="sec-dek">Print is not this identity's signature (that honor belongs to a certain
+    ledger), so the print section stays modest: the light scheme pins at the root, card shadows
+    drop for hairline borders, the chrome and controls hide, cards and rows never tear, and a
+    warm-gray folio rides the <code>@page</code> margin box. Print this page: sections 03-08 are
+    the board, and the fridge is the deployment target.</p>
+    <div class="tb-card">
+      <h3>What print changes</h3>
+      <ul style="margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.85">
+        <li>light re-inks every token for paper - nothing is hand-recolored</li>
+        <li>shadows drop; a 1px warm border keeps the bento readable on white</li>
+        <li>the period switcher, buttons row, and this explanation chrome hide</li>
+        <li>cards, stats, timeline and goal rows, and table rows never split across pages</li>
+        <li>the loading pulse dies; heat cells and ring arcs keep their fills</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== 11 COMPONENT SHEET (screen only) ==================== -->
+  <section class="sec tb-noprint" id="components">
+    <p class="tb-eyebrow">11 · component sheet</p>
+    <p class="sec-dek">Buttons, fields, pills, the period switcher, and the full track grammar.
+    Everything here composes the classes above; nothing is restyled.</p>
+    <div class="demo-cols">
+      <div class="tb-card">
+        <h3>Buttons</h3>
+        <div class="tb-btnrow">
+          <button class="tb-btn tb-btn--primary">log today</button>
+          <button class="tb-btn tb-btn--ghost">edit goal</button>
+          <button class="tb-btn tb-btn--quiet">see history</button>
+          <button class="tb-btn" disabled>archived</button>
+        </div>
+        <h3 style="margin-top:18px">Pills</h3>
+        <div class="tb-btnrow">
+          <span class="tb-pill ok">on track</span>
+          <span class="tb-pill warn">lagging</span>
+          <button class="tb-pill ok">try again</button>
+        </div>
+        <p class="tb-hint">Two state pills exist: ok and warn. A miss is a warn with a next
+        step - this board has no red and no alarms.</p>
+        <h3 style="margin-top:18px">Period switcher</h3>
+        <div class="tb-period"><span>week</span><span class="on">month</span><span>year</span></div>
+        <p class="tb-hint">Chips sit in a sunken well; the active chip lifts on the surface with
+        the accent-deep label.</p>
+      </div>
+      <div class="tb-card">
+        <h3>Fields</h3>
+        <div class="tb-field">
+          <label class="tb-label" for="g1">Goal name</label>
+          <input class="tb-input" id="g1" placeholder="e.g. stretch before bed">
+          <p class="tb-hint">Small goals stick. You can rename it any time.</p>
+        </div>
+        <div class="tb-field">
+          <label class="tb-label" for="p1">Counts toward</label>
+          <select class="tb-select" id="p1"><option>Weekly loops</option><option>Year goals</option><option>Budgets</option></select>
+        </div>
+        <div class="tb-field">
+          <label class="tb-label" for="g2">With focus</label>
+          <input class="tb-input" id="g2" value="Read 20 minutes">
+        </div>
+      </div>
+    </div>
+    <div class="demo-cols" style="margin-top:14px">
+      <div class="tb-card">
+        <h3>Track grammar</h3>
+        <div class="tb-prog" style="margin-top:10px">
+          <div class="tb-prog-row"><b>on pace · 35% of period</b><span>fill 35% · tick at 29%</span></div>
+          <div class="tb-track"><div class="tb-fill" style="width:35%"></div><span class="tb-target" style="--target:29%"></span></div>
+        </div>
+        <div class="tb-prog">
+          <div class="tb-prog-row"><b>done</b><span>fill 100%</span></div>
+          <div class="tb-track"><div class="tb-fill ok" style="width:100%"></div></div>
+        </div>
+        <div class="tb-prog">
+          <div class="tb-prog-row"><b>behind · 55% with 70% gone</b><span>fill 55% · tick at 70%</span></div>
+          <div class="tb-track"><div class="tb-fill warn" style="width:55%"></div><span class="tb-target" style="--target:70%"></span></div>
+        </div>
+        <p class="tb-hint">fill = actual · target tick = where you meant to be today · track =
+        the whole period. fill short of the tick reads behind at a glance.</p>
+      </div>
+      <div class="tb-card">
+        <h3>Ring + heat grammar</h3>
+        <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap; margin-top:8px">
+          <div class="tb-ring" style="--p:0.72">
+            <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/></svg>
+            <div class="tb-ring-c"><b>72%</b><span>on pace</span></div>
+          </div>
+          <div>
+            <div class="tb-heat" style="margin-top:0">
+              <i></i><i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i>
+            </div>
+            <p class="tb-hint" style="max-width:26ch">heat ladder: well → quarter → half →
+            most → all loops done</p>
+          </div>
+        </div>
+        <p class="tb-hint">rings: dashoffset from --p, --ring carries the pacing color. heat:
+        accent mixed into the well at 25/45/70/100%.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 12 MOBILE 390 (screen only) ==================== -->
+  <section class="sec tb-noprint" id="mobile">
+    <p class="tb-eyebrow">12 · the 390 treatment</p>
+    <p class="sec-dek">The compact treatment (<code>.tb-mob</code>) drops the board into a
+    phone: stats go 2-up, the bento stacks, tables tighten and yield the "left" column, and the
+    numerals stay loud. Nothing shrinks below thumb size.</p>
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div class="tb tb-mob" style="padding:12px 14px 20px;">
+        <div class="tb-top" style="padding:6px 0 12px">
+          <span class="tb-brand" style="font-size:19px">october tally<span>.</span></span>
+          <div class="tb-right"><div class="tb-period"><span>week</span><span class="on">month</span><span>year</span></div></div>
+        </div>
+        <div class="tb-stats">
+          <div class="tb-stat"><div class="k">streak</div><div class="tb-v">12<small>days</small></div><div class="tb-d up">best since june</div></div>
+          <div class="tb-stat"><div class="k">loops</div><div class="tb-v">24<small>of 28</small></div><div class="tb-d flat">sunday open</div></div>
+        </div>
+        <div class="tb-bento" style="margin-top:10px">
+          <div class="tb-card">
+            <h3>Groceries budget</h3>
+            <div class="tb-mini">$118<small>.60 / $340</small></div>
+            <div class="tb-prog">
+              <div class="tb-prog-row"><b>month budget</b><span>35% · on pace</span></div>
+              <div class="tb-track"><div class="tb-fill" style="width:35%"></div><span class="tb-target" style="--target:29%"></span></div>
+            </div>
+          </div>
+          <div class="tb-card">
+            <h3>October budgets</h3>
+            <div class="tb-tblwrap">
+            <table class="tb-tbl">
+              <thead><tr><th>category</th><th class="num">budget</th><th class="num">spent</th><th class="num left">left</th><th>going</th></tr></thead>
+              <tbody>
+                <tr><td class="what"><b>Groceries</b><span class="tb-mini-track"><i style="width:35%"></i></span></td><td class="num">$340</td><td class="num">$118.60</td><td class="num left">$221.40</td><td><span class="tb-pill ok">ok</span></td></tr>
+                <tr><td class="what"><b>Eating out</b><span class="tb-mini-track warn"><i style="width:82%"></i></span></td><td class="num">$90</td><td class="num">$74.00</td><td class="num left">$16.00</td><td><span class="tb-pill warn">slow</span></td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+        <div class="tb-card" style="margin-top:10px">
+          <h3>Lately</h3>
+          <div class="tb-ev"><time>tue</time><span class="t">ran <b>6.4 km</b> before work</span></div>
+          <div class="tb-ev"><time>mon</time><span class="t">market run <b>$38.20</b></span></div>
+        </div>
+      </div>
+    </div>
+    <p class="mob-note">390px frame · .tb-mob compact treatment · same classes, no re-styling</p>
+  </section>
+
+  <footer class="foot tb-noprint">
+    tally-board · artifact identity demo · synthetic data for one fictional person's october, no
+    real brands · one stylesheet, zero required scripts · print this page: the board is the proof
+  </footer>
+
+</main>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var goingLight = root.style.colorScheme === 'dark';
+      root.style.colorScheme = goingLight ? 'light' : 'dark';
+      btn.textContent = goingLight ? 'Dark theme' : 'Light theme';
+    });
+  })();
+</script>
+</body>
+</html>

@@ -61,6 +61,7 @@ pure-CSS system - no build step, no registry, no npm, no required JavaScript.
 | **midnight-bulletin** | Dark-first briefing bulletin. Near-black warm ground, serif display over sans body, mono labels, one amber accent. | ✅ v1.0 |
 | **night-ops** | Dark ops console. Cool near-black ground, azure instrument accent, LED status grammar, hairline panels, mono counts. One-shot PASS 2026-10-09, incident timeline. | ✅ v1.0 |
 | **paper-ledger** | Light print-precision analytics. Cool paper ground, ink-blue accent, accounting double rules, tabular mono figures, a real print stylesheet. One-shot PASS 2026-10-09, cost-audit summary. | ✅ v1.0 |
+| **tally-board** | Warm personal tracker. Cream + terracotta, rounded bento cards, bold rounded numerals, progress grammar (tracks, target ticks, rings, streak heat), ok/warn-only pills, friendly voice. One-shot PASS 2026-10-09, weekly review. | ✅ v1.0 |
 
 ```
 identities/<artifact-identity>/
