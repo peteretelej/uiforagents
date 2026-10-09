@@ -1,10 +1,42 @@
 {
   "name": "uiforagents",
-  "private": true,
-  "version": "0.1.0",
-  "description": "Design identities for agent-built apps - complete, opinionated design systems on shadcn/ui",
+  "version": "1.0.0",
+  "description": "Design system factory: opinionated, agent-ready design identities - shadcn/ui kits and pure-CSS artifact systems - each with a prompt-pack, theme or foundation stylesheet, and a derive contract. Run npx uiforagents list.",
+  "license": "Apache-2.0",
   "type": "module",
+  "bin": {
+    "uiforagents": "tooling/cli.mjs"
+  },
+  "files": [
+    "identities/",
+    "skills/",
+    "tooling/cli.mjs",
+    "DERIVE.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "design-system",
+    "design-identities",
+    "ui-kit",
+    "agent",
+    "ai-agents",
+    "shadcn",
+    "tailwind",
+    "css",
+    "theme",
+    "prompt-pack",
+    "llm"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peteretelej/uiforagents.git"
+  },
   "scripts": {
-    "build:registry": "node tooling/build-registry.mjs"
+    "build:registry": "node tooling/build-registry.mjs",
+    "cli": "node tooling/cli.mjs"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

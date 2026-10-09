@@ -96,6 +96,20 @@ your `AGENTS.md`) and build. The pack settles typography, density, component
 choices, spacing, motion, and do/don'ts - the agent stops improvising design and
 starts shipping product.
 
+The npm package is the agent-consumable form of the whole factory - `npm i
+uiforagents`, or `npx` it directly:
+
+```sh
+npx uiforagents list                       # catalogue: slug, lane, scheme, tags
+npx uiforagents show night-ops             # the prompt-pack, on stdout
+npx uiforagents show night-ops --file foundation   # or theme, demo, registry
+npx uiforagents init tally-board           # copy an artifact identity into your project
+npx uiforagents derive                     # the derive contract (DERIVE.md)
+```
+
+Everything is plain files under `identities/`, so reading them straight from
+`node_modules/uiforagents/` works too.
+
 ## For humans
 
 Identities are opinionated by design: curated, not community-directed. Use them
