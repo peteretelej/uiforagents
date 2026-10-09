@@ -80,6 +80,9 @@ page-specific layout only.
 - `.rr-readlist`: further-reading list. `h3` groups, borderless `<ul>` with
   hairline dividers, `.rr-src` source line per entry. `.rr-pill-note` for
   small sans asides.
+- `.rr-skel`: loading placeholder line on `--wash` with a soft hairline;
+  set each line's width inline. Static by contract - the identity has no
+  motion - so skeletons hold space without animating.
 - `.rr-colophon` + `.rr-colophon-inner`: footer band on `--surface` with a
   hairline top border; small faint sans colophon text.
 - Utilities: `.rr-sans`, `.rr-measure`.

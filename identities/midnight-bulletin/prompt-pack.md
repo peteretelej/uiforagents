@@ -84,8 +84,9 @@ page-specific layout only.
   Outlined mono rectangles, colored text on 40% border. For verdicts and
   statuses; not buttons.
 - `.mb-cols` > `.mb-panel`: two-column pro/con (or compared) pairs.
-  `.mb-panel--pro` / `.mb-panel--con` color the `.mb-tag` eyebrow
-  green/red; `.mb-who` is the faint mono attribution line.
+  `.mb-panel--pro` / `.mb-panel--con` / `.mb-panel--danger` color the
+  `.mb-tag` eyebrow green/red/red (danger also carries standalone error and
+  correction notices); `.mb-who` is the faint mono attribution line.
 - `.mb-pre`: code block on `--sunken`; spans `.mb-k` (amber keywords) and
   `.mb-c` (faint comments) are the only token colors.
 - `.mb-figure`: chart frame for SVGs that style themselves with the
@@ -95,6 +96,9 @@ page-specific layout only.
   `.mb-outcome` > `.mb-cell` is the hairline result grid (`b` value, `span`
   label). The range input works unstyled-but-native with zero JS; wiring it
   is optional page JS, not a foundation feature.
+- `.mb-skel`: loading placeholder bar on `--sunken`; set each bar's width
+  inline. Static by contract - the identity has no motion - so bars hold
+  space without animating.
 - `.mb-timeline`: event rail; accent node dots, mono `.mb-t` timestamps,
   muted entries.
 - `.mb-sharebar` + `.mb-share-row`: mono bordered share buttons/print link.

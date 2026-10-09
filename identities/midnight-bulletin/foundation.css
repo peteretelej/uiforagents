@@ -202,6 +202,7 @@
   }
   .mb-panel--pro .mb-tag { color: var(--ok); }
   .mb-panel--con .mb-tag { color: var(--danger); }
+  .mb-panel--danger .mb-tag { color: var(--danger); }
   .mb-panel p { font-size: 14.5px; max-width: none; }
   .mb-who { margin: 12px 0 0; font-family: var(--font-mono); font-size: 11.5px; color: var(--faint); }
 
@@ -244,6 +245,12 @@
   .mb-cell span {
     font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em;
     text-transform: uppercase; color: var(--faint);
+  }
+
+  /* ---------- Loading ---------- */
+  .mb-skel {
+    height: 12px; border-radius: var(--radius); background: var(--sunken);
+    border: 1px solid var(--line-soft); max-width: 100%;
   }
 
   /* ---------- Timeline ---------- */

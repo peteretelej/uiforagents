@@ -1,6 +1,6 @@
 {
   "name": "ocean-calm",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "title": "Ocean Calm",
   "description": "Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display over Inter body, generous whitespace, tabular numbers, quiet shadows.",
   "vibe": ["calm", "trust", "light", "product"],
@@ -47,7 +47,7 @@
     "radius-surface": "12px",
     "shadow": "0 1px 1px oklch(26% 0.02 255 / 0.05), 0 2px 6px oklch(26% 0.02 255 / 0.05), 0 12px 32px oklch(52% 0.2 258 / 0.06)"
   },
-  "blocks": ["hero", "auth", "dashboard-shell", "table-page", "article"],
+  "blocks": ["hero", "auth", "dashboard-shell", "table-page", "article", "states"],
   "registry": "@uiforagents/ocean-calm",
   "notes": "Density is relaxed (calm product UI): 16px base, 44-56px rows, 8px grid. Numbers are tabular. Accent is for action, never decoration."
 }

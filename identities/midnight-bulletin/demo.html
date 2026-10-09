@@ -210,6 +210,7 @@
   }
   .mb-panel--pro .mb-tag { color: var(--ok); }
   .mb-panel--con .mb-tag { color: var(--danger); }
+  .mb-panel--danger .mb-tag { color: var(--danger); }
   .mb-panel p { font-size: 14.5px; max-width: none; }
   .mb-who { margin: 12px 0 0; font-family: var(--font-mono); font-size: 11.5px; color: var(--faint); }
 
@@ -252,6 +253,12 @@
   .mb-cell span {
     font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em;
     text-transform: uppercase; color: var(--faint);
+  }
+
+  /* ---------- Loading ---------- */
+  .mb-skel {
+    height: 12px; border-radius: var(--radius); background: var(--sunken);
+    border: 1px solid var(--line-soft); max-width: 100%;
   }
 
   /* ---------- Timeline ---------- */
@@ -327,6 +334,8 @@
       <a href="#typography">Type</a>
       <a href="#evidence">Evidence</a>
       <a href="#debate">Debate</a>
+      <a href="#sheet">Components</a>
+      <a href="#states">States</a>
       <a href="#lab">Lab</a>
       <button class="mb-theme-toggle" id="theme-toggle" type="button">Light theme</button>
     </nav>
@@ -578,9 +587,87 @@ comment = <span class="mb-k">"# everything else stays full ink on --sunken"</spa
   </div>
 </section>
 
+<section class="mb-section" id="sheet">
+  <div class="mb-wrap">
+    <span class="mb-snum">09 / COMPONENT SHEET</span>
+    <h2>Every control, one band</h2>
+    <p>A bulletin clicks less than it reads: the toggle, the share row, the lab's
+    range, and the status grammar. The sheet lays them all out; the states are
+    live, so hover a button and tab through the row.</p>
+    <div class="mb-cols">
+      <div class="mb-panel">
+        <span class="mb-tag">CONTROLS</span>
+        <div class="mb-row" style="margin-top:0">
+          <button class="mb-theme-toggle" type="button">Light theme</button>
+          <div class="mb-share-row" style="padding:0">
+            <button type="button">Copy link</button>
+            <a href="#sheet">Print</a>
+          </div>
+        </div>
+        <div class="mb-row">
+          <label for="sheet-threshold">threshold</label>
+          <input type="range" id="sheet-threshold" min="50" max="99" value="85">
+          <span class="mb-threshold">85</span>
+        </div>
+        <p class="mb-who">the whole interactive inventory; everything else informs</p>
+      </div>
+      <div class="mb-panel">
+        <span class="mb-tag">STATUS GRAMMAR</span>
+        <div class="mb-row" style="margin-top:0">
+          <span class="mb-pill mb-pill--ok">VERIFIED</span>
+          <span class="mb-pill mb-pill--warn">AT RISK</span>
+          <span class="mb-pill mb-pill--danger">FALSIFIED</span>
+          <span class="mb-badge">EPISODE 02</span>
+        </div>
+        <p style="margin-top:14px">Pills classify, the badge announces. Outlined
+        mono rectangles on the ground; the solid badge is the page's one accent
+        fill and appears at most once.</p>
+        <p class="mb-who">statuses are facts, so they count in mono</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-section" id="states">
+  <div class="mb-wrap">
+    <span class="mb-snum">10 / STATES</span>
+    <h2>The four voids</h2>
+    <p>Empty says nothing exists and offers the creating action; loading holds
+    the frame; no results offers the escape; a correction states the error and
+    the fix. All four are static - the identity has no motion to spend.</p>
+    <div class="mb-cols">
+      <div class="mb-panel">
+        <span class="mb-tag">EMPTY / NO RESULTS</span>
+        <p><strong>0 entries this week.</strong> The brief either has no data or
+        the filter is too narrow; the line says which and offers the out.</p>
+        <div class="mb-row">
+          <a href="#states">Clear the filter</a>
+        </div>
+        <p class="mb-who">empty offers create; no results offers escape</p>
+      </div>
+      <div class="mb-panel">
+        <span class="mb-tag">LOADING</span>
+        <div style="margin-top:2px">
+          <div class="mb-skel" style="width:100%"></div>
+          <div class="mb-skel" style="width:78%; margin-top:8px"></div>
+          <div class="mb-skel" style="width:60%; margin-top:8px"></div>
+        </div>
+        <p class="mb-who">sunken bars hold the lines while the wire copy sets</p>
+      </div>
+    </div>
+    <div class="mb-panel mb-panel--danger" style="margin-top:28px">
+      <span class="mb-tag">CORRECTION</span>
+      <p><strong>The 41-minute notice figure was wrong.</strong> The log source
+      double-counted two pages; the corrected value is 27 minutes. This panel is
+      the error state: red tag, one-line cause, one-line fix.</p>
+      <p class="mb-who">filed by: the standards desk</p>
+    </div>
+  </div>
+</section>
+
 <section class="mb-section" id="build">
   <div class="mb-wrap">
-    <span class="mb-snum">09 / BUILD NOTES</span>
+    <span class="mb-snum">11 / BUILD NOTES</span>
     <h2>How this page was built</h2>
     <ul class="mb-plain">
       <li><strong>One stylesheet.</strong> The entire <code>&lt;style&gt;</code> block

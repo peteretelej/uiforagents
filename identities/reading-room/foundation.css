@@ -222,6 +222,12 @@
   }
   .rr-pill-note { font-family: var(--font-sans); font-size: 0.78rem; color: var(--faint); }
 
+  /* ---------- Loading ---------- */
+  .rr-skel {
+    height: 0.7rem; border-radius: 4px; background: var(--wash);
+    border: 1px solid var(--line-soft); max-width: 100%;
+  }
+
   /* ---------- Colophon ---------- */
   .rr-colophon {
     border-top: 1px solid var(--line); background: var(--surface);
