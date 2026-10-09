@@ -53,7 +53,7 @@ in this repo is the whole entrypoint.
 
 The second lane serves **self-contained HTML artifacts**: articles, briefings,
 reports, dashboards, any page an agent ships as one file. An artifact identity is a copy-in
-pure-CSS system - no build step, no registry, no npm, no required JavaScript.
+pure-CSS system - no build step, no registry, no required JavaScript.
 
 | Identity | Vibe | Status |
 |---|---|---|
@@ -71,11 +71,12 @@ identities/<artifact-identity>/
 └── demo.html         # verbose self-documenting demo, styled by foundation.css alone
 ```
 
-Usage: paste `foundation.css` into a `<style>` block (or link it), attach
-`prompt-pack.md` to the agent, and build. Every token is a `light-dark()` pair;
-themes resolve through `color-scheme` on `html`. The React-lane tooling
-(`tooling/build-registry.mjs`, `identity.json`, registry payloads) does not
-apply to this lane.
+Usage: `npx uiforagents init <slug>` copies the pair into your project;
+otherwise take the files from here - paste `foundation.css` into a `<style>`
+block (or link it), attach `prompt-pack.md` to the agent, and build. Every
+token is a `light-dark()` pair; themes resolve through `color-scheme` on
+`html`. The React-lane tooling (`tooling/build-registry.mjs`, `identity.json`,
+registry payloads) does not apply to this lane.
 
 ## What's inside a React-lane identity
 
