@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@uiforagents/frost-field",
+  "homepage": "https://uiforagents.com",
+  "items": [
+    {
+      "name": "frost-field",
+      "type": "registry:style",
+      "title": "Frost Field",
+      "description": "Calm light glass for wellness products. Frosted white panels and floating chrome over a fixed pastel aurora field (lavender, sky, mint, peach); Manrope display over Inter body; a high-fill glass recipe (0.55 regular, 0.72 under body text, 0.35 chrome only) with solid reduced-transparency and near-opaque no-backdrop fallbacks; pill controls, 14px/20px radii, airy one-idea-per-card density.",
+      "file": "frost-field.json"
+    }
+  ]
+}

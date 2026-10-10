@@ -1,0 +1,77 @@
+{
+  "name": "frost-field",
+  "version": "0.1.0",
+  "title": "Frost Field",
+  "description": "Calm light glass for wellness products. Frosted white panels and floating chrome over a fixed pastel aurora field (lavender, sky, mint, peach); Manrope display over Inter body; a high-fill glass recipe (0.55 regular, 0.72 under body text, 0.35 chrome only) with solid reduced-transparency and near-opaque no-backdrop fallbacks; pill controls, 14px/20px radii, airy one-idea-per-card density.",
+  "vibe": ["light", "calm", "glass", "wellness", "dashboard"],
+  "author": "uiforagents",
+  "license": "Apache-2.0",
+  "stack": {
+    "base": "shadcn/ui",
+    "primitives": "shadcn defaults (radix slot; base-ui supported)",
+    "tailwind": "v4",
+    "react": ">=18",
+    "tested": {
+      "shadcn": "2026-03 (cli v4)",
+      "tailwind": "4.x",
+      "@base-ui/react": "1.x"
+    }
+  },
+  "typography": {
+    "display": "Manrope",
+    "body": "Inter",
+    "mono": "ui-monospace, Menlo, Consolas, monospace",
+    "ramp": {
+      "display-xl": "clamp(34px, 4.6vw, 52px) / 700 / -0.02em",
+      "h1": "28-36px / 700 / -0.02em",
+      "h2": "20-22px / 700 / -0.01em",
+      "h3": "16-18px / 700 / -0.01em",
+      "body": "15.5-16px / 400 / 1.6",
+      "small": "13px / 400 / 1.5",
+      "eyebrow": "11.5px / 700 / 0.16em uppercase",
+      "numeral": "28-32px / 700 / tabular"
+    }
+  },
+  "tokens": {
+    "background": "#f7f7fb",
+    "surface": "rgba(255, 255, 255, 0.72)",
+    "border": "#b9b9cd",
+    "text": "#1c1c28",
+    "text-muted": "#5c5c6e",
+    "accent": "#6a5ae0",
+    "accent-fg": "#ffffff",
+    "accent-soft": "#eceef8",
+    "secondary-foreground": "#33334a",
+    "muted": "#ededf3",
+    "ok": "#2f9d6f",
+    "ok-soft": "#e2f6ec",
+    "ok-fg": "#1f7a54",
+    "warn": "#b97f24",
+    "warn-soft": "#fbf0dd",
+    "warn-fg": "#7c540f",
+    "danger": "#c93a56",
+    "danger-soft": "#fbe3e8",
+    "destructive-foreground": "#ffffff",
+    "field": "linear-gradient(135deg, #e6e0f8 0%, #dcebf7 32%, #dff2e9 64%, #fde8dd 100%)",
+    "glass-fill": "rgba(255, 255, 255, 0.55)",
+    "glass-fill-strong": "rgba(255, 255, 255, 0.72)",
+    "glass-fill-chrome": "rgba(255, 255, 255, 0.35)",
+    "glass-blur": "blur(20px) saturate(150%)",
+    "glass-border": "rgba(255, 255, 255, 0.6)",
+    "glass-rim": "inset 0 1px 0 rgba(255, 255, 255, 0.7)",
+    "glass-shadow": "0 8px 32px rgba(31, 38, 135, 0.1)",
+    "solid-surface": "#fbfbfd",
+    "viz-violet": "#a78bfa",
+    "viz-sky": "#7cc7f2",
+    "viz-mint": "#74d0ae",
+    "viz-rose": "#f2a6bc",
+    "radius": "0.875rem"
+  },
+  "fonts": {
+    "packages": ["@fontsource/manrope", "@fontsource/inter"],
+    "install": "(Manrope 600-800, Inter 400-600)."
+  },
+  "blocks": ["hero", "auth", "dashboard-shell", "activity-log", "article", "states"],
+  "registry": "@uiforagents/frost-field",
+  "notes": "One-shot PASS 2026-10-12, instructor profile page (the spec's named program-detail type is a documented prompt-pack recipe, so per the group one-shot rule the nearest undocumented page type was used; recorded here and in the README row). Fill discipline is the identity: 0.55 regular glass for empty panels, 0.72 strong fill mandatory under body text, 0.35 chrome only for hero panels and docks; body text on chrome sits on a strong-fill plate. The aurora field is fixed on the body; the drift loop is flavor and prefers-reduced-motion stills it. Accessibility floors ship as tokens: prefers-reduced-transparency swaps to solid #fbfbfd surfaces (geometry holds), @supports not (backdrop-filter) raises fills to 0.95 white, forced-colors flattens to plain borders. Accent is the contrast-tuned step of the soft violet family (#6a5ae0, 5.1:1 on white); the pastel viz four (violet/sky/mint/rose) are thin strokes and small fills, never large fills. The sixth block is activity-log (list semantics) because the brief's density cap bans tables and ledgers."
+}

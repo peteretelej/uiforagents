@@ -1,0 +1,112 @@
+/* frost-field overrides - the opinionated treatment on top of stock shadcn.
+   Layer AFTER shadcn styles. Each rule is a deliberate identity decision:
+   surfaces are glass over the fixed field, the 0.72 strong fill sits under
+   every body-text surface, and the identity glows only via the field. */
+
+/* The glass recipe lives in three classes so block-level panels (hero,
+   dock, chips) reuse exactly what the components wear. backdrop-filter
+   always ships with its -webkit- prefix. */
+[data-identity="frost-field"] .glass,
+[data-identity="frost-field"] .glass-strong,
+[data-identity="frost-field"] .glass-chrome {
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-rim), var(--glass-shadow);
+}
+[data-identity="frost-field"] .glass { background: var(--glass-fill); }
+[data-identity="frost-field"] .glass-strong { background: var(--glass-fill-strong); }
+[data-identity="frost-field"] .glass-chrome { background: var(--glass-fill-chrome); }
+
+/* Cards are glass-strong: they carry body text, so the 0.72 fill is the
+   law. 20px radius, rim highlight, soft shadow, gentle hover lift. */
+[data-identity="frost-field"] [data-slot="card"] {
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-rim), var(--glass-shadow);
+  transition: transform 200ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-identity="frost-field"] a[data-slot="card"]:hover,
+[data-identity="frost-field"] .hover-lift:hover [data-slot="card"] {
+  transform: translateY(-2px);
+  box-shadow: var(--glass-rim), 0 12px 40px rgba(31, 38, 135, 0.14);
+}
+
+/* Overlays float like the hero: popover, dialog, and sheet chrome wear the
+   strong fill (they read over content), 20px radius, rim + shadow. */
+[data-identity="frost-field"] [data-slot="popover-content"],
+[data-identity="frost-field"] [data-slot="dialog-content"],
+[data-identity="frost-field"] [data-slot="sheet-content"] {
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-rim), var(--glass-shadow);
+}
+
+/* Buttons are pills: the wellness genre's control shape. Primary carries a
+   soft violet shadow; hover lifts 1px; nothing bounces. */
+[data-identity="frost-field"] [data-slot="button"] {
+  border-radius: 999px;
+  font-weight: 600;
+  transition: transform 180ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 180ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-identity="frost-field"] [data-slot="button"].bg-primary {
+  box-shadow: 0 4px 14px rgba(106, 90, 224, 0.35);
+}
+[data-identity="frost-field"] [data-slot="button"]:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+[data-identity="frost-field"] [data-slot="button"]:active {
+  transform: translateY(0);
+}
+[data-identity="frost-field"] [data-slot="button"]:disabled {
+  opacity: 0.55;
+}
+
+/* Badges and status chips are pills; soft status fills stay legible. */
+[data-identity="frost-field"] [data-slot="badge"] {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* Inputs sit on glass: translucent white fill, cool hairline, 14px radius.
+   Focus is the violet halo, never a border-color flip. */
+[data-identity="frost-field"] input,
+[data-identity="frost-field"] textarea,
+[data-identity="frost-field"] select {
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.6);
+  transition: box-shadow 160ms ease;
+}
+
+/* Focus: soft two-step halo (wash, then action violet). Never a hard
+   1px outline flip; radius untouched so pills keep their shape. */
+[data-identity="frost-field"] :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--secondary), 0 0 0 5px rgba(106, 90, 224, 0.55);
+}
+
+/* Accessibility floor: forced colors flatten the glass to plain bordered
+   surfaces. The system palette takes over; geometry holds. */
+@media (forced-colors: active) {
+  [data-identity="frost-field"] [data-slot="card"],
+  [data-identity="frost-field"] [data-slot="popover-content"],
+  [data-identity="frost-field"] [data-slot="dialog-content"],
+  [data-identity="frost-field"] [data-slot="sheet-content"],
+  [data-identity="frost-field"] .glass,
+  [data-identity="frost-field"] .glass-strong,
+  [data-identity="frost-field"] .glass-chrome {
+    border: 1px solid CanvasText;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
+  [data-identity="frost-field"] [data-slot="button"].bg-primary {
+    box-shadow: none;
+  }
+}

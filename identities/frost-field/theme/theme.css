@@ -1,0 +1,161 @@
+/* frost-field - shadcn/ui theme (Tailwind v4).
+   Drop into your global CSS after `@import "tailwindcss";`.
+   Values are the identity spec from identity.json. */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-foreground: var(--ok-foreground);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-foreground: var(--warn-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-viz-violet: var(--viz-violet);
+  --color-viz-sky: var(--viz-sky);
+  --color-viz-mint: var(--viz-mint);
+  --color-viz-rose: var(--viz-rose);
+  --font-display: "Manrope", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  /* Radius ladder: 14px controls, 20px cards, pills for chips/badges/docks. */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+}
+
+:root,
+[data-theme="frost-field"] {
+  --background: #f7f7fb; /* ground under the field */
+  --foreground: #1c1c28; /* ink */
+  --card: rgba(255, 255, 255, 0.72); /* strong fill - cards carry body text */
+  --card-foreground: #1c1c28;
+  --popover: rgba(255, 255, 255, 0.72); /* strong fill - popovers read over content */
+  --popover-foreground: #1c1c28;
+  --primary: #6a5ae0; /* action violet, 5.1:1 on white */
+  --primary-foreground: #ffffff; /* 5.1:1 on the action violet */
+  --secondary: #eceef8; /* lavender wash */
+  --secondary-foreground: #33334a; /* 10.6:1 on the wash */
+  --muted: #ededf3; /* quiet fills and skeletons */
+  --muted-foreground: #5c5c6e; /* 6.5:1 on white */
+  --accent: #eceef8; /* interactive wash sits in the lavender family */
+  --accent-foreground: #33334a;
+  --destructive: #c93a56; /* rose, 5:1 with white */
+  --destructive-foreground: #ffffff;
+  --ok: #2f9d6f; /* mint-family status, UI/large text */
+  --ok-soft: #e2f6ec;
+  --ok-foreground: #1f7a54; /* 4.7:1 on the soft wash */
+  --warn: #b97f24;
+  --warn-soft: #fbf0dd;
+  --warn-foreground: #7c540f; /* 6:1 on the soft wash */
+  --border: #b9b9cd; /* hairline for inputs on solid ground */
+  --input: #b9b9cd;
+  --ring: #6a5ae0;
+  --radius: 0.875rem; /* 14px controls; the ladder derives cards */
+  --font-display: "Manrope", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+
+  /* The field: fixed pastel aurora behind every surface. */
+  --field: linear-gradient(135deg, #e6e0f8 0%, #dcebf7 32%, #dff2e9 64%, #fde8dd 100%);
+
+  /* Glass recipe (regular glass discipline): fills, blur, boundary, shadow. */
+  --glass-fill: rgba(255, 255, 255, 0.55); /* regular panels */
+  --glass-fill-strong: rgba(255, 255, 255, 0.72); /* mandatory under body text */
+  --glass-fill-chrome: rgba(255, 255, 255, 0.35); /* hero panels and docks only */
+  --glass-blur: blur(20px) saturate(150%);
+  --glass-border: rgba(255, 255, 255, 0.6); /* 1px light boundary */
+  --glass-rim: inset 0 1px 0 rgba(255, 255, 255, 0.7); /* top rim highlight */
+  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+
+  /* Solid-surface fallback: reduced-transparency panels, geometry holds. */
+  --solid-surface: #fbfbfd;
+
+  /* Data-viz family: 400-weight pastels, thin strokes, never fills. */
+  --viz-violet: #a78bfa;
+  --viz-sky: #7cc7f2;
+  --viz-mint: #74d0ae;
+  --viz-rose: #f2a6bc;
+  color-scheme: light;
+}
+
+/* Accessibility floor: reduced transparency gets genuinely solid panels.
+   Geometry holds - every token swaps its value, nothing re-flows. */
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  [data-theme="frost-field"] {
+    --card: var(--solid-surface);
+    --popover: var(--solid-surface);
+    --glass-fill: var(--solid-surface);
+    --glass-fill-strong: var(--solid-surface);
+    --glass-fill-chrome: var(--solid-surface);
+    --glass-blur: none;
+    --glass-border: #e4e4ee;
+    --glass-shadow: 0 1px 3px rgba(31, 38, 135, 0.08);
+  }
+}
+
+/* Accessibility floor: no backdrop-filter support -> near-opaque fills so
+   text contrast never depends on the blur that will not happen. */
+@supports not (backdrop-filter: blur(1px)) {
+  :root,
+  [data-theme="frost-field"] {
+    --glass-fill: rgba(255, 255, 255, 0.95);
+    --glass-fill-strong: rgba(255, 255, 255, 0.95);
+    --glass-fill-chrome: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Identity signatures: the fixed aurora field on the body, Manrope display
+   headings, tabular numerals, and the optional drift (flavor, never load
+   bearing). */
+body {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--background);
+  background-image: var(--field);
+  background-attachment: fixed;
+}
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+h1 { letter-spacing: -0.02em; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Optional field drift: a slow hue sway behind fixed panels. Flavor only;
+   prefers-reduced-motion (below) stills it. */
+@keyframes field-drift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.field-drift {
+  background-size: 160% 160%;
+  animation: field-drift 90s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
