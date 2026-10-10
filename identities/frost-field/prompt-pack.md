@@ -68,6 +68,11 @@ visual design.
 - Page-level empty states → title + one-line body + primary action on a
   glass card, never blank space.
 - Feedback → Toast, bottom-center, one at a time.
+- Overlays (popover / dialog / sheet): popovers read over content on the
+  strong fill (the theme's popover token); dialog and sheet wear the glass
+  chrome - light border, rim highlight, soft shadow - and float over the
+  field like the hero panel. Body text inside overlays never sits below
+  the strong fill.
 - Navigation → floating glass header bar; pill docks for tab bars.
 - Lists of record → the activity-log grammar (dated rows, kind pill,
   duration, hairline dividers). Never a `<table>`.
