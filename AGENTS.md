@@ -110,6 +110,8 @@ dependency, and no required JavaScript.
 
 - License: Apache-2.0; keep the NOTICE file intact in distributions.
 - Identity names are vibe-derived and brand-neutral. Never name identities
-  after people, clients, or internal systems.
+  after people, clients, or internal systems. Names must not duplicate
+  existing marketplace template/theme names; run an exact-name collision
+  check (case-insensitive, separator variants included) before minting.
 - Sample content is generic everywhere (block defaults, site showcases):
   no real brands or client data.
