@@ -1,0 +1,628 @@
+/* city-edition - artifact identity foundation
+   The dense morning daily: flat newsprint, ink, serif banner headlines,
+   kicker-deck-byline discipline on every story card, hairline rules with
+   heavy masthead rules, a rationed press-red signal, and agate mono for
+   datelines and indexes. Built for front pages, section fronts, article
+   pages, and publication artifacts shipped as self-contained HTML.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Light is the only theme. Flat newsprint is the identity; the dark
+     edition is a different paper, not a token flip. `color-scheme` is
+     pinned light on :root and there are no light-dark() pairs, no
+     data-theme attribute, no toggle.
+   - The laws hold everywhere: 0px radius, ruled surfaces (hairlines and
+     heavy rules, never shadows or gradients), the full label stack
+     (kicker, headline, deck, byline/dateline) on every story card, and
+     press red rationed to at most one use per card (a flag or a link,
+     never both, never decoration).
+   - Density is the defining posture: column gaps of 20-24px, rails that
+     read as column zones, agate micro-type for datelines and indexes.
+     The lead zone is the one place that breathes.
+   - No JavaScript is required. The page renders completely without any
+     script; motion is near-static (160ms fades and underline slides),
+     and the wire skeleton is the only animation.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light;
+
+    /* Paper, ink, and rules (newsprint, never warm cream) */
+    --bg: #F8F7F3;           /* flat newsprint canvas */
+    --surface: #FFFFFF;      /* boxed cards, boxed modules; ruled, never elevated */
+    --ink: #17150F;          /* text and headlines */
+    --muted: #5D5A52;        /* decks, captions, secondary text - 6.4:1 on bg */
+    --faint: #8A857A;        /* folio lines and ornaments only, never informative */
+    --line: #DDD9CF;         /* the 1px hairline */
+    --line-soft: #E9E6DD;    /* quiet inner rules, skeleton fills */
+    --rule-strong: #1A1A1A;  /* the 2-3px heavy rule: masthead, section breaks */
+
+    /* Press red, rationed: flags, active nav, links - one use per card */
+    --accent: #C0271D;       /* signal red; AA on paper and surface */
+    --accent-ink: #9C1F16;   /* red pressed darker: hover and small fills */
+    --accent-soft: #F6E4E1;  /* quiet red wash: selection, focus tint */
+
+    /* Type: Newsreader sets display and body, Archivo Narrow labels,
+       IBM Plex Mono keeps the dateline and agate. Stacks degrade to
+       Georgia / Arial Narrow / system mono with zero webfonts; the
+       @fontsource upgrade path is in the pack. */
+    --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+    --font-label: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+    /* Density posture */
+    --wrap: 1240px;          /* broadsheet container */
+    --gap: 24px;             /* column gap; tighten to 20px, never wider */
+    --measure: 66ch;         /* article measure */
+    --radius: 0px;           /* law, not a knob */
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 16.5px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent-soft); }
+  h1, h2, h3, h4 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--ink);
+    text-align: left;
+    text-wrap: balance;
+  }
+  p { margin: 0 0 1em; }
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 160ms ease;
+  }
+  a:hover { color: var(--accent-ink); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button { font-family: inherit; }
+  section[id] { scroll-margin-top: 1.5rem; }
+  figure { margin: 0; }
+
+  /* ---------- Label-stack atoms ---------- */
+  .ce-kicker {
+    display: block;
+    font-family: var(--font-label);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ce-deck {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    line-height: 1.45;
+    color: var(--muted);
+    margin: 0.4rem 0 0;
+  }
+  .ce-byline {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ce-byline strong { color: var(--ink); font-weight: 500; }
+  .ce-mono { font-family: var(--font-mono); }
+
+  /* ---------- Masthead ---------- */
+  .ce-masthead { background: var(--bg); }
+  .ce-masthead-top {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 0.9rem 1.5rem 0.4rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .ce-masthead-top :last-child { text-align: right; }
+  .ce-nameplate {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 0.2rem 1.5rem 0.6rem;
+    text-align: center;
+  }
+  .ce-nameplate a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .ce-nav {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    border-top: 3px solid var(--rule-strong);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .ce-nav a {
+    font-family: var(--font-label);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.55rem 0 0.45rem;
+    background: linear-gradient(var(--accent), var(--accent)) left 100% / 0% 2px no-repeat;
+    transition: background-size 160ms ease, color 160ms ease;
+  }
+  .ce-nav a:hover { color: var(--accent); background-size: 100% 2px; }
+  .ce-nav a.on { color: var(--accent); }
+  .ce-nav .ce-nav-cta {
+    margin-left: auto;
+    background: var(--accent);
+    color: #FFFFFF;
+    padding: 0.3rem 0.7rem;
+  }
+  .ce-nav .ce-nav-cta:hover { background: var(--accent-ink); color: #FFFFFF; background-size: 0% 2px; }
+
+  /* ---------- Layout ---------- */
+  .ce-wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 1.5rem; }
+  .ce-front {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap);
+    padding: 1.6rem 0 0.4rem;
+  }
+  .ce-front-main { grid-column: span 8; min-width: 0; }
+  .ce-front-rail { grid-column: span 4; min-width: 0; }
+  .ce-cols { display: grid; gap: 0 var(--gap); }
+  .ce-cols > * { border-left: 1px solid var(--line); padding: 0 0 0 var(--gap); min-width: 0; }
+  .ce-cols > :first-child { border-left: 0; padding-left: 0; }
+  .ce-cols.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .ce-cols.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ce-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+
+  /* ---------- Story cards: the full label stack ---------- */
+  .ce-story { position: relative; }
+  .ce-story h2, .ce-story h3, .ce-story h4 { font-weight: 600; line-height: 1.16; }
+  .ce-story h2 { font-size: 1.8rem; line-height: 1.12; }
+  .ce-story h3 { font-size: 1.35rem; }
+  .ce-story h4 { font-size: 1.08rem; }
+  .ce-story h2 a, .ce-story h3 a, .ce-story h4 a {
+    color: var(--ink);
+    text-decoration: none;
+    background: linear-gradient(var(--ink), var(--ink)) left 100% / 0% 1px no-repeat;
+    transition: background-size 160ms ease;
+  }
+  .ce-story h2 a:hover, .ce-story h3 a:hover, .ce-story h4 a:hover { background-size: 100% 1px; }
+  .ce-story.boxed {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 1.1rem 1.2rem;
+    transition: border-color 160ms ease;
+  }
+  .ce-story.boxed:hover { border-color: var(--muted); }
+  .ce-story .ce-kicker { margin-bottom: 0.4rem; }
+  .ce-story .ce-byline { display: block; margin-top: 0.55rem; }
+  .ce-lead { border-top: 3px solid var(--rule-strong); padding-top: 1rem; }
+  .ce-lead h2 {
+    font-size: clamp(2rem, 3.8vw, 3.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0.45rem 0 0;
+  }
+  .ce-lead .ce-deck { font-size: 1.18rem; max-width: 58ch; }
+  .ce-lead .ce-byline { display: block; margin: 0.8rem 0 1rem; }
+  .ce-flag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: #FFFFFF;
+    padding: 0.15rem 0.45rem;
+    vertical-align: 2px;
+  }
+  .ce-kicker-row { display: flex; align-items: center; gap: 0.5rem; }
+
+  /* ---------- Section bands ---------- */
+  .ce-band { margin-top: 2.4rem; }
+  .ce-band-head {
+    border-top: 3px solid var(--rule-strong);
+    padding-top: 0.55rem;
+    margin-bottom: 1.1rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .ce-band-title {
+    font-family: var(--font-label);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .ce-band-more {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  /* ---------- Rail modules ---------- */
+  .ce-modhead {
+    border-top: 3px solid var(--rule-strong);
+    padding-top: 0.55rem;
+    margin-bottom: 0.7rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-family: var(--font-label);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .ce-modhead .ce-mono {
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .ce-railmod { margin-bottom: 1.8rem; }
+  .ce-mostread ol { list-style: none; margin: 0; padding: 0; counter-reset: mr; }
+  .ce-mostread li {
+    counter-increment: mr;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 0.7rem;
+    align-items: baseline;
+  }
+  .ce-mostread li:last-child { border-bottom: 0; }
+  .ce-mostread li::before {
+    content: counter(mr, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .ce-mostread a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    background: linear-gradient(var(--ink), var(--ink)) left 100% / 0% 1px no-repeat;
+    transition: background-size 160ms ease;
+  }
+  .ce-mostread a:hover { background-size: 100% 1px; }
+
+  /* ---------- Newsletter band ---------- */
+  .ce-newsletter {
+    margin-top: 2.4rem;
+    border-top: 3px solid var(--rule-strong);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    padding: 1.6rem 0;
+  }
+  .ce-news-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .ce-news-name { font-size: 1.5rem; font-weight: 700; margin: 0.2rem 0 0.3rem; }
+  .ce-news-line { color: var(--muted); margin: 0; }
+  .ce-news-form { display: flex; gap: 0.6rem; }
+  .ce-input {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .ce-input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .ce-btn {
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: #FFFFFF;
+    font-family: var(--font-label);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.1rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 160ms ease;
+  }
+  .ce-btn:hover { background: var(--accent-ink); }
+  .ce-news-fine {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--faint);
+    margin: 0.6rem 0 0;
+  }
+
+  /* ---------- Section front: category filter ---------- */
+  .ce-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.3rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.6rem;
+  }
+  .ce-filter a {
+    font-family: var(--font-label);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding-bottom: 0.15rem;
+    border-bottom: 2px solid transparent;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .ce-filter a:hover { color: var(--ink); border-bottom-color: var(--line); }
+  .ce-filter a.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ---------- Article ---------- */
+  .ce-arthead { max-width: 54rem; padding: 2rem 0 0; }
+  .ce-arthead h1 {
+    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+    line-height: 1.06;
+    letter-spacing: -0.015em;
+    margin: 0.45rem 0 0;
+  }
+  .ce-arthead .ce-deck { font-size: 1.2rem; max-width: 56ch; }
+  .ce-arthead .ce-byline {
+    display: block;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 0.5rem 0;
+    margin-top: 1.1rem;
+  }
+  .ce-body { max-width: var(--measure); font-size: 17px; line-height: 1.6; padding-top: 1.4rem; }
+  .ce-body p { margin: 0 0 1.05em; }
+  .ce-dropcap::first-letter {
+    float: left;
+    font-size: 3.3em;
+    line-height: 0.8;
+    font-weight: 600;
+    padding: 0.05em 0.09em 0 0;
+  }
+  .ce-pullquote {
+    border-top: 3px solid var(--rule-strong);
+    border-bottom: 3px solid var(--rule-strong);
+    margin: 1.6rem 0;
+    padding: 1rem 0;
+  }
+  .ce-pullquote p {
+    font-size: 1.35rem;
+    line-height: 1.35;
+    font-weight: 500;
+    font-style: italic;
+    margin: 0;
+  }
+  .ce-pullquote cite {
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 0.6rem;
+  }
+  .ce-jumpline {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 1.2rem;
+  }
+
+  /* ---------- Figures: inline plates and captions ---------- */
+  .ce-figure {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    margin: 0.4rem 0 1.2rem;
+  }
+  .ce-figure .plate { display: block; width: 100%; height: auto; }
+  .ce-figure.r32 .plate { aspect-ratio: 3 / 2; }
+  .ce-figure.r169 .plate { aspect-ratio: 16 / 9; }
+  .ce-caption {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1.45;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding: 0.5rem 0.7rem;
+  }
+  .ce-caption b { color: var(--ink); font-weight: 500; }
+
+  /* ---------- States: empty, wire, error ---------- */
+  .ce-empty {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 1rem 1.1rem;
+  }
+  .ce-empty p {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0 0 0.5rem;
+  }
+  .ce-empty a { font-family: var(--font-mono); font-size: 0.72rem; }
+  .ce-wire { list-style: none; margin: 0; padding: 0; }
+  .ce-wire li {
+    display: grid;
+    grid-template-columns: 3.4rem 1fr;
+    gap: 0.7rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+  }
+  .ce-wire .wt {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--faint);
+  }
+  .ce-wire .wl { display: grid; gap: 0.35rem; }
+  .ce-skel {
+    height: 0.6rem;
+    background: var(--line-soft);
+    max-width: 100%;
+    animation: ce-pulse 1.6s ease-in-out infinite alternate;
+  }
+  @keyframes ce-pulse { from { opacity: 0.55; } to { opacity: 1; } }
+
+  /* ---------- Agate table ---------- */
+  .ce-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+  .ce-table th {
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink);
+    border-bottom: 2px solid var(--rule-strong);
+    padding: 0.4rem 0.6rem 0.4rem 0;
+    white-space: nowrap;
+  }
+  .ce-table td {
+    border-bottom: 1px solid var(--line);
+    padding: 0.4rem 0.6rem 0.4rem 0;
+    vertical-align: top;
+    color: var(--muted);
+  }
+  .ce-table td:first-child { color: var(--ink); }
+
+  /* ---------- Footer and colophon ---------- */
+  .ce-footer {
+    margin-top: 2.6rem;
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .ce-footer-inner {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 1.1rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    justify-content: space-between;
+  }
+  .ce-colophon { border-top: 3px solid var(--rule-strong); background: var(--surface); }
+  .ce-colophon-inner {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 1.4rem 1.5rem 2.6rem;
+  }
+  .ce-colophon section { margin-top: 2rem; }
+  .ce-colophon h3 { font-size: 1.25rem; margin: 0.3rem 0 0.6rem; }
+  .ce-colophon ul { margin: 0; padding-left: 1.2rem; }
+  .ce-colophon li { margin-bottom: 0.45rem; line-height: 1.5; }
+  .ce-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+  .ce-dodont {
+    border: 1px solid var(--line);
+    padding: 1rem 1.2rem;
+    background: var(--bg);
+  }
+  .ce-dodont .ce-kicker { margin-bottom: 0.5rem; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1020px) {
+    .ce-front { grid-template-columns: 1fr; }
+    .ce-front-main, .ce-front-rail { grid-column: auto; }
+    .ce-front-rail { margin-top: 1.8rem; }
+    .ce-cols.c4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem var(--gap); }
+    .ce-cols.c4 > :nth-child(3) { border-left: 0; padding-left: 0; }
+  }
+  @media (max-width: 860px) {
+    .ce-news-inner { grid-template-columns: 1fr; }
+    .ce-grid { grid-template-columns: 1fr; }
+    .ce-cols.c3 { grid-template-columns: 1fr; gap: 1.2rem 0; }
+    .ce-cols.c3 > * { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 1.2rem; }
+    .ce-cols.c3 > :first-child { border-top: 0; padding-top: 0; }
+    .ce-cols-2 { grid-template-columns: 1fr; }
+    .ce-masthead-top { grid-template-columns: 1fr; gap: 0.2rem; }
+    .ce-masthead-top :last-child { text-align: left; }
+    .ce-masthead-top :nth-child(2) { display: none; }
+    .ce-nameplate { text-align: left; padding-top: 0.4rem; }
+  }
+  @media (max-width: 640px) {
+    .ce-cols.c4 { grid-template-columns: 1fr; }
+    .ce-cols.c4 > * { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 1.2rem; }
+    .ce-cols.c4 > :first-child { border-top: 0; padding-top: 0; }
+    .ce-news-form { flex-direction: column; }
+    .ce-body { font-size: 16.5px; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    body { background: #FFFFFF; color: #000000; font-size: 11pt; }
+    .ce-nav, .ce-newsletter, .ce-wire, .ce-colophon, .ce-news-fine { display: none; }
+    a { color: inherit; }
+    .ce-story.boxed, .ce-figure, .ce-empty { border-color: #999; }
+    .ce-pullquote, .ce-band-head, .ce-modhead, .ce-lead, .ce-newsletter { break-inside: avoid; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; }
+    .ce-skel { animation: none; opacity: 0.8; }
+  }
+}
