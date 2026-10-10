@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitwell · a 1-bit sprite workshop · dither-lab identity demo</title>
+<meta name="description" content="Self-documenting demo of the dither-lab artifact identity: a creative-tool page for Bitwell, a fictional pixel-art workshop - pixel hero with scanlines and a four-color underline bar, dithered sections on a rotational bit-palette, sprite-grid features, patch-notes rows, VT323 stat readouts, a console card with a stepped cursor, and a colophon below the footer.">
+<style>
+/* dither-lab - artifact identity foundation
+   The 1-bit workshop: a blue-black canvas, a four-color rotational
+   bit-palette (one bit-color per section, never a rainbow page), Pixelify
+   Sans display, Press Start 2P micro-bitmap for wordmarks and badges only,
+   Space Grotesk body, VT323 readouts, dithered checker fills, scanlines on
+   the hero only, stepped motion, 0px radius and 2px borders. Built for
+   creative-tool pages, dev-tool landings, release notes, and jam pages
+   shipped as self-contained HTML.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dark is the only theme. The blue-black canvas is the identity (the
+     firewall that keeps dither-lab away from neutral near-black and from
+     single-hue phosphor consoles); there are no light-dark() pairs, no
+     data-theme attribute, and no toggle. Print re-inks to paper values in
+     the print block.
+   - The bit-palette is rotational, not decorative: set the section's color
+     with one modifier (.bit-amber/.bit-cyan/.bit-magenta/.bit-green) and
+     every component inside reads var(--bit). Never mix two bit-colors in
+     one component; the four-color underline bar (.dl-bitbar) is the only
+     sanctioned blend.
+   - Dither is a pattern overlay (repeating-conic-gradient checkers), not a
+     real Bayer algorithm. Scanlines exist on the hero only. Depth is
+     pattern and border, never blur; the one sanctioned shadow is the
+     0 0 12px bit-color glow on a section's primary element.
+   - No JavaScript is required anywhere.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: dark;
+
+    /* Ground family (blue-black, never neutral near-black) */
+    --bg: #101318;
+    --surface: #161B24;
+    --raised: #1C2230;
+    --line: #2A3140;
+    --line-soft: #202733;
+    --text: #E8ECF2;
+    --muted: #939CAC;
+    --faint: #5C6678;          /* ornaments and disabled controls only */
+
+    /* The four bit-colors (each >=6:1 on --bg) */
+    --bit-a: #FFB454;          /* amber - primary, leads every page */
+    --bit-c: #62D6E8;          /* cyan */
+    --bit-m: #E878B8;          /* magenta */
+    --bit-g: #85D98A;          /* green */
+
+    /* The section's active bit-color; modifiers retarget it */
+    --bit: var(--bit-a);
+
+    /* Radius law: 0 everywhere. No pills, no rounded corners. */
+    --radius: 0px;
+
+    /* Type: bitmap display + body grotesk + CRT readout.
+       Stacks degrade with zero webfonts; the @fontsource path is in the
+       prompt-pack. */
+    --font-bit: "Press Start 2P", "Courier New", monospace;
+    --font-display: "Pixelify Sans", "Trebuchet MS", "Segoe UI", sans-serif;
+    --font-body: "Space Grotesk", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-crt: "VT323", "Courier New", monospace;
+
+    /* Type scale. Bitmap type moves in 8px steps only (floor 16px),
+       stepping at breakpoints - never fluid-clamped. */
+    --text-bit: 16px;          /* bitmap badges, small wordmark */
+    --text-bit-lg: 32px;       /* hero wordmark */
+    --text-body: 16px;
+    --text-h2: clamp(1.75rem, 3.2vw, 2.5rem);
+
+    /* Layout */
+    --wrap: 1160px;
+    --gutter: 20px;
+    --measure: 64ch;
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 400 var(--text-body)/1.65 var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0;
+    letter-spacing: 0;
+  }
+  p { margin: 0 0 1em; }
+  ul, ol { margin: 0 0 1em; padding-left: 1.25rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--bit); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  code {
+    font: 400 18px/1.2 var(--font-crt);
+    color: var(--bit);
+    background: var(--raised);
+    border: 1px solid var(--line-soft);
+    padding: 1px 6px;
+  }
+  ::selection { background: var(--bit); color: var(--bg); }
+  :focus-visible { outline: 2px solid var(--bit); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 24px; }
+
+  /* ---------- Canvas ---------- */
+  .dl-wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+  .dl-cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-width: 0; }
+
+  /* ---------- Bit-color assignment: one modifier per section ---------- */
+  .bit-amber   { --bit: var(--bit-a); }
+  .bit-cyan    { --bit: var(--bit-c); }
+  .bit-magenta { --bit: var(--bit-m); }
+  .bit-green   { --bit: var(--bit-g); }
+
+  /* ---------- Top bar ---------- */
+  .dl-top { border-bottom: 2px solid var(--line); background: var(--surface); }
+  .dl-top-inner {
+    display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+    padding: 14px 0;
+  }
+  .dl-brand {
+    font: 400 var(--text-bit)/1 var(--font-bit);
+    color: var(--text); text-decoration: none; white-space: nowrap;
+  }
+  .dl-brand b { color: var(--bit-a); font-weight: 400; }
+  .dl-nav { display: flex; gap: 20px; flex-wrap: wrap; margin-left: auto; }
+  .dl-nav a {
+    font: 600 15px/1 var(--font-body);
+    color: var(--muted); text-decoration: none; padding: 6px 0;
+    border-bottom: 2px solid transparent;
+  }
+  .dl-nav a:hover { color: var(--text); border-bottom-color: var(--line); }
+  .dl-nav a.on { color: var(--bit); border-bottom-color: var(--bit); }
+
+  /* ---------- Badges: bitmap chips ---------- */
+  .dl-badge {
+    display: inline-block;
+    font: 400 var(--text-bit)/1 var(--font-bit);
+    color: var(--muted); background: var(--raised);
+    border: 2px solid var(--line);
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+  .dl-badge.on { color: var(--bit); border-color: var(--bit); background: transparent; }
+
+  /* ---------- Pixel hero (scanlines live here and only here) ---------- */
+  .dl-hero {
+    position: relative;
+    border-bottom: 2px solid var(--line);
+    background:
+      repeating-conic-gradient(color-mix(in srgb, var(--bit) 5%, transparent) 0% 25%, transparent 0% 50%)
+      0 0 / 4px 4px var(--bg);
+    padding: clamp(56px, 9vw, 104px) 0 clamp(44px, 7vw, 72px);
+  }
+  .dl-hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg,
+      color-mix(in srgb, var(--text) 3%, transparent) 0 1px, transparent 1px 3px);
+  }
+  .dl-hero > .dl-wrap { position: relative; z-index: 1; }
+  .dl-wordmark {
+    font: 400 var(--text-bit-lg)/1.4 var(--font-bit);
+    color: var(--text); margin: 20px 0 0;
+    overflow-wrap: break-word;
+  }
+  .dl-wordmark b { color: var(--bit); font-weight: 400; }
+  .dl-bitbar { display: flex; height: 8px; max-width: 560px; margin: 20px 0 24px; }
+  .dl-bitbar i { flex: 1; }
+  .dl-bitbar i:nth-child(1) { background: var(--bit-a); }
+  .dl-bitbar i:nth-child(2) { background: var(--bit-c); }
+  .dl-bitbar i:nth-child(3) { background: var(--bit-m); }
+  .dl-bitbar i:nth-child(4) { background: var(--bit-g); }
+  .dl-lede { font-size: 1.125rem; color: var(--muted); max-width: var(--measure); }
+  .dl-cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-top: 28px; }
+  .dl-cta-note { font-size: 14px; color: var(--muted); }
+
+  /* ---------- Sections: one bit-color each, optional dither backdrop ---------- */
+  .dl-section { padding: clamp(44px, 7vw, 72px) 0; }
+  .dl-section.dl-dither {
+    background:
+      repeating-conic-gradient(color-mix(in srgb, var(--bit) 4%, transparent) 0% 25%, transparent 0% 50%)
+      0 0 / 4px 4px var(--bg);
+  }
+  .dl-kicker {
+    display: block;
+    font: 700 12px/1 var(--font-body);
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--bit); margin-bottom: 14px;
+  }
+  .dl-kicker::before { content: "▚ "; }
+  .dl-h2 { font-size: var(--text-h2); margin: 0 0 12px; }
+  .dl-sub { color: var(--muted); max-width: var(--measure); margin-bottom: 28px; }
+
+  /* ---------- Buttons: stepped hover, one glow per section ---------- */
+  .dl-btn {
+    display: inline-block;
+    font: 600 16px/1 var(--font-body); letter-spacing: 0.02em;
+    color: var(--text); background: var(--surface);
+    border: 2px solid var(--line);
+    padding: 14px 22px; text-decoration: none; cursor: pointer;
+    transition: none;
+  }
+  .dl-btn:hover, .dl-btn:focus-visible {
+    color: var(--bit); border-color: var(--bit);
+    transform: translateY(-2px);
+  }
+  .dl-btn:active { transform: translateY(0); }
+  .dl-btn.fill {
+    color: var(--bg); background: var(--bit); border-color: var(--bit);
+    box-shadow: 0 0 12px var(--bit);
+  }
+  .dl-btn.fill:hover, .dl-btn.fill:focus-visible { color: var(--bg); }
+  .dl-btn[disabled] {
+    color: var(--faint); background: transparent;
+    border-color: var(--line); box-shadow: none; cursor: default;
+  }
+  .dl-btn[disabled]:hover { transform: none; }
+
+  /* ---------- Stepped marquee divider ---------- */
+  .dl-marquee {
+    overflow: hidden;
+    border-bottom: 2px solid var(--line);
+    background: var(--surface);
+  }
+  .dl-marquee-track {
+    display: inline-flex; gap: 40px; white-space: nowrap;
+    padding: 12px 0;
+    font: 400 var(--text-bit)/1 var(--font-bit);
+    color: var(--muted);
+    animation: dl-marquee 28s steps(4) infinite;
+  }
+  .dl-marquee-track span b { color: var(--bit-a); font-weight: 400; }
+  @keyframes dl-marquee { to { transform: translateX(-50%); } }
+
+  /* ---------- Sprite-grid feature block: bordered cells, one bit each ---------- */
+  .dl-sprites {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .dl-sprite {
+    border: 2px solid var(--line); background: var(--surface);
+    padding: 20px;
+  }
+  .dl-sprite:hover { border-color: var(--bit); }
+  .dl-glyph {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px;
+    font: 400 var(--text-bit-lg)/1 var(--font-bit);
+    color: var(--bit);
+    background:
+      repeating-conic-gradient(color-mix(in srgb, var(--bit) 6%, transparent) 0% 25%, transparent 0% 50%)
+      0 0 / 4px 4px var(--raised);
+    border: 2px solid var(--line);
+    margin-bottom: 14px;
+  }
+  .dl-sprite h3 { font-size: 1.25rem; margin: 0 0 8px; }
+  .dl-sprite p { color: var(--muted); font-size: 15px; margin: 0; }
+
+  /* ---------- Empty well: the sprite grid with nothing to show ---------- */
+  .dl-empty {
+    border: 2px dashed var(--line);
+    background:
+      repeating-conic-gradient(color-mix(in srgb, var(--bit) 4%, transparent) 0% 25%, transparent 0% 50%)
+      0 0 / 4px 4px var(--bg);
+    padding: 28px 24px; text-align: center;
+  }
+  .dl-empty .dl-kicker { margin-bottom: 8px; }
+  .dl-empty p { color: var(--muted); font-size: 15px; margin: 0 0 14px; }
+
+  /* ---------- Console card: old-OS double frame, stepped cursor ---------- */
+  .dl-console {
+    position: relative;
+    border: 2px solid var(--line); background: var(--raised);
+  }
+  .dl-console::after {
+    content: ""; position: absolute; inset: 3px;
+    border: 1px solid var(--line-soft); pointer-events: none;
+  }
+  .dl-titlebar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; border-bottom: 2px solid var(--line);
+    background: var(--surface);
+    font: 700 12px/1 var(--font-body);
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted);
+  }
+  .dl-titlebar .dl-badge { margin-left: auto; }
+  .dl-log { padding: 16px 20px; font: 400 20px/1.8 var(--font-crt); color: var(--text); }
+  .dl-log .dl-line { display: block; overflow-wrap: break-word; }
+  .dl-log .p { color: var(--bit); }
+  .dl-log .dim { color: var(--muted); }
+  .dl-cursor {
+    display: inline-block; width: 10px; height: 18px;
+    background: var(--bit); vertical-align: -3px;
+    box-shadow: 0 0 12px var(--bit);
+    animation: dl-blink 1s steps(1) infinite;
+  }
+  @keyframes dl-blink { 50% { opacity: 0; } }
+  .dl-err {
+    display: flex; gap: 12px; flex-wrap: wrap; align-items: baseline;
+    border-top: 2px solid var(--line);
+    background: color-mix(in srgb, var(--bit-m) 6%, transparent);
+    padding: 12px 20px;
+    font: 400 18px/1.7 var(--font-crt); color: var(--text);
+  }
+  .dl-err .x { color: var(--bit-m); font-weight: 700; }
+  .dl-err a { color: var(--bit-m); font: 600 14px/1 var(--font-body); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* ---------- Patch-notes rows: bordered dated changelog ---------- */
+  .dl-patch { border: 2px solid var(--line); background: var(--surface); }
+  .dl-patchrow {
+    display: grid; grid-template-columns: 112px 148px minmax(0, 1fr);
+    gap: 16px; align-items: start;
+    padding: 20px;
+  }
+  .dl-patchrow + .dl-patchrow { border-top: 2px solid var(--line); }
+  .dl-patchrow time { font: 600 14px/1.6 var(--font-body); color: var(--muted); font-variant-numeric: tabular-nums; }
+  .dl-patchrow ul { margin: 0; padding-left: 1.1rem; }
+  .dl-patchrow li { font-size: 15px; color: var(--text); }
+  .dl-patchrow li::marker { color: var(--bit); content: "+  "; }
+
+  /* ---------- Stat readout row: VT323 numerals ---------- */
+  .dl-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 2px solid var(--line); background: var(--bg);
+  }
+  .dl-stat { padding: 22px 20px; }
+  .dl-stat + .dl-stat { border-left: 2px solid var(--line); }
+  .dl-stat .n {
+    display: block;
+    font: 400 clamp(2.75rem, 5vw, 3.5rem)/1 var(--font-crt);
+    color: var(--bit);
+    font-variant-numeric: tabular-nums;
+  }
+  .dl-stat .l {
+    display: block; margin-top: 8px;
+    font: 700 12px/1.5 var(--font-body);
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted);
+  }
+  .dl-load {
+    position: relative; display: block; height: 12px; margin-top: 14px;
+    background: var(--line-soft); overflow: hidden;
+  }
+  .dl-load i {
+    position: absolute; top: 0; bottom: 0; left: 0;
+    width: var(--w, 100%); background: var(--bit);
+    animation: dl-load 2.4s steps(8) infinite;
+  }
+  .dl-stat.wait .n { color: var(--muted); }
+  @keyframes dl-load { from { width: 8%; } to { width: 100%; } }
+
+  /* ---------- Footer ---------- */
+  .dl-footer { border-top: 2px solid var(--line); background: var(--surface); padding: 40px 0 32px; }
+  .dl-footer .dl-bitbar { max-width: 220px; margin: 16px 0; height: 8px; }
+  .dl-footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; }
+  .dl-footer h3 {
+    font: 700 12px/1.5 var(--font-body);
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted);
+    margin: 0 0 10px;
+  }
+  .dl-footer ul { list-style: none; margin: 0; padding: 0; }
+  .dl-footer li { margin: 0 0 6px; }
+  .dl-footer a { color: var(--muted); text-decoration: none; font-size: 15px; }
+  .dl-footer a:hover { color: var(--text); text-decoration: underline; }
+  .dl-fine { margin-top: 28px; font-size: 14px; color: var(--muted); }
+
+  /* ---------- Colophon appendix: identity documentation below the footer ---------- */
+  .dl-appendix { border-top: 2px solid var(--line); padding: 48px 0 64px; }
+  .dl-appendix section { margin-bottom: 40px; }
+  .dl-appendix h3 { font-size: 1.25rem; margin: 0 0 12px; }
+  .dl-appendix .dl-kicker { color: var(--bit-a); }
+  .dl-list { list-style: none; margin: 0; padding: 0; }
+  .dl-list li {
+    padding: 10px 0 10px 26px; position: relative;
+    border-bottom: 1px solid var(--line-soft); font-size: 15px;
+  }
+  .dl-list li::before { content: "▚"; position: absolute; left: 0; color: var(--bit); }
+  .dl-list.no li::before { content: "×"; color: var(--bit-m); }
+
+  /* ---------- Token table ---------- */
+  .dl-tablewrap { overflow-x: auto; }
+  .dl-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .dl-table th {
+    text-align: left; white-space: nowrap;
+    font: 700 12px/1.5 var(--font-body);
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted);
+    padding: 8px 16px 8px 0; border-bottom: 2px solid var(--line);
+  }
+  .dl-table td { padding: 10px 16px 10px 0; vertical-align: top; border-bottom: 1px solid var(--line-soft); }
+
+  /* ---------- States gallery cell ---------- */
+  .dl-statecell { border: 2px solid var(--line); background: var(--surface); padding: 20px; }
+  .dl-statecell > .dl-kicker { margin-bottom: 12px; }
+
+  /* ---------- Utilities ---------- */
+  .dl-noprint { }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .dl-stats { grid-template-columns: 1fr 1fr; }
+    .dl-stat:nth-child(3) { border-left: 0; }
+    .dl-stat:nth-child(n+3) { border-top: 2px solid var(--line); }
+    .dl-footer-grid { grid-template-columns: 1fr 1fr; }
+    .dl-cols2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .dl-wordmark { font-size: 24px; }
+    .dl-top-inner { gap: 12px; }
+    .dl-nav { gap: 14px; }
+    .dl-sprites { grid-template-columns: 1fr; }
+    .dl-patchrow { grid-template-columns: 1fr; gap: 8px; }
+    .dl-footer-grid { grid-template-columns: 1fr; }
+    .dl-log { font-size: 18px; }
+  }
+
+  /* ---------- Print ----------
+     Dark-only identity prints as ink on paper: the print block re-inks
+     the tokens to paper values, drops the patterns (dither, scanlines,
+     glow), and stops every animation. */
+  @media print {
+    :root {
+      --bg: #FFFFFF; --surface: #FFFFFF; --raised: #FFFFFF;
+      --line: #101318; --line-soft: #D5DAE3;
+      --text: #101318; --muted: #4A5568; --faint: #6B7280;
+      --bit-a: #8A5300; --bit-c: #076A7A; --bit-m: #A03A72; --bit-g: #2E7D3A;
+      --bit: var(--bit-a);
+    }
+    body { font-size: 10.5pt; }
+    a { text-decoration: none; }
+    .dl-noprint { display: none; }
+    .dl-hero, .dl-section.dl-dither, .dl-empty, .dl-glyph { background: var(--bg) !important; }
+    .dl-hero::after, .dl-console::after { display: none; }
+    .dl-btn.fill { box-shadow: none; }
+    .dl-console, .dl-patch, .dl-sprite, .dl-stat, .dl-statecell { break-inside: avoid; }
+    .dl-cursor, .dl-marquee-track, .dl-load i { animation: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .dl-cursor, .dl-marquee-track, .dl-load i { animation: none; }
+    .dl-btn, .dl-sprite { transition: none; }
+    .dl-btn:hover, .dl-btn:focus-visible { transform: none; }
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<header class="dl-top dl-noprint">
+  <div class="dl-wrap dl-top-inner">
+    <a class="dl-brand" href="#top">BIT<b>WELL</b></a>
+    <nav class="dl-nav" aria-label="Main">
+      <a href="#features" class="on">Features</a>
+      <a href="#console">Console</a>
+      <a href="#patch-notes">Patch notes</a>
+      <a href="#stats">Stats</a>
+    </nav>
+    <span class="dl-badge">v0.9.2</span>
+  </div>
+</header>
+
+<!-- Pixel hero: the only place scanlines are allowed -->
+<section class="dl-hero bit-amber" id="top">
+  <div class="dl-wrap">
+    <span class="dl-badge on">v0.9.2 · checker</span>
+    <h1 class="dl-wordmark">BITWELL</h1>
+    <div class="dl-bitbar" role="presentation"><i></i><i></i><i></i><i></i></div>
+    <p class="dl-lede">A 1-bit sprite workshop for indie games and tiny
+    pixels. Four-color palettes, checker dither out of the box, and an
+    export that never blurs a hard edge.</p>
+    <div class="dl-cta">
+      <a class="dl-btn fill" href="#patch-notes">Download 0.9.2</a>
+      <a class="dl-btn" href="#console">Watch it work</a>
+      <span class="dl-cta-note">Windows · macOS · Linux · free for jams</span>
+    </div>
+  </div>
+</section>
+
+<!-- Stepped marquee divider -->
+<div class="dl-marquee dl-noprint" aria-hidden="true">
+  <div class="dl-marquee-track">
+    <span>1-BIT FOREVER <b>▚</b> DITHER OR DIE <b>▚</b> FOUR COLORS, ONE JOB <b>▚</b> STEPS, NOT EASES <b>▚</b>&nbsp;</span>
+    <span>1-BIT FOREVER <b>▚</b> DITHER OR DIE <b>▚</b> FOUR COLORS, ONE JOB <b>▚</b> STEPS, NOT EASES <b>▚</b>&nbsp;</span>
+  </div>
+</div>
+
+<!-- Features: sprite-grid block, one bit-color per cell -->
+<section class="dl-section dl-dither bit-cyan" id="features">
+  <div class="dl-wrap">
+    <span class="dl-kicker">01 · Toolkit</span>
+    <h2 class="dl-h2">Built for sprite work</h2>
+    <p class="dl-sub">Every tool in Bitwell speaks the same 1-bit language:
+    hard edges, honest palettes, and fills that survive a zoom.</p>
+    <div class="dl-sprites">
+      <article class="dl-sprite bit-cyan">
+        <span class="dl-glyph" aria-hidden="true">%</span>
+        <h3>Palette rotation</h3>
+        <p>Four slots, no more. Swap any bit-color across the whole sheet
+        and watch every sprite re-ink itself live.</p>
+      </article>
+      <article class="dl-sprite bit-magenta">
+        <span class="dl-glyph" aria-hidden="true">#</span>
+        <h3>Onion timeline</h3>
+        <p>Step through frames in coarse 2-frame ghosts. The timeline ticks
+        in whole frames, never in-betweens.</p>
+      </article>
+      <article class="dl-sprite bit-green">
+        <span class="dl-glyph" aria-hidden="true">@</span>
+        <h3>Checker export</h3>
+        <p>Bayer-2 dither at export time. What you preview on the canvas is
+        byte-for-byte what lands on disk.</p>
+      </article>
+      <article class="dl-sprite bit-amber">
+        <span class="dl-glyph" aria-hidden="true">+</span>
+        <h3>Tile preview</h3>
+        <p>Draft on one 16×16 tile while the room assembles around it. The
+        map is the preview; there is no second window.</p>
+      </article>
+      <article class="dl-empty">
+        <span class="dl-kicker">Slot 05 · empty</span>
+        <p>No palette in this slot yet. Your next four colors land here.</p>
+        <a href="#stats">New palette</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Console: the session log, error state included -->
+<section class="dl-section dl-dither bit-green" id="console">
+  <div class="dl-wrap">
+    <span class="dl-kicker">02 · Session</span>
+    <h2 class="dl-h2">Watch it work</h2>
+    <p class="dl-sub">Exports are honest: every pass prints its steps, and a
+    failed tile stops the batch instead of faking a green check.</p>
+    <div class="dl-console">
+      <div class="dl-titlebar">
+        export.log
+        <span class="dl-badge">1bpp</span>
+      </div>
+      <div class="dl-log">
+        <span class="dl-line"><span class="p">&gt;</span> bitwell export sprites/ --dither bayer2</span>
+        <span class="dl-line"><span class="dim">reading sprites/ .......... 12 files</span></span>
+        <span class="dl-line"><span class="dim">palette: bitwell-4 (amber cyan magenta green)</span></span>
+        <span class="dl-line"><span class="dim">dither pass ................ ok</span></span>
+        <span class="dl-line"><span class="dim">wrote hero-128.png (2.1 kb)</span></span>
+        <span class="dl-line"><span class="p">&gt;</span> bitwell serve --watch <span class="dl-cursor" aria-hidden="true"></span></span>
+      </div>
+      <div class="dl-err">
+        <span class="x">✗</span>
+        <span>tile-09.png skipped: palette slot 4 is empty</span>
+        <a href="#console">Retry export</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Patch notes: bordered dated rows -->
+<section class="dl-section dl-dither bit-magenta" id="patch-notes">
+  <div class="dl-wrap">
+    <span class="dl-kicker">03 · Patch notes</span>
+    <h2 class="dl-h2">Shipped lately</h2>
+    <p class="dl-sub">Small, numbered, and dated. Every change says what it
+    changes; nothing ships silently.</p>
+    <div class="dl-patch">
+      <article class="dl-patchrow">
+        <time datetime="2026-10-06">2026-10-06</time>
+        <span class="dl-badge on">v0.9.2</span>
+        <ul>
+          <li>Dither preview at 2× and 4× zoom, checker-accurate.</li>
+          <li>Export to 1-bpp BMP alongside PNG and 4-color GB.</li>
+          <li>Fixed palette drag dropping slots on Windows.</li>
+        </ul>
+      </article>
+      <article class="dl-patchrow">
+        <time datetime="2026-09-22">2026-09-22</time>
+        <span class="dl-badge">v0.9.1</span>
+        <ul>
+          <li>Onion-skin timeline with 2-frame ghosting.</li>
+          <li>Sprite folders; the sheet sorts itself.</li>
+          <li>Tile preview redraws twice as fast.</li>
+        </ul>
+      </article>
+      <article class="dl-patchrow">
+        <time datetime="2026-09-05">2026-09-05</time>
+        <span class="dl-badge">v0.9.0</span>
+        <ul>
+          <li>First public build: four-color palettes, checker fills.</li>
+          <li>Editor, tile map, and export in one window.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Stats: VT323 readout row, loading state included -->
+<section class="dl-section dl-dither bit-amber" id="stats">
+  <div class="dl-wrap">
+    <span class="dl-kicker">04 · Counters</span>
+    <h2 class="dl-h2">Workshop ledger</h2>
+    <p class="dl-sub">Live from the workshop floor this week. The sync
+    counter is honest about still running.</p>
+    <div class="dl-stats">
+      <div class="dl-stat">
+        <span class="n">12,480</span>
+        <span class="l">Sprites exported</span>
+      </div>
+      <div class="dl-stat">
+        <span class="n">214</span>
+        <span class="l">Palettes shared</span>
+      </div>
+      <div class="dl-stat">
+        <span class="n">6</span>
+        <span class="l">Export formats</span>
+      </div>
+      <div class="dl-stat wait">
+        <span class="n">62%</span>
+        <span class="l">Library sync</span>
+        <span class="dl-load"><i style="--w:62%"></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="dl-footer">
+  <div class="dl-wrap">
+    <div class="dl-footer-grid">
+      <div>
+        <a class="dl-brand" href="#top">BIT<b>WELL</b></a>
+        <div class="dl-bitbar" role="presentation"><i></i><i></i><i></i><i></i></div>
+        <p style="max-width: 40ch; color: var(--muted); font-size: 15px;">A 1-bit
+        sprite workshop. Four colors, hard edges, no gradients.</p>
+      </div>
+      <div>
+        <h3>Project</h3>
+        <ul>
+          <li><a href="#top">Download</a></li>
+          <li><a href="#patch-notes">Patch notes</a></li>
+          <li><a href="#features">Toolkit</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Community</h3>
+        <ul>
+          <li><a href="#top">Forum</a></li>
+          <li><a href="#top">Chat</a></li>
+          <li><a href="#top">Game jams</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="dl-fine">© 2026 Bitwell Workshop. A fictional tool, drawn to
+    demo the dither-lab design identity.</p>
+  </div>
+</footer>
+
+<!-- Colophon appendix: identity documentation, below the footer -->
+<section class="dl-appendix bit-amber" aria-label="Identity colophon">
+  <div class="dl-wrap">
+
+    <section id="colophon-what">
+      <span class="dl-kicker">Colophon · what makes it dither-lab</span>
+      <h3>The 1-bit workshop, not an ops console</h3>
+      <p class="dl-sub">dither-lab is a showcase identity for creative and
+      dev-tool surfaces. It shares a genre with terminal identities and
+      shares nothing with their grammar:</p>
+      <ul class="dl-list">
+        <li>Blue-black <code>#101318</code> canvas - never neutral
+        near-black, never a single-hue phosphor screen.</li>
+        <li>Four-color rotational bit-palette: each section carries exactly
+        one bit-color (amber → cyan → green → magenta, top-down), set with
+        a <code>.bit-*</code> modifier. Never a rainbow page, never a
+        monochrome one.</li>
+        <li>Press Start 2P is for wordmarks and badges only, at 8px
+        multiples with a 16px floor - never body text. Pixelify Sans
+        carries headings, Space Grotesk carries prose, VT323 speaks only in
+        large readouts.</li>
+        <li>Dither is a pattern overlay: 2px checkers via
+        <code>repeating-conic-gradient</code> at 4-6% alpha as section
+        backdrops. It approximates, never computes.</li>
+        <li>Scanlines exist on the hero only, at 3% alpha.</li>
+        <li>Motion is stepped: <code>steps()</code> marquees, blink
+        cursors, hover jumps. No smooth eases; everything honors
+        <code>prefers-reduced-motion</code>.</li>
+        <li>Radius 0 and 2px borders are laws. Depth is pattern and
+        border, never blur; the one shadow is a 12px bit-color glow on a
+        section's primary element.</li>
+      </ul>
+    </section>
+
+    <section id="colophon-decisions">
+      <span class="dl-kicker">Colophon · decisions</span>
+      <h3>Calls this demo makes</h3>
+      <ul class="dl-list">
+        <li>Dark is the only theme. The blue-black canvas is the identity;
+        print re-inks to paper values instead of deriving a screen light
+        scheme.</li>
+        <li>Magenta does double duty as the error hue - the one fixed
+        semantic assignment in the palette. It never decorates.</li>
+        <li>The console speaks VT323 at 20px: machine output reads as CRT
+        readout, while prose stays in Space Grotesk.</li>
+        <li>The marquee runs <code>steps(4)</code> per loop on purpose: it
+        flips like a split-flap board instead of gliding.</li>
+        <li>The empty palette slot is a real state, not lorem: it names the
+        void and offers the next action.</li>
+      </ul>
+    </section>
+
+    <section id="colophon-tokens">
+      <span class="dl-kicker">Colophon · token reference</span>
+      <h3>Tokens</h3>
+      <div class="dl-tablewrap">
+        <table class="dl-table">
+          <thead>
+            <tr><th>Token</th><th>Value</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>--bg</code></td><td><code>#101318</code></td><td>Blue-black canvas (never neutral near-black)</td></tr>
+            <tr><td><code>--surface</code></td><td><code>#161B24</code></td><td>Cards, bars, badges</td></tr>
+            <tr><td><code>--raised</code></td><td><code>#1C2230</code></td><td>Console body, glyph wells</td></tr>
+            <tr><td><code>--line</code></td><td><code>#2A3140</code></td><td>The 2px border</td></tr>
+            <tr><td><code>--line-soft</code></td><td><code>#202733</code></td><td>Inner frame, quiet rules</td></tr>
+            <tr><td><code>--text</code></td><td><code>#E8ECF2</code></td><td>Body text</td></tr>
+            <tr><td><code>--muted</code></td><td><code>#939CAC</code></td><td>Secondary text, labels</td></tr>
+            <tr><td><code>--faint</code></td><td><code>#5C6678</code></td><td>Ornaments and disabled controls only, never informative</td></tr>
+            <tr><td><code>--bit-a</code></td><td><code>#FFB454</code></td><td>Amber bit - primary, leads every page</td></tr>
+            <tr><td><code>--bit-c</code></td><td><code>#62D6E8</code></td><td>Cyan bit</td></tr>
+            <tr><td><code>--bit-m</code></td><td><code>#E878B8</code></td><td>Magenta bit - also the error hue</td></tr>
+            <tr><td><code>--bit-g</code></td><td><code>#85D98A</code></td><td>Green bit</td></tr>
+            <tr><td><code>--radius</code></td><td><code>0px</code></td><td>Law, not a knob</td></tr>
+            <tr><td><code>--font-bit</code></td><td><code>Press Start 2P</code></td><td>Wordmarks, badges, glyphs - 8px multiples, 16px floor</td></tr>
+            <tr><td><code>--font-display</code></td><td><code>Pixelify Sans</code></td><td>Headings</td></tr>
+            <tr><td><code>--font-body</code></td><td><code>Space Grotesk</code></td><td>Prose and UI</td></tr>
+            <tr><td><code>--font-crt</code></td><td><code>VT323</code></td><td>Readouts, large sizes only</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="colophon-dodont">
+      <span class="dl-kicker">Colophon · do / don't</span>
+      <h3>Keep it in the workshop</h3>
+      <div class="dl-cols2">
+        <div class="dl-statecell bit-cyan">
+          <span class="dl-kicker">Do</span>
+          <ul class="dl-list">
+            <li>Assign one bit-color per section, decided top-down.</li>
+            <li>Keep bitmap type at 8px multiples: 16, 24, 32.</li>
+            <li>Use the dither band as a section backdrop at 4-6% alpha.</li>
+            <li>Stepped hovers: 2px jumps, no easing.</li>
+            <li>One glow per section, on the primary element.</li>
+          </ul>
+        </div>
+        <div class="dl-statecell bit-magenta">
+          <span class="dl-kicker">Don't</span>
+          <ul class="dl-list no">
+            <li>Never mix two bit-colors inside one component (the
+            four-color underline bar is the only blend).</li>
+            <li>Never set body text in Press Start 2P or VT323.</li>
+            <li>No CRT curvature, fake boot screens, or web3 neon.</li>
+            <li>No shadows or blur; depth is pattern and border.</li>
+            <li>No dense ops tables - that is graphite-terminal's job.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="colophon-states">
+      <span class="dl-kicker">Colophon · states gallery</span>
+      <h3>Every state has a treatment</h3>
+      <div class="dl-cols2">
+        <div class="dl-statecell bit-green">
+          <span class="dl-kicker">Empty</span>
+          <div class="dl-empty">
+            <span class="dl-kicker">Slot 05 · empty</span>
+            <p>No palette in this slot yet. Your next four colors land here.</p>
+            <a href="#stats">New palette</a>
+          </div>
+        </div>
+        <div class="dl-statecell bit-green">
+          <span class="dl-kicker">Loading</span>
+          <div class="dl-stat wait">
+            <span class="n">62%</span>
+            <span class="l">Library sync</span>
+            <span class="dl-load"><i style="--w:62%"></i></span>
+          </div>
+          <p style="margin-top: 12px; font-size: 14px; color: var(--muted);">The bar climbs in
+          eight steps and freezes under reduced motion.</p>
+        </div>
+        <div class="dl-statecell bit-magenta">
+          <span class="dl-kicker">Error</span>
+          <div class="dl-err">
+            <span class="x">✗</span>
+            <span>tile-09.png skipped: palette slot 4 is empty</span>
+            <a href="#console">Retry export</a>
+          </div>
+        </div>
+        <div class="dl-statecell bit-amber">
+          <span class="dl-kicker">Controls</span>
+          <p style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;">
+            <a class="dl-btn fill" href="#colophon-states">Primary</a>
+            <a class="dl-btn" href="#colophon-states">Secondary</a>
+            <button class="dl-btn" type="button" disabled>Disabled</button>
+          </p>
+          <p style="font-size: 14px; color: var(--muted); margin: 0;">Hover jumps
+          the button 2px with no easing; the primary button carries the
+          section's one 12px glow; focus draws a 2px bit-color outline.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="colophon-set">
+      <span class="dl-kicker">Colophon · set in</span>
+      <p class="dl-sub">Press Start 2P for the bitmap voice, Pixelify Sans
+      for headings, Space Grotesk for prose, VT323 for readouts - on
+      blue-black <code>#101318</code> with amber, cyan, magenta, and green
+      bits. dither-lab identity demo; Bitwell is fictional.</p>
+    </section>
+
+  </div>
+</section>
+
+</body>
+</html>
