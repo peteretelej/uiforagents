@@ -63,6 +63,7 @@ pure-CSS system - no build step, no registry, no required JavaScript.
 | **paper-ledger** | Light print-precision analytics. Cool paper ground, ink-blue accent, accounting double rules, tabular mono figures, a real print stylesheet. One-shot PASS 2026-10-09, cost-audit summary. | ✅ v1.0 |
 | **tally-board** | Warm personal tracker. Cream + terracotta, rounded bento cards, bold rounded numerals, progress grammar (tracks, target ticks, rings, streak heat), ok/warn-only pills, friendly voice. One-shot PASS 2026-10-09, weekly review. | ✅ v1.0 |
 | **espresso-panel** | Amber instrument panel. Warm-black ground, one phosphor hue, all-mono type, intensity-as-hierarchy readout walls, dot-matrix fills, bracket states ([ OK ]/[WARN]/[FAIL]), ticker tape. No dense ops tables or health-dot rows (verdict gate). One-shot PASS 2026-10-09, price watcher. Naming per the recalibrated rule (2026-10-08): espresso-panel, amber-warm owned (D9); the census's amber-readout suggestion is superseded. | ✅ v1.0 |
+| **weissraum** | Light minimal Swiss portfolio. Paper-white canvas, near-black Archivo display at poster scale, hairline indexes with index numbers and typographic arrows, uppercase mono micro-labels, one red accent used only when it has a job, 0px radius everywhere. One-shot PASS 2026-10-12, event/workshop index. | ✅ v1.0 |
 
 ```
 identities/<artifact-identity>/

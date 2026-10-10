@@ -1,0 +1,401 @@
+/* weissraum - artifact identity foundation
+   The canonical light Swiss portfolio system: paper-white canvas, near-black
+   grotesk display at poster scale, hairline structure, uppercase mono
+   micro-labels, and one Swiss-red accent that only appears when it has a job.
+   Built for studio portfolios, case studies, about pages, and one-page
+   briefs shipped as self-contained HTML.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + `color-scheme` pinned light on :root. The
+     identity leads light: paper white is canonical, the near-black scheme is
+     the derived alternative. A toggle flips html.style.colorScheme. Keep the
+     scheme property on html/:root - there is no data-theme attribute and no
+     duplicated token block.
+   - The four laws hold everywhere: flush left (never centered), flat (no
+     shadows, no gradients), hairline-ruled (1px var(--line) is the only
+     surface treatment), one accent (red appears only where it has a job:
+     links, active nav, at most one highlighted figure per view).
+   - Radius is 0px everywhere. It is a law, not a tuning knob.
+   - No JavaScript is required. The sanctioned enhancements (theme toggle,
+     optional scroll reveal) are documented in the prompt-pack; the page
+     renders completely without either.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light;
+
+    /* Shared semantic vocabulary (light canonical) */
+    --bg: light-dark(#FCFCFA, #131312);
+    --surface: light-dark(#FFFFFF, #1B1B19);
+    --ink: light-dark(#111111, #F1F0EC);
+    --muted: light-dark(#6B6B6B, #A8A7A1);
+    --faint: light-dark(#757571, #8A8A85);
+    --line: light-dark(#E3E3DE, #33332F);
+    --line-soft: light-dark(#EEEEEA, #262625);
+    --accent: light-dark(#D92B1C, #FF4633);      /* graphics + large elements */
+    --accent-ink: light-dark(#B3221A, #FF7A6B);  /* accent as text (AA on bg) */
+    --radius: 0px;
+
+    /* Type: Archivo display, Inter body, IBM Plex Mono micro.
+       The stacks are canonical and degrade to the Helvetica/Arial class
+       with zero webfonts; the @fontsource upgrade path is in the pack. */
+    --font-display: "Archivo", "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    /* Poster scale: hierarchy is size, not color. Display is 3x+ body. */
+    --text-display: clamp(2.75rem, 7.5vw, 6rem);  /* 44 -> 96 */
+    --text-title: clamp(2rem, 4.6vw, 4rem);       /* 32 -> 64 */
+    --text-head: clamp(1.625rem, 3vw, 2.75rem);   /* 26 -> 44 */
+    --text-body: 1.0625rem;                       /* 17 */
+    --text-small: 0.875rem;                       /* 14 */
+    --text-micro: 0.72rem;                        /* mono micro-labels */
+
+    /* Layout */
+    --wrap: 80rem;                                /* 1280 canvas */
+    --gutter: clamp(1.25rem, 4vw, 2.5rem);        /* 20 -> 40 page padding */
+    --measure: 62ch;                              /* 60-70ch body measure */
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0;
+  }
+  p { margin: 0 0 1em; }
+  ul, ol { margin: 0 0 1em; padding-left: 1.25rem; }
+  li { margin-bottom: 0.35rem; }
+  figure { margin: 0; }
+  a {
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+    text-underline-offset: 3px;
+    transition: color .16s ease-out, text-decoration-color .16s ease-out, text-underline-offset .16s ease-out;
+  }
+  a:hover {
+    color: var(--accent-ink);
+    text-decoration-color: currentColor;
+    text-underline-offset: 5px;
+  }
+  code, kbd { font-family: var(--font-mono); font-size: 0.85em; }
+  :focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 1.5rem; }
+
+  /* ---------- Micro-labels and glyphs ---------- */
+  .wr-kicker {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .wr-no {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.08em;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .wr-arrow { display: inline-block; transition: transform .18s ease-out; }
+  a:hover .wr-arrow, button:hover .wr-arrow, .wr-row:hover .wr-arrow {
+    transform: translateX(4px);
+  }
+  .wr-highlight { color: var(--accent-ink); }  /* the one figure with a job */
+
+  /* ---------- Canvas ---------- */
+  .wr-wrap { max-width: var(--wrap); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
+
+  /* ---------- Top bar ---------- */
+  .wr-top { border-bottom: 1px solid var(--line); }
+  .wr-top-inner {
+    max-width: var(--wrap); margin: 0 auto; padding: 0.9rem var(--gutter);
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem;
+  }
+  .wr-brand {
+    font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+    letter-spacing: -0.02em; color: var(--ink); text-decoration: none;
+  }
+  .wr-brand sup { font-family: var(--font-mono); font-size: 0.6em; color: var(--faint); letter-spacing: 0; }
+  .wr-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+  .wr-nav a {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink); text-decoration: none;
+  }
+  .wr-nav a .wr-no { margin-right: 0.45em; }
+  .wr-nav a::after {
+    content: ""; display: block; height: 1px; margin-top: 3px; background: currentColor;
+    transform: scaleX(0); transform-origin: left; transition: transform .18s ease-out;
+  }
+  .wr-nav a:hover::after, .wr-nav a.on::after { transform: scaleX(1); }
+  .wr-nav a.on { color: var(--accent-ink); }
+  .wr-toggle {
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); background: none; border: 1px solid var(--line);
+    padding: 0.35rem 0.7rem; cursor: pointer; white-space: nowrap;
+    transition: color .16s ease-out, border-color .16s ease-out;
+  }
+  .wr-toggle:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* ---------- Statement hero ---------- */
+  .wr-hero {
+    max-width: var(--wrap); margin: 0 auto;
+    padding: clamp(4rem, 10vw, 7.5rem) var(--gutter) clamp(3rem, 7vw, 5rem);
+  }
+  .wr-hero .wr-kicker { margin-bottom: 1.75rem; }
+  .wr-display {
+    font-family: var(--font-display); font-size: var(--text-display);
+    font-weight: 700; line-height: 0.98; letter-spacing: -0.02em;
+    margin: 0; overflow-wrap: break-word;
+  }
+  .wr-hero-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 2.25rem; margin-top: 2.25rem; }
+  .wr-hero-meta span {
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  }
+
+  /* ---------- Sections ---------- */
+  .wr-sec { border-top: 1px solid var(--line); padding: clamp(3rem, 7vw, 5.5rem) 0 clamp(3rem, 6vw, 4.5rem); }
+  .wr-sec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: clamp(2rem, 4vw, 3.25rem);
+  }
+  .wr-sec-head .wr-kicker { margin: 0; }
+  .wr-sec h2 {
+    font-size: var(--text-head); line-height: 1.08; margin: 0 0 1.25rem;
+  }
+
+  /* ---------- 12-column grid ---------- */
+  .wr-grid {
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter);
+  }
+  .wr-grid > * { min-width: 0; }
+  .wr-span-3 { grid-column: span 3; }
+  .wr-span-4 { grid-column: span 4; }
+  .wr-span-5 { grid-column: span 5; }
+  .wr-span-6 { grid-column: span 6; }
+  .wr-span-7 { grid-column: span 7; }
+  .wr-span-8 { grid-column: span 8; }
+  .wr-span-9 { grid-column: span 9; }
+  .wr-span-12 { grid-column: span 12; }
+
+  /* ---------- Work index: numbered hairline rows ---------- */
+  .wr-index { border-top: 1px solid var(--line); }
+  .wr-row {
+    display: grid; grid-template-columns: 3.5rem minmax(0, 1fr) 11rem 4.5rem 2rem;
+    align-items: baseline; gap: 1rem;
+    padding: 1.05rem 0.75rem 1rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink); text-decoration: none;
+    transition: background-color .16s ease-out, color .16s ease-out;
+  }
+  .wr-row .wr-no { margin: 0; }
+  .wr-row .wr-title {
+    font-family: var(--font-display); font-weight: 600; font-size: 1.4rem;
+    letter-spacing: -0.02em; line-height: 1.15;
+  }
+  .wr-row .wr-cat, .wr-row .wr-year {
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  }
+  .wr-row .wr-year { text-align: right; }
+  .wr-row .wr-arrow { justify-self: end; }
+  .wr-row:hover, .wr-row:focus-visible { background: var(--ink); color: var(--bg); outline-offset: -2px; }
+  .wr-row:hover .wr-no, .wr-row:hover .wr-cat, .wr-row:hover .wr-year,
+  .wr-row:focus-visible .wr-no, .wr-row:focus-visible .wr-cat, .wr-row:focus-visible .wr-year {
+    color: var(--bg); opacity: 0.7;
+  }
+
+  /* ---------- Plates: the image slot, drawn typographically ---------- */
+  .wr-plate {
+    position: relative; display: flex; align-items: flex-end;
+    aspect-ratio: 4 / 3; width: 100%;
+    background: var(--surface); border: 1px solid var(--line);
+    padding: 1.1rem; overflow: hidden;
+  }
+  .wr-plate--wide { aspect-ratio: 16 / 9; }
+  .wr-plate--tall { aspect-ratio: 3 / 4; }
+  .wr-plate b {
+    font-family: var(--font-display); font-weight: 700; line-height: 0.9;
+    font-size: clamp(4rem, 9vw, 7.5rem); letter-spacing: -0.03em; color: var(--ink);
+  }
+  .wr-plate-tag {
+    position: absolute; top: 1.1rem; left: 1.1rem;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+  }
+  .wr-plate-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .wr-plate-grid i { border-right: 1px solid var(--line-soft); }
+  .wr-plate-grid i:last-child { border-right: 0; }
+  .wr-figcap {
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    margin-top: 0.6rem;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  }
+
+  /* ---------- Facts: the ruled table ---------- */
+  .wr-facts { margin: 0; border-top: 1px solid var(--ink); }
+  .wr-facts > div {
+    display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1rem;
+    padding: 0.7rem 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .wr-facts dt {
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+    padding-top: 0.15rem;
+  }
+  .wr-facts dd { margin: 0; font-size: var(--text-small); }
+
+  /* ---------- Split: oversized claim + measured body ---------- */
+  .wr-split {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gutter);
+  }
+  .wr-split .wr-claim { font-size: var(--text-title); line-height: 1.02; margin: 0; overflow-wrap: break-word; }
+  .wr-split .wr-body { max-width: var(--measure); }
+  .wr-split > .wr-facts { grid-column: 1 / -1; }
+
+  /* ---------- Pull: the statement line that carries an argument ---------- */
+  .wr-pull {
+    font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em;
+    font-size: var(--text-head); line-height: 1.08; margin: 0; overflow-wrap: break-word;
+  }
+
+  /* ---------- Buttons: thin-bordered rectangles ---------- */
+  .wr-btn {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink); background: transparent;
+    border: 1px solid var(--ink); padding: 0.7rem 1.3rem;
+    cursor: pointer; text-decoration: none;
+    transition: background-color .16s ease-out, color .16s ease-out, border-color .16s ease-out;
+  }
+  .wr-btn:hover { background: var(--ink); color: var(--bg); }
+  .wr-btn--accent { border-color: var(--accent); color: var(--accent-ink); }
+  .wr-btn--accent:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .wr-btn[disabled] { border-color: var(--line); color: var(--faint); cursor: not-allowed; }
+  .wr-btn[disabled]:hover { background: transparent; color: var(--faint); }
+  .wr-btnrow { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+  /* ---------- Supporting line: the quiet sentence under a statement ---------- */
+  .wr-sub { color: var(--muted); font-size: var(--text-small); max-width: var(--measure); }
+
+  /* ---------- States: empty, loading, error ---------- */
+  .wr-empty {
+    border: 1px solid var(--line); background: var(--surface);
+    padding: clamp(2.25rem, 5vw, 3.5rem);
+  }
+  .wr-empty p { color: var(--muted); max-width: 46ch; margin: 0.6rem 0 1.25rem; }
+  .wr-skel-row {
+    display: grid; grid-template-columns: 3.5rem minmax(0, 1fr) 4.5rem;
+    gap: 1rem; align-items: center;
+    padding: 1.3rem 0.75rem; border-bottom: 1px solid var(--line);
+  }
+  .wr-skel { display: block; height: 0.85rem; background: var(--line-soft); }
+  .wr-error { border: 1px solid var(--line); background: var(--surface); padding: 1.1rem 1.3rem; }
+  .wr-error .wr-kicker { color: var(--accent-ink); margin: 0; }
+  .wr-error p { color: var(--muted); font-size: var(--text-small); margin: 0.45rem 0 0; }
+
+  /* ---------- Data table: the dense moment ---------- */
+  .wr-tablewrap { overflow-x: auto; }
+  .wr-table { width: 100%; border-collapse: collapse; font-size: var(--text-small); }
+  .wr-table th {
+    text-align: left;
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 400;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+    padding: 0.55rem 1rem 0.55rem 0;
+    border-bottom: 1px solid var(--ink); white-space: nowrap;
+  }
+  .wr-table td {
+    padding: 0.6rem 1rem 0.6rem 0; vertical-align: top;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  /* ---------- Contact footer ---------- */
+  .wr-contact { padding: clamp(3.5rem, 8vw, 6rem) 0 2.5rem; }
+  .wr-contact .wr-display { font-size: var(--text-title); margin-bottom: 1.5rem; }
+  .wr-contact .wr-mail {
+    font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em;
+    font-size: clamp(1.5rem, 3.4vw, 2.6rem); line-height: 1.1;
+    text-decoration-thickness: 2px;
+  }
+  .wr-colophon {
+    border-top: 1px solid var(--line);
+    padding: 1.1rem 0 2.25rem;
+    display: flex; flex-wrap: wrap; gap: 0.4rem 2.25rem;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+  }
+
+  /* ---------- Appendix: identity documentation below the footer ---------- */
+  .wr-appendix { border-top: 1px solid var(--line); padding: clamp(2.5rem, 5vw, 4rem) 0 3rem; }
+  .wr-appendix h2 { font-size: 1.35rem; margin: 0 0 1.1rem; }
+  .wr-appendix section { margin-bottom: 2.5rem; }
+
+  /* ---------- Utilities ---------- */
+  .wr-measure { max-width: var(--measure); }
+
+  /* ---------- Scroll reveal (needs the pack's two-line bootstrap; the
+     page renders fully without it) ---------- */
+  html.js .wr-reveal { opacity: 0; transform: translateY(8px); }
+  html.js .wr-reveal.in {
+    opacity: 1; transform: translateY(0);
+    transition: opacity .22s ease-out, transform .22s ease-out;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .wr-split { grid-template-columns: 1fr; gap: 1.75rem; }
+  }
+  @media (max-width: 640px) {
+    .wr-grid > * { grid-column: 1 / -1; }
+    .wr-top-inner { flex-wrap: wrap; gap: 0.75rem 1.5rem; }
+    .wr-row { grid-template-columns: 2.4rem minmax(0, 1fr) auto 1.6rem; }
+    .wr-row .wr-cat { display: none; }
+    .wr-row .wr-title { font-size: 1.15rem; }
+    .wr-skel-row { grid-template-columns: 2.4rem minmax(0, 1fr) 3.5rem; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    :root { color-scheme: light; }
+    body { font-size: 10.5pt; }
+    .wr-noprint { display: none; }
+    .wr-row, .wr-plate, .wr-facts > div, .wr-table tr, .wr-empty, .wr-error { break-inside: avoid; }
+    html.js .wr-reveal { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    a, .wr-arrow, .wr-row, .wr-btn, .wr-toggle, .wr-nav a::after { transition: none; }
+    a:hover .wr-arrow, button:hover .wr-arrow, .wr-row:hover .wr-arrow { transform: none; }
+    html.js .wr-reveal { opacity: 1; transform: none; }
+    html.js .wr-reveal.in { transition: none; }
+  }
+}

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>weissraum · identity demo</title>
+<meta name="description" content="Studio portfolio demo for the weissraum artifact identity: paper white, near-black grotesk display at poster scale, hairline grid, one red accent used only when it has a job.">
+<style>
+/* weissraum - artifact identity foundation
+   The canonical light Swiss portfolio system: paper-white canvas, near-black
+   grotesk display at poster scale, hairline structure, uppercase mono
+   micro-labels, and one Swiss-red accent that only appears when it has a job.
+   Built for studio portfolios, case studies, about pages, and one-page
+   briefs shipped as self-contained HTML.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Dual theme via light-dark() + `color-scheme` pinned light on :root. The
+     identity leads light: paper white is canonical, the near-black scheme is
+     the derived alternative. A toggle flips html.style.colorScheme. Keep the
+     scheme property on html/:root - there is no data-theme attribute and no
+     duplicated token block.
+   - The four laws hold everywhere: flush left (never centered), flat (no
+     shadows, no gradients), hairline-ruled (1px var(--line) is the only
+     surface treatment), one accent (red appears only where it has a job:
+     links, active nav, at most one highlighted figure per view).
+   - Radius is 0px everywhere. It is a law, not a tuning knob.
+   - No JavaScript is required. The sanctioned enhancements (theme toggle,
+     optional scroll reveal) are documented in the prompt-pack; the page
+     renders completely without either.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light;
+
+    /* Shared semantic vocabulary (light canonical) */
+    --bg: light-dark(#FCFCFA, #131312);
+    --surface: light-dark(#FFFFFF, #1B1B19);
+    --ink: light-dark(#111111, #F1F0EC);
+    --muted: light-dark(#6B6B6B, #A8A7A1);
+    --faint: light-dark(#757571, #8A8A85);
+    --line: light-dark(#E3E3DE, #33332F);
+    --line-soft: light-dark(#EEEEEA, #262625);
+    --accent: light-dark(#D92B1C, #FF4633);      /* graphics + large elements */
+    --accent-ink: light-dark(#B3221A, #FF7A6B);  /* accent as text (AA on bg) */
+    --radius: 0px;
+
+    /* Type: Archivo display, Inter body, IBM Plex Mono micro.
+       The stacks are canonical and degrade to the Helvetica/Arial class
+       with zero webfonts; the @fontsource upgrade path is in the pack. */
+    --font-display: "Archivo", "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    /* Poster scale: hierarchy is size, not color. Display is 3x+ body. */
+    --text-display: clamp(2.75rem, 7.5vw, 6rem);  /* 44 -> 96 */
+    --text-title: clamp(2rem, 4.6vw, 4rem);       /* 32 -> 64 */
+    --text-head: clamp(1.625rem, 3vw, 2.75rem);   /* 26 -> 44 */
+    --text-body: 1.0625rem;                       /* 17 */
+    --text-small: 0.875rem;                       /* 14 */
+    --text-micro: 0.72rem;                        /* mono micro-labels */
+
+    /* Layout */
+    --wrap: 80rem;                                /* 1280 canvas */
+    --gutter: clamp(1.25rem, 4vw, 2.5rem);        /* 20 -> 40 page padding */
+    --measure: 62ch;                              /* 60-70ch body measure */
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0;
+  }
+  p { margin: 0 0 1em; }
+  ul, ol { margin: 0 0 1em; padding-left: 1.25rem; }
+  li { margin-bottom: 0.35rem; }
+  figure { margin: 0; }
+  a {
+    color: var(--accent-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+    text-underline-offset: 3px;
+    transition: color .16s ease-out, text-decoration-color .16s ease-out, text-underline-offset .16s ease-out;
+  }
+  a:hover {
+    color: var(--accent-ink);
+    text-decoration-color: currentColor;
+    text-underline-offset: 5px;
+  }
+  code, kbd { font-family: var(--font-mono); font-size: 0.85em; }
+  :focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 1.5rem; }
+
+  /* ---------- Micro-labels and glyphs ---------- */
+  .wr-kicker {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .wr-no {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.08em;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .wr-arrow { display: inline-block; transition: transform .18s ease-out; }
+  a:hover .wr-arrow, button:hover .wr-arrow, .wr-row:hover .wr-arrow {
+    transform: translateX(4px);
+  }
+  .wr-highlight { color: var(--accent-ink); }  /* the one figure with a job */
+
+  /* ---------- Canvas ---------- */
+  .wr-wrap { max-width: var(--wrap); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
+
+  /* ---------- Top bar ---------- */
+  .wr-top { border-bottom: 1px solid var(--line); }
+  .wr-top-inner {
+    max-width: var(--wrap); margin: 0 auto; padding: 0.9rem var(--gutter);
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem;
+  }
+  .wr-brand {
+    font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+    letter-spacing: -0.02em; color: var(--ink); text-decoration: none;
+  }
+  .wr-brand sup { font-family: var(--font-mono); font-size: 0.6em; color: var(--faint); letter-spacing: 0; }
+  .wr-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+  .wr-nav a {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink); text-decoration: none;
+  }
+  .wr-nav a .wr-no { margin-right: 0.45em; }
+  .wr-nav a::after {
+    content: ""; display: block; height: 1px; margin-top: 3px; background: currentColor;
+    transform: scaleX(0); transform-origin: left; transition: transform .18s ease-out;
+  }
+  .wr-nav a:hover::after, .wr-nav a.on::after { transform: scaleX(1); }
+  .wr-nav a.on { color: var(--accent-ink); }
+  .wr-toggle {
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); background: none; border: 1px solid var(--line);
+    padding: 0.35rem 0.7rem; cursor: pointer; white-space: nowrap;
+    transition: color .16s ease-out, border-color .16s ease-out;
+  }
+  .wr-toggle:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* ---------- Statement hero ---------- */
+  .wr-hero {
+    max-width: var(--wrap); margin: 0 auto;
+    padding: clamp(4rem, 10vw, 7.5rem) var(--gutter) clamp(3rem, 7vw, 5rem);
+  }
+  .wr-hero .wr-kicker { margin-bottom: 1.75rem; }
+  .wr-display {
+    font-family: var(--font-display); font-size: var(--text-display);
+    font-weight: 700; line-height: 0.98; letter-spacing: -0.02em;
+    margin: 0; overflow-wrap: break-word;
+  }
+  .wr-hero-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 2.25rem; margin-top: 2.25rem; }
+  .wr-hero-meta span {
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  }
+
+  /* ---------- Sections ---------- */
+  .wr-sec { border-top: 1px solid var(--line); padding: clamp(3rem, 7vw, 5.5rem) 0 clamp(3rem, 6vw, 4.5rem); }
+  .wr-sec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: clamp(2rem, 4vw, 3.25rem);
+  }
+  .wr-sec-head .wr-kicker { margin: 0; }
+  .wr-sec h2 {
+    font-size: var(--text-head); line-height: 1.08; margin: 0 0 1.25rem;
+  }
+
+  /* ---------- 12-column grid ---------- */
+  .wr-grid {
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter);
+  }
+  .wr-grid > * { min-width: 0; }
+  .wr-span-3 { grid-column: span 3; }
+  .wr-span-4 { grid-column: span 4; }
+  .wr-span-5 { grid-column: span 5; }
+  .wr-span-6 { grid-column: span 6; }
+  .wr-span-7 { grid-column: span 7; }
+  .wr-span-8 { grid-column: span 8; }
+  .wr-span-9 { grid-column: span 9; }
+  .wr-span-12 { grid-column: span 12; }
+
+  /* ---------- Work index: numbered hairline rows ---------- */
+  .wr-index { border-top: 1px solid var(--line); }
+  .wr-row {
+    display: grid; grid-template-columns: 3.5rem minmax(0, 1fr) 11rem 4.5rem 2rem;
+    align-items: baseline; gap: 1rem;
+    padding: 1.05rem 0.75rem 1rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink); text-decoration: none;
+    transition: background-color .16s ease-out, color .16s ease-out;
+  }
+  .wr-row .wr-no { margin: 0; }
+  .wr-row .wr-title {
+    font-family: var(--font-display); font-weight: 600; font-size: 1.4rem;
+    letter-spacing: -0.02em; line-height: 1.15;
+  }
+  .wr-row .wr-cat, .wr-row .wr-year {
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  }
+  .wr-row .wr-year { text-align: right; }
+  .wr-row .wr-arrow { justify-self: end; }
+  .wr-row:hover, .wr-row:focus-visible { background: var(--ink); color: var(--bg); outline-offset: -2px; }
+  .wr-row:hover .wr-no, .wr-row:hover .wr-cat, .wr-row:hover .wr-year,
+  .wr-row:focus-visible .wr-no, .wr-row:focus-visible .wr-cat, .wr-row:focus-visible .wr-year {
+    color: var(--bg); opacity: 0.7;
+  }
+
+  /* ---------- Plates: the image slot, drawn typographically ---------- */
+  .wr-plate {
+    position: relative; display: flex; align-items: flex-end;
+    aspect-ratio: 4 / 3; width: 100%;
+    background: var(--surface); border: 1px solid var(--line);
+    padding: 1.1rem; overflow: hidden;
+  }
+  .wr-plate--wide { aspect-ratio: 16 / 9; }
+  .wr-plate--tall { aspect-ratio: 3 / 4; }
+  .wr-plate b {
+    font-family: var(--font-display); font-weight: 700; line-height: 0.9;
+    font-size: clamp(4rem, 9vw, 7.5rem); letter-spacing: -0.03em; color: var(--ink);
+  }
+  .wr-plate-tag {
+    position: absolute; top: 1.1rem; left: 1.1rem;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+  }
+  .wr-plate-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .wr-plate-grid i { border-right: 1px solid var(--line-soft); }
+  .wr-plate-grid i:last-child { border-right: 0; }
+  .wr-figcap {
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    margin-top: 0.6rem;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  }
+
+  /* ---------- Facts: the ruled table ---------- */
+  .wr-facts { margin: 0; border-top: 1px solid var(--ink); }
+  .wr-facts > div {
+    display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1rem;
+    padding: 0.7rem 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .wr-facts dt {
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+    padding-top: 0.15rem;
+  }
+  .wr-facts dd { margin: 0; font-size: var(--text-small); }
+
+  /* ---------- Split: oversized claim + measured body ---------- */
+  .wr-split {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gutter);
+  }
+  .wr-split .wr-claim { font-size: var(--text-title); line-height: 1.02; margin: 0; overflow-wrap: break-word; }
+  .wr-split .wr-body { max-width: var(--measure); }
+  .wr-split > .wr-facts { grid-column: 1 / -1; }
+
+  /* ---------- Pull: the statement line that carries an argument ---------- */
+  .wr-pull {
+    font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em;
+    font-size: var(--text-head); line-height: 1.08; margin: 0; overflow-wrap: break-word;
+  }
+
+  /* ---------- Buttons: thin-bordered rectangles ---------- */
+  .wr-btn {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink); background: transparent;
+    border: 1px solid var(--ink); padding: 0.7rem 1.3rem;
+    cursor: pointer; text-decoration: none;
+    transition: background-color .16s ease-out, color .16s ease-out, border-color .16s ease-out;
+  }
+  .wr-btn:hover { background: var(--ink); color: var(--bg); }
+  .wr-btn--accent { border-color: var(--accent); color: var(--accent-ink); }
+  .wr-btn--accent:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .wr-btn[disabled] { border-color: var(--line); color: var(--faint); cursor: not-allowed; }
+  .wr-btn[disabled]:hover { background: transparent; color: var(--faint); }
+  .wr-btnrow { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+  /* ---------- Supporting line: the quiet sentence under a statement ---------- */
+  .wr-sub { color: var(--muted); font-size: var(--text-small); max-width: var(--measure); }
+
+  /* ---------- States: empty, loading, error ---------- */
+  .wr-empty {
+    border: 1px solid var(--line); background: var(--surface);
+    padding: clamp(2.25rem, 5vw, 3.5rem);
+  }
+  .wr-empty p { color: var(--muted); max-width: 46ch; margin: 0.6rem 0 1.25rem; }
+  .wr-skel-row {
+    display: grid; grid-template-columns: 3.5rem minmax(0, 1fr) 4.5rem;
+    gap: 1rem; align-items: center;
+    padding: 1.3rem 0.75rem; border-bottom: 1px solid var(--line);
+  }
+  .wr-skel { display: block; height: 0.85rem; background: var(--line-soft); }
+  .wr-error { border: 1px solid var(--line); background: var(--surface); padding: 1.1rem 1.3rem; }
+  .wr-error .wr-kicker { color: var(--accent-ink); margin: 0; }
+  .wr-error p { color: var(--muted); font-size: var(--text-small); margin: 0.45rem 0 0; }
+
+  /* ---------- Data table: the dense moment ---------- */
+  .wr-tablewrap { overflow-x: auto; }
+  .wr-table { width: 100%; border-collapse: collapse; font-size: var(--text-small); }
+  .wr-table th {
+    text-align: left;
+    font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 400;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+    padding: 0.55rem 1rem 0.55rem 0;
+    border-bottom: 1px solid var(--ink); white-space: nowrap;
+  }
+  .wr-table td {
+    padding: 0.6rem 1rem 0.6rem 0; vertical-align: top;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  /* ---------- Contact footer ---------- */
+  .wr-contact { padding: clamp(3.5rem, 8vw, 6rem) 0 2.5rem; }
+  .wr-contact .wr-display { font-size: var(--text-title); margin-bottom: 1.5rem; }
+  .wr-contact .wr-mail {
+    font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em;
+    font-size: clamp(1.5rem, 3.4vw, 2.6rem); line-height: 1.1;
+    text-decoration-thickness: 2px;
+  }
+  .wr-colophon {
+    border-top: 1px solid var(--line);
+    padding: 1.1rem 0 2.25rem;
+    display: flex; flex-wrap: wrap; gap: 0.4rem 2.25rem;
+    font-family: var(--font-mono); font-size: var(--text-micro);
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+  }
+
+  /* ---------- Appendix: identity documentation below the footer ---------- */
+  .wr-appendix { border-top: 1px solid var(--line); padding: clamp(2.5rem, 5vw, 4rem) 0 3rem; }
+  .wr-appendix h2 { font-size: 1.35rem; margin: 0 0 1.1rem; }
+  .wr-appendix section { margin-bottom: 2.5rem; }
+
+  /* ---------- Utilities ---------- */
+  .wr-measure { max-width: var(--measure); }
+
+  /* ---------- Scroll reveal (needs the pack's two-line bootstrap; the
+     page renders fully without it) ---------- */
+  html.js .wr-reveal { opacity: 0; transform: translateY(8px); }
+  html.js .wr-reveal.in {
+    opacity: 1; transform: translateY(0);
+    transition: opacity .22s ease-out, transform .22s ease-out;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .wr-split { grid-template-columns: 1fr; gap: 1.75rem; }
+  }
+  @media (max-width: 640px) {
+    .wr-grid > * { grid-column: 1 / -1; }
+    .wr-top-inner { flex-wrap: wrap; gap: 0.75rem 1.5rem; }
+    .wr-row { grid-template-columns: 2.4rem minmax(0, 1fr) auto 1.6rem; }
+    .wr-row .wr-cat { display: none; }
+    .wr-row .wr-title { font-size: 1.15rem; }
+    .wr-skel-row { grid-template-columns: 2.4rem minmax(0, 1fr) 3.5rem; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    :root { color-scheme: light; }
+    body { font-size: 10.5pt; }
+    .wr-noprint { display: none; }
+    .wr-row, .wr-plate, .wr-facts > div, .wr-table tr, .wr-empty, .wr-error { break-inside: avoid; }
+    html.js .wr-reveal { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    a, .wr-arrow, .wr-row, .wr-btn, .wr-toggle, .wr-nav a::after { transition: none; }
+    a:hover .wr-arrow, button:hover .wr-arrow, .wr-row:hover .wr-arrow { transform: none; }
+    html.js .wr-reveal { opacity: 1; transform: none; }
+    html.js .wr-reveal.in { transition: none; }
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="wr-top">
+  <div class="wr-top-inner">
+    <a class="wr-brand" href="#top">Studio Zwölf<sup>®</sup></a>
+    <nav aria-label="Main">
+      <ul class="wr-nav">
+        <li><a class="on" href="#work"><span class="wr-no">01</span>Work</a></li>
+        <li><a href="#studio"><span class="wr-no">02</span>Studio</a></li>
+        <li><a href="#contact"><span class="wr-no">03</span>Contact</a></li>
+      </ul>
+    </nav>
+    <button class="wr-toggle wr-noprint" id="wr-toggle" type="button">Dark</button>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="wr-hero">
+    <span class="wr-kicker"><span class="wr-no">00</span>Graphic design studio, Zürich</span>
+    <h1 class="wr-display">Clarity is the&nbsp;job.</h1>
+    <div class="wr-hero-meta">
+      <span>Est. 2014</span>
+      <span>Zürich, Switzerland</span>
+      <span>Identity · Editorial · Digital</span>
+      <span>Now booking Q3 2026</span>
+    </div>
+  </div>
+
+  <section class="wr-sec" id="work">
+    <div class="wr-wrap">
+      <header class="wr-sec-head wr-reveal">
+        <span class="wr-kicker"><span class="wr-no">01</span>Selected work</span>
+        <span class="wr-kicker">2019–2026 · 06 projects</span>
+      </header>
+      <div class="wr-index">
+        <a class="wr-row" href="#case">
+          <span class="wr-no">01</span>
+          <span class="wr-title">Almanac 16</span>
+          <span class="wr-cat">Editorial design</span>
+          <span class="wr-year">2026</span>
+          <span class="wr-arrow">→</span>
+        </a>
+        <a class="wr-row" href="#plates">
+          <span class="wr-no">02</span>
+          <span class="wr-title">Monolith</span>
+          <span class="wr-cat">Identity, web</span>
+          <span class="wr-year">2025</span>
+          <span class="wr-arrow">→</span>
+        </a>
+        <a class="wr-row" href="#plates">
+          <span class="wr-no">03</span>
+          <span class="wr-title">Gelände</span>
+          <span class="wr-cat">Wayfinding</span>
+          <span class="wr-year">2025</span>
+          <span class="wr-arrow">→</span>
+        </a>
+        <a class="wr-row" href="#plates">
+          <span class="wr-no">04</span>
+          <span class="wr-title">Signal</span>
+          <span class="wr-cat">Identity, poster</span>
+          <span class="wr-year">2024</span>
+          <span class="wr-arrow">→</span>
+        </a>
+        <a class="wr-row" href="#plates">
+          <span class="wr-no">05</span>
+          <span class="wr-title">Papierhaut</span>
+          <span class="wr-cat">Packaging</span>
+          <span class="wr-year">2023</span>
+          <span class="wr-arrow">→</span>
+        </a>
+        <a class="wr-row" href="#plates">
+          <span class="wr-no">06</span>
+          <span class="wr-title">Nullpunkt</span>
+          <span class="wr-cat">Type design</span>
+          <span class="wr-year">2022</span>
+          <span class="wr-arrow">→</span>
+        </a>
+      </div>
+      <div class="wr-btnrow" style="margin-top: 1.5rem;">
+        <a class="wr-btn" href="#case">Case study: Almanac 16 <span class="wr-arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wr-sec" id="case">
+    <div class="wr-wrap">
+      <header class="wr-sec-head wr-reveal">
+        <span class="wr-kicker"><span class="wr-no">02</span>Case study</span>
+        <span class="wr-kicker">Editorial design</span>
+      </header>
+      <h2>Almanac 16, a year in <span class="wr-highlight">384 pages</span>.</h2>
+      <div class="wr-grid">
+        <dl class="wr-facts wr-span-4">
+          <div><dt>Client</dt><dd>An architecture publisher, Basel</dd></div>
+          <div><dt>Scope</dt><dd>Editorial design, typesetting</dd></div>
+          <div><dt>Format</dt><dd>240 × 320 mm, 384 pages, 2 inks</dd></div>
+          <div><dt>Typefaces</dt><dd>Archivo, Inter, IBM Plex Mono</dd></div>
+          <div><dt>Year</dt><dd>2026</dd></div>
+        </dl>
+        <div class="wr-span-8">
+          <p class="wr-measure">The Almanac collects one year of built work and
+          the arguments behind it. The brief asked for a book that a student
+          could navigate without a table of contents and a partner could quote
+          without opening it twice. The answer was structural, not decorative:
+          a strict twelve-column grid, three type sizes, and one rule weight.</p>
+          <p class="wr-measure">Every spread states its own coordinates. Section
+          numbers run in the outer margin in mono caps; photographs sit inside
+          hairline frames at two fixed aspect ratios; body text holds a single
+          measure from first page to last. Red appears exactly once per
+          chapter: on the figure that carries the argument.</p>
+        </div>
+        <figure class="wr-span-12 wr-reveal">
+          <div class="wr-plate wr-plate--wide">
+            <span class="wr-plate-tag">Fig. 01 — Spread grid, 12 columns</span>
+            <div class="wr-plate-grid"><i></i><i></i><i></i><i></i></div>
+            <b>Aa</b>
+          </div>
+          <figcaption class="wr-figcap">
+            <span>Chapter opener specimen</span>
+            <span>Grid visible as alignment</span>
+            <span>2026</span>
+          </figcaption>
+        </figure>
+        <div class="wr-grid wr-span-12" style="margin-top: 2.5rem;">
+          <p class="wr-pull wr-span-9">A student navigates it without a table
+          of contents; a partner quotes it without opening it twice.</p>
+          <p class="wr-sub wr-span-3">The brief's test, restated as the
+          design's pass condition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wr-sec" id="plates">
+    <div class="wr-wrap">
+      <header class="wr-sec-head wr-reveal">
+        <span class="wr-kicker"><span class="wr-no">03</span>Recent plates</span>
+        <span class="wr-kicker">Personal work, 2022–2026</span>
+      </header>
+      <div class="wr-grid">
+        <figure class="wr-span-7 wr-reveal">
+          <div class="wr-plate wr-plate--wide">
+            <span class="wr-plate-tag">Fig. 02 — Poster series</span>
+            <b>→</b>
+          </div>
+          <figcaption class="wr-figcap">
+            <span>Signal</span>
+            <span>Concert series identity</span>
+            <span>2024</span>
+          </figcaption>
+        </figure>
+        <figure class="wr-span-5 wr-reveal">
+          <div class="wr-plate">
+            <span class="wr-plate-tag">Fig. 03 — Numerals</span>
+            <b>05/06</b>
+          </div>
+          <figcaption class="wr-figcap">
+            <span>Nullpunkt</span>
+            <span>Grotesk, 6 weights</span>
+            <span>2022</span>
+          </figcaption>
+        </figure>
+        <figure class="wr-span-5 wr-reveal">
+          <div class="wr-plate wr-plate--tall">
+            <span class="wr-plate-tag">Fig. 04 — Wordmark study</span>
+            <b>M.</b>
+          </div>
+          <figcaption class="wr-figcap">
+            <span>Monolith</span>
+            <span>Furniture workshop</span>
+            <span>2025</span>
+          </figcaption>
+        </figure>
+        <figure class="wr-span-7 wr-reveal">
+          <div class="wr-plate">
+            <span class="wr-plate-tag">Fig. 05 — Signage grid</span>
+            <div class="wr-plate-grid"><i></i><i></i><i></i><i></i></div>
+            <b>&amp;</b>
+          </div>
+          <figcaption class="wr-figcap">
+            <span>Gelände</span>
+            <span>Cultural quarter wayfinding</span>
+            <span>2025</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="wr-sec" id="studio">
+    <div class="wr-wrap">
+      <header class="wr-sec-head wr-reveal">
+        <span class="wr-kicker"><span class="wr-no">04</span>Studio</span>
+      </header>
+      <div class="wr-split">
+        <h2 class="wr-claim">Five people. One grid. No&nbsp;decoration.</h2>
+        <div class="wr-body">
+          <p>Studio Zwölf is a graphic design studio for institutions,
+          publishers, and makers of physical things. We design identities,
+          books, exhibitions, and the websites that hold them. We work
+          slowly, in public, on a visible grid.</p>
+          <p>The studio has no house style beyond discipline: flush left,
+          hairline rules, type doing the talking. If a project needs
+          ornament to work, we have not understood it yet.</p>
+        </div>
+        <dl class="wr-facts">
+          <div><dt>Founded</dt><dd>2014</dd></div>
+          <div><dt>People</dt><dd>Five, plus one apprentice per year</dd></div>
+          <div><dt>Disciplines</dt><dd>Identity, editorial, wayfinding, digital</dd></div>
+          <div><dt>Studio</dt><dd>Kanonengasse 12, 8004 Zürich</dd></div>
+          <div><dt>Recognition</dt><dd>Three national design awards, one book of the year</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wr-wrap wr-contact">
+    <span class="wr-kicker"><span class="wr-no">05</span>Contact</span>
+    <h2 class="wr-display">Have a brief?</h2>
+    <a class="wr-mail" href="mailto:hello@studio-zwoelf.ch">hello@studio-zwoelf.ch <span class="wr-arrow">→</span></a>
+    <p class="wr-sub" style="margin: 1.25rem 0 0;">
+      We answer within two working days. New clients: we take on six projects
+      a year, and we are currently booking for Q3 2026.
+    </p>
+  </div>
+  <div class="wr-wrap wr-colophon">
+    <span>© 2026 Studio Zwölf</span>
+    <span>Zürich, 47.3769° N, 8.5417° E</span>
+    <span>Set in Archivo, Inter &amp; IBM Plex Mono</span>
+    <span>hello@studio-zwoelf.ch</span>
+  </div>
+</footer>
+
+<section class="wr-appendix" id="appendix">
+  <div class="wr-wrap">
+    <span class="wr-kicker"><span class="wr-no">A</span>Appendix — identity documentation, not studio content</span>
+
+    <section id="appendix-what">
+      <h2>What makes it weissraum</h2>
+      <div class="wr-grid">
+        <ul class="wr-span-6">
+          <li>Everything flush left, ragged right. Nothing is ever centered or justified.</li>
+          <li>Hairlines are the only surface treatment: 1px <code>var(--line)</code>, full-width, everywhere.</li>
+          <li>Flat. No shadows, no gradients, no rounded corners. Radius is 0px as a law.</li>
+        </ul>
+        <ul class="wr-span-6">
+          <li>One red accent, only when it has a job: links, active nav, at most one highlighted figure per view.</li>
+          <li>Hierarchy from size jumps, not color: display is at least 3× body (44/64/96px steps).</li>
+          <li>Uppercase mono micro-labels, index numbers <span class="wr-no">01</span>–<span class="wr-no">06</span>, and typographic arrows <span class="wr-arrow">→</span> <span class="wr-arrow">↗</span>. Never icon fonts.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="appendix-decisions">
+      <h2>Decisions</h2>
+      <ol class="wr-measure">
+        <li><strong>Neutral-cold paper.</strong> <code>#FCFCFA</code> leans cold on purpose; warm off-white is a different identity in this catalogue.</li>
+        <li><strong>Open-source grotesks.</strong> Archivo for display, Inter for body, IBM Plex Mono for micro-labels, loaded via @fontsource when the surface allows; the stacks degrade to the Helvetica/Arial class with zero webfonts.</li>
+        <li><strong>Poster scale.</strong> Display steps 44/64/96px with tight tracking (&minus;0.02em); the display-to-body ratio never drops under 3×.</li>
+        <li><strong>Light is canonical.</strong> The near-black scheme is the derived alternative via <code>light-dark()</code>; the toggle flips <code>color-scheme</code> on the root.</li>
+        <li><strong>Motion is flavor.</strong> 150–250ms ease-out: underlines draw in, arrows nudge 4px, sections rise 8px on reveal. Everything honors reduced-motion.</li>
+        <li><strong>No photography in this demo by design.</strong> The plate is the image slot drawn typographically; swap in framed photography at fixed aspect ratios when assets exist.</li>
+      </ol>
+    </section>
+
+    <section id="appendix-tokens">
+      <h2>Tokens</h2>
+      <div class="wr-tablewrap">
+        <table class="wr-table">
+          <thead>
+            <tr><th>Token</th><th>Light</th><th>Dark</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>--bg</code></td><td><code>#FCFCFA</code></td><td><code>#131312</code></td><td>paper canvas</td></tr>
+            <tr><td><code>--surface</code></td><td><code>#FFFFFF</code></td><td><code>#1B1B19</code></td><td>plates, wells, error cells</td></tr>
+            <tr><td><code>--ink</code></td><td><code>#111111</code></td><td><code>#F1F0EC</code></td><td>text, inversion fill</td></tr>
+            <tr><td><code>--muted</code></td><td><code>#6B6B6B</code></td><td><code>#A8A7A1</code></td><td>secondary text, captions</td></tr>
+            <tr><td><code>--faint</code></td><td><code>#757571</code></td><td><code>#8A8A85</code></td><td>index numbers, quiet micro-type</td></tr>
+            <tr><td><code>--line</code></td><td><code>#E3E3DE</code></td><td><code>#33332F</code></td><td>hairline rules, frames</td></tr>
+            <tr><td><code>--line-soft</code></td><td><code>#EEEEEA</code></td><td><code>#262625</code></td><td>soft inner rules, skeleton bars</td></tr>
+            <tr><td><code>--accent</code></td><td><code>#D92B1C</code></td><td><code>#FF4633</code></td><td>red, graphics and large elements only</td></tr>
+            <tr><td><code>--accent-ink</code></td><td><code>#B3221A</code></td><td><code>#FF7A6B</code></td><td>red as text, contrast-safe</td></tr>
+            <tr><td><code>--radius</code></td><td colspan="2"><code>0px</code></td><td>a law, not a knob</td></tr>
+            <tr><td><code>--font-display</code></td><td colspan="2">Archivo, Inter Tight, Helvetica Neue, Arial</td><td>posters, titles, index titles</td></tr>
+            <tr><td><code>--font-body</code></td><td colspan="2">Inter, Helvetica Neue, Arial</td><td>body copy, 17px, 62ch measure</td></tr>
+            <tr><td><code>--font-mono</code></td><td colspan="2">IBM Plex Mono, ui-monospace</td><td>micro-labels, facts, captions</td></tr>
+            <tr><td><code>--text-display</code></td><td colspan="2"><code>clamp(2.75rem, 7.5vw, 6rem)</code></td><td>44 → 96px statement lines</td></tr>
+            <tr><td><code>--measure</code></td><td colspan="2"><code>62ch</code></td><td>body measure</td></tr>
+            <tr><td><code>--wrap</code></td><td colspan="2"><code>80rem</code></td><td>1280px canvas</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="appendix-dodont">
+      <h2>Do / Don't</h2>
+      <div class="wr-grid">
+        <div class="wr-span-6">
+          <p class="wr-kicker">Do</p>
+          <ul>
+            <li>Set headlines flush left at poster scale and let whitespace carry the luxury.</li>
+            <li>Use hairlines as full-width rules; one rule weight, one color.</li>
+            <li>Number everything wayfinding-shaped: nav, sections, index rows, figures.</li>
+            <li>Keep exactly one accent moment per view, and make it earn its place.</li>
+          </ul>
+        </div>
+        <div class="wr-span-6">
+          <p class="wr-kicker">Don't</p>
+          <ul>
+            <li>Don't center, justify, or round anything. Radius stays 0px.</li>
+            <li>Don't add shadows, gradients, second accents, icon fonts, or emoji.</li>
+            <li>Don't shrink the type scale; if display is under 3× body, the page stops being weissraum.</li>
+            <li>Don't build dashboards or data UI with it; this is a portfolio system, not an ops console.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="appendix-states">
+      <h2>States</h2>
+      <div class="wr-grid">
+        <div class="wr-span-4">
+          <p class="wr-kicker">Empty</p>
+          <div class="wr-empty">
+            <span class="wr-kicker">Index 2014–2018</span>
+            <p>Nothing published yet. New work lands here the week it ships.</p>
+            <a href="#work">View the selected index <span class="wr-arrow">→</span></a>
+          </div>
+        </div>
+        <div class="wr-span-4">
+          <p class="wr-kicker">Loading</p>
+          <div class="wr-skel-row"><span class="wr-skel" style="width: 55%;"></span><span class="wr-skel" style="width: 72%;"></span><span class="wr-skel" style="width: 80%;"></span></div>
+          <div class="wr-skel-row"><span class="wr-skel" style="width: 55%;"></span><span class="wr-skel" style="width: 64%;"></span><span class="wr-skel" style="width: 45%;"></span></div>
+          <p class="wr-sub" style="margin-top: 0.6rem;">Skeleton rows hold the measure; they are static, like all loading motion here.</p>
+        </div>
+        <div class="wr-span-4">
+          <p class="wr-kicker">Error</p>
+          <div class="wr-error">
+            <span class="wr-kicker">Load failed</span>
+            <p>The 2024 archive did not answer after 30&nbsp;s. <a href="#appendix-states">Retry <span class="wr-arrow">→</span></a></p>
+          </div>
+        </div>
+        <div class="wr-span-12">
+          <p class="wr-kicker">Buttons</p>
+          <div class="wr-btnrow">
+            <a class="wr-btn" href="#work">Default <span class="wr-arrow">→</span></a>
+            <a class="wr-btn wr-btn--accent" href="mailto:hello@studio-zwoelf.ch">Start a brief <span class="wr-arrow">→</span></a>
+            <button class="wr-btn" type="button" disabled>Sold out</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="appendix-colophon">
+      <h2>Colophon</h2>
+      <p class="wr-sub">
+        weissraum v1, an artifact identity from the uiforagents catalogue. This
+        page is the identity demo: a fictional Zürich studio, generic content,
+        no real brands. One stylesheet (<code>foundation.css</code>) styles
+        everything above; no page CSS was needed.
+      </p>
+    </section>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('wr-toggle');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        var goingLight = root.style.colorScheme === 'dark';
+        root.style.colorScheme = goingLight ? 'light' : 'dark';
+        btn.textContent = goingLight ? 'Dark' : 'Light';
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      root.classList.add('js');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.wr-reveal').forEach(function (el) { io.observe(el); });
+    }
+  })();
+</script>
+</body>
+</html>
