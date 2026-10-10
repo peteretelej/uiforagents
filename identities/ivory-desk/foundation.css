@@ -1,0 +1,535 @@
+/* ivory-desk - artifact identity foundation
+   The calm light AI console: warm oat-ivory paper, ink text, a serif that
+   speaks (Newsreader, voice moments only) and a grotesk that works (Inter),
+   IBM Plex Mono for everything the machine produced, one clay accent in two
+   steps, four job-only status hues, and the whole model machinery - composer,
+   stream, reasoning, tool cards, citations, meters - laid out flat on the
+   desk like documents, never chat bubbles. Built for AI console workspaces,
+   research answer documents, briefs, and comparison pages shipped as
+   self-contained HTML.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a single-file
+     <style> block or link it; both modes work.
+   - Light is the only theme. Warm paper is the identity; a dark variant is
+     out of scope for v1. `color-scheme` is pinned light on :root and there
+     are no light-dark() pairs, no data-theme attribute, no toggle.
+   - The laws hold everywhere: flat (no shadows, no gradients, no glows -
+     the only soft ring is the composer focus ring, which is a focus ring),
+     full-width flat message blocks with tint differentiation (never bubbles),
+     one serif voice role (assistant statements, headlines - never below
+     20px), one sans work role (everything interactive), mono for machine
+     output (tool names, model IDs, token counts, citation markers), one
+     clay accent for attention plus four status hues with fixed meanings
+     (moss done, ochre running/waiting, brick failed/destructive, slate blue
+     informational) - always glyph + label + color, never color alone.
+   - Radius is soft: 14px cards, 10px chips and controls, and exactly one
+     full-round element per view class - the composer pill. Nothing square.
+   - No JavaScript is required. Disclosures are native <details>; the page
+     renders completely without any script.
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: light;
+
+    /* Paper, ink, and hairlines (warm-tinted, never pure grey) */
+    --bg: #F6F4EE;          /* warm oat-ivory canvas */
+    --surface: #FFFFFF;     /* cards: tool calls, code, sources, pickers */
+    --surface-2: #EFECE3;   /* one-step tint: user messages, wells, code */
+    --ink: #211F1A;         /* text */
+    --muted: #6F6A5F;       /* secondary text - AA on all three grounds */
+    --faint: #8A8375;       /* decorative micro-type only, never informative */
+    --line: #E4E0D5;        /* hairlines, card frames */
+    --line-soft: #EEEAE0;   /* soft inner rules, meters, skeletons */
+
+    /* One clay accent, two steps */
+    --accent: #C65A33;      /* graphic: caret, meters, brand, quote rules */
+    --accent-ink: #A8431F;  /* accent as text or fill - AA on every ground */
+    --accent-soft: #F2E0D6; /* quiet accent wash (hover tint, selection) */
+
+    /* Status hues, job only - always glyph + label + color */
+    --ok: #5E7A4E;          /* done */
+    --run: #9A6A15;         /* running / waiting / needs you */
+    --bad: #A83226;         /* failed / destructive */
+    --info: #4E6E8E;        /* informational */
+
+    /* Type: Newsreader speaks, Inter works, IBM Plex Mono reports.
+       Stacks degrade to Georgia/Helvetica/mono with zero webfonts;
+       the @fontsource upgrade path is in the pack. */
+    --font-serif: "Newsreader", "Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+    /* Serif never sets below 20px - voice, not body */
+    --text-hero: clamp(1.75rem, 3.4vw, 2.375rem);  /* 28 - 38 empty-state */
+    --text-lede: clamp(1.3125rem, 2vw, 1.5625rem); /* 21 - 25 voice lines */
+    --text-h3: 1.25rem;                            /* 20 answer headings */
+    --text-body: 1rem;                             /* 16 body */
+    --text-small: 0.875rem;                        /* 14 UI, labels */
+    --text-micro: 0.75rem;                         /* 12 mono machine output */
+
+    /* Soft-radius posture + layout */
+    --radius-lg: 14px;      /* cards, turns, wells */
+    --radius: 10px;         /* chips, inputs, controls */
+    --pill: 999px;          /* the composer, chips, meters */
+    --rail-w: 17.5rem;      /* conversation rail */
+    --stream: 47rem;        /* 752px stream column */
+    --measure: 68ch;        /* 65-72ch answer measure */
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent-soft); }
+  h1, h2, h3, h4 { margin: 0; font-weight: 600; }
+  p { margin: 0 0 1em; }
+  ul, ol { margin: 0 0 1em; padding-left: 1.35rem; }
+  li { margin-bottom: 0.35rem; }
+  figure { margin: 0; }
+  a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  code, kbd { font-family: var(--font-mono); font-size: 0.85em; background: var(--surface-2); border-radius: 6px; padding: 0.1em 0.35em; }
+  pre code { background: none; padding: 0; }
+  button { font-family: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  section[id] { scroll-margin-top: 1.5rem; }
+
+  /* ---------- Kicker: the mono microlabel ---------- */
+  .iv-k {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* ---------- Shell: rail + main ---------- */
+  .iv-shell { display: grid; grid-template-columns: var(--rail-w) minmax(0, 1fr); min-height: 100vh; }
+  .iv-main { min-width: 0; display: flex; flex-direction: column; }
+
+  /* ---------- Conversation rail ---------- */
+  .iv-rail {
+    border-right: 1px solid var(--line);
+    padding: 1.1rem 1rem 1.5rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .iv-rail-head { display: flex; flex-direction: column; gap: 0.6rem; }
+  .iv-new {
+    display: block; width: 100%;
+    background: var(--accent-ink); color: #FFFFFF;
+    border: 1px solid var(--accent-ink); border-radius: var(--radius);
+    padding: 0.55rem 0.9rem; font-size: var(--text-small); font-weight: 500;
+    text-align: left; cursor: pointer; text-decoration: none;
+    transition: background-color .18s ease-out, border-color .18s ease-out;
+  }
+  .iv-new:hover { background: color-mix(in srgb, var(--accent-ink) 88%, var(--ink)); border-color: color-mix(in srgb, var(--accent-ink) 88%, var(--ink)); }
+  .iv-search {
+    width: 100%;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 0.45rem 0.75rem; font-family: inherit; font-size: var(--text-small); color: var(--ink);
+  }
+  .iv-search::placeholder { color: var(--faint); }
+  .iv-search:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .iv-group { margin-top: 0.5rem; }
+  .iv-thread {
+    display: block; padding: 0.45rem 0.6rem; border-radius: var(--radius);
+    color: var(--ink); text-decoration: none;
+    transition: background-color .16s ease-out;
+  }
+  .iv-thread:hover { background: var(--surface-2); }
+  .iv-thread.on { background: var(--surface-2); }
+  .iv-thread .t { display: block; font-size: var(--text-small); line-height: 1.4; }
+  .iv-thread .when { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); }
+  .iv-none { padding: 0.45rem 0.6rem; font-family: var(--font-mono); font-size: var(--text-micro); color: var(--muted); }
+
+  /* ---------- Top bar ---------- */
+  .iv-top {
+    display: flex; align-items: baseline; gap: 1rem;
+    padding: 0.9rem clamp(1.25rem, 4vw, 2rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .iv-brand {
+    font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500;
+    color: var(--ink); text-decoration: none; white-space: nowrap;
+  }
+  .iv-doctitle {
+    flex: 1; min-width: 0;
+    font-size: var(--text-small); color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .iv-top-actions { display: flex; gap: 0.5rem; }
+
+  /* ---------- Stream column ---------- */
+  .iv-stream { width: min(100%, var(--stream)); margin: 0 auto; padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.25rem, 4vw, 2rem) 4rem; }
+
+  /* ---------- Empty-state hero (doubles as the empty-thread state) ---------- */
+  .iv-hero { padding: clamp(3rem, 8vw, 5rem) 0 clamp(2.25rem, 5vw, 3.5rem); text-align: center; }
+  .iv-hero h1, .iv-hero h2 {
+    font-family: var(--font-serif); font-size: var(--text-hero);
+    font-weight: 500; line-height: 1.15; letter-spacing: -0.01em;
+    margin: 0 0 0.75rem;
+  }
+  .iv-hero-sub { color: var(--muted); font-size: var(--text-body); max-width: 46ch; margin: 0 auto 2rem; }
+  .iv-hero .iv-chips { justify-content: center; }
+
+  /* ---------- Turns: flat full-width blocks, never bubbles ---------- */
+  .iv-turn { padding: 1.4rem 0 1.6rem; }
+  .iv-turn + .iv-turn { border-top: 1px solid var(--line-soft); }
+  .iv-turn.user { background: var(--surface-2); border: 0; border-radius: var(--radius-lg); padding: 1rem 1.35rem 1.1rem; margin: 0.4rem 0 0.6rem; }
+  .iv-turn.user > :last-child { margin-bottom: 0; }
+  .iv-who { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.35rem 0.75rem; margin-bottom: 0.7rem; }
+  .iv-who .role { font-size: var(--text-small); font-weight: 600; }
+  .iv-who .when { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--faint); }
+  .iv-model {
+    font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--pill);
+    padding: 0.1rem 0.55rem; white-space: nowrap;
+  }
+  .iv-turn.user .iv-model { background: transparent; }
+
+  /* Per-message actions: quiet until the turn is hovered */
+  .iv-actions { display: flex; gap: 0.25rem; margin-left: auto; opacity: 0; transition: opacity .16s ease-out; }
+  .iv-turn:hover .iv-actions, .iv-actions:focus-within { opacity: 1; }
+  .iv-act {
+    background: none; border: 0; cursor: pointer; padding: 0.15rem 0.45rem;
+    font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted);
+    border-radius: 6px; text-decoration: none;
+    transition: color .16s ease-out, background-color .16s ease-out;
+  }
+  .iv-act:hover { color: var(--accent-ink); background: var(--accent-soft); }
+
+  /* ---------- Answer document ---------- */
+  .iv-answer { max-width: var(--measure); }
+  .iv-answer > :first-child, .iv-answer > :first-child .iv-who { margin-top: 0; }
+  .iv-answer > :last-child { margin-bottom: 0; }
+  .iv-answer p, .iv-answer ul, .iv-answer ol { font-size: var(--text-body); line-height: 1.6; }
+  .iv-lede {
+    font-family: var(--font-serif); font-size: var(--text-lede); font-weight: 500;
+    line-height: 1.4; letter-spacing: -0.005em; margin: 0 0 1rem;
+  }
+  .iv-answer h3 {
+    font-family: var(--font-serif); font-size: var(--text-h3); font-weight: 600;
+    line-height: 1.3; margin: 1.7em 0 0.6em;
+  }
+  .iv-answer blockquote {
+    margin: 1.2rem 0; padding: 0.25rem 0 0.25rem 1.1rem;
+    border-left: 3px solid var(--accent);
+    font-family: var(--font-serif); font-style: italic; font-size: var(--text-h3);
+    font-weight: 500; line-height: 1.45; color: var(--ink);
+  }
+  .iv-answer blockquote cite { display: block; margin-top: 0.5rem; font-family: var(--font-mono); font-style: normal; font-size: 0.6875rem; color: var(--muted); }
+  .iv-tablewrap { overflow-x: auto; margin: 1.2rem 0; }
+  .iv-answer table, .iv-appendix table { width: 100%; border-collapse: collapse; font-size: var(--text-small); }
+  .iv-answer th, .iv-appendix th {
+    text-align: left; font-family: var(--font-mono); font-weight: 400;
+    font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--muted); padding: 0.45rem 0.9rem 0.45rem 0;
+    border-bottom: 1px solid var(--ink); white-space: nowrap;
+  }
+  .iv-answer td, .iv-appendix td { padding: 0.5rem 0.9rem 0.5rem 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .iv-answer td:first-child, .iv-appendix td:first-child { font-family: var(--font-mono); font-size: var(--text-micro); }
+
+  /* ---------- Code block ---------- */
+  .iv-code { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); margin: 1.2rem 0; overflow: hidden; }
+  .iv-code-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.5rem 1rem; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted);
+  }
+  .iv-copy {
+    background: none; border: 0; cursor: pointer; padding: 0.1rem 0.4rem; border-radius: 6px;
+    font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted);
+    transition: color .16s ease-out, background-color .16s ease-out;
+  }
+  .iv-copy:hover { color: var(--accent-ink); background: var(--accent-soft); }
+  .iv-code pre { margin: 0; padding: 0.9rem 1rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.55; }
+
+  /* ---------- Citations and the sources row ---------- */
+  .iv-cite {
+    font-family: var(--font-mono); font-size: 0.6875rem; line-height: 0;
+    color: var(--accent-ink); text-decoration: none; vertical-align: super; margin: 0 1px;
+  }
+  .iv-cite:hover { text-decoration: underline; }
+  .iv-sources { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.1rem; }
+  .iv-src {
+    display: inline-flex; align-items: baseline; gap: 0.4rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--pill);
+    padding: 0.3rem 0.8rem 0.3rem 0.6rem; font-size: 0.8125rem;
+    color: var(--muted); text-decoration: none; max-width: 100%;
+    transition: border-color .16s ease-out, color .16s ease-out;
+  }
+  .iv-src b { font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 500; color: var(--accent-ink); }
+  .iv-src span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .iv-src:hover { border-color: var(--accent-ink); color: var(--ink); }
+
+  /* ---------- Reasoning disclosure ---------- */
+  .iv-reason { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin: 0 0 1rem; }
+  .iv-reason summary {
+    display: flex; align-items: baseline; gap: 0.5rem; cursor: pointer; list-style: none;
+    padding: 0.6rem 0.9rem; font-family: var(--font-mono); font-size: var(--text-micro); color: var(--muted);
+  }
+  .iv-reason summary::-webkit-details-marker { display: none; }
+  .iv-reason summary::before { content: "\25B8"; flex: none; transition: transform .18s ease-out; }
+  .iv-reason[open] summary::before { transform: rotate(90deg); }
+  .iv-reason[open] summary { border-bottom: 1px solid var(--line-soft); }
+  .iv-reason summary:hover { color: var(--ink); }
+  .iv-reason-body { padding: 0.7rem 0.9rem 0.85rem; font-size: var(--text-small); color: var(--muted); }
+  .iv-reason-body p:last-child { margin-bottom: 0; }
+  .iv-reason[open] .iv-reason-body { animation: iv-fade .22s ease-out; }
+
+  /* ---------- Tool call card ---------- */
+  .iv-tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin: 0.7rem 0; }
+  .iv-tool-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.3rem 0.75rem; padding: 0.55rem 0.9rem; }
+  .iv-tool-head .name { font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500; }
+  .iv-tool-head .args { flex: 1; min-width: 8rem; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .iv-tool-head .took { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); }
+  .iv-tool-out summary {
+    cursor: pointer; list-style: none; padding: 0.4rem 0.9rem;
+    font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted);
+    border-top: 1px solid var(--line-soft);
+  }
+  .iv-tool-out summary::-webkit-details-marker { display: none; }
+  .iv-tool-out summary::before { content: "+ "; }
+  .iv-tool-out[open] summary::before { content: "\2212 "; }
+  .iv-tool-out summary:hover { color: var(--ink); }
+  .iv-tool-out pre {
+    margin: 0; padding: 0.7rem 0.9rem; max-height: 180px; overflow: auto;
+    background: var(--surface-2);
+    font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.55; color: var(--ink);
+  }
+
+  /* ---------- Agent run: plan checklist + result counts ---------- */
+  .iv-run { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1rem 1.15rem; margin: 1rem 0; }
+  .iv-run > .iv-k { margin-bottom: 0.6rem; }
+  .iv-plan { list-style: none; margin: 0 0 0.4rem; padding: 0; }
+  .iv-step { display: flex; align-items: baseline; gap: 0.65rem; padding: 0.35rem 0; font-size: var(--text-small); }
+  .iv-step::before {
+    flex: none; width: 1.1em; text-align: center;
+    font-family: var(--font-mono); font-size: 0.8125rem;
+  }
+  .iv-step.pending { color: var(--muted); }
+  .iv-step.pending::before { content: "\25CB"; color: var(--faint); }
+  .iv-step.run::before { content: "\25CF"; color: var(--run); animation: iv-pulse 1.4s ease-in-out infinite; }
+  .iv-step.done::before { content: "\2713"; color: var(--ok); }
+  .iv-step.fail { color: var(--ink); }
+  .iv-step.fail::before { content: "\2715"; color: var(--bad); }
+  .iv-step .iv-status { margin-left: auto; }
+  .iv-counts { display: flex; flex-wrap: wrap; gap: 0.25rem 1.2rem; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--line-soft); }
+  .iv-count { font-family: var(--font-mono); font-size: var(--text-micro); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  /* ---------- Approval card ---------- */
+  .iv-approval { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1rem 1.15rem; margin: 1.2rem 0; }
+  .iv-approval > .iv-k { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.6rem; }
+  .iv-approval > .iv-k::before { content: "\25CF"; color: var(--run); }
+  .iv-approval p { font-size: var(--text-small); }
+  .iv-approval-note {
+    background: var(--surface-2); border-radius: var(--radius);
+    padding: 0.7rem 0.9rem; margin: 0 0 0.9rem;
+    font-size: var(--text-small); color: var(--muted);
+  }
+  .iv-approval-note p:last-child { margin-bottom: 0; }
+
+  /* ---------- Error turn ---------- */
+  .iv-error { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 0.9rem 1.15rem; margin: 1rem 0; }
+  .iv-error .iv-k { color: var(--bad); }
+  .iv-error .iv-k::before { content: "\2715 "; }
+  .iv-error p { color: var(--muted); font-size: var(--text-small); margin: 0.45rem 0 0; }
+
+  /* ---------- Loading: static skeleton lines ---------- */
+  .iv-skel { display: block; height: 0.8rem; border-radius: var(--pill); background: var(--line-soft); margin: 0.55rem 0; }
+  .iv-skel + .iv-skel { margin-top: 0.55rem; }
+
+  /* ---------- Status pill: glyph + label + color ---------- */
+  .iv-status {
+    display: inline-flex; align-items: baseline; gap: 0.35rem; white-space: nowrap;
+    font-family: var(--font-mono); font-size: 0.6875rem;
+    border-radius: var(--pill); padding: 0.12rem 0.6rem;
+    border: 1px solid color-mix(in srgb, currentColor 32%, transparent);
+    background: color-mix(in srgb, currentColor 7%, var(--surface));
+  }
+  .iv-status::before { font-size: 0.625rem; }
+  .iv-status.ok { color: var(--ok); }      .iv-status.ok::before { content: "\2713"; }
+  .iv-status.run { color: var(--run); }    .iv-status.run::before { content: "\25CF"; }
+  .iv-status.bad { color: var(--bad); }    .iv-status.bad::before { content: "\2715"; }
+  .iv-status.info { color: var(--info); }  .iv-status.info::before { content: "\25CB"; }
+  .iv-status.pending { color: var(--muted); background: var(--surface); border-color: var(--line); }
+  .iv-status.pending::before { content: "\25CB"; }
+
+  /* ---------- Suggestion and scope chips ---------- */
+  .iv-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.1rem 0; }
+  .iv-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--pill);
+    padding: 0.42rem 0.9rem; font-size: var(--text-small); color: var(--ink);
+    text-decoration: none; cursor: pointer;
+    transition: border-color .16s ease-out, color .16s ease-out, background-color .16s ease-out;
+  }
+  .iv-chip:hover { border-color: var(--accent-ink); color: var(--accent-ink); }
+  .iv-chip.on { background: var(--surface-2); border-color: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--accent-ink); }
+
+  /* ---------- Buttons ---------- */
+  .iv-btn {
+    display: inline-block;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 0.45rem 0.9rem; font-size: var(--text-small); font-weight: 500; color: var(--ink);
+    text-decoration: none; cursor: pointer; white-space: nowrap;
+    transition: border-color .16s ease-out, background-color .16s ease-out, color .16s ease-out;
+  }
+  .iv-btn:hover { border-color: var(--ink); }
+  .iv-btn--accent { background: var(--accent-ink); border-color: var(--accent-ink); color: #FFFFFF; }
+  .iv-btn--accent:hover { background: color-mix(in srgb, var(--accent-ink) 88%, var(--ink)); border-color: color-mix(in srgb, var(--accent-ink) 88%, var(--ink)); }
+  .iv-btn--danger { background: var(--surface); border-color: color-mix(in srgb, var(--bad) 45%, transparent); color: var(--bad); }
+  .iv-btn--danger:hover { border-color: var(--bad); }
+  .iv-btn[disabled] { border-color: var(--line); color: var(--faint); cursor: not-allowed; background: var(--surface); }
+  .iv-btnrow { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+
+  /* ---------- The pill composer ---------- */
+  .iv-compose { position: relative; padding: 1rem 0 0.5rem; }
+  .iv-composer {
+    position: relative;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--pill);
+    padding: 0.5rem 0.7rem 0.55rem 1.3rem;
+    transition: border-color .18s ease-out, box-shadow .18s ease-out;
+  }
+  .iv-composer:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent); }
+  .iv-composer-row { display: flex; align-items: center; gap: 0.6rem; }
+  .iv-input {
+    flex: 1; min-width: 0;
+    background: transparent; border: 0; outline: none; resize: none;
+    font-family: inherit; font-size: var(--text-body); line-height: 1.5; color: var(--ink);
+    padding: 0.35rem 0;
+    field-sizing: content;
+  }
+  .iv-input::placeholder { color: var(--faint); }
+  .iv-attach {
+    flex: none; width: 2.1rem; height: 2.1rem; border-radius: var(--pill);
+    background: transparent; border: 1px solid var(--line); cursor: pointer;
+    font-size: 1rem; line-height: 1; color: var(--muted);
+    transition: color .16s ease-out, border-color .16s ease-out;
+  }
+  .iv-attach:hover { color: var(--accent-ink); border-color: var(--accent-ink); }
+  .iv-send {
+    flex: none; width: 2.3rem; height: 2.3rem; border-radius: var(--pill);
+    background: var(--accent-ink); border: 0; cursor: pointer;
+    color: #FFFFFF; font-size: 1rem; line-height: 1;
+    transition: background-color .18s ease-out;
+  }
+  .iv-send:hover { background: color-mix(in srgb, var(--accent-ink) 88%, var(--ink)); }
+  .iv-send[disabled] { background: var(--line-soft); color: var(--faint); cursor: not-allowed; }
+  .iv-composer-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem 0.9rem; padding: 0.55rem 0.7rem 0.1rem 0.9rem; }
+  .iv-modelchip {
+    background: transparent; border: 1px solid var(--line); border-radius: var(--pill);
+    padding: 0.22rem 0.7rem; cursor: pointer;
+    font-family: var(--font-mono); font-size: 0.6875rem; color: var(--ink);
+    transition: color .16s ease-out, border-color .16s ease-out;
+  }
+  .iv-modelchip::after { content: " \25BE"; color: var(--faint); }
+  .iv-modelchip:hover { color: var(--accent-ink); border-color: var(--accent-ink); }
+  .iv-meter { flex: 1; min-width: 5.5rem; height: 0.375rem; border-radius: var(--pill); background: var(--line-soft); overflow: hidden; }
+  .iv-meter i { display: block; height: 100%; width: var(--w, 0%); border-radius: var(--pill); background: var(--accent); }
+  .iv-meter.warn i { background: var(--run); }
+  .iv-meter.full i { background: var(--bad); }
+  .iv-hint { margin-left: auto; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--faint); white-space: nowrap; }
+
+  /* ---------- Model picker ---------- */
+  .iv-models {
+    width: min(26rem, 100%);
+    margin-bottom: 0.6rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg);
+    padding: 0.35rem;
+  }
+  .iv-models-head { padding: 0.45rem 0.75rem 0.25rem; }
+  .iv-opt {
+    display: block; width: 100%; text-align: left;
+    background: transparent; border: 0; border-radius: var(--radius);
+    padding: 0.55rem 0.75rem; cursor: pointer;
+    transition: background-color .16s ease-out;
+  }
+  .iv-opt:hover { background: var(--surface-2); }
+  .iv-opt.on { background: var(--surface-2); }
+  .iv-opt .n { display: flex; align-items: baseline; gap: 0.5rem; font-size: var(--text-small); font-weight: 500; }
+  .iv-opt .n::after { content: "\2713"; margin-left: auto; font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-ink); }
+  .iv-opt:not(.on) .n::after { content: none; }
+  .iv-opt .id { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); }
+  .iv-opt .d { display: block; font-size: 0.8125rem; color: var(--muted); margin-top: 0.1rem; }
+
+  /* ---------- Usage strip ---------- */
+  .iv-usage {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1.2rem;
+    border-top: 1px solid var(--line); margin-top: 1.75rem; padding-top: 0.9rem;
+  }
+  .iv-usage .iv-meter { flex: 1; min-width: 8rem; }
+
+  /* ---------- Streaming caret ---------- */
+  .iv-caret {
+    display: inline-block; width: 0.5em; height: 1.05em; margin-left: 2px;
+    background: var(--accent); vertical-align: text-bottom;
+    animation: iv-blink 1.1s steps(1) infinite;
+  }
+
+  /* ---------- Footer and colophon appendix ---------- */
+  .iv-footer { border-top: 1px solid var(--line); padding: 1.2rem clamp(1.25rem, 4vw, 2rem) 1.6rem; }
+  .iv-footrow { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--faint); }
+  .iv-appendix { border-top: 1px solid var(--line); }
+  .iv-appendix .iv-k { margin-bottom: 2rem; }
+  .iv-appendix section { margin-bottom: 2.5rem; }
+  .iv-appendix h2 {
+    font-family: var(--font-serif); font-size: 1.375rem; font-weight: 600;
+    line-height: 1.3; margin: 0 0 0.9rem;
+  }
+  .iv-appendix p, .iv-appendix li { font-size: 0.9375rem; color: var(--ink); }
+  .iv-appendix .iv-mut, .iv-appendix p.iv-mut { color: var(--muted); }
+  .iv-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem 2.25rem; }
+
+  /* ---------- Utilities ---------- */
+  .iv-measure { max-width: var(--measure); }
+  .iv-mut { color: var(--muted); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .iv-shell { grid-template-columns: 1fr; }
+    .iv-rail { display: none; }
+  }
+  @media (max-width: 720px) {
+    .iv-top-actions { display: none; }
+    .iv-actions { opacity: 1; }
+    .iv-hint { display: none; }
+    .iv-grid2 { grid-template-columns: 1fr; }
+    .iv-turn.user { padding: 0.9rem 1rem 1rem; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    :root { color-scheme: light; }
+    body { font-size: 10.5pt; }
+    .iv-rail, .iv-compose, .iv-models, .iv-actions, .iv-top-actions, .iv-appendix, .iv-caret { display: none; }
+    .iv-shell { grid-template-columns: 1fr; }
+    .iv-turn, .iv-tool, .iv-run, .iv-approval, .iv-error, .iv-code { break-inside: avoid; }
+    .iv-turn.user { background: none; border: 1px solid var(--line); }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .iv-caret, .iv-step.run::before { animation: none; }
+    *, *::before, *::after { transition: none; }
+    .iv-reason[open] .iv-reason-body { animation: none; }
+  }
+
+  /* ---------- Keyframes ---------- */
+  @keyframes iv-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+  @keyframes iv-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  @keyframes iv-fade { from { opacity: 0; transform: translateY(-2px); } }
+}
