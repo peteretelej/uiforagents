@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@uiforagents/sticker-press",
+  "homepage": "https://uiforagents.com",
+  "items": [
+    {
+      "name": "sticker-press",
+      "type": "registry:style",
+      "title": "Sticker Press",
+      "description": "Playful sticker-shop brutalism. Cream paper, black ink borders, zero-blur hard shadows, signal-yellow accent with black text always, Archivo Black ALL-CAPS display over Space Grotesk body and Space Mono labels, press-into-shadow motion, starburst seals and sticker badges, radius 0.",
+      "file": "sticker-press.json"
+    }
+  ]
+}

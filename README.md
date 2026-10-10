@@ -39,6 +39,7 @@ lands, use the copy path above.
 | **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting. | ✅ v0.1 |
 | **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces. | ✅ v0.1 |
 | **cobalt-quorum** | Corporate-clean light SaaS landing. White canvas on mist, ink-navy headings, one cobalt accent doing all the pointing, trust as structure (tabular metrics, outline-pill badges, security band, selling pricing); Instrument Sans display, 11px radii, one dark CTA band. One-shot PASS 2026-10-12, customers index. | ✅ v0.1 |
+| **sticker-press** | Playful sticker-shop brutalism. Cream paper, black ink borders, zero-blur hard shadows (2/4/8px, one bottom-right direction), signal-yellow accent with black text always, Archivo Black ALL-CAPS display over Space Grotesk body and Space Mono labels, press-into-shadow motion, starburst seals, sticker badges, radius 0. One-shot PASS 2026-10-12, event announcement page. | ✅ v0.1 |
 
 Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
 one shared demo app).

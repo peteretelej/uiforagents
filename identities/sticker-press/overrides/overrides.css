@@ -1,0 +1,107 @@
+/* sticker-press overrides - the opinionated treatment on top of stock shadcn.
+   Layer AFTER shadcn styles. Each rule is a deliberate identity decision. */
+
+/* Buttons: 2px ink border, the 4px default shadow rung, and the
+   press-into-shadow ladder (hover sinks 2px into a 2px shadow; active sinks
+   the full 4px and kills the shadow). Mechanical timing - no soft easing. */
+[data-identity="sticker-press"] [data-slot="button"] {
+  border: 2px solid var(--border);
+  border-radius: 0;
+  font-weight: 700;
+  box-shadow: var(--shadow-identity);
+  transition: transform 100ms linear, box-shadow 100ms linear;
+}
+[data-identity="sticker-press"] [data-slot="button"]:hover:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-chip);
+}
+[data-identity="sticker-press"] [data-slot="button"]:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+[data-identity="sticker-press"] [data-slot="button"]:disabled {
+  opacity: 0.6;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Cards: white sticker on paper - 2px ink border, 4px shadow rung, square
+   corners. Cards inside a link press like buttons. */
+[data-identity="sticker-press"] [data-slot="card"] {
+  border: 2px solid var(--border);
+  border-radius: 0;
+  box-shadow: var(--shadow-identity);
+}
+[data-identity="sticker-press"] .hover-lift {
+  transition: transform 100ms linear;
+}
+[data-identity="sticker-press"] .hover-lift:hover {
+  transform: translate(2px, 2px);
+}
+[data-identity="sticker-press"] .hover-lift:hover [data-slot="card"] {
+  box-shadow: var(--shadow-chip);
+}
+[data-identity="sticker-press"] .hover-lift:active {
+  transform: translate(4px, 4px);
+}
+[data-identity="sticker-press"] .hover-lift:active [data-slot="card"] {
+  box-shadow: none;
+}
+
+/* Badges: sticker chips - 2px ink border + the 2px chip rung, Space Mono
+   caps. Fills come from the caller (accent, sticker helpers, soft tones). */
+[data-identity="sticker-press"] [data-slot="badge"] {
+  border: 2px solid var(--border);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  box-shadow: var(--shadow-chip);
+}
+
+/* Inputs: white fill, 2px ink border; focus is the law's outline, never a
+   border-color flip. */
+[data-identity="sticker-press"] input,
+[data-identity="sticker-press"] textarea,
+[data-identity="sticker-press"] select {
+  border: 2px solid var(--border);
+  border-radius: 0;
+}
+
+/* Focus law: 3px black outline, offset 3px - never color-only, never a halo. */
+[data-identity="sticker-press"] :focus-visible {
+  outline: 3px solid var(--border);
+  outline-offset: 3px;
+}
+
+/* Tables: ink rules, Space Mono uppercase headers. */
+[data-identity="sticker-press"] table {
+  border-collapse: collapse;
+}
+[data-identity="sticker-press"] th {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Marquee divider: the one looping motion in the identity - linear, never
+   eased; frozen under prefers-reduced-motion. */
+@keyframes sticker-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.sticker-marquee {
+  animation: sticker-marquee 26s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticker-marquee {
+    animation: none;
+  }
+}

@@ -1,0 +1,130 @@
+/* sticker-press - shadcn/ui theme (Tailwind v4).
+   Drop into your global CSS after `@import "tailwindcss";`.
+   Values are the identity spec from identity.json. */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-foreground: var(--ok-foreground);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-foreground: var(--warn-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, Menlo, Consolas, monospace;
+  /* radius 0 everywhere: the ladder is pinned at zero, never derived
+     (deriving would go negative off a 0 base). */
+  --radius-sm: 0rem;
+  --radius-md: 0rem;
+  --radius-lg: 0rem;
+  --radius-xl: 0rem;
+}
+
+:root,
+[data-theme="sticker-press"] {
+  --background: #fffdf5; /* warm paper */
+  --foreground: #000000; /* black ink */
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #ffd23f; /* signal yellow; black text on it, always */
+  --primary-foreground: #000000;
+  --secondary: #efeae2; /* muted fill for section bands */
+  --secondary-foreground: #000000;
+  --muted: #efeae2;
+  --muted-foreground: #5a5a5a; /* 6.8:1 on paper */
+  --accent: #efeae2;
+  --accent-foreground: #000000;
+  --destructive: #e63946; /* black label on red is 5.0:1; white fails 4.5:1 */
+  --destructive-foreground: #000000;
+  --ok: #88d498; /* sticker green, black text on it */
+  --ok-soft: #e9f7ee;
+  --ok-foreground: #166534; /* 6.4:1 on the soft wash */
+  --warn: #74b9ff; /* sticker sky = in-progress/canary, black text on it */
+  --warn-soft: #e8f3fe;
+  --warn-foreground: #1d5fbf; /* 5.4:1 on the soft wash */
+  --border: #000000; /* every boundary is ink; the border IS the 3:1 edge */
+  --input: #000000;
+  --ring: #000000;
+  --radius: 0rem;
+  --font-display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, Menlo, Consolas, monospace;
+  /* zero-blur hard-shadow ladder: bottom-right only, shadow color = the
+     border token, one direction per page. */
+  --shadow-chip: 2px 2px 0 0 var(--border); /* badges, chips, pills */
+  --shadow-identity: 4px 4px 0 0 var(--border); /* default: buttons, cards, inputs */
+  --shadow-hero: 8px 8px 0 0 var(--border); /* one hero overlay per page */
+  /* sticker helpers: one per section, max */
+  --sticker-coral: #ff6b6b;
+  --sticker-sky: #74b9ff;
+  --sticker-green: #88d498;
+  /* darkened red for danger TEXT on light fills (5.1:1 on the soft wash) */
+  --danger-text: #c1121f;
+  --danger-soft: #fbe3e5;
+  color-scheme: light;
+}
+
+/* Identity signatures: Archivo Black caps display (2rem floor, -0.02em,
+   one weight - never synthesize bold), Space Grotesk body, Space Mono
+   uppercase labels and numbers. Sub-display headings ride Space Grotesk
+   700 because Archivo is banned below 2rem. */
+h1, h2, .font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+}
+h3 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.mono-label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+body {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus law: 3px black outline, offset 3px - hard shadows must never
+   hide focus, and focus is never color-only. */
+[data-theme="sticker-press"] :focus-visible {
+  outline: 3px solid var(--border);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

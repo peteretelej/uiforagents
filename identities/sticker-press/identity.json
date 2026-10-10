@@ -1,0 +1,70 @@
+{
+  "name": "sticker-press",
+  "version": "0.1.0",
+  "title": "Sticker Press",
+  "description": "Playful sticker-shop brutalism. Cream paper, black ink borders, zero-blur hard shadows, signal-yellow accent with black text always, Archivo Black ALL-CAPS display over Space Grotesk body and Space Mono labels, press-into-shadow motion, starburst seals and sticker badges, radius 0.",
+  "vibe": ["light", "playful", "bold", "retro", "landing"],
+  "author": "uiforagents",
+  "license": "Apache-2.0",
+  "stack": {
+    "base": "shadcn/ui",
+    "primitives": "shadcn defaults (radix slot; base-ui supported)",
+    "tailwind": "v4",
+    "react": ">=18",
+    "tested": {
+      "shadcn": "2026-03 (cli v4)",
+      "tailwind": "4.x",
+      "@base-ui/react": "1.x"
+    }
+  },
+  "typography": {
+    "display": "Archivo Black",
+    "body": "Space Grotesk",
+    "mono": "Space Mono",
+    "ramp": {
+      "display-xl": "clamp(44px, 6vw, 72px) / 400 / uppercase / -0.02em",
+      "display-lg": "clamp(32px, 3.5vw, 44px) / 400 / uppercase / -0.02em",
+      "h3": "19px / 700 / -0.01em (Space Grotesk)",
+      "body": "16px / 400 / 1.6",
+      "small": "13.5px / 400 / 1.5",
+      "label": "11-12px / 700 / 0.08em uppercase (Space Mono)",
+      "metric": "22-38px / 700 / tabular (Space Mono)"
+    }
+  },
+  "tokens": {
+    "background": "#FFFDF5",
+    "surface": "#FFFFFF",
+    "border": "#000000",
+    "text": "#000000",
+    "text-muted": "#5A5A5A",
+    "accent": "#FFD23F",
+    "accent-fg": "#000000",
+    "accent-soft": "#EFEAE2",
+    "secondary-foreground": "#000000",
+    "muted": "#EFEAE2",
+    "ok": "#88D498",
+    "ok-soft": "#E9F7EE",
+    "ok-fg": "#166534",
+    "warn": "#74B9FF",
+    "warn-soft": "#E8F3FE",
+    "warn-fg": "#1D5FBF",
+    "danger": "#E63946",
+    "danger-soft": "#FBE3E5",
+    "danger-text": "#C1121F",
+    "destructive-foreground": "#000000",
+    "sticker-coral": "#FF6B6B",
+    "sticker-sky": "#74B9FF",
+    "sticker-green": "#88D498",
+    "radius": "0rem",
+    "shadow-chip": "2px 2px 0 0 #000000",
+    "shadow": "4px 4px 0 0 #000000",
+    "shadow-hero": "8px 8px 0 0 #000000"
+  },
+  "fonts": {
+    "packages": ["@fontsource/archivo-black", "@fontsource/space-grotesk", "@fontsource/space-mono"],
+    "install": "(Archivo Black 400, Space Grotesk 400-700, Space Mono 400-700)."
+  },
+  "blocks": ["hero", "auth", "landing-shell", "table-page", "article", "states"],
+  "registry": "@uiforagents/sticker-press",
+  "notes": "One-shot PASS 2026-10-12, event announcement page. Zero-blur hard-shadow ladder (2px chips / 4px default / 8px hero overlay), one bottom-right direction per page, shadow color = the border token; press-into-shadow motion (rest 4px, hover 2px, active none). Radius 0 everywhere; no rounded variants, no blur, no soft shadows. Signal yellow never appears without its ink border (the border is the 3:1 non-text boundary); black text on accent, never accent-on-white. Sticker helpers (coral/sky/green) rationed to one per section. Archivo Black is caps-only and never below 2rem; Space Mono carries all labels, prices, and numbers."
+}
