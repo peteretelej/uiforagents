@@ -1,0 +1,130 @@
+# MINTING - identity minting conventions
+
+Durable conventions for minting catalogue identities: what an identity
+ships, how its demo behaves, and which gates stop minting. This file is
+subordinate to [AGENTS.md](AGENTS.md): on any divergence, AGENTS.md
+wins. Read AGENTS.md for governance (lane rules, naming and collision
+rules, curation model, release process); this file references it and
+does not duplicate it.
+
+## Per-lane file contracts
+
+A minted identity ships exactly its lane's files:
+
+**Artifact lane** (`identities/<slug>/`):
+
+- `foundation.css` - canonical, hand-curated tokens + components
+- `demo.html` - the genre-native demo page (see Demo rules); published
+  as-is as the identity's catalogue page
+- `prompt-pack.md` - the binding design contract for agents
+
+No `identity.json`, no `registry/`, no `theme/`, no `blocks/`; never run
+`tooling/build-registry.mjs` on an artifact identity (AGENTS.md,
+"Building a single-file artifact" and "Artifact-lane governance").
+
+**shadcn lane** (`identities/<slug>/`):
+
+- `theme/theme.css` - tokens
+- `overrides/overrides.css` - component overrides
+- `blocks/*.tsx` - composed section blocks
+- `registry/` - generated payload; rebuild after any change with
+  `node tooling/build-registry.mjs <slug>` (AGENTS.md, "Adding or
+  changing an identity")
+- `identity.json` - title, description, vibe tags, tested stack pins
+- `prompt-pack.md` - the binding design contract for agents
+
+## Demo rules
+
+- **Native page type.** The demo is the identity's genre-native page: a
+  landing identity demos as a landing page, a portfolio identity as a
+  portfolio, a restaurant identity as a menu. A dashboard or token-sheet
+  demo undersells a page-native identity.
+- **Fictional product.** The demo portrays a fictional product or
+  business, never the identity itself (no self-referential marketing)
+  and never real brands or client data (AGENTS.md, Conventions).
+  Sibling identities demo different fictional verticals so the catalogue
+  shows range.
+- **Colophon pattern.** Page-native demos move spec annotations ("what
+  makes it X", token table, do/don't, states gallery) to a colophon
+  below the footer; interleaved annotations break the page's illusion
+  mid-scroll. Dashboard-class identities keep interleaved annotations.
+- **Hosted imagery.** Demos use curated open-license stock photography
+  hosted in the catalogue's Cloudflare assets, referenced as hosted
+  URLs, with provenance per image (see Image credits). This supersedes
+  the historical zero-`<img>` observation in the themes research notes
+  (`demo-design-notes.md`, Grounding section; direction names there map
+  softbox -> `vitrine`, noir-atelier -> `maison-noir`). The CSS
+  gradient-plate recipe remains the documented fallback for offline
+  single-file deliverables only, never a substitute for hosted assets in
+  catalogue demos. Image treatment (grids, aspect ratios, captions,
+  grading) belongs to the identity; assets are content.
+- **States are contract.** Responsiveness and interactive states
+  (pricing toggle, FAQ open/closed, form focus/error, badges, nav
+  states, empty/loading where the genre has them) are identity-contract
+  requirements proven by the demo, not demo burdens.
+- **Missing-component feedback.** A component the demo needs but the
+  identity lacks becomes a new native component in that identity's
+  component set, joining the shared block vocabulary where the need is
+  common. Demo workarounds and one-off demo code are not acceptable;
+  demos are the test harness for component coverage.
+
+## One-shot gate
+
+Before an identity lands, it passes the one-shot test: a fresh agent
+receives only the prompt-pack and tokens/foundation and builds a page
+type with no pre-made block. PASS = identity-faithful, premium, no
+design improvisation (AGENTS.md, "Artifact-lane governance"). The
+one-shot page type must differ from the demo's page type; the differing
+page is what proves the system generalizes.
+
+Record the result in both places before committing the identity:
+
+- the README catalogue row, as `One-shot PASS <date>, <page type>` in
+  the row's description
+- the identity's entry (`identity.json` description for shadcn-lane
+  identities)
+
+## Tag vocabulary
+
+Tags are a controlled search vocabulary (AGENTS.md, "Adding or changing
+an identity" is canonical). Max five per identity; reuse existing words
+before coining new ones; never proper nouns or novelty words; lead use
+cases with the common word and keep the specialty alongside it
+(`dashboard`, `ops`). Current controlled words:
+
+- look: `dark`, `light`, `editorial`, `terminal`, `print`
+- feel: `calm`, `warm`, `trust`, `technical`, `retro`
+- density: `data-dense`
+- use case: `product`, `dashboard`, `ops`, `ledger`, `tracker`,
+  `briefing`, `long-form`, `monitoring`
+
+## Image credits
+
+An identity using hosted imagery commits an `image-credits.md` next to
+its demo: one entry per image, recording provider, license, source URL,
+and hosted URL. Committed files never contain secrets or tokens;
+credentials live only in gitignored run notes. Worked example entry:
+
+```markdown
+# Image credits - vitrine
+
+| Provider | License | Source URL | Hosted URL |
+|---|---|---|---|
+| Unsplash | Unsplash License | https://unsplash.com/photos/glasshouse-hall | https://assets.example.com/vitrine/hero.jpg |
+```
+
+## Escalation gates
+
+Minting stops and reports to Peter (never improvised past):
+
+- **Name collision.** The exact-name collision check required by
+  AGENTS.md (Conventions) returns a match: an existing template/theme
+  product under the name on the marketplaces in scope, case-insensitive,
+  separator variants included. Do not mint under a colliding name; do
+  not rename unilaterally.
+- **Assets destination unusable.** Imagery-dependent identities are
+  blocked while the hosted-assets destination is missing or unwritable;
+  do not improvise an alternative host.
+- **Direction-brief conflict.** A direction brief contradicts these
+  conventions or AGENTS.md. AGENTS.md wins; report the conflict instead
+  of silently resolving it.
