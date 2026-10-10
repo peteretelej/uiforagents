@@ -1,0 +1,87 @@
+/* cobalt-quorum overrides - the opinionated treatment on top of stock shadcn.
+   Layer AFTER shadcn styles. Each rule is a deliberate identity decision. */
+
+/* Buttons carry corporate weight. Primary detection: shadcn emits no
+   data-variant attribute, so style the slot and let .bg-primary (theme-driven)
+   carry the cobalt shadow. Hover lifts 1px inside 150-250ms ease-out. */
+[data-identity="cobalt-quorum"] [data-slot="button"] {
+  font-weight: 600;
+  transition: transform 200ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-identity="cobalt-quorum"] [data-slot="button"].bg-primary {
+  box-shadow: 0 2px 8px oklch(50.4% 0.221 264.9 / 0.35);
+}
+[data-identity="cobalt-quorum"] [data-slot="button"]:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+[data-identity="cobalt-quorum"] [data-slot="button"]:active {
+  transform: translateY(0);
+}
+[data-identity="cobalt-quorum"] [data-slot="button"]:disabled {
+  opacity: 0.55;
+}
+
+/* Cards: 11px radius, hairline line, one soft diffuse shadow, gentle lift.
+   Never glass, never a hard shadow. */
+[data-identity="cobalt-quorum"] [data-slot="card"] {
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px oklch(24.1% 0.061 258.7 / 0.05), 0 8px 24px oklch(24.1% 0.061 258.7 / 0.06);
+  transition: transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-identity="cobalt-quorum"] a[data-slot="card"]:hover,
+[data-identity="cobalt-quorum"] .hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1px 2px oklch(24.1% 0.061 258.7 / 0.05), 0 6px 16px oklch(24.1% 0.061 258.7 / 0.07),
+    0 16px 40px oklch(50.4% 0.221 264.9 / 0.09);
+}
+
+/* Focus: cobalt halo in two soft steps, never a hard 1px outline flip.
+   Radius untouched so pills and rounded elements keep their shape. */
+[data-identity="cobalt-quorum"] :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--background), 0 0 0 5px oklch(50.4% 0.221 264.9 / 0.5);
+}
+
+/* Badges are OUTLINE PILLS: trust signals wear hairline capsules, never
+   colored logo chips. Uppercase tracking keeps them reading as credentials.
+   shadcn's default badge is filled primary; the identity neutralizes it to the
+   outline voice so cobalt keeps doing all the pointing. Explicit soft fills
+   (bg-ok-soft, bg-warn-soft, bg-destructive/10) are opt-in status tones and
+   stay - pass them after bg-primary to restore a filled pill. */
+[data-identity="cobalt-quorum"] [data-slot="badge"] {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+[data-identity="cobalt-quorum"] [data-slot="badge"].bg-primary {
+  background: var(--background);
+  color: var(--muted-foreground);
+}
+
+/* Tables: airy rows, tabular figures, quiet uppercase header on the muted wash. */
+[data-identity="cobalt-quorum"] table {
+  font-variant-numeric: tabular-nums;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+[data-identity="cobalt-quorum"] th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+[data-identity="cobalt-quorum"] tbody tr {
+  transition: background-color 180ms ease;
+}
+
+/* Inputs: hairline default, cobalt focus halo, 200ms ease - no border-color flip. */
+[data-identity="cobalt-quorum"] input,
+[data-identity="cobalt-quorum"] textarea,
+[data-identity="cobalt-quorum"] select {
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}

@@ -1,0 +1,69 @@
+{
+  "name": "cobalt-quorum",
+  "version": "0.1.0",
+  "title": "Cobalt Quorum",
+  "description": "Corporate-clean light SaaS landing. White canvas on mist, ink-navy headings, one cobalt accent doing all the pointing, and trust treated as structure: tabular metrics, outline-pill badge rows, a security band, and pricing that sells. Instrument Sans display over Inter body.",
+  "vibe": ["light", "trust", "product", "landing", "saas"],
+  "author": "uiforagents",
+  "license": "Apache-2.0",
+  "stack": {
+    "base": "shadcn/ui",
+    "primitives": "shadcn defaults (radix slot; base-ui supported)",
+    "tailwind": "v4",
+    "react": ">=18",
+    "tested": {
+      "shadcn": "2026-03 (cli v4)",
+      "tailwind": "4.x",
+      "@base-ui/react": "1.x"
+    }
+  },
+  "typography": {
+    "display": "Instrument Sans",
+    "body": "Inter",
+    "mono": "ui-monospace, Menlo, Consolas, monospace",
+    "ramp": {
+      "display-xl": "clamp(40px, 5.5vw, 68px) / 700 / -0.03em",
+      "display-lg": "clamp(28px, 3.5vw, 40px) / 700 / -0.025em",
+      "h3": "18px / 700 / -0.015em",
+      "body": "16px / 400 / 1.6",
+      "small": "13.5px / 400 / 1.5",
+      "eyebrow": "12px / 700 / 0.12em uppercase",
+      "metric": "28px / 700 / -0.02em tabular"
+    }
+  },
+  "tokens": {
+    "background": "oklch(100% 0 0)",
+    "surface": "oklch(100% 0 0)",
+    "border": "oklch(93.2% 0.014 258.3)",
+    "text": "oklch(24.1% 0.061 258.7)",
+    "text-muted": "oklch(52.3% 0.045 257.9)",
+    "accent": "oklch(50.4% 0.221 264.9)",
+    "accent-fg": "oklch(100% 0 0)",
+    "accent-soft": "oklch(97.8% 0.005 258.3)",
+    "accent-text": "oklch(43% 0.195 265.2)",
+    "secondary-foreground": "oklch(24.1% 0.061 258.7)",
+    "muted": "oklch(95.7% 0.01 261.8)",
+    "ok": "oklch(69.6% 0.149 162.5)",
+    "ok-soft": "oklch(94.5% 0.027 170.3)",
+    "ok-fg": "oklch(49.9% 0.117 157.1)",
+    "warn": "oklch(53.9% 0.156 43)",
+    "warn-soft": "oklch(94.5% 0.036 75.6)",
+    "warn-fg": "oklch(43.2% 0.102 54.1)",
+    "danger": "oklch(57.6% 0.209 29.5)",
+    "danger-soft": "oklch(94.8% 0.024 23.8)",
+    "destructive-foreground": "oklch(100% 0 0)",
+    "band": "oklch(20.8% 0.04 265.8)",
+    "band-foreground": "oklch(100% 0 0)",
+    "band-muted": "oklch(71.1% 0.035 256.8)",
+    "band-accent": "oklch(55.2% 0.206 267.1)",
+    "radius": "0.6875rem",
+    "shadow": "0 1px 2px oklch(24.1% 0.061 258.7 / 0.05), 0 8px 24px oklch(24.1% 0.061 258.7 / 0.07)"
+  },
+  "fonts": {
+    "packages": ["@fontsource/instrument-sans", "@fontsource/inter"],
+    "install": "(Instrument Sans 600-700, Inter 400-600)."
+  },
+  "blocks": ["hero", "auth", "landing-shell", "table-page", "article", "states"],
+  "registry": "@uiforagents/cobalt-quorum",
+  "notes": "One-shot PASS 2026-10-12, customers index. One accent (cobalt) does all pointing; sky blue never competes in nav or buttons; headings are ink navy, never neutral black; sections alternate white/mist; badges are outline pills capped 3-4 per placement; trust microcopy sits under every primary CTA; the dark band (#0F172A-class) is the page's single premium pivot with its own token set. Tabular figures for every metric."
+}

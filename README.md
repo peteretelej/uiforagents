@@ -38,6 +38,7 @@ lands, use the copy path above.
 | **ocean-calm** | Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display, generous whitespace. | ✅ v1.0 |
 | **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting. | ✅ v0.1 |
 | **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces. | ✅ v0.1 |
+| **cobalt-quorum** | Corporate-clean light SaaS landing. White canvas on mist, ink-navy headings, one cobalt accent doing all the pointing, trust as structure (tabular metrics, outline-pill badges, security band, selling pricing); Instrument Sans display, 11px radii, one dark CTA band. One-shot PASS 2026-10-12, customers index. | ✅ v0.1 |
 
 Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
 one shared demo app).

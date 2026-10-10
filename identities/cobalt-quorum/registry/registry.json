@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@uiforagents/cobalt-quorum",
+  "homepage": "https://uiforagents.com",
+  "items": [
+    {
+      "name": "cobalt-quorum",
+      "type": "registry:style",
+      "title": "Cobalt Quorum",
+      "description": "Corporate-clean light SaaS landing. White canvas on mist, ink-navy headings, one cobalt accent doing all the pointing, and trust treated as structure: tabular metrics, outline-pill badge rows, a security band, and pricing that sells. Instrument Sans display over Inter body.",
+      "file": "cobalt-quorum.json"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+/* cobalt-quorum - shadcn/ui theme (Tailwind v4).
+   Drop into your global CSS after `@import "tailwindcss";`.
+   Values are the identity spec from identity.json. */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-foreground: var(--ok-foreground);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-foreground: var(--warn-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Instrument Sans", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root,
+[data-theme="cobalt-quorum"] {
+  --background: oklch(100% 0 0); /* white canvas */
+  --foreground: oklch(24.1% 0.061 258.7); /* ink navy - never neutral black */
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(24.1% 0.061 258.7);
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(24.1% 0.061 258.7);
+  --primary: oklch(50.4% 0.221 264.9); /* the one cobalt accent */
+  --primary-foreground: oklch(100% 0 0);
+  --secondary: oklch(97.8% 0.005 258.3); /* mist section band */
+  --secondary-foreground: oklch(24.1% 0.061 258.7);
+  --muted: oklch(95.7% 0.01 261.8); /* one step down: skeletons, quiet washes */
+  --muted-foreground: oklch(52.3% 0.045 257.9); /* slate, 5.4:1 on white */
+  --accent: oklch(97.8% 0.005 258.3); /* hover wash sits in the mist family */
+  --accent-foreground: oklch(24.1% 0.061 258.7);
+  --destructive: oklch(57.6% 0.209 29.5);
+  --destructive-foreground: oklch(100% 0 0);
+  --ok: oklch(69.6% 0.149 162.5); /* metrics and checkmarks semantics only */
+  --ok-soft: oklch(94.5% 0.027 170.3);
+  --ok-foreground: oklch(49.9% 0.117 157.1);
+  --warn: oklch(53.9% 0.156 43);
+  --warn-soft: oklch(94.5% 0.036 75.6);
+  --warn-foreground: oklch(43.2% 0.102 54.1);
+  --border: oklch(93.2% 0.014 258.3);
+  --input: oklch(93.2% 0.014 258.3);
+  --ring: oklch(50.4% 0.221 264.9);
+  --radius: 0.6875rem; /* 11px - corporate-controlled, medium-sharp */
+  --font-display: "Instrument Sans", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  --shadow-identity: 0 1px 2px oklch(24.1% 0.061 258.7 / 0.05),
+    0 8px 24px oklch(24.1% 0.061 258.7 / 0.07);
+  /* dark contrast band: one premium pivot section per page */
+  --band: oklch(20.8% 0.04 265.8); /* dark navy field, white text */
+  --band-foreground: oklch(100% 0 0);
+  --band-muted: oklch(71.1% 0.035 256.8); /* 6.9:1 on the band */
+  --band-accent: oklch(55.2% 0.206 267.1); /* cobalt lifted for dark ground: 5.0:1 with white text, 3.5:1 on the band */
+  /* cobalt darkened for accent TEXT on white (8.5:1) - links in prose, small labels */
+  --accent-text: oklch(43% 0.195 265.2);
+  color-scheme: light;
+}
+
+/* Identity signatures: Instrument Sans display with tight tracking, ink-navy
+   headings, tabular trust figures, quiet corporate motion. */
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+h1 { letter-spacing: -0.03em; }
+.tabular { font-variant-numeric: tabular-nums; }
+body {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
