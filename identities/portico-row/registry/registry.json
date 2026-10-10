@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@uiforagents/portico-row",
+  "homepage": "https://uiforagents.com",
+  "items": [
+    {
+      "name": "portico-row",
+      "type": "registry:style",
+      "title": "Portico Row",
+      "description": "Cool-white institutional gravitas for firms whose only product is credibility. Brand navy is structure (header bands, engraved hairline rules, serif wordmark) and never decorates content panels; Source Serif 4 display over a 19px Source Sans 3 body floor; square 0-2px corners with hairlines instead of shadows; airy 72-120px bands; numbered substance rows with figure and date; attorney cards with credential lines; a mandatory compliance footer on every page.",
+      "file": "portico-row.json"
+    }
+  ]
+}

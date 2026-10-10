@@ -1,0 +1,133 @@
+/* portico-row - shadcn/ui theme (Tailwind v4).
+   Drop into your global CSS after `@import "tailwindcss";`.
+   Values are the identity spec from identity.json. */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-foreground: var(--ok-foreground);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-foreground: var(--warn-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-sans: "Source Sans 3", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  /* radius ladder pinned inside the 0-2px ceiling; xl is pinned, not
+     derived (deriving would climb past the ceiling). */
+  --radius-sm: 0rem;
+  --radius-md: 0.0625rem;
+  --radius-lg: 0.125rem;
+  --radius-xl: 0.125rem;
+}
+
+:root,
+[data-theme="portico-row"] {
+  --background: #f7f8f9; /* cool paper, gray-cool-2 register */
+  --foreground: #202b38; /* cool ink */
+  --card: #ffffff;
+  --card-foreground: #202b38;
+  --popover: #ffffff;
+  --popover-foreground: #202b38;
+  --primary: #2c608a; /* link/action navy, blue-60 register; 6.7:1 on white */
+  --primary-foreground: #ffffff; /* 6.7:1 on the action navy */
+  --secondary: #edf0f2; /* sunk band, gray-cool-5 register */
+  --secondary-foreground: #202b38;
+  --muted: #edf0f2; /* skeletons and quiet fills */
+  --muted-foreground: #565c65; /* gray-cool-60; 6.7:1 on white */
+  --accent: #edf0f2; /* interactive wash sits in the sunk-band family */
+  --accent-foreground: #202b38;
+  --destructive: #b50909; /* red-60 register; white on it is 7:1 */
+  --destructive-foreground: #ffffff;
+  --ok: #316b37; /* institutional green, 6.4:1 with white */
+  --ok-soft: #e7efe7;
+  --ok-foreground: #27522c; /* 7.7:1 on the soft wash */
+  --warn: #8c6d3f; /* the brass register doubles as caution */
+  --warn-soft: #f2ecdf;
+  --warn-foreground: #6e5430; /* 6:1 on the soft wash */
+  --border: #6c7686; /* hairline; 4.6:1 on white, clears the 3:1 hairline law */
+  --input: #6c7686;
+  --ring: #2c608a; /* focus ring, always visible */
+  --radius: 0.125rem; /* 2px ceiling: architecture, not bubbles */
+  --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-sans: "Source Sans 3", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+  /* Brand structure. Navy bands, rules, and the wordmark; it never fills or
+     decorates content panels. */
+  --navy: #173359; /* brand navy; 12.7:1 with white */
+  --navy-deep: #1f303e; /* footer band and dark sections, blue-80 register */
+  --wash: #d9e8f6; /* blue-10 tint fills; never under body text */
+  --brass: #8c6d3f; /* optional flavor hairlines only; 4.8:1 on white */
+  /* dark-band companions: contrast is tokenized, never improvised */
+  --band: #1f303e;
+  --band-foreground: #ffffff; /* 13.5:1 on the band */
+  --band-muted: #a9b4bd; /* 6.4:1 on the band */
+  --band-accent: #d9e8f6; /* dark-band CTA fill */
+  --band-accent-fg: #1f303e; /* 10.8:1 on the fill */
+  color-scheme: light;
+}
+
+/* Identity signatures: Source Serif 4 display at display sizes and pull
+   quotes only (body is always sans), the 19px body floor, tracked
+   small-caps eyebrows, and engraved hairlines instead of shadows. */
+h1, h2, .font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+h1 { line-height: 1.08; }
+h2 { line-height: 1.14; }
+/* Component headings stay sans: serif never appears below display sizes. */
+h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.pull-quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+.tabular { font-variant-numeric: tabular-nums; }
+body {
+  font-family: var(--font-sans);
+  font-size: 19px; /* the floor: no body text ships below this */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

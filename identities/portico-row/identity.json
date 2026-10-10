@@ -1,0 +1,72 @@
+{
+  "name": "portico-row",
+  "version": "0.1.0",
+  "title": "Portico Row",
+  "description": "Cool-white institutional gravitas for firms whose only product is credibility. Brand navy is structure (header bands, engraved hairline rules, serif wordmark) and never decorates content panels; Source Serif 4 display over a 19px Source Sans 3 body floor; square 0-2px corners with hairlines instead of shadows; airy 72-120px bands; numbered substance rows with figure and date; attorney cards with credential lines; a mandatory compliance footer on every page.",
+  "vibe": ["light", "trust", "corporate", "editorial", "landing"],
+  "author": "uiforagents",
+  "license": "Apache-2.0",
+  "stack": {
+    "base": "shadcn/ui",
+    "primitives": "shadcn defaults (radix slot; base-ui supported)",
+    "tailwind": "v4",
+    "react": ">=18",
+    "tested": {
+      "shadcn": "2026-03 (cli v4)",
+      "tailwind": "4.x",
+      "@base-ui/react": "1.x"
+    }
+  },
+  "typography": {
+    "display": "Source Serif 4",
+    "body": "Source Sans 3",
+    "mono": "ui-monospace, Menlo, Consolas, monospace",
+    "ramp": {
+      "display-xl": "clamp(34px, 4.6vw, 54px) / 600 / -0.01em serif",
+      "display-lg": "clamp(26px, 3vw, 36px) / 600 / -0.01em serif",
+      "h3": "19-21px / 600 / 0em sans (serif never below display sizes)",
+      "body": "19px / 400 / 1.6 (the floor: body text never ships below 19px)",
+      "support": "16px / 400 / 1.55 (secondary lines, captions, table data)",
+      "eyebrow": "12.5px / 600 / 0.16em uppercase tracked small-caps",
+      "figure": "30px / 600 / tabular serif substance figures"
+    }
+  },
+  "tokens": {
+    "background": "#f7f8f9",
+    "surface": "#ffffff",
+    "border": "#6c7686",
+    "text": "#202b38",
+    "text-muted": "#565c65",
+    "accent": "#2c608a",
+    "accent-fg": "#ffffff",
+    "accent-soft": "#edf0f2",
+    "secondary-foreground": "#202b38",
+    "muted": "#edf0f2",
+    "ok": "#316b37",
+    "ok-soft": "#e7efe7",
+    "ok-fg": "#27522c",
+    "warn": "#8c6d3f",
+    "warn-soft": "#f2ecdf",
+    "warn-fg": "#6e5430",
+    "danger": "#b50909",
+    "danger-soft": "#f7e2e2",
+    "destructive-foreground": "#ffffff",
+    "navy": "#173359",
+    "navy-deep": "#1f303e",
+    "wash": "#d9e8f6",
+    "brass": "#8c6d3f",
+    "band": "#1f303e",
+    "band-foreground": "#ffffff",
+    "band-muted": "#a9b4bd",
+    "band-accent": "#d9e8f6",
+    "band-accent-fg": "#1f303e",
+    "radius": "0.125rem"
+  },
+  "fonts": {
+    "packages": ["@fontsource/source-serif-4", "@fontsource/source-sans-3"],
+    "install": "(Source Serif 4 600-700, Source Sans 3 400-600)."
+  },
+  "blocks": ["hero", "auth", "landing-shell", "table-page", "article", "states"],
+  "registry": "@uiforagents/portico-row",
+  "notes": "One-shot PASS 2026-10-12, attorney profile page (the spec's named practice-area detail type is a documented prompt-pack recipe, so per the group one-shot rule the nearest undocumented page type was used; recorded here and in the README row). Navy is structural only: bands, rules, wordmark; it never fills or decorates content panels. Serif is display sizes and pull quotes only; body is always sans at the 19px floor. Engraved hairlines (all >= 3:1) replace every shadow. Wash tints never sit under body text. One primary CTA per page; every page carries a numbered substance row and the compliance footer. Brass hairlines are optional flavor, never structural."
+}

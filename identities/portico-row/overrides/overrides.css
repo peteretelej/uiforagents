@@ -1,0 +1,129 @@
+/* portico-row overrides - the opinionated treatment on top of stock shadcn.
+   Layer AFTER shadcn styles. Each rule is a deliberate identity decision:
+   engraved hairlines replace shadows, navy is structure, serif stays at
+   display sizes, and focus is always visible. */
+
+/* Buttons are architecture: square 2px corners, flat fills, no shadow, no
+   lift. Hover deepens the fill toward brand navy; 200ms ease. Blocks keep
+   interactive rows at 44px or taller. */
+[data-identity="portico-row"] [data-slot="button"] {
+  border-radius: 2px;
+  font-weight: 600;
+  box-shadow: none;
+  transition: background-color 200ms ease, color 200ms ease,
+    border-color 200ms ease;
+}
+[data-identity="portico-row"] [data-slot="button"].bg-primary:hover:not(:disabled) {
+  background-color: var(--navy);
+}
+[data-identity="portico-row"] [data-slot="button"]:disabled {
+  opacity: 0.55;
+}
+
+/* Cards: square corners with a single engraved hairline. No shadow at any
+   elevation - the hairline is the boundary. A hovered card deepens its
+   hairline to brand navy instead of lifting. */
+[data-identity="portico-row"] [data-slot="card"] {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: none;
+}
+[data-identity="portico-row"] .hover-lift {
+  transition: border-color 200ms ease;
+}
+[data-identity="portico-row"] .hover-lift:hover [data-slot="card"] {
+  border-color: var(--navy);
+}
+
+/* Badges: tracked small-caps chips, square corners, hairline boundary.
+   shadcn's filled primary badge is neutralized to the navy-on-wash voice so
+   action navy keeps doing all the pointing; explicit soft status fills
+   (bg-ok-soft, bg-warn-soft) stay. */
+[data-identity="portico-row"] [data-slot="badge"] {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+[data-identity="portico-row"] [data-slot="badge"].bg-primary {
+  background: var(--wash);
+  color: var(--navy);
+  border-color: var(--wash);
+}
+
+/* Tables read as a record: engraved row rules, tabular figures, tracked
+   small-caps headers on the sunk band. */
+[data-identity="portico-row"] table {
+  font-variant-numeric: tabular-nums;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+[data-identity="portico-row"] th {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  background: var(--secondary);
+}
+[data-identity="portico-row"] tbody tr {
+  transition: background-color 200ms ease;
+}
+[data-identity="portico-row"] tbody tr:hover {
+  background: var(--secondary);
+}
+
+/* Inputs: square 2px corners, engraved hairline, navy focus outline.
+   The border-color never flips on focus; the outline carries focus. */
+[data-identity="portico-row"] input,
+[data-identity="portico-row"] textarea,
+[data-identity="portico-row"] select {
+  border-radius: 2px;
+  transition: box-shadow 200ms ease;
+}
+
+/* Focus law: a 2px navy outline, always visible, never removed, never
+   color-only. No halo fades. */
+[data-identity="portico-row"] :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Pull quotes: serif italic with the brass hairline. This is the only
+   surface brass decorates; body rules and boundaries stay navy/slate. */
+[data-identity="portico-row"] blockquote {
+  border-left: 2px solid var(--brass);
+  padding-left: 24px;
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+/* Sheet and dialog chrome wear the navy header band: white title, muted
+   companion text, and a hairline base. The close control sits on the band,
+   so it renders white. */
+[data-identity="portico-row"] [data-slot="dialog-header"],
+[data-identity="portico-row"] [data-slot="sheet-header"] {
+  background: var(--navy);
+  color: var(--band-foreground);
+  border-bottom: 1px solid rgb(255 255 255 / 0.4);
+}
+[data-identity="portico-row"] [data-slot="dialog-header"] [data-slot="dialog-title"],
+[data-identity="portico-row"] [data-slot="dialog-header"] [data-slot="dialog-description"],
+[data-identity="portico-row"] [data-slot="sheet-header"] [data-slot="sheet-title"],
+[data-identity="portico-row"] [data-slot="sheet-header"] [data-slot="sheet-description"] {
+  color: inherit;
+}
+[data-identity="portico-row"] [data-slot="dialog-header"] [data-slot="dialog-description"],
+[data-identity="portico-row"] [data-slot="sheet-header"] [data-slot="sheet-description"] {
+  color: var(--band-muted);
+}
+[data-identity="portico-row"] [data-slot="dialog-content"],
+[data-identity="portico-row"] [data-slot="sheet-content"] {
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid var(--border);
+}
+[data-identity="portico-row"] [data-slot="dialog-close"] {
+  color: var(--band-foreground);
+}
