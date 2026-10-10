@@ -81,8 +81,8 @@ Record the result in both places before committing the identity:
 
 - the README catalogue row, as `One-shot PASS <date>, <page type>` in
   the row's description
-- the identity's entry (`identity.json` description for shadcn-lane
-  identities)
+- the identity's entry (prompt-pack header note for artifact-lane
+  identities; `identity.json` notes for shadcn-lane identities)
 
 ## Tag vocabulary
 
