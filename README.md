@@ -33,15 +33,15 @@ lands, use the copy path above.
 
 ## The catalogue
 
-| Identity | Vibe | Status |
-|---|---|---|
-| **ocean-calm** | Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display, generous whitespace. | ✅ v1.0 |
-| **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting. | ✅ v0.1 |
-| **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces. | ✅ v0.1 |
-| **cobalt-quorum** | Corporate-clean light SaaS landing. White canvas on mist, ink-navy headings, one cobalt accent doing all the pointing, trust as structure (tabular metrics, outline-pill badges, security band, selling pricing); Instrument Sans display, 11px radii, one dark CTA band. One-shot PASS 2026-10-12, customers index. | ✅ v0.1 |
-| **sticker-press** | Playful sticker-shop brutalism. Cream paper, black ink borders, zero-blur hard shadows (2/4/8px, one bottom-right direction), signal-yellow accent with black text always, Archivo Black ALL-CAPS display over Space Grotesk body and Space Mono labels, press-into-shadow motion, starburst seals, sticker badges, radius 0. One-shot PASS 2026-10-12, event announcement page. | ✅ v0.1 |
-| **portico-row** | Cool-white institutional gravitas for law, finance, and consultancy. Brand navy as structure only (header bands, engraved hairline rules, serif wordmark, deep-navy compliance footer), Source Serif 4 display over a 19px Source Sans 3 body floor, square 0-2px corners with hairlines instead of shadows, airy 72-120px bands, tracked small-caps eyebrows, numbered substance rows with figure and date, attorney cards with credential lines, mandatory compliance footer on every page; brass hairlines as optional flavor. One-shot PASS 2026-10-12, attorney profile page. | ✅ v0.1 |
-| **frost-field** | Calm light glass for wellness. Frosted white panels and floating chrome over a fixed pastel aurora field (lavender, sky, mint, peach), Manrope display over Inter body, high-fill glass recipe (0.55 regular, 0.72 mandatory under body text, 0.35 chrome only) with solid reduced-transparency and near-opaque no-backdrop fallbacks, forced-colors flattening, one muted violet accent, pill controls, 14px/20px radii, airy one-idea-per-card density; activity log with list semantics (the density cap bans tables). One-shot PASS 2026-10-12, instructor profile page. | ✅ v0.1 |
+| Identity | Vibe |
+|---|---|
+| **ocean-calm** | Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display, generous whitespace.
+| **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting.
+| **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces.
+| **cobalt-quorum** | Corporate-clean light SaaS landing. White canvas on mist, ink-navy headings, one cobalt accent doing all the pointing, trust as structure (tabular metrics, outline-pill badges, security band, selling pricing); Instrument Sans display, 11px radii, one dark CTA band. One-shot PASS 2026-10-12, customers index.
+| **sticker-press** | Playful sticker-shop brutalism. Cream paper, black ink borders, zero-blur hard shadows (2/4/8px, one bottom-right direction), signal-yellow accent with black text always, Archivo Black ALL-CAPS display over Space Grotesk body and Space Mono labels, press-into-shadow motion, starburst seals, sticker badges, radius 0. One-shot PASS 2026-10-12, event announcement page.
+| **portico-row** | Cool-white institutional gravitas for law, finance, and consultancy. Brand navy as structure only (header bands, engraved hairline rules, serif wordmark, deep-navy compliance footer), Source Serif 4 display over a 19px Source Sans 3 body floor, square 0-2px corners with hairlines instead of shadows, airy 72-120px bands, tracked small-caps eyebrows, numbered substance rows with figure and date, attorney cards with credential lines, mandatory compliance footer on every page; brass hairlines as optional flavor. One-shot PASS 2026-10-12, attorney profile page.
+| **frost-field** | Calm light glass for wellness. Frosted white panels and floating chrome over a fixed pastel aurora field (lavender, sky, mint, peach), Manrope display over Inter body, high-fill glass recipe (0.55 regular, 0.72 mandatory under body text, 0.35 chrome only) with solid reduced-transparency and near-opaque no-backdrop fallbacks, forced-colors flattening, one muted violet accent, pill controls, 14px/20px radii, airy one-idea-per-card density; activity log with list semantics (the density cap bans tables). One-shot PASS 2026-10-12, instructor profile page.
 
 Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
 one shared demo app).
@@ -59,18 +59,18 @@ The second lane serves **self-contained HTML artifacts**: articles, briefings,
 reports, dashboards, any page an agent ships as one file. An artifact identity is a copy-in
 pure-CSS system - no build step, no registry, no required JavaScript.
 
-| Identity | Vibe | Status |
-|---|---|---|
-| **reading-room** | Warm editorial reader. Paper light, Charter-led serif, ink text, one green accent, built-in dark theme. | ✅ v1.0 |
-| **midnight-bulletin** | Dark-first briefing bulletin. Near-black warm ground, serif display over sans body, mono labels, one amber accent. | ✅ v1.0 |
-| **night-ops** | Dark ops console. Cool near-black ground, azure instrument accent, LED status grammar, hairline panels, mono counts. One-shot PASS 2026-10-09, incident timeline. | ✅ v1.0 |
-| **paper-ledger** | Light print-precision analytics. Cool paper ground, ink-blue accent, accounting double rules, tabular mono figures, a real print stylesheet. One-shot PASS 2026-10-09, cost-audit summary. | ✅ v1.0 |
-| **tally-board** | Warm personal tracker. Cream + terracotta, rounded bento cards, bold rounded numerals, progress grammar (tracks, target ticks, rings, streak heat), ok/warn-only pills, friendly voice. One-shot PASS 2026-10-09, weekly review. | ✅ v1.0 |
-| **espresso-panel** | Amber instrument panel. Warm-black ground, one phosphor hue, all-mono type, intensity-as-hierarchy readout walls, dot-matrix fills, bracket states ([ OK ]/[WARN]/[FAIL]), ticker tape. No dense ops tables or health-dot rows (verdict gate). One-shot PASS 2026-10-09, price watcher. Naming per the recalibrated rule (2026-10-08): espresso-panel, amber-warm owned (D9); the census's amber-readout suggestion is superseded. | ✅ v1.0 |
-| **weissraum** | Light minimal Swiss portfolio. Paper-white canvas, near-black Archivo display at poster scale, hairline indexes with index numbers and typographic arrows, uppercase mono micro-labels, one red accent used only when it has a job, 0px radius everywhere. One-shot PASS 2026-10-12, event/workshop index. | ✅ v1.0 |
-| **ivory-desk** | Calm light AI console. Warm oat-ivory paper, Newsreader serif voice moments over Inter body, IBM Plex Mono machine output, one clay accent in two steps, flat full-width turns (never bubbles), pill composer, tool-call cards, citations, usage meters; light-only. One-shot PASS 2026-10-12, product changelog. | ✅ v1.0 |
-| **dither-lab** | Dark 1-bit pixel workshop with retro-computing craft. Blue-black canvas, four-color rotational bit-palette (one bit-color per section, never a rainbow), Press Start 2P wordmarks and badges at 8px multiples, Pixelify Sans headings, Space Grotesk body, VT323 readouts, dithered checker fills, scanlines on the hero only, stepped motion, 0px radius with 2px borders. Dark-only; never a single-hue monochrome or an ops console (graphite-terminal firewall). One-shot PASS 2026-10-12, tutorial index + step guide. | ✅ v1.0 |
-| **city-edition** | Light editorial print daily. The dense morning newspaper: flat cool newsprint, ink Newsreader headlines and body, Archivo Narrow uppercase kickers, IBM Plex Mono datelines and agate, the full kicker-deck-byline stack on every story card, hairline rules with 3px heavy masthead rules, numbered most-read indexes, boxed pull quotes, rationed press red (one use per card), 0px radius; light-only. One-shot PASS 2026-10-12, corrections & standards page. | ✅ v1.0 |
+| Identity | Vibe |
+|---|---|
+| **reading-room** | Warm editorial reader. Paper light, Charter-led serif, ink text, one green accent, built-in dark theme.
+| **midnight-bulletin** | Dark-first briefing bulletin. Near-black warm ground, serif display over sans body, mono labels, one amber accent.
+| **night-ops** | Dark ops console. Cool near-black ground, azure instrument accent, LED status grammar, hairline panels, mono counts. One-shot PASS 2026-10-09, incident timeline.
+| **paper-ledger** | Light print-precision analytics. Cool paper ground, ink-blue accent, accounting double rules, tabular mono figures, a real print stylesheet. One-shot PASS 2026-10-09, cost-audit summary.
+| **tally-board** | Warm personal tracker. Cream + terracotta, rounded bento cards, bold rounded numerals, progress grammar (tracks, target ticks, rings, streak heat), ok/warn-only pills, friendly voice. One-shot PASS 2026-10-09, weekly review.
+| **espresso-panel** | Amber instrument panel. Warm-black ground, one phosphor hue, all-mono type, intensity-as-hierarchy readout walls, dot-matrix fills, bracket states ([ OK ]/[WARN]/[FAIL]), ticker tape. No dense ops tables or health-dot rows (verdict gate). One-shot PASS 2026-10-09, price watcher. Naming per the recalibrated rule (2026-10-08): espresso-panel, amber-warm owned (D9); the census's amber-readout suggestion is superseded.
+| **weissraum** | Light minimal Swiss portfolio. Paper-white canvas, near-black Archivo display at poster scale, hairline indexes with index numbers and typographic arrows, uppercase mono micro-labels, one red accent used only when it has a job, 0px radius everywhere. One-shot PASS 2026-10-12, event/workshop index.
+| **ivory-desk** | Calm light AI console. Warm oat-ivory paper, Newsreader serif voice moments over Inter body, IBM Plex Mono machine output, one clay accent in two steps, flat full-width turns (never bubbles), pill composer, tool-call cards, citations, usage meters; light-only. One-shot PASS 2026-10-12, product changelog.
+| **dither-lab** | Dark 1-bit pixel workshop with retro-computing craft. Blue-black canvas, four-color rotational bit-palette (one bit-color per section, never a rainbow), Press Start 2P wordmarks and badges at 8px multiples, Pixelify Sans headings, Space Grotesk body, VT323 readouts, dithered checker fills, scanlines on the hero only, stepped motion, 0px radius with 2px borders. Dark-only; never a single-hue monochrome or an ops console (graphite-terminal firewall). One-shot PASS 2026-10-12, tutorial index + step guide.
+| **city-edition** | Light editorial print daily. The dense morning newspaper: flat cool newsprint, ink Newsreader headlines and body, Archivo Narrow uppercase kickers, IBM Plex Mono datelines and agate, the full kicker-deck-byline stack on every story card, hairline rules with 3px heavy masthead rules, numbered most-read indexes, boxed pull quotes, rationed press red (one use per card), 0px radius; light-only. One-shot PASS 2026-10-12, corrections & standards page.
 
 ```
 identities/<artifact-identity>/
