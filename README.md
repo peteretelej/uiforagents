@@ -11,66 +11,85 @@ copy-in pure-CSS foundation - see [the artifact lane](#the-artifact-lane)). Use
 an identity as-is, or derive your own from the nearest one when nothing fits -
 see [DERIVE.md](DERIVE.md).
 
-**Build the theme + overrides + blocks into a shadcn registry payload:**
+## Quick start
+
+Install the skill once; `-g` installs it globally so every project sees it:
 
 ```bash
-node tooling/build-registry.mjs ocean-calm   # emits identities/ocean-calm/registry/
+npx skills add peteretelej/uiforagents -g
 ```
 
-Install into a shadcn app (Tailwind v4 + React 18+):
+Then just ask your agent:
 
-1. Add `@uiforagents/ocean-calm` to your `components.json` `registries`, or copy
-   `identities/ocean-calm/registry/ocean-calm.json` and run
-   `npx shadcn add ./ocean-calm.json`.
-2. Import `theme/ocean-calm.css` (theme + overrides) in your global CSS, after
-   the Tailwind import.
-3. Attach `prompt-pack.md` to every agent building UI - this is the integration.
-4. Fonts: `npm i @fontsource/plus-jakarta-sans @fontsource/inter` and import
-   the weights in your entry file.
+> "use Nairobi Noon for this app" - "make this report look like Reading Room" -
+> "which identity fits a dense internal admin tool?"
 
-Registry hosting (making the one-liner work directly) is in progress; until it
-lands, use the copy path above.
+The skill discovers the catalogue, picks identities, fetches the right files,
+and follows the lane contracts - no instructions to relay. It works with GitHub
+Copilot, OpenCode, Claude Code, Codex, Cursor, and any other agent that
+supports skills.
+
+**No agent?** Everything is one command away. The npm package is the whole
+factory:
+
+```sh
+npx uiforagents list                       # catalogue: slug, lane, scheme, tags
+npx uiforagents show night-ops             # the prompt-pack, on stdout
+npx uiforagents show night-ops --file foundation   # or theme, demo, registry
+npx uiforagents init tally-board           # copy an artifact identity into your project
+npx uiforagents derive                     # the derive contract (DERIVE.md)
+```
+
+Into a shadcn app (Tailwind v4 + React 18+), install an identity by URL:
+
+```bash
+npx shadcn add https://uiforagents.com/r/ocean-calm.json
+```
+
+Then: import the shipped theme file in your global CSS after the Tailwind
+import, carry `data-identity="<slug>"` on your root html element, install the
+identity's fonts (`@fontsource` packages, weights listed in its prompt-pack),
+and attach that prompt-pack to every agent building UI - the pack is the
+binding design contract, and attaching it is the integration.
 
 ## The catalogue
 
+Live demos and docs: **uiforagents.com**. One line per identity here; the site
+carries the full cards, demos, and prompt-packs.
+
+React lane (shadcn/ui):
+
 | Identity | Vibe |
 |---|---|
-| **ocean-calm** | Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display, generous whitespace.
-| **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting.
-| **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces.
-| **cobalt-quorum** | Corporate-clean light SaaS landing. White canvas on mist, ink-navy headings, one cobalt accent doing all the pointing, trust as structure (tabular metrics, outline-pill badges, security band, selling pricing); Instrument Sans display, 11px radii, one dark CTA band. One-shot PASS 2026-10-12, customers index.
-| **sticker-press** | Playful sticker-shop brutalism. Cream paper, black ink borders, zero-blur hard shadows (2/4/8px, one bottom-right direction), signal-yellow accent with black text always, Archivo Black ALL-CAPS display over Space Grotesk body and Space Mono labels, press-into-shadow motion, starburst seals, sticker badges, radius 0. One-shot PASS 2026-10-12, event announcement page.
-| **portico-row** | Cool-white institutional gravitas for law, finance, and consultancy. Brand navy as structure only (header bands, engraved hairline rules, serif wordmark, deep-navy compliance footer), Source Serif 4 display over a 19px Source Sans 3 body floor, square 0-2px corners with hairlines instead of shadows, airy 72-120px bands, tracked small-caps eyebrows, numbered substance rows with figure and date, attorney cards with credential lines, mandatory compliance footer on every page; brass hairlines as optional flavor. One-shot PASS 2026-10-12, attorney profile page.
-| **frost-field** | Calm light glass for wellness. Frosted white panels and floating chrome over a fixed pastel aurora field (lavender, sky, mint, peach), Manrope display over Inter body, high-fill glass recipe (0.55 regular, 0.72 mandatory under body text, 0.35 chrome only) with solid reduced-transparency and near-opaque no-backdrop fallbacks, forced-colors flattening, one muted violet accent, pill controls, 14px/20px radii, airy one-idea-per-card density; activity log with list semantics (the density cap bans tables). One-shot PASS 2026-10-12, instructor profile page.
+| **ocean-calm** | Calm light fintech. Deep azure on cool white, Plus Jakarta Sans display, generous whitespace. |
+| **nairobi-noon** | Warm Kenyan daylight. Sand and terracotta, relaxed and inviting. |
+| **graphite-terminal** | Dense dark tool view. For audits, consoles, and power surfaces. |
+| **cobalt-quorum** | Corporate-clean light SaaS landing. Ink-navy on mist white, one cobalt accent, trust as structure: tabular metrics, security band, selling pricing. |
+| **sticker-press** | Playful sticker-shop brutalism. Cream paper, black ink borders, hard shadows, signal-yellow accent, radius 0. |
+| **portico-row** | Cool-white institutional gravitas for law, finance, and consultancy. Navy as structure, serif display, hairline rules, mandatory compliance footer. |
+| **frost-field** | Calm light glass for wellness. Frosted panels over a pastel aurora field, pill controls, airy one-idea-per-card density. |
 
-Live demos and docs: **uiforagents.com** (catalogue with an identity switcher over
-one shared demo app).
+Artifact lane (single-file HTML/CSS):
 
-**Agents**: install the skill once - `npx skills add peteretelej/uiforagents -g` -
-then just ask ("use Nairobi Noon for this app"). The `-g` installs it globally so
-every project sees it; without the flag the CLI targets the current directory
-(and nesting happens if run from inside a skills folder). The skill discovers the
-catalogue, picks identities, and follows the lane contracts; `skills/uiforagents/SKILL.md`
-in this repo is the whole entrypoint.
+| Identity | Vibe |
+|---|---|
+| **reading-room** | Warm editorial reader. Paper light, Charter-led serif, ink text, one green accent, built-in dark theme. |
+| **midnight-bulletin** | Dark-first briefing bulletin. Near-black warm ground, serif display over sans body, mono labels, one amber accent. |
+| **night-ops** | Dark ops console. Cool near-black ground, azure instrument accent, LED status grammar, hairline panels. |
+| **paper-ledger** | Light print-precision analytics. Cool paper ground, ink-blue accent, accounting double rules, tabular mono figures, a real print stylesheet. |
+| **tally-board** | Warm personal tracker. Cream + terracotta, rounded bento cards, bold rounded numerals, progress grammar, ok/warn-only pills. |
+| **espresso-panel** | Amber instrument panel. Warm-black ground, one phosphor hue, all-mono type, readout walls, bracket states, ticker tape. |
+| **weissraum** | Light minimal Swiss portfolio. Paper-white canvas, poster-scale Archivo display, hairline indexes, one red accent used only when it has a job, 0px radius. |
+| **ivory-desk** | Calm light AI console. Oat-ivory paper, Newsreader serif voice moments, IBM Plex Mono output, flat full-width turns, one clay accent. |
+| **dither-lab** | Dark 1-bit pixel workshop. Blue-black canvas, rotational four-color bit-palette, dithered fills, stepped motion, retro-computing craft. |
+| **city-edition** | Light editorial print daily. The dense morning newspaper: newsprint ground, ink serif headlines, uppercase kickers, mono datelines, rationed press red. |
 
 ## The artifact lane
 
 The second lane serves **self-contained HTML artifacts**: articles, briefings,
-reports, dashboards, any page an agent ships as one file. An artifact identity is a copy-in
-pure-CSS system - no build step, no registry, no required JavaScript.
-
-| Identity | Vibe |
-|---|---|
-| **reading-room** | Warm editorial reader. Paper light, Charter-led serif, ink text, one green accent, built-in dark theme.
-| **midnight-bulletin** | Dark-first briefing bulletin. Near-black warm ground, serif display over sans body, mono labels, one amber accent.
-| **night-ops** | Dark ops console. Cool near-black ground, azure instrument accent, LED status grammar, hairline panels, mono counts. One-shot PASS 2026-10-09, incident timeline.
-| **paper-ledger** | Light print-precision analytics. Cool paper ground, ink-blue accent, accounting double rules, tabular mono figures, a real print stylesheet. One-shot PASS 2026-10-09, cost-audit summary.
-| **tally-board** | Warm personal tracker. Cream + terracotta, rounded bento cards, bold rounded numerals, progress grammar (tracks, target ticks, rings, streak heat), ok/warn-only pills, friendly voice. One-shot PASS 2026-10-09, weekly review.
-| **espresso-panel** | Amber instrument panel. Warm-black ground, one phosphor hue, all-mono type, intensity-as-hierarchy readout walls, dot-matrix fills, bracket states ([ OK ]/[WARN]/[FAIL]), ticker tape. No dense ops tables or health-dot rows (verdict gate). One-shot PASS 2026-10-09, price watcher. Naming per the recalibrated rule (2026-10-08): espresso-panel, amber-warm owned (D9); the census's amber-readout suggestion is superseded.
-| **weissraum** | Light minimal Swiss portfolio. Paper-white canvas, near-black Archivo display at poster scale, hairline indexes with index numbers and typographic arrows, uppercase mono micro-labels, one red accent used only when it has a job, 0px radius everywhere. One-shot PASS 2026-10-12, event/workshop index.
-| **ivory-desk** | Calm light AI console. Warm oat-ivory paper, Newsreader serif voice moments over Inter body, IBM Plex Mono machine output, one clay accent in two steps, flat full-width turns (never bubbles), pill composer, tool-call cards, citations, usage meters; light-only. One-shot PASS 2026-10-12, product changelog.
-| **dither-lab** | Dark 1-bit pixel workshop with retro-computing craft. Blue-black canvas, four-color rotational bit-palette (one bit-color per section, never a rainbow), Press Start 2P wordmarks and badges at 8px multiples, Pixelify Sans headings, Space Grotesk body, VT323 readouts, dithered checker fills, scanlines on the hero only, stepped motion, 0px radius with 2px borders. Dark-only; never a single-hue monochrome or an ops console (graphite-terminal firewall). One-shot PASS 2026-10-12, tutorial index + step guide.
-| **city-edition** | Light editorial print daily. The dense morning newspaper: flat cool newsprint, ink Newsreader headlines and body, Archivo Narrow uppercase kickers, IBM Plex Mono datelines and agate, the full kicker-deck-byline stack on every story card, hairline rules with 3px heavy masthead rules, numbered most-read indexes, boxed pull quotes, rationed press red (one use per card), 0px radius; light-only. One-shot PASS 2026-10-12, corrections & standards page.
+reports, dashboards, any page an agent ships as one file. An artifact identity
+is a copy-in pure-CSS system - no build step, no registry, no required
+JavaScript.
 
 ```
 identities/<artifact-identity>/
@@ -98,31 +117,28 @@ identities/ocean-calm/
 └── registry/         # generated shadcn registry payload (registry:base)
 ```
 
-## For agents
-
-Each identity ships a `prompt-pack.md`. Point your agent at it (or paste it into
-your `AGENTS.md`) and build. The pack settles typography, density, component
-choices, spacing, motion, and do/don'ts - the agent stops improvising design and
-starts shipping product.
-
-The npm package is the agent-consumable form of the whole factory - `npm i
-uiforagents`, or `npx` it directly:
-
-```sh
-npx uiforagents list                       # catalogue: slug, lane, scheme, tags
-npx uiforagents show night-ops             # the prompt-pack, on stdout
-npx uiforagents show night-ops --file foundation   # or theme, demo, registry
-npx uiforagents init tally-board           # copy an artifact identity into your project
-npx uiforagents derive                     # the derive contract (DERIVE.md)
-```
-
-Everything is plain files under `identities/`, so reading them straight from
-`node_modules/uiforagents/` works too.
-
 ## For humans
 
 Identities are opinionated by design: curated, not community-directed. Use them
-unchanged; brand them with your logo and accent via the documented token overrides.
+unchanged; brand them with your logo and accent via the documented token
+overrides.
+
+## Maintainers
+
+Build an identity's theme + overrides + blocks into a shadcn registry payload:
+
+```bash
+node tooling/build-registry.mjs ocean-calm   # emits identities/ocean-calm/registry/
+```
+
+The generated payload is what the website serves at `/r/<slug>.json`, which is
+where the install one-liner above points. Identity governance (naming, vibe
+tags, one-shot tests, README row shape, release semver) is defined in
+[AGENTS.md](AGENTS.md).
+
+Working from a checkout or without the hosted registry, the copy path still
+works: copy `identities/<slug>/registry/<slug>.json` into your app and run
+`npx shadcn add ./<slug>.json`.
 
 ## License
 

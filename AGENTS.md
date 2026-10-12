@@ -102,9 +102,12 @@ dependency, and no required JavaScript.
   identities appear automatically, but keep the README catalogue tables and
   the site from disagreeing - update the tables here, keep identity.json
   (title, description, vibe tags) accurate, since those feed the site's
-  cards and filters. After changing tokens, tags, or names, rebuild the
-  site against this checkout and check the catalogue before considering the
-  change landed.
+  cards and filters. README rows stay one line per identity: slug plus a
+  single-sentence vibe, nothing else; the lane comes from which per-lane
+  table the row sits in, and one-shot results and governance notes stay in
+  prompt-pack headers and identity.json notes. After changing tokens,
+  tags, or names, rebuild the site against this checkout and check the
+  catalogue before considering the change landed.
 
 ## Conventions
 
