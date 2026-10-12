@@ -174,10 +174,11 @@ second unlayered `<style>` block after the foundation, and `interactive.js`
 as a `<script>` before the closing body tag; element hooks are listed in the
 JS header. The addendum's rules: identity tokens only (no new colors, no
 shadows, no motion), boot on DOMContentLoaded (the soma stub is injected at
-serve time near the end of body, so synchronous checks in earlier scripts
-miss it), merge-on-hydrate so edits in the load window survive, read-only
-fallbacks for viewers and non-Soma renders, and the page renders completely
-without the addendum. Proven in production by the Tess ops playbook
+serve time right after `<body>` on current builds - end of body on older
+ones - so waiting also gives page DOM access), merge-on-hydrate so edits in
+the load window survive, read-only fallbacks for viewers and non-Soma
+renders, and the page renders completely without the addendum. Proven in
+production by the Tess ops playbook
 (`research-lab/projects/peteretelej/tess/artifacts/kayo-ops-playbook.html`).
 
 ## Print and reduced motion
@@ -201,5 +202,5 @@ disables smooth scrolling; the identity has no other motion.
 - Do not center prose. Reading content is left-aligned; the masthead/hero
   rhythm is left-aligned too.
 - Do not build app UI (dashboards, forms, toolbars) with this identity; it is
-  a reading identity. Interactive controls beyond links and the theme toggle
-  are out of inventory.
+  a reading identity. Interactive controls beyond links, the theme toggle,
+  and the interactive addendum are out of inventory.
