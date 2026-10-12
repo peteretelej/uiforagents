@@ -20,8 +20,9 @@ page-specific layout only.
 - Page CSS stays **unlayered**. The foundation is wrapped in
   `@layer foundation`, so anything you write outside a layer wins without
   `!important`. Never add `!important`; never add to the foundation layer.
-- No JavaScript is required. The only sanctioned JS is an optional theme
-  toggle (below). The page must render completely without it.
+- No JavaScript is required. Sanctioned JS: the optional theme toggle (below)
+  and, when a page opts into the interactive addendum, `interactive.js` (see
+  that section). The page must render completely without either.
 
 ## Identity contract
 
@@ -159,6 +160,25 @@ btn.addEventListener('click', function () {
 Flip `color-scheme` on `html` only. No class swapping, no stylesheet swap,
 no localStorage requirement (persistence is allowed but optional). The page
 must fully render with this script removed.
+
+## Interactive addendum (state-backed Soma pages)
+
+For working pages (trackers, checklists, fact sheets) that need persisted
+user state on allowlist Soma links, the identity ships an optional addendum:
+`interactive.css` + `interactive.js` beside this file. It provides a work
+tracker (`.rro-item` checkbox rows with note inputs), key-fact inputs
+(`[data-rro-fact]`), a dated notes log, an attachments mount, a progress
+line, and a read-only notice - persisted through the injected `window.soma`
+state document (`{checks, facts, log}`). Include `interactive.css` in a
+second unlayered `<style>` block after the foundation, and `interactive.js`
+as a `<script>` before the closing body tag; element hooks are listed in the
+JS header. The addendum's rules: identity tokens only (no new colors, no
+shadows, no motion), boot on DOMContentLoaded (the soma stub is injected at
+serve time near the end of body, so synchronous checks in earlier scripts
+miss it), merge-on-hydrate so edits in the load window survive, read-only
+fallbacks for viewers and non-Soma renders, and the page renders completely
+without the addendum. Proven in production by the Tess ops playbook
+(`research-lab/projects/peteretelej/tess/artifacts/kayo-ops-playbook.html`).
 
 ## Print and reduced motion
 
