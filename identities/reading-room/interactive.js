@@ -23,6 +23,7 @@
     var doc = { checks: {}, facts: {}, log: [] };
     var touched = { checks: {}, facts: {}, log: [] };
     var lastPutJson = null;
+    var removedLog = {};
     var timer = null;
 
     function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
@@ -120,6 +121,8 @@
           btn.textContent = "remove";
           btn.addEventListener("click", function () {
             doc.log = doc.log.filter(function (e) { return e.t !== entry.t; });
+            removedLog[entry.t] = true;
+            touched.log = touched.log.filter(function (e) { return e.t !== entry.t; });
             renderLog();
             scheduleSave();
           });
@@ -173,7 +176,9 @@
         var rlog = Array.isArray(remote.log) ? remote.log : [];
         var seen = {};
         rlog.forEach(function (e) { seen[e.t] = true; });
-        doc.log = rlog.concat(touched.log.filter(function (e) { return !seen[e.t]; }))
+        doc.log = rlog
+          .filter(function (e) { return !removedLog[e.t]; })
+          .concat(touched.log.filter(function (e) { return !seen[e.t]; }))
           .sort(function (a, b) { return a.t < b.t ? 1 : -1; });
       }
       all(".rro-item").forEach(function (li) { setItemState(li, doc.checks[li.getAttribute("data-id")]); });
@@ -185,8 +190,9 @@
       refreshProgress();
       /* A put that fired before hydration (race window) carries only the
          raced subset; last-write-wins would wipe the server's other entries.
-         Re-put the merged doc when it has already diverged. */
-      if (lastPutJson !== null && JSON.stringify(doc) !== lastPutJson) scheduleSave();
+         Re-put the merged doc when it has already diverged. Pending removals
+         must persist even when nothing has been put yet. */
+      if (Object.keys(removedLog).length || (lastPutJson !== null && JSON.stringify(doc) !== lastPutJson)) scheduleSave();
     }
 
     wireItems();
