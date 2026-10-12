@@ -17,6 +17,9 @@ permissions:
 
 jobs:
   npm-publish:
+    # Publishing is keyed to the version bump landing on main; a v* tag push
+    # fires alongside it and would race the same version to an npm 409.
+    if: github.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
