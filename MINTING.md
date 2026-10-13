@@ -68,6 +68,71 @@ No `identity.json`, no `registry/`, no `theme/`, no `blocks/`; never run
   common. Demo workarounds and one-off demo code are not acceptable;
   demos are the test harness for component coverage.
 
+## Example-brand pool
+
+Demo copy names fictional things: companies, products, publications,
+places. Those names come from the pool below, not from improvisation.
+Invented-on-the-spot names keep landing on real businesses (Studio
+Zwölf was a real Berlin design studio; Bitwell is a real wearable
+company). The pool is drawn from public-domain literature and classic
+fiction, and every entry was web-cleared for exact-name collisions
+when it entered, so reusing pool names across identities is the point,
+not a bug - the same practice keeps Hollywood prop brands (Heisler
+beer, Morley cigarettes) legally unownable after decades of reuse.
+
+Rules:
+
+- **Hero brands draw from the pool.** Every named company, product,
+  publication, or place in demo copy and block content uses a pool
+  name, composed with ordinary sector words when helpful (`Merdle &
+  Co`, `Luggnagg Freight`, `The Spouter-Inn`). Sector suffixes are
+  free; the distinctive element is not.
+- **People names are ordinary names.** Humans in tables, testimonials,
+  and team blocks stay believable ordinary names (shadcn/Tailwind
+  practice); they are not brands and need no pool entry.
+- **Film and TV brands are out.** Acme, Dunder Mifflin, Vandelay,
+  Initech, Oceanic Airlines and friends carry studio trademarks;
+  they are reference culture, not pool entries.
+- **Extending the pool takes one check.** New entries need one
+  exact-name web search (`"<Name>" company OR studio OR brand`) with
+  the verdict and date recorded beside the entry. Re-check an entry
+  only if it becomes famous enough to spawn imitators (the Soylent
+  problem: a fiction name turned real company).
+
+Pool (checked 2026-10-13):
+
+| Name | Source | Fit |
+|---|---|---|
+| Seldwyla | Keller, Die Leute von Seldwyla | studios, Swiss/German flavor (in use: weissraum) |
+| Merdle & Co | Dickens, Little Dorrit | bank, fintech, finance |
+| Jarndyce & Jarndyce | Dickens, Bleak House | law firms, legal |
+| Tulkinghorn | Dickens, Bleak House | law, security |
+| Dombey & Son | Dickens, Dombey and Son | shipping, logistics |
+| Micawber | Dickens, David Copperfield | financial advice (CAUTION: defunct bookstore) |
+| Pumblechook | Dickens, Great Expectations | shops, stationery, playful commerce |
+| Boffin | Dickens, Our Mutual Friend | data, research (CAUTION: common UK slang) |
+| Blefuscu | Swift, Gulliver's Travels | scrappy SaaS, startups |
+| Balnibarbi | Swift, Gulliver's Travels | R&D, dev tools, workshops |
+| Glubbdubdrib | Swift, Gulliver's Travels | AI, search, archives |
+| Lindalino | Swift, Gulliver's Travels | media, publications, consultancy |
+| Luggnagg | Swift, Gulliver's Travels | logistics, ops, infrastructure |
+| Ogygia | Homer, Odyssey | wellness, retreats (CAUTION: small hotel/perfume uses) |
+| Scheria | Homer, Odyssey | hospitality, hotels |
+| Gillikin | Baum, Oz books | design studios (also a real NC surname) |
+| Utensia | Baum, Oz books | kitchenware, restaurants |
+| The Spouter-Inn | Melville, Moby-Dick | pubs, hotels |
+| Try Pots | Melville, Moby-Dick | food, chowder houses |
+| Capulet | Shakespeare, Romeo and Juliet | bistros, events |
+
+Unverified candidates (run the check before first use): Iolcus,
+Thrinacia, Quadling, Uppercross, Donwell, Meryton, Rosings, Hartfield.
+
+Rejected on check (do not reuse): Pickwick (tea brand), Pequod
+(pizza chain), Pecksniff (fragrances), Pemberley (merch-saturated),
+Aiaia (audio brand), Heep (band), Jeroboam (perfumes), Randalls
+(supermarket), Laputa (Spanish profanity), Bunbury (real city),
+Winkie (real localities), Argos, Jotun, Barchester (real companies).
+
 ## One-shot gate
 
 Before an identity lands, it passes the one-shot test: a fresh agent

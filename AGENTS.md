@@ -116,5 +116,10 @@ dependency, and no required JavaScript.
   after people, clients, or internal systems. Names must not duplicate
   existing marketplace template/theme names; run an exact-name collision
   check (case-insensitive, separator variants included) before minting.
+  Generic descriptive words are acceptable when existing real-world usage
+  sits out of class (weissraum is the German word for whitespace);
+  out-of-class small-brand usage is not a collision.
 - Sample content is generic everywhere (block defaults, site showcases):
-  no real brands or client data.
+  no real brands or client data. Example brands inside demos draw from
+  the pool in MINTING.md ("Example-brand pool"); improvised names are
+  how real businesses keep getting cast in sample content.
