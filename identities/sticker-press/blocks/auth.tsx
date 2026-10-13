@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
    spinner), and error (inline destructive line, invalid input flagged). */
 export function AuthCard({
   title = "Join the launch list",
-  description = "Be first through the door when Ballyhoo 1.0 goes live.",
+  description = "Be first through the door when Pumblechook Press 1.0 goes live.",
   primaryCta = "Save my spot",
   trustNote = "Free while in beta · No spam, one email on launch day",
   status: statusProp = "idle",

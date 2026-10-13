@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>espresso-panel · identity demo</title>
-<meta name="description" content="Self-documenting demo of the espresso-panel artifact identity: rationale, token reference, a full quayside exchange instrument wall (readouts, stepped chart, dot-matrix volume, LED meters, ticker tape, bracket readings, event feed), states, component sheet, print proof, and the 390px treatment.">
+<meta name="description" content="Self-documenting demo of the espresso-panel artifact identity: rationale, token reference, a full luggnagg exchange instrument wall (readouts, stepped chart, dot-matrix volume, LED meters, ticker tape, bracket readings, event feed), states, component sheet, print proof, and the 390px treatment.">
 <style>
 /* espresso-panel - artifact identity foundation
    An amber instrument panel: one phosphor hue on warm black, all-mono type,
@@ -377,7 +377,7 @@
 @media print {
   @page {
     @bottom-center {
-      content: "quayside instrument · identity demo · page " counter(page) " of " counter(pages);
+      content: "luggnagg instrument · identity demo · page " counter(page) " of " counter(pages);
     }
   }
 }
@@ -396,7 +396,7 @@
 
   <header class="head ep-noprint">
     <p class="ep-eyebrow">uiforagents · artifact identity · espresso-panel</p>
-    <h1>The quayside instrument</h1>
+    <h1>The luggnagg instrument</h1>
     <p class="dek">An amber instrument panel: one phosphor hue on warm black, all-mono everything,
     intensity as hierarchy. Readout strip walls, dot-matrix fills, bracket states, stepped crisp
     charts, a ticker tape. Built for instrument jobs - tickers, price watchers, machine rooms.
@@ -488,7 +488,7 @@
     <p class="sec-dek">Five cells per row, 1px grid gaps, the lead cell larger. The watched instrument
     takes <b>.ep-sel</b>. Deltas name their comparison; the kicker names the window.</p>
     <div class="ep-readout">
-      <div class="ep-cell"><div class="ep-k">quayside composite</div><div class="ep-v">1,412.08</div><div class="ep-d up">+6.2 vs open</div></div>
+      <div class="ep-cell"><div class="ep-k">luggnagg composite</div><div class="ep-v">1,412.08</div><div class="ep-d up">+6.2 vs open</div></div>
       <div class="ep-cell"><div class="ep-k">session vol</div><div class="ep-v">2.84M</div><div class="ep-d">-9% vs 30d</div></div>
       <div class="ep-cell ep-sel"><div class="ep-k">gullway air</div><div class="ep-v">84.12</div><div class="ep-d up">+1.8</div></div>
       <div class="ep-cell"><div class="ep-k">bight energy</div><div class="ep-v">212.40</div><div class="ep-d down">-18 halt</div></div>
@@ -511,9 +511,9 @@
     bright favorable, dim unfavorable.</p>
     <div class="ep-cols">
       <div class="ep-panel">
-        <div class="ep-ph">quayside composite · intraday<small>utc · 5m steps</small></div>
+        <div class="ep-ph">luggnagg composite · intraday<small>utc · 5m steps</small></div>
         <p class="ep-take">open gap filled by 10:00 · session high 1,418 into the close · 13:42 halt on bight</p>
-        <svg class="ep-chart" viewBox="0 0 720 220" role="img" aria-label="Stepped line chart of the quayside composite index intraday, recovering from an early dip to close near the session high of 1,418">
+        <svg class="ep-chart" viewBox="0 0 720 220" role="img" aria-label="Stepped line chart of the luggnagg composite index intraday, recovering from an early dip to close near the session high of 1,418">
           <defs>
             <pattern id="dm-grid" width="4" height="4" patternUnits="userSpaceOnUse">
               <rect width="1.4" height="1.4" fill="var(--chart-grid)"/>
@@ -561,7 +561,7 @@
           </div>
         </div>
         <div class="ep-panel">
-          <div class="ep-ph">quayside composite · 30 sessions</div>
+          <div class="ep-ph">luggnagg composite · 30 sessions</div>
           <svg class="ep-chart" viewBox="0 0 340 84" role="img" aria-label="Dot-matrix strip of 30 sessions; most bright, two dim down sessions, gaps on closed days">
             <rect x="12" y="20" width="6" height="6" fill="var(--accent)"/><rect x="22" y="20" width="6" height="6" fill="var(--accent)"/><rect x="32" y="20" width="6" height="6" fill="var(--accent)"/><rect x="42" y="20" width="6" height="6" fill="var(--accent)"/><rect x="52" y="20" width="6" height="6" fill="var(--matrix-dim)"/><rect x="72" y="20" width="6" height="6" fill="var(--accent)"/><rect x="82" y="20" width="6" height="6" fill="var(--accent)"/><rect x="92" y="20" width="6" height="6" fill="var(--accent)"/><rect x="102" y="20" width="6" height="6" fill="var(--accent)"/>
             <rect x="12" y="32" width="6" height="6" fill="var(--accent)"/><rect x="22" y="32" width="6" height="6" fill="var(--accent)"/><rect x="32" y="32" width="6" height="6" fill="var(--matrix-dim)"/><rect x="42" y="32" width="6" height="6" fill="var(--accent)"/><rect x="52" y="32" width="6" height="6" fill="var(--accent)"/><rect x="72" y="32" width="6" height="6" fill="var(--accent)"/><rect x="82" y="32" width="6" height="6" fill="var(--accent)"/><rect x="92" y="32" width="6" height="6" fill="var(--accent)"/><rect x="102" y="32" width="6" height="6" fill="var(--accent)"/>
@@ -681,7 +681,7 @@
           <div class="ep-evrow"><time>13:57:00</time><span class="t">bight energy trading resumed · auction print 212.40</span><span class="ep-state ok">[ OK ]</span></div>
           <div class="ep-evrow fail"><time>13:42:09</time><span class="t">downstream quote tape stale · failing over to gw-alpha</span><span class="ep-state fail">[FAIL]</span></div>
           <div class="ep-evrow"><time>13:42:07</time><span class="t">LULD halt bight energy · limit band breached</span><span class="ep-state warn">[WARN]</span></div>
-          <div class="ep-evrow"><time>09:30:00</time><span class="t">session open · quayside composite 1,398.44</span><span class="ep-state ok">[ OK ]</span></div>
+          <div class="ep-evrow"><time>09:30:00</time><span class="t">session open · luggnagg composite 1,398.44</span><span class="ep-state ok">[ OK ]</span></div>
         </div>
         <div class="ep-evfoot">5 events · window 12h · tail <span class="ep-cursor" aria-hidden="true"></span></div>
       </div>
@@ -788,12 +788,12 @@
     <div class="phone">
       <div class="notch"><i></i></div>
       <div class="ep-top">
-        <span class="ep-brand">QUAYSIDE/FEED</span>
+        <span class="ep-brand">LUGGNAGG/FEED</span>
         <span class="ep-right">[PROD]</span>
       </div>
       <div class="ep-wrap" style="padding-top:14px">
         <div class="ep-readout" style="margin-bottom:14px">
-          <div class="ep-cell"><div class="ep-k">quayside composite</div><div class="ep-v">1,412.08</div><div class="ep-d up">+6.2 vs open</div></div>
+          <div class="ep-cell"><div class="ep-k">luggnagg composite</div><div class="ep-v">1,412.08</div><div class="ep-d up">+6.2 vs open</div></div>
           <div class="ep-cell"><div class="ep-k">session vol</div><div class="ep-v">2.84M</div><div class="ep-d">-9% vs 30d</div></div>
           <div class="ep-cell"><div class="ep-k">feed lag</div><div class="ep-v">212ms</div><div class="ep-d">p95 · 24h</div></div>
         </div>
@@ -822,7 +822,7 @@
   </section>
 
   <footer class="foot ep-noprint">
-    espresso-panel · artifact identity demo · fully fictional quayside exchange data, no real brands ·
+    espresso-panel · artifact identity demo · fully fictional luggnagg exchange data, no real brands ·
     one stylesheet, zero required scripts · one amber hue, all mono, brackets for states ·
     print this page: the wall is the proof
   </footer>

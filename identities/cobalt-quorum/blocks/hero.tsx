@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 /* The framed product shot is an identity signature: every hero and feature row
    seats its visual inside this browser-chrome frame, never a bare image. */
 export function BrowserFrame({
-  url = "app.runstack.com/deployments",
+  url = "app.balnibarbi.com/deployments",
   children,
 }: {
   url?: string
@@ -98,7 +98,7 @@ export function MetricsStrip({
   )
 }
 
-const defaultLogos = ["Northwind", "Datumworks", "Halcyon", "Brightline", "Osprey Systems", "Fielder"]
+const defaultLogos = ["Blefuscu", "Luggnagg Freight", "Capulet", "Scheria Hotels", "Dombey & Son", "Utensia"]
 
 export function LogoCloud({
   logos = defaultLogos,
@@ -142,7 +142,7 @@ export function Hero({
   eyebrow = "Deploy platform",
   title = "The fastest path from commit to production",
   accent,
-  description = "Runstack turns every merge into a verified, observable release - pipelines, environments, and approvals in one place your whole team can read.",
+  description = "Balnibarbi turns every merge into a verified, observable release - pipelines, environments, and approvals in one place your whole team can read.",
   primaryCta = "Start deploying",
   secondaryCta = "Book a demo",
   trustNote = "Free for 14 days · No credit card required",
@@ -182,7 +182,7 @@ export function Hero({
           <MetricsStrip loading={statsLoading} />
         </div>
       </div>
-      <div className="relative">{shot ?? <BrowserFrame url="app.runstack.com/deployments"><ProductShot /></BrowserFrame>}</div>
+      <div className="relative">{shot ?? <BrowserFrame url="app.balnibarbi.com/deployments"><ProductShot /></BrowserFrame>}</div>
     </section>
   )
 }

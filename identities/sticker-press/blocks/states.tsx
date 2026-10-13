@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 // The four data states every surface owes (empty, loading, error, no
 // results), composed once in this identity's voice so agents copy the
 // pattern instead of improvising it. Static demo content; adapt per project.
-export function StatesGallery({ product = "Ballyhoo" }: { product?: string }) {
+export function StatesGallery({ product = "Pumblechook Press" }: { product?: string }) {
   return (
     <div className="grid gap-5 sm:grid-cols-2">
       <Card className="py-10 bg-card">

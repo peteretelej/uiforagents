@@ -47,7 +47,7 @@ const consoleMetrics = [
 ]
 
 export function TablePage({
-  product = "Runstack",
+  product = "Balnibarbi",
   env = "production",
   heading = "Deployments",
   metrics = consoleMetrics,

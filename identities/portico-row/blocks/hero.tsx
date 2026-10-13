@@ -55,7 +55,7 @@ export function Hero({
   eyebrow = "Business law, practiced since 1987",
   title = "Counsel for companies the region runs on",
   accent,
-  description = "Marlow & Fenn advises founder-led and family-owned businesses on transactions, disputes, and the decisions in between. Every engagement is partner-led, from the first call to the signature.",
+  description = "Jarndyce & Jarndyce advises founder-led and family-owned businesses on transactions, disputes, and the decisions in between. Every engagement is partner-led, from the first call to the signature.",
   primaryCta = "Request a consultation",
   quietLink = "Our practices",
   note = "No fee for the first conversation.",

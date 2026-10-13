@@ -30,7 +30,7 @@ export function StatPill({ label }: { label: string }) {
 }
 
 export function TablePage({
-  brand = "Marlow & Fenn",
+  brand = "Jarndyce & Jarndyce",
   eyebrow = "Selected matters",
   heading = "Deals & results",
   columns = ["No.", "Matter", "Practice", "Figure", "Date"],

@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
    the serif wordmark, children as the section stack, and the compliance
    footer as the credibility sink. The footer is mandatory on every page. */
 export function LandingShell({
-  brand = "Marlow & Fenn",
+  brand = "Jarndyce & Jarndyce",
   nav = [
     { label: "Practices" },
     { label: "People" },
@@ -74,7 +74,7 @@ export function LandingShell({
    on every page: entity, registrations, offices, disclosure links, and the
    advertising notice. Furniture stays in the deep navy band. */
 export function ComplianceFooter({
-  brand = "Marlow & Fenn",
+  brand = "Jarndyce & Jarndyce",
   entity = "A professional limited liability partnership. Counsel for founder-led and family-owned companies.",
   offices = "Offices in Chicago, Milwaukee, and Indianapolis.",
   registrations = "Registered to practice before the courts of the jurisdictions in which our offices sit.",
@@ -346,25 +346,25 @@ type Person = {
 
 const defaultPeople: Person[] = [
   {
-    name: "Eleanor Marlow",
+    name: "Eleanor Jarndyce",
     role: "Founding partner, transactions",
     credentials: ["J.D., 1989", "Admitted in Illinois and Wisconsin", "Counsel on 200+ closed transactions"],
     phone: "(312) 555-0142",
-    email: "e.marlow@marlowfenn.example",
+    email: "e.jarndyce@jarndyce.example",
   },
   {
-    name: "Daniel Fenn",
+    name: "Daniel Tulkinghorn",
     role: "Partner, commercial litigation",
     credentials: ["J.D., 1994", "Admitted in Illinois", "First-chair trial experience in 9 states"],
     phone: "(312) 555-0178",
-    email: "d.fenn@marlowfenn.example",
+    email: "d.tulkinghorn@jarndyce.example",
   },
   {
     name: "Ruth Okonkwo",
     role: "Partner, employment",
     credentials: ["J.D., 2003", "LL.M., labor & employment", "Counsels employers in 14 states"],
     phone: "(414) 555-0163",
-    email: "r.okonkwo@marlowfenn.example",
+    email: "r.okonkwo@jarndyce.example",
   },
 ]
 

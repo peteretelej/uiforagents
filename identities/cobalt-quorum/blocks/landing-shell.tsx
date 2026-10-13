@@ -11,7 +11,7 @@ import { BrowserFrame } from "./hero"
    present, children as the section stack, multi-column footer with the badge
    row. (The precedent's dashboard shell becomes landing-shell here on purpose.) */
 export function LandingShell({
-  brand = "Runstack",
+  brand = "Balnibarbi",
   nav = [
     { label: "Product" },
     { label: "Solutions" },
@@ -167,7 +167,7 @@ export function BentoFeatures({
                 </div>
                 <div className="min-w-0">
                   {tiles[0].shot ?? (
-                    <BrowserFrame url="runstack.com/pipelines">
+                    <BrowserFrame url="balnibarbi.com/pipelines">
                       <div aria-hidden className="space-y-2 text-[11.5px]">
                         {[
                           ["build", "42s", "bg-ok-soft text-ok-foreground", "passed"],
@@ -273,17 +273,17 @@ const defaultQuotes: Quote[] = [
   {
     quote: "We went from hour-long release windows to twelve minutes. The audit trail alone paid for it.",
     name: "Amara Osei",
-    role: "VP Engineering, Northwind",
+    role: "VP Engineering, Blefuscu",
   },
   {
     quote: "Approvals used to live in threads. Now every gate has an owner and a record.",
     name: "Daniel Reyes",
-    role: "Staff Platform Engineer, Halcyon",
+    role: "Staff Platform Engineer, Capulet",
   },
   {
     quote: "Onboarding a new service used to take a week of YAML. It is an afternoon now.",
     name: "Priya Nair",
-    role: "Head of Infrastructure, Datumworks",
+    role: "Head of Infrastructure, Luggnagg Freight",
   },
 ]
 

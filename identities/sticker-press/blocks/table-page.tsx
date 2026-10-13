@@ -17,10 +17,10 @@ type LaunchRow = {
 }
 
 const launches: LaunchRow[] = [
-  { product: "papercup", maker: "rosa", status: "Live", tone: "ok", pageviews: "18,204", date: "Oct 6" },
-  { product: "motofold", maker: "ken", status: "Scheduled 09:00", tone: "warn", pageviews: "—", date: "Oct 8" },
-  { product: "kettleworks", maker: "ada", status: "Live", tone: "ok", pageviews: "9,441", date: "Oct 3" },
-  { product: "brickfield", maker: "sam", status: "Failed dns", tone: "danger", pageviews: "312", date: "Oct 1" },
+  { product: "utensia", maker: "rosa", status: "Live", tone: "ok", pageviews: "18,204", date: "Oct 6" },
+  { product: "blefuscu", maker: "ken", status: "Scheduled 09:00", tone: "warn", pageviews: "—", date: "Oct 8" },
+  { product: "try pots", maker: "ada", status: "Live", tone: "ok", pageviews: "9,441", date: "Oct 3" },
+  { product: "gillikin", maker: "sam", status: "Failed dns", tone: "danger", pageviews: "312", date: "Oct 1" },
 ]
 
 export function StatPill({ label, tone = "muted" }: { label: string; tone?: "ok" | "warn" | "danger" | "muted" }) {
@@ -45,7 +45,7 @@ const consoleMetrics = [
 ]
 
 export function TablePage({
-  product = "Ballyhoo",
+  product = "Pumblechook Press",
   heading = "Launches",
   metrics = consoleMetrics,
   columns = ["Product", "Maker", "Status", "Pageviews", "Date"],

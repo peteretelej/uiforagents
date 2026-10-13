@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 /* The retro window card is an identity signature: every hero and feature row
    seats its visual inside this titlebar-chunked window, never a bare image. */
 export function WindowFrame({
-  title = "ballyhoo.app/launch-day",
+  title = "pumblechook.press/launch-day",
   children,
 }: {
   title?: string
@@ -121,7 +121,7 @@ export function MetricsStrip({
   )
 }
 
-const defaultLogos = ["Papercup", "Motofold", "Kettleworks", "Sundial Club", "Brickfield", "Loop & Sons"]
+const defaultLogos = ["Utensia", "Blefuscu", "Try Pots", "Capulet", "Gillikin", "Dombey & Son"]
 
 export function LogoCloud({
   logos = defaultLogos,
@@ -165,9 +165,9 @@ export function LogoCloud({
    (yellow-filled + white-outline, both hard-shadowed), the starburst seal
    overlapping the window, and exactly one sticker-helper moment (coral). */
 export function Hero({
-  eyebrow = "Ballyhoo 1.0 is out",
+  eyebrow = "Pumblechook Press 1.0 is out",
   title = "Make launch day the loudest day",
-  description = "Ballyhoo turns your release into a page people screenshot: announcements, countdowns, and a changelog your first users actually read.",
+  description = "Pumblechook Press turns your release into a page people screenshot: announcements, countdowns, and a changelog your first users actually read.",
   primaryCta = "Start your launch",
   secondaryCta = "See a live page",
   trustNote = "Free while in beta · No credit card",

@@ -52,7 +52,7 @@ export function AuthCard({
           </div>
           <div className="grid gap-2.5">
             <Label htmlFor="workspace">Workspace name</Label>
-            <Input id="workspace" type="text" placeholder="acme-platform" autoCapitalize="none" />
+            <Input id="workspace" type="text" placeholder="blefuscu-platform" autoCapitalize="none" />
           </div>
           {status === "error" && (
             <p id="auth-error" role="alert" className="text-[13px] font-medium text-destructive">

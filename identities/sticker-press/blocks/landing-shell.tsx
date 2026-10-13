@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
    ALL-CAPS wordmark footer. Solid fills only - the identity bans blur, so
    the header never goes translucent. */
 export function LandingShell({
-  brand = "Ballyhoo",
+  brand = "Pumblechook Press",
   nav = [
     { label: "Features" },
     { label: "Pricing", active: true },
@@ -99,7 +99,7 @@ function DefaultFooter({ brand }: { brand: string }) {
           ))}
         </div>
         <p className="mt-6 text-[13px] text-muted-foreground">
-          Ballyhoo is a fictional product demo. Everything on this page is sample content.
+          Pumblechook Press is a fictional product demo. Everything on this page is sample content.
         </p>
       </div>
       <p
@@ -248,17 +248,17 @@ const defaultQuotes: Quote[] = [
   {
     quote: "Our launch page got screenshot onto three newsletters the first morning. The sticker energy is the point.",
     name: "Rosa M.",
-    product: "Papercup",
+    product: "Utensia",
   },
   {
     quote: "I wrote the changelog in one sitting and it looked like it took a designer a week. It did not.",
     name: "Ken A.",
-    product: "Motofold",
+    product: "Blefuscu",
   },
   {
     quote: "The countdown hit zero, the page flipped to LIVE, and our waitlist doubled by lunch.",
     name: "Priya S.",
-    product: "Sundial Club",
+    product: "Capulet",
   },
 ]
 
@@ -355,7 +355,7 @@ const defaultTiers: Tier[] = [
     description: "For one launch, done right.",
     priceAnnual: "$0",
     priceMonthly: "$0",
-    features: ["1 live page", "ballyhoo.app subdomain", "3 changelog posts", "Community templates"],
+    features: ["1 live page", "pumblechook.press subdomain", "3 changelog posts", "Community templates"],
     cta: "Start free",
     trustNote: "No credit card required",
   },
@@ -510,7 +510,7 @@ export function Faq({
       },
       {
         q: "Can I use my own domain?",
-        a: "On the Press plan and up, yes - point it at your launch page and we handle the certificate. The free plan ships on yourname.ballyhoo.app.",
+        a: "On the Press plan and up, yes - point it at your launch page and we handle the certificate. The free plan ships on yourname.pumblechook.press.",
       },
       {
         q: "What happens after launch day?",

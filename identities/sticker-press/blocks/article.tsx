@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
    card, and an empty body never ships blank. */
 export function Article({
   eyebrow = "Changelog",
-  title = "Ballyhoo 1.0: the launch loud enough to ship",
+  title = "Pumblechook Press 1.0: the launch loud enough to ship",
   meta = "6 Oct 2026 · 4 min read",
   status = "ready",
   children,
