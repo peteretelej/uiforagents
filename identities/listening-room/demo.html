@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<!-- listening-room - catalogue demo. Public-domain content only:
+     Edgar Allan Poe, "The Tell-Tale Heart", read by a LibriVox volunteer
+     (12 Creepy Tales). Transcript timing is interpolated (illustrative);
+     production pages stamp real segment times. -->
+<html lang="en" style="color-scheme: dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Tell-Tale Heart - listening-room demo</title>
+<style>
+/* listening-room - artifact identity foundation
+   A dark-first listening surface for spoken-audio pages: episode hero,
+   waveform player, chapter grid, synced transcript, mini-player.
+   Warm near-black ground, one amber accent, serif display over a sans
+   body, mono for every label, timestamp, and number.
+
+   Provenance: derived from midnight-bulletin v1, 2026-10-22
+   (single-parent fork-and-retune per DERIVE.md). Structure, token names,
+   and lane contract inherited; prefix renamed mb- -> lr-; briefing-only
+   components pruned (including the status-color tokens their components
+   consumed); the listening component set is the extension.
+
+   How the file is built:
+   - Everything lives in `@layer foundation`, so unlayered page CSS always
+     overrides it without !important. Paste the whole file into a
+     single-file <style> block or link it; both modes work.
+   - Dual theme via light-dark() + `color-scheme` on :root. The identity is
+     dark-first: the dark scheme is canonical and the light scheme is the
+     derived alternative. The initial scheme is the identity's lead scheme:
+     dark. A toggle flips html.style.colorScheme to "dark" or "light".
+     There is no data-theme attribute and no duplicated token block.
+     color-scheme must stay on html/:root - light-dark() tokens re-resolve
+     against the root's scheme only.
+   - No JavaScript is required for the page to render. The listening
+     components are progressive enhancement: without JS the page ships a
+     complete native <audio controls> player, the full transcript, and the
+     chapter list. With JS, listening-player.js upgrades the player to the
+     waveform scrubber and wires seeking; it is the only sanctioned script.
+     (Derive-contract note: this identity's sanctioned JS is the player
+     module, the same exception class as a theme toggle - playback cannot
+     be expressed in CSS, so the module ships with the identity and the
+     no-JS render stays complete through the native fallback.)
+*/
+
+@layer foundation {
+  :root {
+    color-scheme: dark;
+
+    /* Shared semantic vocabulary (dark scheme canonical) */
+    --bg: light-dark(oklch(0.965 0.01 85), oklch(0.155 0.006 70));
+    --surface: light-dark(oklch(0.995 0.005 85), oklch(0.19 0.008 70));
+    --ink: light-dark(oklch(0.21 0.01 80), oklch(0.92 0.008 80));
+    --muted: light-dark(oklch(0.42 0.015 80), oklch(0.72 0.01 80));
+    --faint: light-dark(oklch(0.52 0.015 80), oklch(0.6 0.01 80));
+    --line: light-dark(oklch(0.86 0.012 80), oklch(0.32 0.01 80));
+    --line-soft: light-dark(oklch(0.9 0.01 80), oklch(0.26 0.01 80));
+    --accent: light-dark(oklch(0.49 0.115 70), oklch(0.8 0.15 75));
+    --accent-ink: light-dark(oklch(0.98 0.02 85), oklch(0.24 0.06 70));
+    --accent-soft: light-dark(oklch(0.93 0.055 85), oklch(0.27 0.05 75));
+    --radius: 3px;
+    --font-serif: "Charter", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --font-sans: ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+    /* Identity extras */
+    --sunken: light-dark(oklch(0.94 0.012 85), oklch(0.125 0.005 70));
+    --measure: 68ch;
+
+    /* Listening extras (waveform + transcript) */
+    --lr-wave-idle: light-dark(oklch(0.62 0.025 80), oklch(0.5 0.015 80));
+    --lr-wave-played: light-dark(oklch(0.45 0.11 70), oklch(0.8 0.15 75));
+  }
+
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  strong { color: var(--ink); }
+  p { margin: 0; max-width: var(--measure); color: var(--muted); }
+  p + p { margin-top: 14px; }
+  .lr-wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Topbar ---------- */
+  .lr-topbar {
+    border-bottom: 1px solid var(--line-soft);
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
+  }
+  .lr-topbar .lr-wrap { display: flex; align-items: center; gap: 16px; height: 44px; }
+  .lr-topbar a { color: var(--muted); text-decoration: none; }
+  .lr-topbar a:hover { color: var(--ink); }
+  .lr-brand { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .lr-crumb { color: var(--faint); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lr-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .lr-theme-toggle {
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
+    color: var(--muted); background: none; border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 4px 10px; cursor: pointer; white-space: nowrap;
+  }
+  .lr-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
+
+  /* ---------- Hero ---------- */
+  .lr-hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line-soft); }
+  .lr-kicker {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 20px;
+  }
+  .lr-hero h1 {
+    font-family: var(--font-serif); font-weight: 400;
+    font-size: clamp(40px, 6.4vw, 68px); line-height: 1.05;
+    letter-spacing: -0.01em; margin: 0; max-width: 16ch;
+  }
+  .lr-hero h1 em { font-style: italic; color: var(--accent); }
+  .lr-dek {
+    font-family: var(--font-serif); font-size: clamp(18px, 2.2vw, 21px);
+    line-height: 1.5; color: var(--muted); max-width: 56ch; margin: 22px 0 0;
+  }
+  .lr-meta-row {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    margin: 26px 0 0; font-family: var(--font-mono); font-size: 11.5px;
+    letter-spacing: 0.05em; color: var(--faint);
+  }
+  .lr-badge {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent-ink); background: var(--accent);
+    border-radius: var(--radius); padding: 3px 8px;
+  }
+
+  /* ---------- Sections ---------- */
+  .lr-section { padding: 64px 0; border-bottom: 1px solid var(--line-soft); }
+  .lr-section:last-of-type { border-bottom: none; }
+  .lr-snum {
+    display: block; font-family: var(--font-mono); font-size: 12px;
+    color: var(--accent); letter-spacing: 0.1em; margin: 0 0 12px;
+  }
+  .lr-section h2 {
+    font-family: var(--font-serif); font-weight: 400;
+    font-size: clamp(28px, 3.6vw, 38px); line-height: 1.15;
+    margin: 0 0 18px; max-width: 26ch;
+  }
+  .lr-lede { font-family: var(--font-serif); font-size: 19px; line-height: 1.55; color: var(--ink); }
+  .lr-small { font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+
+  /* ---------- Tables (sources / shownotes) ---------- */
+  .lr-tblwrap {
+    overflow-x: auto; margin: 26px 0 0;
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+  }
+  .lr-tblwrap table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+  .lr-tblwrap th {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--faint); font-weight: 500;
+    text-align: left; padding: 10px 14px;
+    background: var(--sunken); border-bottom: 1px solid var(--line-soft);
+  }
+  .lr-tblwrap td {
+    padding: 11px 14px; border-bottom: 1px solid var(--line-soft);
+    vertical-align: top; color: var(--muted);
+  }
+  .lr-tblwrap tr:last-child td { border-bottom: none; }
+  .lr-tblwrap td:first-child { color: var(--ink); font-weight: 500; }
+
+  /* ---------- Player ---------- */
+  .lr-player { max-width: 680px; }
+  .lr-wavebox { position: relative; }
+  .lr-wave {
+    display: block; width: 100%; height: 56px; cursor: pointer;
+    touch-action: none; border-radius: var(--radius);
+  }
+  .lr-wave:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lr-wave-tip {
+    position: absolute; bottom: calc(100% + 6px); transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 11px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 2px 7px; white-space: nowrap;
+    pointer-events: none; display: none; z-index: 2;
+  }
+  .lr-wavebox:hover .lr-wave-tip.on { display: block; }
+  .lr-native { width: 100%; margin: 0; }
+  /* With JS, the module swaps the native control for the waveform chrome. */
+  html.lr-js .lr-native { display: none; }
+  html:not(.lr-js) .lr-wavebox { display: none; }
+
+  .lr-transport {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .lr-tbtn {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+    color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+    padding: 0 14px; height: 40px; min-width: 40px; cursor: pointer;
+    white-space: nowrap;
+  }
+  .lr-tbtn:hover { color: var(--ink); border-color: var(--accent); }
+  .lr-tbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lr-tbtn--play {
+    height: 44px; min-width: 96px; font-size: 13px; font-weight: 600;
+    color: var(--accent); border-color: var(--line);
+  }
+  .lr-tbtn--play.is-playing {
+    color: var(--accent-ink); background: var(--accent); border-color: var(--accent);
+  }
+  .lr-time {
+    font-family: var(--font-mono); font-size: 13px; color: var(--faint);
+    margin-left: auto; font-variant-numeric: tabular-nums;
+  }
+  .lr-time .lr-elapsed { color: var(--accent); }
+  .lr-chlabel {
+    width: 100%; font-family: var(--font-mono); font-size: 11.5px;
+    letter-spacing: 0.05em; color: var(--faint); margin-top: 4px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .lr-chlabel b { color: var(--muted); font-weight: 600; }
+
+  /* ---------- Chapters ---------- */
+  .lr-chapters {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    max-width: 680px; margin: 26px 0 0; padding: 0; list-style: none;
+  }
+  .lr-chbtn {
+    font-family: var(--font-sans); text-align: left; cursor: pointer;
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+    padding: 10px 14px; line-height: 1.4; width: 100%;
+  }
+  .lr-chbtn:hover { border-color: var(--accent); }
+  .lr-chbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lr-chbtn .lr-chnum {
+    display: block; font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint);
+  }
+  .lr-chbtn .lr-chttl { display: block; font-weight: 600; font-size: 14px; }
+  .lr-chbtn .lr-chtime {
+    display: block; font-family: var(--font-mono); font-size: 11.5px; color: var(--faint);
+  }
+  .lr-chbtn.is-now { border-color: var(--accent); background: var(--accent-soft); }
+  .lr-chbtn.is-now .lr-chtime { color: var(--accent); }
+
+  /* ---------- Transcript ---------- */
+  .lr-transcript { max-width: var(--measure); margin: 8px 0 0; position: relative; }
+  .lr-trole {
+    display: inline-block; font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint);
+    min-width: 64px;
+  }
+  .lr-tp {
+    display: flex; gap: 12px; align-items: baseline;
+    padding: 7px 10px 7px 12px; border-left: 2px solid transparent;
+    color: var(--muted); cursor: pointer; max-width: none;
+  }
+  .lr-tp:hover { color: var(--ink); background: var(--sunken); }
+  .lr-tp .lr-tstamp {
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--faint);
+    font-variant-numeric: tabular-nums; cursor: pointer; flex: 0 0 auto;
+    background: none; border: none; padding: 0; text-align: right;
+    min-width: 44px;
+  }
+  .lr-tp:hover .lr-tstamp { color: var(--accent); }
+  .lr-tp .lr-ttext { flex: 1; }
+  .lr-tp.is-past { color: var(--faint); }
+  .lr-tp.is-now {
+    color: var(--ink); border-left-color: var(--accent);
+    background: color-mix(in oklab, var(--accent-soft) 55%, transparent);
+  }
+  .lr-tp.is-now .lr-trole { color: var(--accent); }
+  .lr-follow {
+    position: sticky; top: 0; z-index: 1; display: none;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em;
+    color: var(--accent); background: var(--bg); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 5px 12px; margin: 0 0 8px;
+    cursor: pointer; width: max-content;
+  }
+  .lr-follow.is-on { display: block; }
+
+  /* ---------- Mini-player ---------- */
+  .lr-mini {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    background: var(--surface); border-top: 1px solid var(--line);
+    display: none; align-items: center; gap: 14px;
+    padding: 10px 18px; padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .lr-mini.is-active { display: flex; }
+  .lr-mini .lr-tbtn { height: 36px; padding: 0 12px; }
+  .lr-mini-title {
+    font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+    text-decoration: none; min-width: 0; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; flex: 1;
+  }
+  .lr-mini-title:hover { color: var(--ink); }
+  .lr-mini-track { position: relative; flex: 2; height: 20px; cursor: pointer; min-width: 80px; }
+  .lr-mini-track::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px;
+    transform: translateY(-50%); background: var(--line-soft); border-radius: 2px;
+  }
+  .lr-mini-fill {
+    position: absolute; left: 0; top: 50%; height: 3px; width: 0%;
+    transform: translateY(-50%); background: var(--accent); border-radius: 2px;
+  }
+  .lr-mini-close {
+    font-family: var(--font-mono); font-size: 11px; color: var(--faint);
+    background: none; border: 1px solid var(--line-soft); border-radius: var(--radius);
+    height: 28px; padding: 0 10px; cursor: pointer;
+  }
+  .lr-mini-close:hover { color: var(--ink); border-color: var(--line); }
+  body.has-lrmini { padding-bottom: 64px; }
+
+  /* ---------- Loading ---------- */
+  .lr-skel {
+    height: 12px; border-radius: var(--radius); background: var(--sunken);
+    border: 1px solid var(--line-soft); max-width: 100%;
+  }
+
+  /* ---------- Share bar / footer ---------- */
+  .lr-sharebar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 34px 0 0; }
+  .lr-share-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .lr-share-row a, .lr-share-row button {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+    color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+    padding: 6px 14px; text-decoration: none; cursor: pointer;
+  }
+  .lr-share-row a:hover, .lr-share-row button:hover { color: var(--ink); border-color: var(--line); }
+  .lr-footer { padding: 48px 0 80px; border-top: 1px solid var(--line-soft); }
+  .lr-footer .lr-wrap { font-family: var(--font-mono); font-size: 12px; color: var(--faint); line-height: 1.9; }
+  .lr-footer a { color: var(--muted); }
+
+  /* ---------- Utilities ---------- */
+  .lr-mono { font-family: var(--font-mono); }
+  .lr-measure { max-width: var(--measure); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 800px) {
+    .lr-chapters { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .lr-wrap { padding: 0 18px; }
+    .lr-topbar nav { display: none; }
+    .lr-wave { height: 44px; }
+    .lr-time { margin-left: 0; width: 100%; order: 5; }
+    .lr-trole { min-width: 0; }
+    .lr-tp { flex-wrap: wrap; gap: 4px 10px; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    :root { color-scheme: light; }
+    .lr-topbar nav, .lr-sharebar, .lr-theme-toggle, .lr-player, .lr-mini, .lr-follow { display: none !important; }
+    body { font-size: 11pt; }
+    .lr-tblwrap { break-inside: avoid; }
+    .lr-tp.is-now { background: none; }
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+
+</style>
+</head>
+<body>
+
+<header class="lr-topbar">
+  <div class="lr-wrap">
+    <span class="lr-brand">listening-room</span>
+    <span class="lr-crumb">a listening surface for spoken audio</span>
+    <nav><button type="button" class="lr-theme-toggle">Light</button></nav>
+  </div>
+</header>
+
+<div class="lr-wrap">
+  <section class="lr-hero">
+    <p class="lr-kicker">LibriVox reading &middot; Edgar Allan Poe, 1843</p>
+    <h1>The Tell-Tale Heart</h1>
+    <p class="lr-dek">A single short story as a listening page: the full reading with a waveform you can scrub, chapters you can jump through, and a transcript that follows the voice.</p>
+    <div class="lr-meta-row">
+      <span class="lr-badge">Public domain</span>
+      <span>14 min</span><span>&middot;</span><span>4 chapters</span><span>&middot;</span><span>transcript + sync</span>
+    </div>
+  </section>
+
+  <section class="lr-section">
+    <span class="lr-snum">01 - Listen</span>
+    <h2>Play the reading</h2>
+    <p class="lr-lede">Drag the waveform, click any point to jump, or tap a chapter. Keys: <strong>space</strong> or <strong>K</strong> play-pause, <strong>J</strong>/<strong>L</strong> jump 10 seconds, arrows on the waveform nudge 5.</p>
+    <div style="margin-top: 24px">
+      <div class="lr-player" data-lr-player data-audio="https://archive.org/download/12_creepytales_1206_librivox/creepytalesbypoe_01_poe_64kb.mp3" data-title="The Tell-Tale Heart" data-show="LibriVox - 12 Creepy Tales" data-duration="829.75">
+        <audio class="lr-native" controls preload="metadata" src="https://archive.org/download/12_creepytales_1206_librivox/creepytalesbypoe_01_poe_64kb.mp3"></audio>
+        <div class="lr-wavebox">
+          <canvas class="lr-wave"></canvas>
+          <span class="lr-wave-tip"></span>
+        </div>
+        <div class="lr-transport">
+          <button type="button" class="lr-tbtn lr-tbtn--play">Play</button>
+          <button type="button" class="lr-tbtn lr-tbtn--back">-15s</button>
+          <button type="button" class="lr-tbtn lr-tbtn--fwd">+30s</button>
+          <button type="button" class="lr-tbtn lr-speed">1x</button>
+          <span class="lr-time"><span class="lr-elapsed">0:00</span> / <span class="lr-total">13:49</span></span>
+          <span class="lr-chlabel"></span>
+        </div>
+        <script type="application/json" data-lr-peaks>{"duration":829.75,"data":[0.001,0.206,0.189,0.189,0.122,0.212,0.178,0.101,0.058,0.109,0.171,0.203,0.121,0.189,0.178,0.197,0.137,0.106,0.087,0.065,0.204,0.176,0.113,0.129,0.092,0.194,0.145,0.112,0.09,0.04,0.001,0.155,0.217,0.181,0.125,0.085,0.094,0.1,0.192,0.156,0.117,0.056,0.168,0.14,0.106,0.004,0.001,0.103,0.228,0.191,0.175,0.142,0.165,0.228,0.166,0.155,0.127,0.122,0.093,0.183,0.12,0.154,0.145,0.134,0.119,0.12,0.221,0.113,0.124,0.15,0.104,0.176,0.156,0.05,0.225,0.25,0.173,0.124,0.12,0.151,0.233,0.145,0.153,0.103,0.113,0.177,0.203,0.132,0.138,0.161,0.189,0.145,0.153,0.112,0.187,0.18,0.262,0.171,0.161,0.161,0.107,0.122,0.143,0.054,0.003,0.181,0.111,0.134,0.179,0.163,0.126,0.108,0.073,0.118,0.129,0.124,0.087,0.114,0.093,0.007,0.229,0.134,0.098,0.14,0.159,0.108,0.074,0.155,0.151,0.1,0.152,0.123,0.102,0.071,0.227,0.194,0.145,0.14,0.153,0.246,0.207,0.238,0.137,0.113,0.185,0.108,0.113,0.081,0.206,0.171,0.241,0.13,0.144,0.227,0.139,0.138,0.238,0.146,0.213,0.162,0.159,0.179,0.246,0.188,0.145,0.142,0.185,0.142,0.112,0.24,0.13,0.088,0.158,0.189,0.095,0.127,0.178,0.105,0.188,0.181,0.131,0.134,0.25,0.157,0.146,0.198,0.137,0.115,0.001,0.179,0.13,0.15,0.172,0.119,0.141,0.165,0.142,0.11,0.064,0.177,0.152,0.215,0.108,0.135,0.222,0.206,0.173,0.135,0.164,0.16,0.105,0.279,0.302,0.117,0.129,0.228,0.158,0.139,0.167,0.159,0.181,0.135,0.163,0.127,0.139,0.161,0.239,0.2,0.178,0.178,0.189,0.198,0.122,0.162,0.182,0.114,0.097,0.117,0.067,0.127,0.109,0.084,0.137,0.301,0.238,0.18,0.198,0.218,0.121,0.12,0.272,0.149,0.136,0.094,0.117,0.089,0.192,0.173,0.161,0.161,0.118,0.118,0.15,0.154,0.14,0.172,0.042,0.215,0.379,0.231,0.145,0.133,0.165,0.11,0.013,0.168,0.105,0.121,0.144,0.114,0.162,0.121,0.095,0.157,0.145,0.136,0.179,0.119,0.002,0.238,0.255,0.165,0.126,0.209,0.155,0.168,0.146,0.086,0.112,0.156,0.1,0.108,0.002,0.202,0.227,0.206,0.206,0.202,0.125,0.142,0.007,0.294,0.195,0.205,0.225,0.124,0.192,0.304,0.133,0.111,0.178,0.185,0.114,0.105,0.187,0.121,0.076,0.092,0.124,0.148,0.243,0.187,0.152,0.107,0.102,0.167,0.12,0.11,0.113,0.15,0.379,0.29,0.277,0.103,0.137,0.25,0.222,0.194,0.152,0.134,0.174,0.139,0.145,0.102,0.143,0.208,0.175,0.146,0.139,0.146,0.2,0.145,0.184,0.145,0.097,0.118,0.093,0.141,0.016,0.185,0.182,0.177,0.174,0.124,0.275,0.169,0.101,0.121,0.164,0.116,0.107,0.177,0.165,0.116,0.114,0.081,0.136,0.151,0.158,0.09,0.094,0.009,0.25,0.121,0.099,0.16,0.207,0.116,0.118,0.111,0.105,0.091,0.167,0.149,0.155,0.139,0.236,0.232,0.148,0.106,0.151,0.002,0.171,0.173,0.173,0.169,0.145,0.14,0.119,0.151,0.115,0.187,0.19,0.18,0.158,0.081,0.129,0.138,0.131,0.19,0.17,0.127,0.151,0.122,0.125,0.187,0.151,0.113,0.229,0.15,0.158,0.176,0.119,0.133,0.105,0.211,0.235,0.207,0.215,0.147,0.198,0.188,0.148,0.199,0.213,0.171,0.156,0.136,0.141,0.053,0.175,0.193,0.169,0.144,0.179,0.136,0.158,0.309,0.209,0.231,0.177,0.165,0.118,0.063,0.192,0.249,0.192,0.152,0.097,0.113,0.211,0.122,0.204,0.182,0.178,0.128,0.09,0.167,0.299,0.169,0.115,0.161,0.145,0.133,0.206,0.221,0.214,0.141,0.193,0.109,0.175,0.133,0.136,0.139,0.168,0.116,0.104,0.008,0.141,0.203,0.172,0.164,0.166,0.096,0.086,0.266,0.178,0.243,0.132,0.109,0.297,0.189,0.173,0.23,0.119,0.471,0.193,0.018,0.166,0.176,0.164,0.104,0.083,0.138,0.13,0.146,0.195,0.158,0.108,0.156,0.15,0.103,0.125,0.123,0.1,0.09,0.156,0.107,0.163,0.13,0.134,0.177,0.127,0.104,0.11,0.121,0.098,0.15,0.165,0.203,0.084,0.097,0.047,0.001,0.237,0.182,0.219,0.122,0.246,0.364,0.201,0.149,0.137,0.121,0.173,0.162,0.134,0.15,0.106,0.139,0.16,0.383,0.282,0.202,0.132,0.226,0.169,0.159,0.159,0.148,0.245,0.137,0.115,0.213,0.277,0.202,0.168,0.199,0.14,0.162,0.125,0.146,0.233,0.172,0.1,0.258,0.219,0.118,0.151,0.082,0.096,0.205,0.237,0.115,0.188,0.186,0.164,0.161,0.072,0.197,0.165,0.24,0.094,0.202,0.193,0.135,0.105,0.108,0.173,0.22,0.146,0.109,0.114,0.203,0.149,0.145,0.155,0.163,0.121,0.129,0.09,0.133,0.114,0.137,0.041,0.13,0.151,0.159,0.152,0.095,0.119,0.123,0.199,0.151,0.125,0.131,0.111,0.121,0.096,0.186,0.197,0.19,0.137,0.138,0.304,0.166,0.203,0.135,0.153,0.177,0.15,0.133,0.149,0.138,0.08,0.267,0.304,0.195,0.19,0.102,0.124,0.206,0.179,0.122,0.215,0.192,0.104,0.127,0.117,0.137,0.156,0.137,0.095,0.179,0.231,0.107,0.176,0.114,0.177,0.135,0.238,0.209,0.131,0.129,0.098,0.13,0.127,0.099,0.268,0.253,0.228,0.173,0.155,0.126,0.154,0.245,0.15,0.125,0.181,0.181,0.149,0.139,0.108,0.149,0.187,0.145,0.204,0.115,0.116,0.001,0.224,0.179,0.166,0.123,0.122,0.08,0.119,0.125,0.122,0.138,0.205,0.204,0.145,0.1,0.154,0.211,0.162,0.148,0.092,0.07,0.131,0.143,0.198,0.193,0.164,0.146,0.109,0.105,0.064,0.128,0.221,0.158,0.179,0.207,0.119,0.201,0.133,0.148,0.21,0.136,0.16,0.107,0.184,0.14,0.178,0.104,0.134,0.119,0.187,0.144,0.146,0.246,0.177,0.168,0.237,0.193,0.238,0.176,0.151,0.142,0.289,0.254,0.161,0.139,0.311,0.283,0.211,0.166,0.248,0.177,0.173,0.266,0.237,0.235,0.179,0.127,0.073,0.206,0.177,0.149,0.235,0.188,0.105,0.096,0.223,0.253,0.234,0.247,0.138,0.086,0.156,0.122,0.148,0.15,0.105,0.182,0.188,0.135,0.254,0.196,0.147,0.152,0.178,0.191,0.145,0.194,0.09,0.148,0.174,0.095,0.152,0.165,0.198,0.302,0.198,0.142,0.104,0.229,0.238,0.152,0.15,0.176,0.083,0.177,0.179,0.128,0.303,0.378,0.152,0.166,0.139,0.059,0.251,0.177,0.144,0.239,0.208,0.174,0.166,0.228,0.144,0.093,0.21,0.223,0.184,0.107,0.103,0.12,0.095,0.14,0.119,0.256,0.221,0.173,0.12,0.012,0.21,0.211,0.149,0.157,0.207,0.139,0.112,0.023,0.165,0.141,0.117,0.206,0.143,0.094,0.19,0.176,0.156,0.131,0.224,0.179,0.211,0.127,0.006,0.235,0.19,0.141,0.122,0.105,0.223,0.222,0.33,0.164,0.376,0.287,0.196,0.131,0.209,0.245,0.21,0.178,0.165,0.182,0.218,0.164,0.104,0.218,0.251,0.246,0.175,0.131,0.236,0.274,0.306,0.166,0.217,0.129,0.128,0.133,0.179,0.191,0.123,0.14,0.131,0.116,0.207,0.257,0.18,0.123,0.261,0.149,0.111,0.163,0.13,0.286,0.182,0.152,0.199,0.291,0.262,0.222,0.21,0.16,0.165,0.24,0.231,0.182,0.118,0.076,0.195,0.154,0.19,0.299,0.114,0.148,0.241,0.157,0.062,0.316,0.238,0.234,0.237,0.107,0.174,0.102,0.096,0.123,0.241,0.078,0.139,0.153,0.111,0.247,0.198,0.26,0.269,0.14,0.283,0.236,0.143,0.118,0.275,0.14,0.197,0.164,0.202,0.171,0.125,0.31,0.197,0.201,0.13,0.167,0.198,0.171,0.118,0.069,0.129,0.154,0.223,0.162,0.09,0.157,0.173,0.132,0.15,0.306,0.141,0.119,0.056,0.31,0.244,0.176,0.134,0.246,0.325,0.154,0.113,0.151,0.217,0.193,0.21,0.1,0.352,0.186,0.317,0.244,0.19,0.11,0.142,0.176,0.231,0.107,0.089,0.216,0.243,0.149,0.073,0.191,0.219,0.145,0.25,0.159,0.146,0.133,0.126,0.005,0.169,0.146,0.126,0.086,0.138,0.22,0.166,0.193,0.149,0.141,0.122,0.137,0.172,0.145,0.076,0.198,0.182,0.176,0.262,0.108,0.118,0.114,0.011,0.161,0.301,0.195,0.184,0.208,0.193,0.163,0.207,0.128,0.135,0.023,0.2,0.268,0.214,0.159,0.147,0.15,0.191,0.229,0.224,0.095,0.111,0.003,0.32,0.177,0.205,0.191,0.151,0.141,0.129,0.218,0.125,0.197,0.155,0.172,0.262,0.22,0.154,0.121,0.029,0.19,0.223,0.194,0.178,0.213,0.134,0.115,0.171,0.139,0.165,0.171,0.222,0.182,0.21,0.017,0.199,0.24,0.204,0.378,0.252,0.287,0.38,0.179,0.267,0.135,0.141,0.14,0.115,0.123,0.081,0.077,0.305,0.17,0.163,0.129,0.157,0.119,0.109,0.105,0.116,0.174,0.158,0.126,0.126,0.409,0.165,0.135,0.164,0.199,0.166,0.107,0.148,0.128,0.1,0.143,0.14,0.082,0.146,0.107,0.092,0.009,0.192,0.155,0.161,0.108,0.102,0.017,0.209,0.182,0.144,0.113,0.078,0.162,0.165,0.191,0.159,0.151,0.146,0.165,0.189,0.116,0.208,0.206,0.111,0.097,0.13,0.166,0.121,0.068,0.234,0.134,0.138,0.243,0.197,0.152,0.142,0.003,0.171,0.21,0.182,0.148,0.102,0.069,0.236,0.188,0.13,0.29,0.147,0.107,0.042,0.16,0.131,0.204,0.139,0.107,0.212,0.162,0.15,0.135,0.136,0.254,0.141,0.138,0.13,0.142,0.175,0.29,0.12,0.106,0.166,0.163,0.127,0.072,0.168,0.165,0.154,0.124,0.122,0.199,0.226,0.099,0.23,0.234,0.196,0.119,0.12,0.052,0.184,0.184,0.12,0.244,0.242,0.128,0.126,0.116,0.256,0.166,0.136,0.144,0.17,0.188,0.112,0.209,0.225,0.125,0.19,0.011,0.227,0.16,0.178,0.115,0.195,0.16,0.117,0.119,0.183,0.216,0.145,0.097,0.002,0.192,0.184,0.218,0.138,0.191,0.228,0.227,0.127,0.1,0.194,0.19,0.14,0.197,0.18,0.156,0.143,0.106,0.138,0.176,0.129,0.159,0.239,0.106,0.112,0.144,0.134,0.137,0.135,0.114,0.159,0.144,0.138,0.144,0.113,0.212,0.199,0.142,0.198,0.104,0.176,0.184,0.146,0.228,0.127,0.085,0.27,0.168,0.154,0.164,0.123,0.122,0.165,0.149,0.22,0.17,0.199,0.116,0.118,0.107,0.002,0.249,0.182,0.15,0.203,0.135,0.168,0.249,0.136,0.127,0.149,0.161,0.007,0.221,0.183,0.075,0.236,0.216,0.191,0.137,0.249,0.157,0.185,0.116,0.208,0.177,0.151,0.207,0.134,0.164,0.17,0.078,0.184,0.097,0.154,0.2,0.218,0.111,0.178,0.106,0.118,0.218,0.132,0.149,0.132,0.124,0.169,0.191,0.107,0.067,0.191,0.232,0.144,0.141,0.158,0.191,0.192,0.139,0.198,0.131,0.088,0.183,0.188,0.194,0.172,0.107,0.002,0.156,0.194,0.218,0.113,0.193,0.177,0.161,0.156,0.132,0.12,0.168,0.143,0.174,0.165,0.2,0.147,0.04,0.232,0.279,0.122,0.122,0.255,0.223,0.23,0.251,0.295,0.278,0.388,0.231,0.314,0.086,0.233,0.313,0.186,0.255,0.248,0.159,0.26,0.14,0.166,0.011,0.178,0.214,0.303,0.158,0.148,0.121,0.114,0.224,0.171,0.084,0.545,0.144,0.498,0.223,0.241,0.328,0.184,0.204,0.105,0.131,0.206,0.243,0.281,0.209,0.047,0.187,0.341,0.377,0.33,0.236,0.25,0.21,0.251,0.195,0.259,0.215,0.193,0.254,0.225,0.384,0.24,0.22,0.143,0.179,0.162,0.193,0.161,0.209,0.229,0.215,0.148,0.211,0.233,0.261,0.206,0.203,0.32,0.253,0.191,0.174,0.199,0.192,0.136,0.233,0.29,0.254,0.204,0.2,0.175,0.209,0.061,0.213,0.303,0.31,0.253,0.286,0.236,0.282,0.245,0.355,0.321,0.248,0.207,0.305,0.28,0.324,0.282,0.197,0.152,0.296,0.199,0.215,0.398,0.265,0.284,0.323,0.414,0.432,0.013,0.001,0.001,0.001,0.001,0.28,0.164,0.15,0.122,0.005,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001]}</script>
+      </div>
+    </div>
+  </section>
+
+  <section class="lr-section">
+    <span class="lr-snum">02 - Chapters</span>
+    <h2>Four chapters</h2>
+    <ul class="lr-chapters">
+      <li><button type="button" class="lr-chbtn" data-start="0" data-title="The Vulture Eye">
+        <span class="lr-chnum">Chapter 1</span>
+        <span class="lr-chttl">The Vulture Eye</span>
+        <span class="lr-chtime">0:00</span>
+      </button></li>
+      <li><button type="button" class="lr-chbtn" data-start="240" data-title="Eight Nights of the Lantern">
+        <span class="lr-chnum">Chapter 2</span>
+        <span class="lr-chttl">Eight Nights of the Lantern</span>
+        <span class="lr-chtime">4:00</span>
+      </button></li>
+      <li><button type="button" class="lr-chbtn" data-start="480" data-title="The Deed">
+        <span class="lr-chnum">Chapter 3</span>
+        <span class="lr-chttl">The Deed</span>
+        <span class="lr-chtime">8:00</span>
+      </button></li>
+      <li><button type="button" class="lr-chbtn" data-start="700" data-title="The Confession">
+        <span class="lr-chnum">Chapter 4</span>
+        <span class="lr-chttl">The Confession</span>
+        <span class="lr-chtime">11:40</span>
+      </button></li>
+    </ul>
+  </section>
+
+  <section class="lr-section">
+    <span class="lr-snum">03 - Transcript</span>
+    <h2>Read along</h2>
+    <p class="lr-lede">The story's opening, timed to the reading. Click any line to jump there; the current line lights up while you listen.</p>
+    <div class="lr-transcript"><button type="button" class="lr-follow">Auto-scroll paused - resume</button>
+    <p class="lr-tp" data-start="0.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">0:00</button>
+      <span class="lr-ttext">True! - nervous - very, very dreadfully nervous I had been and am; but why will you say that I am mad?</span>
+    </p>
+    <p class="lr-tp" data-start="36.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">0:36</button>
+      <span class="lr-ttext">The disease had sharpened my senses - not destroyed - not dulled them. Above all was the sense of hearing acute.</span>
+    </p>
+    <p class="lr-tp" data-start="72.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">1:12</button>
+      <span class="lr-ttext">I heard all things in the heaven and in the earth. I heard many things in hell. How, then, am I mad? Hearken! and observe how healthily - how calmly - I can tell you the whole story.</span>
+    </p>
+    <p class="lr-tp" data-start="108.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">1:48</button>
+      <span class="lr-ttext">It is impossible to say how first the idea entered my brain; but once conceived, it haunted me day and night.</span>
+    </p>
+    <p class="lr-tp" data-start="144.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">2:24</button>
+      <span class="lr-ttext">There was no passion in the world except the idea. I think it was his eye! yes, it was this!</span>
+    </p>
+    <p class="lr-tp" data-start="180.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">3:00</button>
+      <span class="lr-ttext">He had the eye of a vulture - a pale blue eye, with a film over it. Whenever it fell upon me, my blood ran cold.</span>
+    </p>
+    <p class="lr-tp" data-start="216.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">3:36</button>
+      <span class="lr-ttext">I made up my mind to take the life of the old man, and thus rid myself of the eye forever.</span>
+    </p>
+    <p class="lr-tp" data-start="252.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">4:12</button>
+      <span class="lr-ttext">And every night, about midnight, I turned the latch of his door and opened it - oh so gently!</span>
+    </p>
+    <p class="lr-tp" data-start="288.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">4:48</button>
+      <span class="lr-ttext">I was never kinder to the old man than during the whole week before I killed him.</span>
+    </p>
+    <p class="lr-tp" data-start="324.00" data-role="narrator">
+      <span class="lr-trole">Narrator</span><button class="lr-tstamp" type="button">5:24</button>
+      <span class="lr-ttext">And then, when my head was well in the room, I undid the lantern cautiously - oh, so cautiously - cautiously (for the hinges creaked) - I undid it just so much that a single thin ray fell upon the vulture eye.</span>
+    </p>
+    </div>
+  </section>
+</div>
+
+<footer class="lr-footer">
+  <div class="lr-wrap">
+    Reading: LibriVox, "12 Creepy Tales by Edgar Allan Poe" - public domain. Story text: Edgar Allan Poe, 1843, public domain.<br>
+    Transcript timing in this demo is interpolated; production pages stamp real segment times from their producer.
+  </div>
+</footer>
+
+<div class="lr-mini">
+  <button type="button" class="lr-tbtn lr-mini-btn">Pause</button>
+  <a class="lr-mini-title" href="#"></a>
+  <div class="lr-mini-track"><div class="lr-mini-fill"></div></div>
+  <button type="button" class="lr-mini-close">Close</button>
+</div>
+
+<script>
+  // Sanctioned theme toggle: flips the root scheme and tells the player.
+  (function () {
+    var btn = document.querySelector('.lr-theme-toggle');
+    btn.addEventListener('click', function () {
+      var toLight = document.documentElement.style.colorScheme !== 'light';
+      document.documentElement.style.colorScheme = toLight ? 'light' : 'dark';
+      btn.textContent = toLight ? 'Dark' : 'Light';
+      window.dispatchEvent(new CustomEvent('lr:theme'));
+    });
+  })();
+</script>
+<script>
+/* listening-player.js - the listening-room identity's sanctioned player
+   module. Progressive enhancement over the native <audio controls> fallback:
+   the page renders completely without it; with it, the player becomes the
+   waveform scrubber and every part of the page can drive playback.
+
+   Contract (see prompt-pack.md):
+   - One root per player: [data-lr-player] with data-audio, data-title,
+     data-show, and optionally data-duration (server-rendered seconds).
+   - Waveform peaks: <script type="application/json" data-lr-peaks> inside
+     the root ({ duration, data: [amplitude...] }) or a data-peaks-src URL.
+     Without peaks the wavebox degrades to a plain scrubber track.
+   - One audio graph per page: the module ADOPTS the first player's native
+     <audio> element (the no-JS fallback control) as the shared media
+     element; other players' native elements are stripped of src so extra
+     players (index cards) never prefetch. A page may carry several
+     players; the first root owns the transcript and the mini-player.
+   - Transcript: .lr-transcript containing .lr-tp[data-start][data-role]
+     paragraphs; the module stamps .is-past/.is-now and drives the
+     .lr-follow resume chip when the reader scrolls away.
+   - Chapters: .lr-chbtn[data-start] buttons anywhere on the page, plus the
+     .lr-chlabel line under the transport.
+   - Seeks never rely on bare currentTime assignment before the media is
+     seekable: they wait for a real seekable range and never restart an
+     in-flight download (a pattern proven on a production audio page).
+   - Keyboard: space/K play-pause, J/L back/forward 10s (global; skipped
+     while typing). The waveform is role=slider: arrows +/-5s, Home/End.
+   - Media Session: metadata plus play/pause/seek/seekto handlers.
+   - No dependencies, no build step. */
+(function () {
+  'use strict';
+
+  var SPEEDS = [1, 1.25, 1.5, 1.75, 2];
+  var SAVE_STEP = 5;
+  var STORE_KEY = 'lr-listen:';
+  var doc = document;
+  var html = doc.documentElement;
+  var audio = null; // the page's one media graph: the first player's native element
+  var loadedUrl = '';
+  var players = [];
+  var current = null;
+  var rate = 1;
+  var pendingSeek = null; // null = none; a number, including 0, is a live seek
+  var seekTimer = 0;
+  var docWired = false;
+  var resumeAt = 0;
+  var lastSaved = 0;
+  var raf = 0;
+  var ghostX = -1;
+  var miniDismissed = false;
+
+  html.classList.add('lr-js');
+
+  /* ---------- helpers ---------- */
+
+  function clock(s) {
+    if (!isFinite(s) || s <= 0) return '';
+    s = Math.floor(s);
+    var h = Math.floor(s / 3600);
+    var m = Math.floor((s % 3600) / 60);
+    var r = s % 60;
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+    return h > 0 ? h + ':' + pad(m) + ':' + pad(r) : m + ':' + pad(r);
+  }
+
+  function savedTime(url) {
+    try { var v = parseFloat(localStorage.getItem(STORE_KEY + url)); return isFinite(v) && v > 0 ? v : 0; }
+    catch (e) { return 0; }
+  }
+
+  function saveTime(url, t) {
+    try { localStorage.setItem(STORE_KEY + url, String(t)); } catch (e) {}
+  }
+
+  /* ---------- seek that cannot be dropped ----------
+     A bare currentTime assignment before a real seekable range exists is
+     silently lost and playback restarts from 0. Wait for the range; never
+     reload an in-flight download more than once per pending seek. */
+  function safeSeek(t) {
+    if (!isFinite(t) || t < 0) return;
+    if (seekTimer) { clearInterval(seekTimer); seekTimer = 0; }
+    var end = 0;
+    try { end = audio.seekable.length && audio.seekable.end(audio.seekable.length - 1); } catch (e) {}
+    if (end > Math.max(t, 1)) {
+      audio.currentTime = Math.min(t, Math.max(0, (audio.duration || t) - 0.2));
+      pendingSeek = null;
+      return;
+    }
+    pendingSeek = t;
+    var tries = 0;
+    var reloaded = false;
+    seekTimer = setInterval(function () {
+      end = 0;
+      try { end = audio.seekable.length && audio.seekable.end(audio.seekable.length - 1); } catch (e) {}
+      if (pendingSeek != null && end > Math.max(pendingSeek, 1)) {
+        audio.currentTime = Math.min(pendingSeek, Math.max(0, (audio.duration || pendingSeek) - 0.2));
+        pendingSeek = null;
+        clearInterval(seekTimer);
+        seekTimer = 0;
+      } else if (audio.error || ++tries > 240) {
+        clearInterval(seekTimer);
+        seekTimer = 0;
+      } else if (end === 0 && audio.readyState >= 1 && !audio.error && !reloaded) {
+        // metadata present but the range is stale: one re-select, capped
+        reloaded = true;
+        try { audio.load(); } catch (e) {}
+      }
+    }, 250);
+  }
+
+  function seekBy(sec) {
+    if (!current) return;
+    var t = Math.min(Math.max(0, audio.currentTime + sec), audio.duration || sec);
+    safeSeek(t);
+    paint();
+  }
+
+  /* ---------- waveform ---------- */
+
+  function drawWave(p) {
+    var ui = p._ui;
+    var c = ui.canvas, ctx = ui.ctx;
+    var dpr = window.devicePixelRatio || 1;
+    var w = c.clientWidth, h = c.clientHeight;
+    if (!w || !h) return;
+    if (c.width !== w * dpr || c.height !== h * dpr) {
+      c.width = w * dpr; c.height = h * dpr;
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    var dur = p._duration || (ui.peaks && ui.peaks.duration) || 0;
+    var frac = dur && p === current ? Math.min(1, audio.currentTime / dur) : 0;
+    var mid = h / 2;
+
+    if (!ui.peaks || !ui.peaks.data || !ui.peaks.data.length) {
+      // no peaks: degrade to a visible plain scrubber track
+      ctx.fillStyle = p._colors ? p._colors.idle : '#666';
+      ctx.fillRect(0, mid - 1, w, 2);
+      ctx.fillStyle = p._colors ? p._colors.played : '#999';
+      ctx.fillRect(0, mid - 1, w * frac, 2);
+    } else {
+      var barW = 3, gap = 1;
+      var count = Math.floor(w / (barW + gap));
+
+      var x, i, amp, bh;
+      for (i = 0; i < count; i++) {
+        x = i * (barW + gap);
+        amp = ui.peaks.data[Math.floor(i * ui.peaks.data.length / count)] || 0;
+        bh = Math.max(2, amp * (h - 8));
+        ctx.fillStyle = (i / count) < frac ? p._colors.played : p._colors.idle;
+        ctx.fillRect(x, mid - bh / 2, barW, bh);
+      }
+
+      // chapter boundaries: full-height hairlines over the waveform
+      if (dur && p._chapters && p._chapters.length) {
+        ctx.fillStyle = p._colors.tick;
+        p._chapters.forEach(function (ch) {
+          if (ch.start > 0) ctx.fillRect(Math.round(ch.start / dur * w), 2, 1, h - 4);
+        });
+      }
+
+      // hover ghost
+      if (ghostX >= 0) {
+        ctx.fillStyle = p._colors.ghost;
+        ctx.fillRect(ghostX, 0, 1, h);
+      }
+
+      // playhead
+      if (dur && frac > 0) {
+        ctx.fillStyle = p._colors.played;
+        ctx.fillRect(Math.round(frac * w), 0, 2, h);
+      }
+    }
+
+    // slider semantics
+    ui.wave.setAttribute('aria-valuemin', '0');
+    ui.wave.setAttribute('aria-valuemax', Math.round(dur));
+    ui.wave.setAttribute('aria-valuenow', Math.round(dur * frac));
+    ui.wave.setAttribute('aria-valuetext', clock(dur * frac) + ' of ' + clock(dur));
+  }
+
+  /* Colors: canvas cannot take light-dark() token streams (invalid
+     fillStyle), so resolve each custom property through a real property
+     on a probe node. Re-resolved on every theme flip. */
+  function resolveColors(p) {
+    var probe = p._probe;
+    var get = function (name) {
+      probe.style.color = 'var(' + name + ')';
+      return getComputedStyle(probe).color;
+    };
+    p._colors = {
+      idle: get('--lr-wave-idle'),
+      played: get('--lr-wave-played'),
+      tick: get('--line'),
+      ghost: get('--faint'),
+    };
+  }
+
+  function paint() {
+    if (raf) return;
+    raf = requestAnimationFrame(function () {
+      raf = 0;
+      players.forEach(function (p) {
+        var isCur = p === current;
+        var t = isCur && isFinite(audio.currentTime) ? audio.currentTime : 0;
+        p._ui.elapsed.textContent = clock(t) || '0:00';
+        drawWave(p);
+      });
+      if (current) paintMini();
+    });
+  }
+
+  /* ---------- chapters + transcript ---------- */
+
+  function chapterIndex(p, t) {
+    var idx = -1;
+    (p._chapters || []).forEach(function (ch, i) { if (t >= ch.start) idx = i; });
+    return idx;
+  }
+
+  function paintChapters(p, t) {
+    var idx = chapterIndex(p, t);
+    p._chbtns.forEach(function (b, i) { b.classList.toggle('is-now', i === idx); });
+    if (p._ui.chlabel) {
+      var ch = p._chapters && p._chapters[idx];
+      p._ui.chlabel.innerHTML = '';
+      if (ch) {
+        var b = doc.createElement('b');
+        b.textContent = 'Chapter ' + (idx + 1) + ' of ' + p._chapters.length;
+        p._ui.chlabel.appendChild(b);
+        p._ui.chlabel.appendChild(doc.createTextNode(' - ' + ch.title));
+      }
+    }
+  }
+
+  function paintTranscript(p, t) {
+    if (!p._tps || !p._tps.length) return;
+    var idx = -1;
+    for (var i = 0; i < p._tps.length; i++) {
+      if (t >= parseFloat(p._tps[i].dataset.start)) idx = i;
+    }
+    p._tps.forEach(function (tp, i) {
+      tp.classList.toggle('is-now', i === idx);
+      tp.classList.toggle('is-past', idx >= 0 && i < idx);
+    });
+    if (idx >= 0 && p._followChip && p._followOn) {
+      var tp = p._tps[idx];
+      if (!p._followChip.classList.contains('is-on')) {
+        var r = tp.getBoundingClientRect();
+        if (r.top < 0 || r.bottom > window.innerHeight) {
+          tp.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+      }
+    }
+  }
+
+  /* ---------- mini-player ---------- */
+
+  function paintMini() {
+    if (!current) return;
+    var m = current._mini;
+    if (!m) return;
+    var show = !audio.paused && !current._root.hidden && !miniDismissed && current._outOfView;
+    m.root.classList.toggle('is-active', show);
+    doc.body.classList.toggle('has-lrmini', show);
+    if (show) {
+      m.title.textContent = current._root.dataset.title || '';
+      m.fill.style.width = current._duration
+        ? Math.min(100, (audio.currentTime / current._duration) * 100) + '%' : '0%';
+    }
+  }
+
+  /* ---------- playback ---------- */
+
+  function load(p) {
+    if (current === p) return;
+    if (current) { setBtn(current, false); }
+    current = p;
+    miniDismissed = false;
+    var url = p._root.dataset.audio;
+    if (loadedUrl !== url) {
+      loadedUrl = url;
+      resumeAt = savedTime(url);
+      if (seekTimer) { clearInterval(seekTimer); seekTimer = 0; }
+      pendingSeek = null;
+      audio.src = url;
+    } else {
+      resumeAt = 0;
+    }
+    audio.playbackRate = rate;
+    setMediaSession(p);
+    if (p._mini) p._mini.title.textContent = p._root.dataset.title || '';
+  }
+
+  function setBtn(p, playing) {
+    p._ui.play.textContent = playing ? 'Pause' : 'Play';
+    p._ui.play.classList.toggle('is-playing', playing);
+  }
+
+  function play(p) {
+    load(p);
+    audio.playbackRate = rate;
+    audio.play().then(function () {
+      if (current !== p) return;
+      setBtn(p, true);
+      paint();
+      paintMini();
+    }).catch(function () {
+      if (current !== p) return;
+      setBtn(p, false);
+    });
+  }
+
+  function pause() {
+    audio.pause();
+    if (current) {
+      setBtn(current, false);
+      saveTime(current._root.dataset.audio, audio.currentTime);
+    }
+    paintMini();
+  }
+
+  function toggle(p) {
+    if (p === current && !audio.paused) { pause(); return; }
+    play(p);
+  }
+
+  function setMediaSession(p) {
+    if (!('mediaSession' in navigator)) return;
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: p._root.dataset.title || '',
+      artist: p._root.dataset.show || '',
+    });
+    navigator.mediaSession.setActionHandler('play', function () { play(current); });
+    navigator.mediaSession.setActionHandler('pause', pause);
+    navigator.mediaSession.setActionHandler('seekbackward', function () { seekBy(-15); });
+    navigator.mediaSession.setActionHandler('seekforward', function () { seekBy(30); });
+    try {
+      navigator.mediaSession.setActionHandler('seekto', function (d) {
+        if (d.seekTime != null) safeSeek(d.seekTime);
+      });
+    } catch (e) {}
+  }
+
+  function setPositionState() {
+    if (!('mediaSession' in navigator) || !isFinite(audio.duration)) return;
+    try {
+      navigator.mediaSession.setPositionState({
+        duration: audio.duration,
+        playbackRate: audio.playbackRate,
+        position: audio.currentTime,
+      });
+    } catch (e) {}
+  }
+
+  /* ---------- page-scoped wiring (first player owns it) ----------
+     Chapter buttons, the transcript, and the mini-player are bound to
+     the page exactly once; handlers route through the owning player. */
+  function wirePageScope(p) {
+    var root = p._root;
+
+    // chapters: page-level buttons drive the owning player
+    Array.prototype.slice.call(doc.querySelectorAll('.lr-chbtn[data-start]')).forEach(function (b) {
+      var start = parseFloat(b.dataset.start);
+      if (!isFinite(start)) return;
+      p._chapters.push({ title: b.dataset.title || b.textContent.trim(), start: start });
+      p._chbtns.push(b);
+      b.addEventListener('click', function () {
+        play(p);
+        safeSeek(start);
+        window.scrollTo({ top: root.getBoundingClientRect().top + window.scrollY - 24, behavior: 'smooth' });
+      });
+    });
+
+    // transcript: the chip sits INSIDE .lr-transcript (sticky)
+    var tr = doc.querySelector('.lr-transcript');
+    if (tr) {
+      p._tps = Array.prototype.slice.call(tr.querySelectorAll('.lr-tp[data-start]'));
+      p._followChip = doc.querySelector('.lr-follow');
+      p._followOn = true;
+      p._tps.forEach(function (tp) {
+        tp.addEventListener('click', function (e) {
+          if (e.target.closest('.lr-tstamp')) { p._followOn = true; updateChip(p); }
+          play(p);
+          safeSeek(parseFloat(tp.dataset.start));
+        });
+      });
+      // reading away pauses follow; the chip offers it back
+      tr.addEventListener('wheel', function () { holdFollow(p); }, { passive: true });
+      tr.addEventListener('touchmove', function () { holdFollow(p); }, { passive: true });
+      if (p._followChip) {
+        p._followChip.addEventListener('click', function () {
+          p._followOn = true; updateChip(p);
+          var now = tr.querySelector('.lr-tp.is-now');
+          var idx = p._tps.indexOf(now);
+          if (idx >= 0) p._tps[idx].scrollIntoView({ block: 'center', behavior: 'smooth' });
+        });
+      }
+    }
+
+    // mini-player
+    var miniRoot = doc.querySelector('.lr-mini');
+    if (miniRoot) {
+      p._mini = {
+        root: miniRoot,
+        btn: miniRoot.querySelector('.lr-mini-btn'),
+        title: miniRoot.querySelector('.lr-mini-title'),
+        track: miniRoot.querySelector('.lr-mini-track'),
+        fill: miniRoot.querySelector('.lr-mini-fill'),
+        close: miniRoot.querySelector('.lr-mini-close'),
+      };
+      p._mini.btn.addEventListener('click', function () {
+        if (!current) return;
+        audio.paused ? play(current) : pause();
+      });
+      p._mini.track.addEventListener('click', function (e) {
+        if (!current || !isFinite(audio.duration)) return;
+        var r = p._mini.track.getBoundingClientRect();
+        safeSeek((e.clientX - r.left) / r.width * audio.duration);
+      });
+      p._mini.close.addEventListener('click', function () {
+        miniDismissed = true;
+        p._mini.root.classList.remove('is-active');
+        doc.body.classList.remove('has-lrmini');
+      });
+    }
+  }
+
+  /* ---------- per-player setup ---------- */
+
+  function setup(p) {
+    var root = p._root;
+    p._ui = {
+      play: root.querySelector('.lr-tbtn--play'),
+      back: root.querySelector('.lr-tbtn--back'),
+      fwd: root.querySelector('.lr-tbtn--fwd'),
+      speed: root.querySelector('.lr-speed'),
+      elapsed: root.querySelector('.lr-elapsed'),
+      total: root.querySelector('.lr-total'),
+      wavebox: root.querySelector('.lr-wavebox'),
+      wave: root.querySelector('.lr-wave'),
+      tip: root.querySelector('.lr-wave-tip'),
+      chlabel: root.querySelector('.lr-chlabel'),
+    };
+    p._canvas = root.querySelector('.lr-wave');
+    if (p._canvas) {
+      p._ctx = p._canvas.getContext('2d');
+      p._ui.canvas = p._canvas;
+      p._ui.ctx = p._ctx;
+      p._probe = doc.createElement('span');
+      p._probe.style.display = 'none';
+      root.appendChild(p._probe);
+      resolveColors(p);
+    }
+
+    // peaks: inline JSON block first, then data-peaks-src
+    var peakSrc = root.querySelector('script[type="application/json"][data-lr-peaks]');
+    if (peakSrc) {
+      try { p._ui.peaks = JSON.parse(peakSrc.textContent); } catch (e) {}
+    } else if (root.dataset.peaksSrc) {
+      fetch(root.dataset.peaksSrc).then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) { if (j && j.data) { p._ui.peaks = j; paint(); } })
+        .catch(function () {});
+    }
+
+    // chapters, transcript, and mini-player are page-scoped and owned by
+    // the first player (the pack's ownership contract): wire them once.
+    p._chapters = [];
+    p._chbtns = [];
+    p._tps = null;
+    if (p === players[0] && !docWired) {
+      docWired = true;
+      wirePageScope(p);
+    }
+
+    // every player observes its own root for mini-player visibility
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        p._outOfView = !entries[0].isIntersecting;
+        if (current) paintMini();
+      }, { threshold: 0.4 }).observe(root);
+    }
+
+    /* transport */
+    if (p._ui.play) p._ui.play.addEventListener('click', function () { toggle(p); });
+    if (p._ui.back) p._ui.back.addEventListener('click', function () { seekBy(-15); });
+    if (p._ui.fwd) p._ui.fwd.addEventListener('click', function () { seekBy(30); });
+    if (p._ui.speed) p._ui.speed.addEventListener('click', function () {
+      rate = SPEEDS[(SPEEDS.indexOf(rate) + 1) % SPEEDS.length];
+      audio.playbackRate = rate;
+      players.forEach(function (q) { if (q._ui.speed) q._ui.speed.textContent = rate + 'x'; });
+    });
+
+    /* waveform scrubbing: down seeks, drag scrubs, hover previews */
+    if (p._ui.wavebox && p._canvas) {
+      var box = p._ui.wavebox;
+      var fracAt = function (e) {
+        var r = p._canvas.getBoundingClientRect();
+        return Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      };
+      p._canvas.setAttribute('tabindex', '0');
+      p._canvas.setAttribute('role', 'slider');
+      p._canvas.setAttribute('aria-label', 'Seek within episode');
+      box.addEventListener('pointerdown', function (e) {
+        if (!p._duration) { play(p); return; }
+        box.setPointerCapture(e.pointerId);
+        p._dragging = true;
+        play(p);
+        safeSeek(fracAt(e) * p._duration);
+      });
+      box.addEventListener('pointermove', function (e) {
+        var frac = fracAt(e);
+        var r = p._canvas.getBoundingClientRect();
+        ghostX = frac * r.width;
+        if (p._dragging && p._duration) safeSeek(frac * p._duration);
+        if (p._ui.tip && p._duration) {
+          p._ui.tip.classList.add('on');
+          p._ui.tip.style.left = ghostX + 'px';
+          p._ui.tip.textContent = clock(frac * p._duration);
+        }
+        if (p === current) drawWave(p);
+      });
+      box.addEventListener('pointerleave', function () {
+        ghostX = -1;
+        if (p._ui.tip) p._ui.tip.classList.remove('on');
+        if (p === current) drawWave(p);
+      });
+      box.addEventListener('pointerup', function () { p._dragging = false; });
+      box.addEventListener('pointercancel', function () { p._dragging = false; });
+      p._canvas.addEventListener('lostpointercapture', function () { p._dragging = false; });
+      p._canvas.addEventListener('keydown', function (e) {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        if (!p._duration) return;
+        var step = { ArrowLeft: -5, ArrowRight: 5 }[e.key];
+        if (step) { e.preventDefault(); play(p); seekBy(step); }
+        else if (e.key === 'Home') { e.preventDefault(); play(p); safeSeek(0); }
+        else if (e.key === 'End') { e.preventDefault(); play(p); safeSeek(p._duration - 1); }
+      });
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(function () { drawWave(p); }).observe(p._canvas);
+      }
+    }
+
+    /* duration: server value if present, else metadata */
+    if (root.dataset.duration) setTotal(p, parseFloat(root.dataset.duration));
+
+    /* theme flips re-resolve every token: recolor + repaint */
+    window.addEventListener('lr:theme', function () {
+      if (p._canvas) resolveColors(p);
+      paint();
+    });
+  }
+
+  function setTotal(p, seconds) {
+    if (!isFinite(seconds) || seconds <= 0) return;
+    p._duration = seconds;
+    if (p._ui.total) {
+      p._ui.total.textContent = clock(seconds);
+      p._ui.total.style.display = '';
+    }
+    paint();
+  }
+
+  function holdFollow(p) {
+    if (!p._followOn) return;
+    p._followOn = false;
+    updateChip(p);
+  }
+
+  function updateChip(p) {
+    if (p._followChip) p._followChip.classList.toggle('is-on', !p._followOn);
+  }
+
+  /* ---------- global wiring ---------- */
+
+  Array.prototype.slice.call(doc.querySelectorAll('[data-lr-player]')).forEach(function (root) {
+    var p = { _root: root, _outOfView: false };
+    players.push(p);
+  });
+  if (!players.length) return;
+
+  // Adopt the first player's native audio element as the page's shared
+  // media graph; strip the others so extra players (index cards) never
+  // prefetch. No native element -> fall back to a detached one.
+  audio = players[0]._root.querySelector('.lr-native') || new Audio();
+  players.slice(1).forEach(function (p) {
+    var el = p._root.querySelector('.lr-native');
+    if (el && el !== audio) { el.removeAttribute('src'); el.load(); }
+  });
+
+  players.forEach(setup);
+
+  audio.addEventListener('loadedmetadata', function () {
+    if (!current) return;
+    if (!current._root.dataset.duration) setTotal(current, audio.duration);
+    if (pendingSeek != null) { safeSeek(pendingSeek); }
+    else if (resumeAt > 0 && resumeAt < audio.duration - 1) { safeSeek(resumeAt); }
+    resumeAt = 0;
+  });
+  audio.addEventListener('play', function () { if (current) { setBtn(current, true); paintMini(); } });
+  audio.addEventListener('pause', function () { if (current) { setBtn(current, false); paintMini(); } });
+  audio.addEventListener('ended', function () {
+    if (!current) return;
+    setBtn(current, false);
+    saveTime(current._root.dataset.audio, 0);
+    paintMini();
+  });
+  audio.addEventListener('timeupdate', function () {
+    if (!current) return;
+    var t = audio.currentTime;
+    if (t < lastSaved || t - lastSaved >= SAVE_STEP) {
+      lastSaved = t;
+      saveTime(current._root.dataset.audio, t);
+      setPositionState();
+    }
+    paintChapters(current, t);
+    paintTranscript(current, t);
+    paint();
+  });
+
+  /* global keys: space/K toggle, J/L +-10s; skipped while typing */
+  doc.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var el = e.target;
+    if (el.closest && el.closest('input, textarea, select, [contenteditable]')) return;
+    if (e.key === ' ' || e.key === 'k' || e.key === 'K') {
+      e.preventDefault();
+      toggle(players[0]);
+    } else if (e.key === 'j' || e.key === 'J') {
+      e.preventDefault();
+      seekBy(-10);
+    } else if (e.key === 'l' || e.key === 'L') {
+      e.preventDefault();
+      seekBy(10);
+    }
+  });
+
+  paint();
+})();
+
+</script>
+
+</body>
+</html>
