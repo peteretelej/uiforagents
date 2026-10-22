@@ -150,10 +150,14 @@ semantic HTML styled from the token vocabulary.
   cards) so they never prefetch. A page may carry several players; the
   FIRST root owns the chapter buttons, the transcript, and the
   mini-player - page-scoped wiring runs exactly once against it.
-- Peaks come from `<script type="application/json" data-lr-peaks>` inside
-  the root (`{ duration, data: [amplitudes] }`) or `data-peaks-src` (a
-  URL fetched lazily). Without peaks the wavebox degrades to a plain
-  scrubber - the page must not depend on peaks existing.
+- Peaks come from, in order: an inline
+  `<script type="application/json" data-lr-peaks>` inside the root
+  (`{ duration, data: [amplitudes] }`); a `data-peaks` ATTRIBUTE on the
+  root (the same JSON as an attribute value - the reliable embed for
+  server-rendered pages: attribute decoding is spec-exact, no template
+  escaper surprises); or `data-peaks-src` (a URL fetched lazily).
+  Without peaks the wavebox degrades to a plain scrubber - the page must
+  not depend on peaks existing.
 - Seeks wait for a real seekable range and never restart an in-flight
   download. Never replace the module's seek path with a bare
   `audio.currentTime = t`.

@@ -513,11 +513,25 @@
       resolveColors(p);
     }
 
-    // peaks: inline JSON block first, then data-peaks-src
+    // peaks: inline JSON block, then a data-peaks attribute (the
+    // server-rendered embed - attribute decoding is spec-exact, no
+    // template-escaper surprises), then a data-peaks-src URL
     var peakSrc = root.querySelector('script[type="application/json"][data-lr-peaks]');
     if (peakSrc) {
-      try { p._ui.peaks = JSON.parse(peakSrc.textContent); } catch (e) {}
-    } else if (root.dataset.peaksSrc) {
+      try {
+        var parsedPeaks = JSON.parse(peakSrc.textContent);
+        if (typeof parsedPeaks === 'string') parsedPeaks = JSON.parse(parsedPeaks);
+        if (parsedPeaks && parsedPeaks.data) p._ui.peaks = parsedPeaks;
+      } catch (e) {}
+    }
+    if (!p._ui.peaks && root.dataset.peaks) {
+      try {
+        var attrPeaks = JSON.parse(root.dataset.peaks);
+        if (typeof attrPeaks === 'string') attrPeaks = JSON.parse(attrPeaks);
+        if (attrPeaks && attrPeaks.data) p._ui.peaks = attrPeaks;
+      } catch (e) {}
+    }
+    if (!p._ui.peaks && root.dataset.peaksSrc) {
       fetch(root.dataset.peaksSrc).then(function (r) { return r.ok ? r.json() : null; })
         .then(function (j) { if (j && j.data) { p._ui.peaks = j; paint(); } })
         .catch(function () {});
