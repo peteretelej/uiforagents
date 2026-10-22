@@ -101,8 +101,19 @@ Listening components (the extension):
 - `.lr-transcript` > `p.lr-tp[data-start][data-role]` per spoken segment,
   each containing `.lr-trole` (speaker label, mono), `button.lr-tstamp`
   (mono time), `.lr-ttext`. The module stamps `.is-past` and `.is-now`.
-  The transcript is a PURE reading surface: no floating bars, chips, or
-  controls overlay the text.
+  The transcript is a PURE reading surface: no persistent bars or chrome.
+- **The floating chip (`.lr-chip`, JS-created)**: while Read Along is ON,
+  a small pill floats next to the CURRENT line being read - in the right
+  margin gutter on wide screens, at the line's right edge under 760px -
+  tracking it as it moves (crosshair icon + "Reading along" + an x).
+  Clicking it stops Read Along. It is the on-state made findable: the
+  disable control lives exactly where the auto-scroll is felt.
+- **The hijack contract**: Read Along NEVER fights the reader. Any user
+  scroll intent (wheel/touchmove anywhere on the page) pauses it; while
+  the transcript is off screen it does not scroll the page at all; only
+  the two toggles (transport `.lr-follow` labeled "Read Along" + the mini
+  `.lr-mini-follow` crosshair) re-enable it. Seeking never changes it
+  silently.
 - `.lr-statusrow` (inside `.lr-transport`, full width): the current
   chapter (`.lr-chlabel`) on the left, the follow toggle
   (`button.lr-tbtn.lr-follow`, crosshair icon + "Read Along",
@@ -144,10 +155,10 @@ semantic HTML styled from the token vocabulary.
 - Keyboard: space or K toggles play; J/L jump -10/+10s (skipped while
   typing); the waveform is `role=slider`: left/right arrows nudge 5s,
   Home/End jump to the ends.
-- Transcript auto-follow: the active paragraph scrolls with playback.
-  Follow is controlled ONLY by its two visible toggles (transport status
-  row + mini-player crosshair icon, always state-correlated) and pauses
-  on manual scrolling of the transcript. It is never re-enabled silently.
+- Transcript Read Along: the active paragraph scrolls with playback while
+  the transcript is on screen. Controlled ONLY by the transport toggle,
+  the mini icon, and the floating chip (which stops it); ANY user scroll
+  pauses it. It is never re-enabled silently.
 
 ## Data conventions (recommended shape for producers)
 

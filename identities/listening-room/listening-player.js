@@ -232,16 +232,17 @@
     }
   }
 
-  /* ---------- follow state (persistent, two correlated controls) ----------
-     The transcript bar toggle and the mini-player icon both mirror and
-     drive this state. Reading away (wheel/touch) pauses it; nothing else
-     re-enables it silently. */
+  /* ---------- follow state (persistent, three correlated controls) ----------
+     The transport toggle, the mini icon, and the floating chip next to
+     the active line all mirror and drive this state. ANY scroll intent
+     pauses it; only the toggles re-enable it. */
   function setFollow(p, on) {
     p._followOn = on;
     p._followBtns.forEach(function (b) {
       b.classList.toggle('is-on', on);
       b.setAttribute('aria-pressed', String(on));
     });
+    if (p._chip) p._chip.classList.toggle('is-on', on);
     if (on) scrollToNow(p);
   }
 
@@ -260,8 +261,10 @@
       tp.classList.toggle('is-now', i === idx);
       tp.classList.toggle('is-past', idx >= 0 && i < idx);
     });
-    if (idx >= 0 && p._followOn) {
-      var tp = p._tps[idx];
+    if (idx < 0) return;
+    var tp = p._tps[idx];
+    if (p._chip) p._chip.style.top = Math.round(tp.offsetTop + tp.offsetHeight / 2) + 'px';
+    if (p._followOn && p._trInView) {
       var r = tp.getBoundingClientRect();
       if (r.top < 0 || r.bottom > window.innerHeight) {
         tp.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -399,8 +402,9 @@
       });
     });
 
-    // transcript: pure reading surface - no floating chrome. Follow lives
-    // in the transport status row and the mini-player.
+    // transcript: pure reading surface; follow is controlled from the
+    // transport + mini toggles and the floating chip that tracks the
+    // active line (chip is JS-created: meaningless without JS)
     var tr = doc.querySelector('.lr-transcript');
     if (tr) {
       p._tps = Array.prototype.slice.call(tr.querySelectorAll('.lr-tp[data-start]'));
@@ -412,15 +416,37 @@
       }
       p._followOn = true;
       setFollow(p, true);
+
+      // the floating chip: sits next to the CURRENT line being read,
+      // so the disable control is always where the hijack is felt
+      var chip = doc.createElement('button');
+      chip.type = 'button';
+      chip.className = 'lr-chip';
+      chip.title = 'Stop reading along';
+      chip.innerHTML = '<svg class="lr-fi" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.5"/><path d="M8 0.5v3M8 12.5v3M0.5 8h3M12.5 8h3"/></svg>Reading along<svg class="lr-fi lr-chip-x" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
+      chip.addEventListener('click', function () { setFollow(p, false); });
+      tr.appendChild(chip);
+      p._chip = chip;
+
       p._tps.forEach(function (tp) {
         tp.addEventListener('click', function (e) {
           play(p);
           safeSeek(parseFloat(tp.dataset.start));
         });
       });
-      // reading away pauses follow; the toggles offer it back
-      tr.addEventListener('wheel', function () { if (p._followOn) setFollow(p, false); }, { passive: true });
-      tr.addEventListener('touchmove', function () { if (p._followOn) setFollow(p, false); }, { passive: true });
+
+      // ANY scroll intent anywhere pauses follow: never fight the reader
+      doc.addEventListener('wheel', function () { if (p._followOn) setFollow(p, false); }, { passive: true });
+      doc.addEventListener('touchmove', function () { if (p._followOn) setFollow(p, false); }, { passive: true });
+
+      // and follow never yanks the page while the reader is elsewhere:
+      // it only scrolls the transcript while the transcript is on screen
+      p._trInView = true;
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          p._trInView = entries[0].isIntersecting;
+        }, { threshold: 0.2 }).observe(tr);
+      }
     }
 
     // mini-player

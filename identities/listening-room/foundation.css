@@ -238,6 +238,27 @@
 
   /* ---------- Transcript ---------- */
   .lr-transcript { max-width: var(--measure); margin: 8px 0 0; position: relative; }
+  /* floating follow chip: tracks the active line (JS-created, JS-state) */
+  .lr-chip {
+    position: absolute; left: calc(100% + 14px); z-index: 2;
+    display: none; transform: translateY(-50%);
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em;
+    color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line-soft); border-radius: 99px;
+    padding: 4px 11px; cursor: pointer; white-space: nowrap;
+    align-items: center; gap: 6px;
+    transition: top 0.25s ease;
+  }
+  .lr-chip.is-on { display: inline-flex; }
+  .lr-chip .lr-fi { color: var(--accent); }
+  .lr-chip:hover { color: var(--ink); border-color: var(--accent); }
+  .lr-chip .lr-chip-x { color: var(--faint); }
+  @media (max-width: 760px) {
+    .lr-chip { left: auto; right: 6px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lr-chip { transition: none; }
+  }
   .lr-trole {
     display: inline-block; font-family: var(--font-mono); font-size: 10px;
     letter-spacing: 0.09em; text-transform: uppercase; color: var(--faint);
