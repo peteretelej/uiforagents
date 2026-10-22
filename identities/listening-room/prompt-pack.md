@@ -60,12 +60,21 @@ layout only.
 
 Chrome (inherited grammar, `lr-` prefix):
 
+- **Player placement is a rule, not a taste**: the `.lr-player` sits
+  INSIDE the hero, directly under `.lr-meta-row` - the first thing on the
+  page, never below a section header or a scroll on load. A
+  `.lr-quicklinks` mono anchor row (page-level CSS, e.g. "Chapters ·
+  Transcript") may sit between meta row and player.
+- The SYNCED TRANSCRIPT and CHAPTER GRID are episode-page components:
+  pages that list episodes (index cards, feeds) ship the player alone -
+  never a transcript wall on a listing surface.
 - `.lr-topbar` + `.lr-wrap`: 44px mono top bar on `--bg`, hairline bottom
   border. Contains `.lr-brand` (amber), `.lr-crumb`, and `nav` with the
   optional `.lr-theme-toggle`.
 - `.lr-hero`: kicker (`.lr-kicker`, mono amber), `h1` (large serif,
   styled via `.lr-hero h1`), `.lr-dek` (serif standfirst), `.lr-meta-row`
-  of mono facts and optional `.lr-badge` chips.
+  of mono facts and optional `.lr-badge` chips. The player closes the
+  hero (see the placement rule above).
 - `.lr-section` with `.lr-snum` (mono amber eyebrow, "01 - Listen") and a
   serif `h2`. Sections end with a hairline border.
 - `.lr-lede` (serif, one size up, ink - the section's opening line),
@@ -97,8 +106,9 @@ Listening components (the extension):
 - `.lr-mini`: fixed bottom mini-player
   (`button.lr-tbtn.lr-mini-btn` - the mini button pairs both classes,
   `.lr-mini-title`, `.lr-mini-track` > `.lr-mini-fill`,
-  `.lr-mini-close`). The module shows it while playing with the main
-  player scrolled away.
+  `.lr-mini-close`). The module shows it while the main player is
+  scrolled away; it PERSISTS while paused (Play/Pause label follows
+  state) and retires only on Close or when the episode ends.
 
 Do not invent new visual components. If a page needs more, use plain
 semantic HTML styled from the token vocabulary.

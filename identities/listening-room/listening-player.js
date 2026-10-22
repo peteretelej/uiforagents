@@ -260,10 +260,14 @@
     if (!current) return;
     var m = current._mini;
     if (!m) return;
-    var show = !audio.paused && !current._root.hidden && !miniDismissed && current._outOfView;
+    // persists while paused so the reader can resume from where they are;
+    // only Close (dismiss) or ending the episode retires it
+    var started = !audio.paused || audio.currentTime > 0;
+    var show = started && !miniDismissed && current._outOfView;
     m.root.classList.toggle('is-active', show);
     doc.body.classList.toggle('has-lrmini', show);
     if (show) {
+      m.btn.textContent = audio.paused ? 'Play' : 'Pause';
       m.title.textContent = current._root.dataset.title || '';
       m.fill.style.width = current._duration
         ? Math.min(100, (audio.currentTime / current._duration) * 100) + '%' : '0%';
