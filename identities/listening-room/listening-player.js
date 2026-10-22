@@ -233,6 +233,24 @@
     }
   }
 
+  /* ---------- follow state (persistent, two correlated controls) ----------
+     The transcript bar toggle and the mini-player icon both mirror and
+     drive this state. Reading away (wheel/touch) pauses it; nothing else
+     re-enables it silently. */
+  function setFollow(p, on) {
+    p._followOn = on;
+    p._followBtns.forEach(function (b) {
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    if (on) scrollToNow(p);
+  }
+
+  function scrollToNow(p) {
+    var now = p._tps && p._tps.length ? p._tps.find(function (tp) { return tp.classList.contains('is-now'); }) : null;
+    if (now) now.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
   function paintTranscript(p, t) {
     if (!p._tps || !p._tps.length) return;
     var idx = -1;
@@ -243,18 +261,23 @@
       tp.classList.toggle('is-now', i === idx);
       tp.classList.toggle('is-past', idx >= 0 && i < idx);
     });
-    if (idx >= 0 && p._followChip && p._followOn) {
+    if (idx >= 0 && p._followOn) {
       var tp = p._tps[idx];
-      if (!p._followChip.classList.contains('is-on')) {
-        var r = tp.getBoundingClientRect();
-        if (r.top < 0 || r.bottom > window.innerHeight) {
-          tp.scrollIntoView({ block: 'center', behavior: 'smooth' });
-        }
+      var r = tp.getBoundingClientRect();
+      if (r.top < 0 || r.bottom > window.innerHeight) {
+        tp.scrollIntoView({ block: 'center', behavior: 'smooth' });
       }
     }
   }
 
   /* ---------- mini-player ---------- */
+
+  function syncSpeedLabels() {
+    players.forEach(function (q) {
+      if (q._ui.speed) q._ui.speed.textContent = rate + 'x';
+      if (q._mini && q._mini.speed) q._mini.speed.textContent = rate + 'x';
+    });
+  }
 
   function paintMini() {
     if (!current) return;
@@ -269,6 +292,7 @@
     if (show) {
       m.btn.textContent = audio.paused ? 'Play' : 'Pause';
       m.title.textContent = current._root.dataset.title || '';
+      if (m.time) m.time.textContent = clock(audio.currentTime) || '0:00';
       m.fill.style.width = current._duration
         ? Math.min(100, (audio.currentTime / current._duration) * 100) + '%' : '0%';
     }
@@ -376,30 +400,28 @@
       });
     });
 
-    // transcript: the chip sits INSIDE .lr-transcript (sticky)
+    // transcript: the bar with the follow toggle sits INSIDE
+    // .lr-transcript, sticky to its top
     var tr = doc.querySelector('.lr-transcript');
     if (tr) {
       p._tps = Array.prototype.slice.call(tr.querySelectorAll('.lr-tp[data-start]'));
-      p._followChip = doc.querySelector('.lr-follow');
+      p._followBtns = [];
+      var tgl = tr.querySelector('.lr-followtoggle');
+      if (tgl) {
+        p._followBtns.push(tgl);
+        tgl.addEventListener('click', function () { setFollow(p, !p._followOn); });
+      }
       p._followOn = true;
+      setFollow(p, true);
       p._tps.forEach(function (tp) {
         tp.addEventListener('click', function (e) {
-          if (e.target.closest('.lr-tstamp')) { p._followOn = true; updateChip(p); }
           play(p);
           safeSeek(parseFloat(tp.dataset.start));
         });
       });
-      // reading away pauses follow; the chip offers it back
-      tr.addEventListener('wheel', function () { holdFollow(p); }, { passive: true });
-      tr.addEventListener('touchmove', function () { holdFollow(p); }, { passive: true });
-      if (p._followChip) {
-        p._followChip.addEventListener('click', function () {
-          p._followOn = true; updateChip(p);
-          var now = tr.querySelector('.lr-tp.is-now');
-          var idx = p._tps.indexOf(now);
-          if (idx >= 0) p._tps[idx].scrollIntoView({ block: 'center', behavior: 'smooth' });
-        });
-      }
+      // reading away pauses follow; the toggles offer it back
+      tr.addEventListener('wheel', function () { if (p._followOn) setFollow(p, false); }, { passive: true });
+      tr.addEventListener('touchmove', function () { if (p._followOn) setFollow(p, false); }, { passive: true });
     }
 
     // mini-player
@@ -409,19 +431,45 @@
         root: miniRoot,
         btn: miniRoot.querySelector('.lr-mini-btn'),
         title: miniRoot.querySelector('.lr-mini-title'),
+        time: miniRoot.querySelector('.lr-mini-time'),
         track: miniRoot.querySelector('.lr-mini-track'),
         fill: miniRoot.querySelector('.lr-mini-fill'),
+        speed: miniRoot.querySelector('.lr-mini-speed'),
+        follow: miniRoot.querySelector('.lr-mini-follow'),
         close: miniRoot.querySelector('.lr-mini-close'),
       };
       p._mini.btn.addEventListener('click', function () {
         if (!current) return;
         audio.paused ? play(current) : pause();
       });
-      p._mini.track.addEventListener('click', function (e) {
+      // the mini track is a real scrubber: down seeks, drag scrubs
+      var dragSeek = function (e) {
         if (!current || !isFinite(audio.duration)) return;
         var r = p._mini.track.getBoundingClientRect();
-        safeSeek((e.clientX - r.left) / r.width * audio.duration);
+        var frac = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+        safeSeek(frac * audio.duration);
+      };
+      p._mini.track.addEventListener('pointerdown', function (e) {
+        p._mini.track.setPointerCapture(e.pointerId);
+        p._mini.dragging = true;
+        dragSeek(e);
       });
+      p._mini.track.addEventListener('pointermove', function (e) {
+        if (p._mini.dragging) dragSeek(e);
+      });
+      ['pointerup', 'pointercancel'].forEach(function (ev) {
+        p._mini.track.addEventListener(ev, function () { p._mini.dragging = false; });
+      });
+      if (p._mini.speed) p._mini.speed.addEventListener('click', function () {
+        rate = SPEEDS[(SPEEDS.indexOf(rate) + 1) % SPEEDS.length];
+        audio.playbackRate = rate;
+        syncSpeedLabels();
+      });
+      if (p._mini.follow) {
+        p._followBtns.push(p._mini.follow);
+        p._mini.follow.addEventListener('click', function () { setFollow(p, !p._followOn); });
+        setFollow(p, p._followOn);
+      }
       p._mini.close.addEventListener('click', function () {
         miniDismissed = true;
         p._mini.root.classList.remove('is-active');
@@ -492,7 +540,7 @@
     if (p._ui.speed) p._ui.speed.addEventListener('click', function () {
       rate = SPEEDS[(SPEEDS.indexOf(rate) + 1) % SPEEDS.length];
       audio.playbackRate = rate;
-      players.forEach(function (q) { if (q._ui.speed) q._ui.speed.textContent = rate + 'x'; });
+      syncSpeedLabels();
     });
 
     /* waveform scrubbing: down seeks, drag scrubs, hover previews */
@@ -563,16 +611,6 @@
       p._ui.total.style.display = '';
     }
     paint();
-  }
-
-  function holdFollow(p) {
-    if (!p._followOn) return;
-    p._followOn = false;
-    updateChip(p);
-  }
-
-  function updateChip(p) {
-    if (p._followChip) p._followChip.classList.toggle('is-on', !p._followOn);
   }
 
   /* ---------- global wiring ---------- */

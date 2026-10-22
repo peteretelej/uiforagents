@@ -262,14 +262,21 @@
     background: color-mix(in oklab, var(--accent-soft) 55%, transparent);
   }
   .lr-tp.is-now .lr-trole { color: var(--accent); }
-  .lr-follow {
-    position: sticky; top: 0; z-index: 1; display: none;
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em;
-    color: var(--accent); background: var(--bg); border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 5px 12px; margin: 0 0 8px;
-    cursor: pointer; width: max-content;
+  .lr-transcript-bar {
+    position: sticky; top: 0; z-index: 1;
+    display: flex; justify-content: flex-end;
+    background: var(--bg); padding: 6px 0; margin: 0 0 4px;
   }
-  .lr-follow.is-on { display: block; }
+  .lr-followtoggle {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em;
+    color: var(--faint); background: var(--surface);
+    border: 1px solid var(--line-soft); border-radius: var(--radius);
+    padding: 4px 10px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .lr-followtoggle:hover { color: var(--ink); border-color: var(--accent); }
+  .lr-followtoggle.is-on { color: var(--accent); border-color: var(--accent); }
+  .lr-fi { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
 
   /* ---------- Mini-player ---------- */
   .lr-mini {
@@ -286,6 +293,11 @@
     overflow: hidden; text-overflow: ellipsis; flex: 1;
   }
   .lr-mini-title:hover { color: var(--ink); }
+  .lr-mini-time {
+    font-family: var(--font-mono); font-size: 11px; color: var(--faint);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .lr-mini-follow.is-on { color: var(--accent); border-color: var(--accent); }
   .lr-mini-track { position: relative; flex: 2; height: 20px; cursor: pointer; min-width: 80px; }
   .lr-mini-track::before {
     content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px;
