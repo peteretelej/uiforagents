@@ -784,7 +784,7 @@
     // persists while paused so the reader can resume from where they are;
     // only Close (dismiss) or ending the episode retires it
     var started = !audio.paused || audio.currentTime > 0;
-    var show = started && !miniDismissed && current._outOfView;
+    var show = started && !audio.ended && !miniDismissed && current._outOfView;
     m.root.classList.toggle('is-active', show);
     doc.body.classList.toggle('has-lrmini', show);
     if (show) {
