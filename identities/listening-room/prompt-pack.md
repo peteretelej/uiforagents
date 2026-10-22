@@ -105,16 +105,17 @@ Listening components (the extension):
   controls overlay the text.
 - `.lr-statusrow` (inside `.lr-transport`, full width): the current
   chapter (`.lr-chlabel`) on the left, the follow toggle
-  (`button.lr-tbtn.lr-follow`, mono "Follow", `is-on` + `aria-pressed`
-  mirror the state) on the right. Follow is a REAL toggle, never a trap:
-  reading away (wheel/touch on the transcript) pauses it; only the two
-  toggles change it deliberately; seeking never changes it silently.
+  (`button.lr-tbtn.lr-follow`, crosshair icon + "Read Along",
+  `is-on` + `aria-pressed` mirror the state) on the right. Follow is a
+  REAL toggle, never a trap: reading away (wheel/touch on the
+  transcript) pauses it; only the two toggles change it deliberately;
+  seeking never changes it silently.
 - `.lr-mini`: fixed bottom mini-player
   (`button.lr-tbtn.lr-mini-btn` - the mini button pairs both classes,
   `.lr-mini-title`, `.lr-mini-time`, a DRAGGABLE `.lr-mini-track` >
   `.lr-mini-fill`, `.lr-tbtn.lr-mini-speed` (cycles 1x-2x),
-  `.lr-tbtn.lr-mini-follow` (crosshair icon; the same follow state,
-  correlated with the transport toggle)). NO Close button: visibility is
+  `.lr-tbtn.lr-mini-follow` (the SAME crosshair icon, so the two
+  controls correlate at a glance; labeled "Read Along" for AT)). NO Close button: visibility is
   automatic - it shows whenever the main player is scrolled away and the
   episode is started, hides when you scroll back, and retires when the
   episode ends. It PERSISTS while paused (Play/Pause label follows

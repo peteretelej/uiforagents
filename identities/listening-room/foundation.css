@@ -120,7 +120,8 @@
   }
   .lr-badge {
     font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--accent-ink); background: var(--accent);
+    text-transform: uppercase; color: var(--accent); background: none;
+    border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
     border-radius: var(--radius); padding: 3px 8px;
   }
 
@@ -266,6 +267,7 @@
   .lr-statusrow { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 6px; min-width: 0; }
   .lr-statusrow .lr-chlabel { width: auto; flex: 1; min-width: 0; margin-top: 0; }
   .lr-tbtn.is-on { color: var(--accent); border-color: var(--accent); }
+  .lr-follow { display: inline-flex; align-items: center; gap: 6px; }
   .lr-fi { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
 
   /* ---------- Mini-player ---------- */
@@ -306,7 +308,7 @@
   }
 
   /* ---------- Share bar / footer ---------- */
-  .lr-sharebar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 34px 0 0; }
+  .lr-sharebar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 34px 0 44px; }
   .lr-share-row { display: flex; gap: 10px; flex-wrap: wrap; }
   .lr-share-row a, .lr-share-row button {
     font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
