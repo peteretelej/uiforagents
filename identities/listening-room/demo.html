@@ -881,6 +881,7 @@
   var resumeAt = 0;
   var lastSaved = 0;
   var raf = 0;
+  var mini = null; // the page's mini-player: one instance, shared by all players
 
 
   html.classList.add('lr-js');
@@ -1273,10 +1274,11 @@
       });
     }
 
-    // mini-player
+    // mini-player: page-level, shared by every player - any card's
+    // playback shows it
     var miniRoot = doc.querySelector('.lr-mini');
-    if (miniRoot) {
-      p._mini = {
+    if (miniRoot && !mini) {
+      mini = {
         root: miniRoot,
         btn: miniRoot.querySelector('.lr-mini-btn'),
         title: miniRoot.querySelector('.lr-mini-title'),
@@ -1286,36 +1288,36 @@
         speed: miniRoot.querySelector('.lr-mini-speed'),
         follow: miniRoot.querySelector('.lr-mini-follow'),
       };
-      p._mini.btn.addEventListener('click', function () {
+      mini.btn.addEventListener('click', function () {
         if (!current) return;
         audio.paused ? play(current) : pause();
       });
       // the mini track is a real scrubber: down seeks, drag scrubs
       var dragSeek = function (e) {
         if (!current || !isFinite(audio.duration)) return;
-        var r = p._mini.track.getBoundingClientRect();
+        var r = mini.track.getBoundingClientRect();
         var frac = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
         safeSeek(frac * audio.duration);
       };
-      p._mini.track.addEventListener('pointerdown', function (e) {
-        p._mini.track.setPointerCapture(e.pointerId);
-        p._mini.dragging = true;
+      mini.track.addEventListener('pointerdown', function (e) {
+        mini.track.setPointerCapture(e.pointerId);
+        mini.dragging = true;
         dragSeek(e);
       });
-      p._mini.track.addEventListener('pointermove', function (e) {
-        if (p._mini.dragging) dragSeek(e);
+      mini.track.addEventListener('pointermove', function (e) {
+        if (mini.dragging) dragSeek(e);
       });
       ['pointerup', 'pointercancel'].forEach(function (ev) {
-        p._mini.track.addEventListener(ev, function () { p._mini.dragging = false; });
+        mini.track.addEventListener(ev, function () { mini.dragging = false; });
       });
-      if (p._mini.speed) p._mini.speed.addEventListener('click', function () {
+      if (mini.speed) mini.speed.addEventListener('click', function () {
         rate = SPEEDS[(SPEEDS.indexOf(rate) + 1) % SPEEDS.length];
         audio.playbackRate = rate;
         syncSpeedLabels();
       });
-      if (p._mini.follow) {
-        p._followBtns.push(p._mini.follow);
-        p._mini.follow.addEventListener('click', function () { setFollow(p, !p._followOn); });
+      if (mini.follow) {
+        p._followBtns.push(mini.follow);
+        mini.follow.addEventListener('click', function () { setFollow(p, !p._followOn); });
         setFollow(p, p._followOn);
       }
     }
@@ -1460,6 +1462,8 @@
       if (p._canvas) resolveColors(p);
       paint();
     });
+
+    p._mini = mini; // page-level mini, shared by all players
   }
 
   function setTotal(p, seconds) {
