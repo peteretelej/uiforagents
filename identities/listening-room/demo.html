@@ -334,6 +334,19 @@
   }
   body.has-lrmini { padding-bottom: 64px; }
 
+  /* ---------- Quicklinks + episode cards ---------- */
+  .lr-quicklinks {
+    display: flex; gap: 14px; margin: 18px 0 0;
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.05em;
+  }
+  .lr-quicklinks a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line-soft); }
+  .lr-quicklinks a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .lr-episode-card {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--radius); padding: 18px;
+  }
+  .lr-episode-card .lr-meta-row { margin: 0 0 6px; }
+
   /* ---------- Loading ---------- */
   .lr-skel {
     height: 12px; border-radius: var(--radius); background: var(--sunken);

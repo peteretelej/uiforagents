@@ -87,6 +87,8 @@ Chrome (inherited grammar, `lr-` prefix):
   the parent grammar's table rules).
 - `.lr-sharebar`, `.lr-footer`, `.lr-mono`, `.lr-measure`: as in the
   parent grammar.
+- `.lr-quicklinks` (mono anchor row, in the hero), `.lr-episode-card`
+  (surface card for show-page episode lists): inventory components.
 
 Listening components (the extension):
 
