@@ -1,5 +1,9 @@
 # listening-room - Agent Prompt-Pack
 
+> Mint record: One-shot PASS 2026-10-22 (conference-talk audio page,
+> distinct from the episode-page demo; built pack-only by a fresh agent
+> with no other design context).
+
 You are building with the **listening-room** design identity: a dark-first
 listening surface for spoken-audio pages - podcast episodes, narrated
 reports, audio editions, briefings with a voice. The design decisions are
@@ -86,14 +90,16 @@ Chrome (inherited grammar, `lr-` prefix):
 
 Listening components (the extension):
 
-- `.lr-player[data-audio][data-title][data-show][data-duration]`: one
-  player root. Inside: `<audio class="lr-native" controls preload="metadata">`
-  (the no-JS fallback - keep it first), `.lr-wavebox` >
+- `.lr-player[data-lr-player][data-audio][data-title][data-show][data-duration]`:
+  one player root. `data-lr-player` (empty value) is the module's
+  selector - without it the player stays dead. Inside:
+  `<audio class="lr-native" controls preload="metadata">` (the no-JS
+  fallback - keep it first), `.lr-wavebox` >
   `canvas.lr-wave` + `span.lr-wave-tip`, and `.lr-transport`:
   `.lr-tbtn--play` (Play/Pause, amber fill when playing),
   `.lr-tbtn--back` (-15s), `.lr-tbtn--fwd` (+30s), `.lr-speed` (cycles
   1x-2x), `.lr-time` (`.lr-elapsed` amber / `.lr-total` faint),
-  `.lr-chlabel` (current chapter line). Buttons are 40-44px tall: real
+  `.lr-statusrow` (see below). Buttons are 40-44px tall: real
   hit targets.
 - `.lr-chapters` (ul) > `li` > `button.lr-chbtn[data-start][data-title]`:
   the chapter grid, two columns, one under 800px. Active chapter gets
@@ -115,19 +121,20 @@ Listening components (the extension):
   the floating chip (`.lr-chip`, one click, always next to the active
   line), the transport `.lr-follow` ("Read Along"), or the mini
   `.lr-mini-follow` crosshair - all three always state-correlated.
-- `.lr-statusrow` (inside `.lr-transport`, full width): the current
-  chapter (`.lr-chlabel`) on the left, the follow toggle
+- `.lr-statusrow` (inside `.lr-transport`, full width; EPISODE-PAGE
+  players only - listing-card players omit it, like the transcript): the
+  current chapter (`.lr-chlabel`) on the left, the follow toggle
   (`button.lr-tbtn.lr-follow`, crosshair icon + "Read Along",
   `is-on` + `aria-pressed` mirror the state) on the right. Follow is a
-  REAL toggle, never a trap: reading away (wheel/touch on the
-  transcript) pauses it; only the two toggles change it deliberately;
-  seeking never changes it silently.
+  REAL toggle, never a trap: only the two toggles and the floating chip
+  change it; seeking never changes it silently.
 - `.lr-mini`: fixed bottom mini-player
   (`button.lr-tbtn.lr-mini-btn` - the mini button pairs both classes,
   `.lr-mini-title`, `.lr-mini-time`, a DRAGGABLE `.lr-mini-track` >
   `.lr-mini-fill`, `.lr-tbtn.lr-mini-speed` (cycles 1x-2x),
   `.lr-tbtn.lr-mini-follow` (the SAME crosshair icon, so the two
-  controls correlate at a glance; labeled "Read Along" for AT)). NO Close button: visibility is
+  controls correlate at a glance; labeled "Read Along" for AT)). The
+  mini button's initial label is "Play" (nothing has played yet).. NO Close button: visibility is
   automatic - it shows whenever the main player is scrolled away and the
   episode is started, hides when you scroll back, and retires when the
   episode ends. It PERSISTS while paused (Play/Pause label follows

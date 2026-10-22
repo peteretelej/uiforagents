@@ -78,6 +78,7 @@ Artifact lane (single-file HTML/CSS):
 | **night-ops** | Dark ops console. Cool near-black ground, azure instrument accent, LED status grammar, hairline panels. |
 | **paper-ledger** | Light print-precision analytics. Cool paper ground, ink-blue accent, accounting double rules, tabular mono figures, a real print stylesheet. |
 | **tally-board** | Warm personal tracker. Cream + terracotta, rounded bento cards, bold rounded numerals, progress grammar, ok/warn-only pills. |
+| **listening-room** | Dark-first listening surface. Warm near-black ground, amber accent, serif display, mono labels; waveform player with chapter ticks, chapter grid, synced transcript, mini-player. |
 | **espresso-panel** | Amber instrument panel. Warm-black ground, one phosphor hue, all-mono type, readout walls, bracket states, ticker tape. |
 | **weissraum** | Light minimal Swiss portfolio. Paper-white canvas, poster-scale Archivo display, hairline indexes, one red accent used only when it has a job, 0px radius. |
 | **ivory-desk** | Calm light AI console. Oat-ivory paper, Newsreader serif voice moments, IBM Plex Mono output, flat full-width turns, one clay accent. |

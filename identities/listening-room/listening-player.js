@@ -45,7 +45,7 @@
   var resumeAt = 0;
   var lastSaved = 0;
   var raf = 0;
-  var ghostX = -1;
+
 
   html.classList.add('lr-js');
 
@@ -159,9 +159,9 @@
       }
 
       // hover ghost
-      if (ghostX >= 0) {
+      if (p._ghostX >= 0) {
         ctx.fillStyle = p._colors.ghost;
-        ctx.fillRect(ghostX, 0, 1, h);
+        ctx.fillRect(p._ghostX, 0, 1, h);
       }
 
       // playhead
@@ -249,7 +249,7 @@
 
   function scrollToNow(p) {
     var now = p._tps && p._tps.length ? p._tps.find(function (tp) { return tp.classList.contains('is-now'); }) : null;
-    if (now) now.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    if (now) now.scrollIntoView({ block: 'center' });
   }
 
   function paintTranscript(p, t) {
@@ -268,7 +268,7 @@
     if (p._followOn) {
       var r = tp.getBoundingClientRect();
       if (r.top < 0 || r.bottom > window.innerHeight) {
-        tp.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        tp.scrollIntoView({ block: 'center' });
       }
     }
   }
@@ -399,7 +399,7 @@
       b.addEventListener('click', function () {
         play(p);
         safeSeek(start);
-        window.scrollTo({ top: root.getBoundingClientRect().top + window.scrollY - 24, behavior: 'smooth' });
+        window.scrollTo({ top: root.getBoundingClientRect().top + window.scrollY - 24 });
       });
     });
 
@@ -528,6 +528,7 @@
     p._chapters = [];
     p._chbtns = [];
     p._tps = null;
+    p._followBtns = [];
     if (p === players[0] && !docWired) {
       docWired = true;
       wirePageScope(p);
@@ -571,17 +572,17 @@
       box.addEventListener('pointermove', function (e) {
         var frac = fracAt(e);
         var r = p._canvas.getBoundingClientRect();
-        ghostX = frac * r.width;
+        p._ghostX = frac * r.width;
         if (p._dragging && p._duration) safeSeek(frac * p._duration);
         if (p._ui.tip && p._duration) {
           p._ui.tip.classList.add('on');
-          p._ui.tip.style.left = ghostX + 'px';
+          p._ui.tip.style.left = p._ghostX + 'px';
           p._ui.tip.textContent = clock(frac * p._duration);
         }
         if (p === current) drawWave(p);
       });
       box.addEventListener('pointerleave', function () {
-        ghostX = -1;
+        p._ghostX = -1;
         if (p._ui.tip) p._ui.tip.classList.remove('on');
         if (p === current) drawWave(p);
       });
