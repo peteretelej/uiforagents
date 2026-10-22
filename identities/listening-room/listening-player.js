@@ -234,8 +234,9 @@
 
   /* ---------- follow state (persistent, three correlated controls) ----------
      The transport toggle, the mini icon, and the floating chip next to
-     the active line all mirror and drive this state. ANY scroll intent
-     pauses it; only the toggles re-enable it. */
+     the active line all mirror and drive this state. ON = the page keeps
+     pace with the voice everywhere, like GPS recentering - scrolling the
+     page never changes the mode; the chip or a toggle is the switch. */
   function setFollow(p, on) {
     p._followOn = on;
     p._followBtns.forEach(function (b) {
@@ -264,7 +265,7 @@
     if (idx < 0) return;
     var tp = p._tps[idx];
     if (p._chip) p._chip.style.top = Math.round(tp.offsetTop + tp.offsetHeight / 2) + 'px';
-    if (p._followOn && p._trInView) {
+    if (p._followOn) {
       var r = tp.getBoundingClientRect();
       if (r.top < 0 || r.bottom > window.innerHeight) {
         tp.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -434,19 +435,6 @@
           safeSeek(parseFloat(tp.dataset.start));
         });
       });
-
-      // ANY scroll intent anywhere pauses follow: never fight the reader
-      doc.addEventListener('wheel', function () { if (p._followOn) setFollow(p, false); }, { passive: true });
-      doc.addEventListener('touchmove', function () { if (p._followOn) setFollow(p, false); }, { passive: true });
-
-      // and follow never yanks the page while the reader is elsewhere:
-      // it only scrolls the transcript while the transcript is on screen
-      p._trInView = true;
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (entries) {
-          p._trInView = entries[0].isIntersecting;
-        }, { threshold: 0.2 }).observe(tr);
-      }
     }
 
     // mini-player

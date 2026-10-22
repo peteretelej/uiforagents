@@ -108,12 +108,13 @@ Listening components (the extension):
   tracking it as it moves (crosshair icon + "Reading along" + an x).
   Clicking it stops Read Along. It is the on-state made findable: the
   disable control lives exactly where the auto-scroll is felt.
-- **The hijack contract**: Read Along NEVER fights the reader. Any user
-  scroll intent (wheel/touchmove anywhere on the page) pauses it; while
-  the transcript is off screen it does not scroll the page at all; only
-  the two toggles (transport `.lr-follow` labeled "Read Along" + the mini
-  `.lr-mini-follow` crosshair) re-enable it. Seeking never changes it
-  silently.
+- **Read Along persistence**: while ON, the page keeps pace with the
+  voice everywhere - scrolling the page NEVER changes the mode; the page
+  recenters on the active line (GPS model). OFF = the transcript never
+  scrolls itself; highlights still move. The switch is exactly one of:
+  the floating chip (`.lr-chip`, one click, always next to the active
+  line), the transport `.lr-follow` ("Read Along"), or the mini
+  `.lr-mini-follow` crosshair - all three always state-correlated.
 - `.lr-statusrow` (inside `.lr-transport`, full width): the current
   chapter (`.lr-chlabel`) on the left, the follow toggle
   (`button.lr-tbtn.lr-follow`, crosshair icon + "Read Along",
@@ -155,10 +156,10 @@ semantic HTML styled from the token vocabulary.
 - Keyboard: space or K toggles play; J/L jump -10/+10s (skipped while
   typing); the waveform is `role=slider`: left/right arrows nudge 5s,
   Home/End jump to the ends.
-- Transcript Read Along: the active paragraph scrolls with playback while
-  the transcript is on screen. Controlled ONLY by the transport toggle,
-  the mini icon, and the floating chip (which stops it); ANY user scroll
-  pauses it. It is never re-enabled silently.
+- Transcript Read Along: ON = the page follows the voice everywhere
+  (recentering like GPS); OFF = the transcript never scrolls itself.
+  The switch is the floating chip, the transport toggle, or the mini
+  icon; scrolling the page never changes the mode.
 
 ## Data conventions (recommended shape for producers)
 
