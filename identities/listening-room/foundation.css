@@ -262,20 +262,10 @@
     background: color-mix(in oklab, var(--accent-soft) 55%, transparent);
   }
   .lr-tp.is-now .lr-trole { color: var(--accent); }
-  .lr-transcript-bar {
-    position: sticky; top: 0; z-index: 1;
-    display: flex; justify-content: flex-end;
-    background: var(--bg); padding: 6px 0; margin: 0 0 4px;
-  }
-  .lr-followtoggle {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em;
-    color: var(--faint); background: var(--surface);
-    border: 1px solid var(--line-soft); border-radius: var(--radius);
-    padding: 4px 10px; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .lr-followtoggle:hover { color: var(--ink); border-color: var(--accent); }
-  .lr-followtoggle.is-on { color: var(--accent); border-color: var(--accent); }
+  /* status row under the transport: current chapter (left) + follow toggle */
+  .lr-statusrow { display: flex; align-items: center; gap: 10px; width: 100%; margin-top: 6px; min-width: 0; }
+  .lr-statusrow .lr-chlabel { width: auto; flex: 1; min-width: 0; margin-top: 0; }
+  .lr-tbtn.is-on { color: var(--accent); border-color: var(--accent); }
   .lr-fi { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
 
   /* ---------- Mini-player ---------- */
@@ -307,12 +297,6 @@
     position: absolute; left: 0; top: 50%; height: 3px; width: 0%;
     transform: translateY(-50%); background: var(--accent); border-radius: 2px;
   }
-  .lr-mini-close {
-    font-family: var(--font-mono); font-size: 11px; color: var(--faint);
-    background: none; border: 1px solid var(--line-soft); border-radius: var(--radius);
-    height: 28px; padding: 0 10px; cursor: pointer;
-  }
-  .lr-mini-close:hover { color: var(--ink); border-color: var(--line); }
   body.has-lrmini { padding-bottom: 64px; }
 
   /* ---------- Loading ---------- */

@@ -101,20 +101,24 @@ Listening components (the extension):
 - `.lr-transcript` > `p.lr-tp[data-start][data-role]` per spoken segment,
   each containing `.lr-trole` (speaker label, mono), `button.lr-tstamp`
   (mono time), `.lr-ttext`. The module stamps `.is-past` and `.is-now`.
-- `.lr-transcript-bar` (sticky, inside `.lr-transcript`, right-aligned)
-  carries the `.lr-followtoggle` button (icon + "Follow") - the
-  transcript's persistent auto-follow control. `.is-on` + `aria-pressed`
-  mirror the state. Follow is a REAL toggle, never a trap: reading away
-  (wheel/touch) pauses it; only the toggles re-enable it; seeking never
-  changes it silently.
+  The transcript is a PURE reading surface: no floating bars, chips, or
+  controls overlay the text.
+- `.lr-statusrow` (inside `.lr-transport`, full width): the current
+  chapter (`.lr-chlabel`) on the left, the follow toggle
+  (`button.lr-tbtn.lr-follow`, mono "Follow", `is-on` + `aria-pressed`
+  mirror the state) on the right. Follow is a REAL toggle, never a trap:
+  reading away (wheel/touch on the transcript) pauses it; only the two
+  toggles change it deliberately; seeking never changes it silently.
 - `.lr-mini`: fixed bottom mini-player
   (`button.lr-tbtn.lr-mini-btn` - the mini button pairs both classes,
   `.lr-mini-title`, `.lr-mini-time`, a DRAGGABLE `.lr-mini-track` >
   `.lr-mini-fill`, `.lr-tbtn.lr-mini-speed` (cycles 1x-2x),
-  `.lr-tbtn.lr-mini-follow` (the same follow state, correlated with the
-  transcript toggle), `.lr-mini-close`). The module shows it while the
-  main player is scrolled away; it PERSISTS while paused (Play/Pause
-  label follows state) and retires on Close or when the episode ends.
+  `.lr-tbtn.lr-mini-follow` (crosshair icon; the same follow state,
+  correlated with the transport toggle)). NO Close button: visibility is
+  automatic - it shows whenever the main player is scrolled away and the
+  episode is started, hides when you scroll back, and retires when the
+  episode ends. It PERSISTS while paused (Play/Pause label follows
+  state).
 
 Do not invent new visual components. If a page needs more, use plain
 semantic HTML styled from the token vocabulary.
@@ -140,9 +144,9 @@ semantic HTML styled from the token vocabulary.
   typing); the waveform is `role=slider`: left/right arrows nudge 5s,
   Home/End jump to the ends.
 - Transcript auto-follow: the active paragraph scrolls with playback.
-  Follow is controlled ONLY by its two visible toggles (transcript bar +
-  mini-player icon, always state-correlated) and pauses on manual
-  scrolling of the transcript. It is never re-enabled silently.
+  Follow is controlled ONLY by its two visible toggles (transport status
+  row + mini-player crosshair icon, always state-correlated) and pauses
+  on manual scrolling of the transcript. It is never re-enabled silently.
 
 ## Data conventions (recommended shape for producers)
 

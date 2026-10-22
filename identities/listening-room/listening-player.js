@@ -46,7 +46,6 @@
   var lastSaved = 0;
   var raf = 0;
   var ghostX = -1;
-  var miniDismissed = false;
 
   html.classList.add('lr-js');
 
@@ -283,10 +282,11 @@
     if (!current) return;
     var m = current._mini;
     if (!m) return;
-    // persists while paused so the reader can resume from where they are;
-    // only Close (dismiss) or ending the episode retires it
+    // purely automatic: visible whenever the main player is scrolled away
+    // and the episode is started; retires itself when the episode ends.
+    // No Close: scrolling back to the player is the way back.
     var started = !audio.paused || audio.currentTime > 0;
-    var show = started && !audio.ended && !miniDismissed && current._outOfView;
+    var show = started && !audio.ended && current._outOfView;
     m.root.classList.toggle('is-active', show);
     doc.body.classList.toggle('has-lrmini', show);
     if (show) {
@@ -304,7 +304,6 @@
     if (current === p) return;
     if (current) { setBtn(current, false); }
     current = p;
-    miniDismissed = false;
     var url = p._root.dataset.audio;
     if (loadedUrl !== url) {
       loadedUrl = url;
@@ -400,16 +399,16 @@
       });
     });
 
-    // transcript: the bar with the follow toggle sits INSIDE
-    // .lr-transcript, sticky to its top
+    // transcript: pure reading surface - no floating chrome. Follow lives
+    // in the transport status row and the mini-player.
     var tr = doc.querySelector('.lr-transcript');
     if (tr) {
       p._tps = Array.prototype.slice.call(tr.querySelectorAll('.lr-tp[data-start]'));
       p._followBtns = [];
-      var tgl = tr.querySelector('.lr-followtoggle');
-      if (tgl) {
-        p._followBtns.push(tgl);
-        tgl.addEventListener('click', function () { setFollow(p, !p._followOn); });
+      var tf = p._ui.follow;
+      if (tf) {
+        p._followBtns.push(tf);
+        tf.addEventListener('click', function () { setFollow(p, !p._followOn); });
       }
       p._followOn = true;
       setFollow(p, true);
@@ -436,7 +435,6 @@
         fill: miniRoot.querySelector('.lr-mini-fill'),
         speed: miniRoot.querySelector('.lr-mini-speed'),
         follow: miniRoot.querySelector('.lr-mini-follow'),
-        close: miniRoot.querySelector('.lr-mini-close'),
       };
       p._mini.btn.addEventListener('click', function () {
         if (!current) return;
@@ -470,11 +468,6 @@
         p._mini.follow.addEventListener('click', function () { setFollow(p, !p._followOn); });
         setFollow(p, p._followOn);
       }
-      p._mini.close.addEventListener('click', function () {
-        miniDismissed = true;
-        p._mini.root.classList.remove('is-active');
-        doc.body.classList.remove('has-lrmini');
-      });
     }
   }
 
@@ -489,6 +482,7 @@
       speed: root.querySelector('.lr-speed'),
       elapsed: root.querySelector('.lr-elapsed'),
       total: root.querySelector('.lr-total'),
+      follow: root.querySelector('.lr-follow'),
       wavebox: root.querySelector('.lr-wavebox'),
       wave: root.querySelector('.lr-wave'),
       tip: root.querySelector('.lr-wave-tip'),
