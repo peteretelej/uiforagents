@@ -136,6 +136,16 @@
   }
   .rr-toc a:hover { color: var(--ink); }
   .rr-toc a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+  /* Subsections: nest an <ol> inside the parent section's <li>. Sub-entries
+     indent, drop a size, and stay rail-less so the border-left rail stays
+     reserved for top-level sections. */
+  .rr-toc ol ol { list-style: none; margin: 0 0 0.25rem; padding: 0; }
+  .rr-toc ol ol a {
+    padding: 0.18rem 0.75rem 0.18rem 1.6rem;
+    font-size: 0.74rem; color: var(--faint); border-left-color: transparent;
+  }
+  .rr-toc ol ol a:hover { color: var(--ink); }
+  .rr-toc ol ol a.active { color: var(--accent); font-weight: 600; }
   .rr-toc-mobile { display: none; }
 
   /* ---------- Sections ---------- */
@@ -261,6 +271,8 @@
     }
     .rr-toc-mobile ol { list-style: none; margin: 0; padding: 0.25rem 0 0.5rem; }
     .rr-toc-mobile a { display: block; padding: 0.45rem 1.2rem; font-size: 0.88rem; color: var(--muted); text-decoration: none; }
+    .rr-toc-mobile ol ol { list-style: none; margin: 0; padding: 0 0 0.25rem; }
+    .rr-toc-mobile ol ol a { padding: 0.28rem 1.2rem 0.28rem 2.1rem; font-size: 0.8rem; color: var(--faint); }
     .rr-hero { padding: 2.5rem 1.1rem 1.5rem; }
     .rr-card { padding: 1.1rem 1.1rem; }
     .rr-card dl { grid-template-columns: 1fr; gap: 0.1rem; }
@@ -318,7 +330,11 @@ a.rr-kicker { text-decoration: none; }
     <ol>
       <li><a href="#rationale" class="active">Design rationale</a></li>
       <li><a href="#tokens">Token reference</a></li>
-      <li><a href="#typography">Typography</a></li>
+      <li><a href="#typography">Typography</a>
+        <ol>
+          <li><a href="#third-level">Third-level headings</a></li>
+        </ol>
+      </li>
       <li><a href="#callouts">Callouts</a></li>
       <li><a href="#chips">Chips</a></li>
       <li><a href="#cards">Cards</a></li>
@@ -335,7 +351,11 @@ a.rr-kicker { text-decoration: none; }
     <ol>
       <li><a href="#rationale">Design rationale</a></li>
       <li><a href="#tokens">Token reference</a></li>
-      <li><a href="#typography">Typography</a></li>
+      <li><a href="#typography">Typography</a>
+        <ol>
+          <li><a href="#third-level">Third-level headings</a></li>
+        </ol>
+      </li>
       <li><a href="#callouts">Callouts</a></li>
       <li><a href="#chips">Chips</a></li>
       <li><a href="#cards">Cards</a></li>
@@ -418,7 +438,7 @@ a.rr-kicker { text-decoration: none; }
       <strong>Bold is reserved for scan anchors</strong>, not emphasis decoration.
       Inline <code>code()</code> sits on the wash with a hairline border. Below 900px
       the base size steps down to 17px.</p>
-      <h3>Third-level headings</h3>
+      <h3 id="third-level">Third-level headings</h3>
       <p><code>h3</code> inside a section is 1.15rem serif with generous top
       margin. Section <code>h2</code> is 1.65rem with a hairline top rule; the
       numbered eyebrow (<code>.rr-secnum</code>) above it is optional:</p>

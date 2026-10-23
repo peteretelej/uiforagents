@@ -61,8 +61,11 @@ page-specific layout only.
 - `.rr-shell`: 220px sidebar + content grid, 1080px max. Children: `.rr-toc`
   and `.rr-main`. Under 900px the grid collapses and `.rr-toc` hides.
 - `.rr-toc`: sticky table of contents; `.rr-toc-label`, then an `<ol>` of
-  anchor links; `.active` marks the current section. `.rr-toc-mobile` is a
-  `<details>` fallback that appears under 900px. Ship both.
+  anchor links; `.active` marks the current section. Subsections nest an
+  `<ol>` inside the parent section's `<li>` - they render indented, a size
+  smaller, and rail-less (the border-left rail stays reserved for top-level
+  sections). `.rr-toc-mobile` is a `<details>` fallback that appears under
+  900px; nest there too. Ship both.
 - `.rr-section`: one article section. `h2` gets a hairline top rule; an
   optional `.rr-secnum` span renders the numbered eyebrow (e.g.
   `<span class="rr-secnum">Section 1</span>`). `h3` for sub-heads.
