@@ -238,6 +238,24 @@
      the active line all mirror and drive this state. ON = the page keeps
      pace with the voice everywhere, like GPS recentering - scrolling the
      page never changes the mode; the chip or a toggle is the switch. */
+  function onActivate(el, fn) {
+    // Follow controls live on a page that auto-scrolls beneath them:
+    // mobile taps die in the touchstart-to-touchend window whenever an
+    // auto-scroll lands inside it. pointerdown fires at touchstart,
+    // before anything can cancel the tap; click stays for mouse and
+    // keyboard, deduped against the pointer activation.
+    var lastPointer = 0;
+    el.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse') return;
+      lastPointer = Date.now();
+      e.preventDefault();
+      fn();
+    });
+    el.addEventListener('click', function () {
+      if (Date.now() - lastPointer < 800) return;
+      fn();
+    });
+  }
   function setFollow(p, on) {
     p._followOn = on;
     p._followBtns.forEach(function (b) {
@@ -245,6 +263,10 @@
       b.setAttribute('aria-pressed', String(on));
     });
     if (p._chip) p._chip.classList.toggle('is-on', on);
+    if (mini && mini.follow) {
+      mini.follow.classList.toggle('is-on', on);
+      mini.follow.setAttribute('aria-pressed', String(on));
+    }
     if (on) scrollToNow(p);
   }
 
@@ -405,19 +427,22 @@
     });
 
     // transcript: pure reading surface; follow is controlled from the
-    // transport + mini toggles and the floating chip that tracks the
-    // active line (chip is JS-created: meaningless without JS)
+    // transport toggle and the floating chip that tracks the active line
+    // (chip is JS-created: meaningless without JS). Without transcript
+    // lines the follow toggle is meaningless too - hide it.
     var tr = doc.querySelector('.lr-transcript');
     if (tr) {
       p._tps = Array.prototype.slice.call(tr.querySelectorAll('.lr-tp[data-start]'));
+    }
+    if (!(p._tps && p._tps.length)) {
+      if (p._ui.follow) p._ui.follow.style.display = 'none';
+    } else {
       p._followBtns = [];
       var tf = p._ui.follow;
       if (tf) {
         p._followBtns.push(tf);
-        tf.addEventListener('click', function () { setFollow(p, !p._followOn); });
+        onActivate(tf, function () { setFollow(p, !p._followOn); });
       }
-      p._followOn = true;
-      setFollow(p, true);
 
       // the floating chip: sits next to the CURRENT line being read,
       // so the disable control is always where the hijack is felt
@@ -425,10 +450,15 @@
       chip.type = 'button';
       chip.className = 'lr-chip';
       chip.title = 'Stop reading along';
-      chip.innerHTML = '<svg class="lr-fi" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.5"/><path d="M8 0.5v3M8 12.5v3M0.5 8h3M12.5 8h3"/></svg>Reading along<svg class="lr-fi lr-chip-x" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
-      chip.addEventListener('click', function () { setFollow(p, false); });
+      chip.innerHTML = '<svg class="lr-fi" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="4.5"/><path d="M8 0.5v3M8 12.5v3M0.5 8h3M12.5 8h3"/></svg><span class="lr-chip-txt">Reading along</span><svg class="lr-fi lr-chip-x" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
+      onActivate(chip, function () { setFollow(p, false); });
       tr.appendChild(chip);
       p._chip = chip;
+
+      // initial state LAST so every control (including the chip, which
+      // did not exist during earlier attempts) receives it
+      p._followOn = true;
+      setFollow(p, true);
 
       p._tps.forEach(function (tp) {
         tp.addEventListener('click', function (e) {
@@ -451,6 +481,7 @@
         fill: miniRoot.querySelector('.lr-mini-fill'),
         speed: miniRoot.querySelector('.lr-mini-speed'),
         follow: miniRoot.querySelector('.lr-mini-follow'),
+        top: miniRoot.querySelector('.lr-mini-top'),
       };
       mini.btn.addEventListener('click', function () {
         if (!current) return;
@@ -479,11 +510,30 @@
         audio.playbackRate = rate;
         syncSpeedLabels();
       });
+      // the mini's follow toggle mirrors and drives the TRANSCRIPT player
+      // (players[0], the episode page's player); on card pages follow does
+      // not exist and the button hides. It used to mirror the first player
+      // blindly, silently flipping the wrong player's mode on multi-card
+      // pages - which is why it was removed outright.
       if (mini.follow) {
-        p._followBtns.push(mini.follow);
-        mini.follow.addEventListener('click', function () { setFollow(p, !p._followOn); });
-        setFollow(p, p._followOn);
+        var owner = players[0];
+        if (owner && owner._followBtns && owner._followBtns.length) {
+          onActivate(mini.follow, function () {
+            var p = (current && current._followBtns && current._followBtns.length) ? current : players[0];
+            if (p && p._followBtns.length) setFollow(p, !p._followOn);
+          });
+          mini.follow.classList.toggle('is-on', owner._followOn);
+          mini.follow.setAttribute('aria-pressed', String(owner._followOn));
+        } else {
+          mini.follow.style.display = 'none';
+        }
       }
+      // back to top: the pill exists only while the player is off-screen,
+      // so it is the natural "take me back up" affordance
+      if (mini.top) onActivate(mini.top, function () {
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      });
     }
   }
 
@@ -557,6 +607,9 @@
         if (current) paintMini();
       }, { threshold: 0.4 }).observe(root);
     }
+    // follow is owned by the transcript's player (the first); the other
+    // cards' toggles would be dead buttons - hide them
+    if (p !== players[0] && p._ui.follow) p._ui.follow.style.display = 'none';
 
     /* transport */
     if (p._ui.play) p._ui.play.addEventListener('click', function () { toggle(p); });

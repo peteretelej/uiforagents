@@ -112,10 +112,12 @@ Listening components (the extension):
   The transcript is a PURE reading surface: no persistent bars or chrome.
 - **The floating chip (`.lr-chip`, JS-created)**: while Read Along is ON,
   a small pill floats next to the CURRENT line being read - in the right
-  margin gutter on wide screens, at the line's right edge under 760px -
-  tracking it as it moves (crosshair icon + "Reading along" + an x).
-  Clicking it stops Read Along. It is the on-state made findable: the
-  disable control lives exactly where the auto-scroll is felt.
+  margin gutter on wide screens; on mobile (under 760px) it sits at the
+  line's LEFT edge, icon + x only (the "Reading along" text is hidden) so
+  it never covers the text - tracking the line as it moves. It is present
+  from page load (not only after the first toggle). Clicking it stops
+  Read Along. It is the on-state made findable: the disable control
+  lives exactly where the auto-scroll is felt.
 - **Read Along persistence**: while ON, the page keeps pace with the
   voice everywhere - scrolling the page NEVER changes the mode; the page
   recenters on the active line (GPS model). OFF = the transcript never
@@ -128,15 +130,25 @@ Listening components (the extension):
   current chapter (`.lr-chlabel`) on the left, the follow toggle
   (`button.lr-tbtn.lr-follow`, crosshair icon + "Read Along",
   `is-on` + `aria-pressed` mirror the state) on the right. Follow is a
-  REAL toggle, never a trap: only the two toggles and the floating chip
-  change it; seeking never changes it silently.
+  REAL toggle, never a trap: only the three toggles (transport, mini,
+  chip) change it; seeking never changes it silently.
 - `.lr-mini`: fixed bottom mini-player
   (`button.lr-tbtn.lr-mini-btn` - the mini button pairs both classes,
   `.lr-mini-title`, `.lr-mini-time`, a DRAGGABLE `.lr-mini-track` >
-  `.lr-mini-fill`, `.lr-tbtn.lr-mini-speed` (cycles 1x-2x),
-  `.lr-tbtn.lr-mini-follow` (the SAME crosshair icon, so the two
-  controls correlate at a glance; labeled "Read Along" for AT)). The
-  mini button's initial label is "Play" (nothing has played yet).. NO Close button: visibility is
+  `.lr-mini-fill`, then `.lr-tbtn.lr-mini-follow`, `.lr-tbtn.lr-mini-top`
+  (back-to-top arrow), and `.lr-tbtn.lr-mini-speed` (cycles 1x-2x)). The
+  follow toggle uses the SAME crosshair icon so the two controls
+  correlate at a glance (title "Auto-scroll the transcript with
+  playback" for AT) and DRIVES THE TRANSCRIPT PLAYER's state - it hides
+  itself on pages with no transcript (listing surfaces), where follow
+  does not exist. The top button scrolls to the top of the page: the
+  mini exists only while the player is off-screen, and the player sits
+  in the hero at the page's top, so it is the natural "take me back up"
+  affordance.
+  Keep pill controls icon-sized and the 640px density tweak intact -
+  seven controls must fit a 390px phone. The
+  mini button's initial label is "Play" (nothing has played yet). NO
+  Close button: visibility is
   automatic - it shows whenever the main player is scrolled away and the
   episode is started, hides when you scroll back, and retires when the
   episode ends. It PERSISTS while paused (Play/Pause label follows
@@ -173,6 +185,13 @@ semantic HTML styled from the token vocabulary.
   (recentering like GPS); OFF = the transcript never scrolls itself.
   The switch is the floating chip, the transport toggle, or the mini
   icon; scrolling the page never changes the mode.
+- Follow controls activate on `pointerdown` for touch (mouse keeps
+  `click`, deduped): the page auto-scrolls under these controls while
+  follow is ON, and mobile taps die when the page moves between
+  touchstart and touchend. Never downgrade them to click-only.
+- Initial follow state is applied LAST, after every control exists
+  (transport toggle, chip, mini button) - the chip is JS-created, so an
+  early state application would leave it invisible on load.
 
 ## Data conventions (recommended shape for producers)
 
