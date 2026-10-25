@@ -19,10 +19,17 @@ Install the skill once; `-g` installs it globally so every project sees it:
 npx skills add peteretelej/uiforagents -g
 ```
 
-Then just ask your agent:
+Then ask your agent for suggestings on designs to use
 
-> "use Nairobi Noon for this app" - "make this report look like Reading Room" -
-> "which identity fits a dense internal admin tool?"
+```
+/uiforagents help pick a few good designs for my website and demo them to me
+
+/uiforagents use Nairobi Noon for this app
+
+/uiforagents derive a design variant from Reading Room for my blog that best fits my site's color scheme
+
+/uiforagents give my podcast site a nice UX
+```
 
 The skill discovers the catalogue, picks identities, fetches the right files,
 and follows the lane contracts - no instructions to relay. It works with GitHub
