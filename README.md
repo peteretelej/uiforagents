@@ -19,7 +19,7 @@ Install the skill once; `-g` installs it globally so every project sees it:
 npx skills add peteretelej/uiforagents -g
 ```
 
-Then ask your agent for suggestings on designs to use
+Then chat with your agent, or ask it to pick or derive new designs for you:
 
 ```
 /uiforagents help pick a few good designs for my website and demo them to me
