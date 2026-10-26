@@ -85,9 +85,10 @@ improvise visual design.
 - Console chrome keeps the 36-40px interactive-row law on desktop, but
   coarse pointers (`@media (pointer: coarse)`) lift controls to a 44px
   floor: nav links carry vertical padding, buttons hold the floor.
-- Dark-only by contract, so no toggle ships; when a light variant
-  lands, its scheme toggle is icon-only (moon/sun glyph, never a text
-  label) and reachable at every width.
+- The theme leads dark with an optional light scheme
+  (`data-scheme="light"` on the identity root); no scheme toggle ships in
+  the blocks yet, and when one lands it is icon-only (moon/sun glyph,
+  never a text label) and reachable at every width.
 
 ## Component choices (do not substitute)
 
