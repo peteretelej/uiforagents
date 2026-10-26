@@ -1,5 +1,10 @@
 # reading-room - Agent Prompt-Pack
 
+One-shot re-run 2026-10-26: PASS - a fresh agent built a long-form interview
+page from only this pack and `foundation.css`; identity-faithful, premium,
+no design improvisation; headless check clean (zero console errors, no
+document overflow at 1280/390/360).
+
 You are building with the **reading-room** design identity: a warm editorial
 reader for long-form, self-contained HTML artifacts - articles, briefings,
 catch-up guides, reports, changelogs. The design decisions are already made.

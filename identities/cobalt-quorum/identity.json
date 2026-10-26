@@ -65,5 +65,5 @@
   },
   "blocks": ["hero", "auth", "landing-shell", "table-page", "article", "states"],
   "registry": "@uiforagents/cobalt-quorum",
-  "notes": "One-shot PASS 2026-10-12, customers index. One accent (cobalt) does all pointing; sky blue never competes in nav or buttons; headings are ink navy, never neutral black; sections alternate white/mist; badges are outline pills capped 3-4 per placement; trust microcopy sits under every primary CTA; the dark band (#0F172A-class) is the page's single premium pivot with its own token set. Tabular figures for every metric."
+  "notes": "One-shot PASS 2026-10-12, customers index. One accent (cobalt) does all pointing; sky blue never competes in nav or buttons; headings are ink navy, never neutral black; sections alternate white/mist; badges are outline pills capped 3-4 per placement; trust microcopy sits under every primary CTA; the dark band (#0F172A-class) is the page's single premium pivot with its own token set. Tabular figures for every metric. One-shot re-run 2026-10-26: PASS - fresh agent given only prompt-pack + theme + overrides built a SaaS pricing page (single-file build), identity-faithful; headless check clean: zero console errors, no document overflow at 1280/390/360."
 }

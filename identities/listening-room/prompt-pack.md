@@ -4,6 +4,12 @@
 > distinct from the episode-page demo; built pack-only by a fresh agent
 > with no other design context).
 
+> One-shot re-run 2026-10-26: PASS (narrow-screen gate) - narrated report
+> page (an audio edition of a written feature), distinct from the episode-
+> page demo; built pack-only by a fresh agent with no other design context;
+> headless check clean, zero console errors and no document overflow at
+> 1280/390/360.
+
 You are building with the **listening-room** design identity: a dark-first
 listening surface for spoken-audio pages - podcast episodes, narrated
 reports, audio editions, briefings with a voice. The design decisions are

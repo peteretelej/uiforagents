@@ -49,5 +49,5 @@
   },
   "blocks": ["hero", "auth", "dashboard-shell", "table-page", "article", "states"],
   "registry": "@uiforagents/ocean-calm",
-  "notes": "Density is relaxed (calm product UI): 16px base, 44-56px rows, 8px grid. Numbers are tabular. Accent is for action, never decoration."
+  "notes": "Density is relaxed (calm product UI): 16px base, 44-56px rows, 8px grid. Numbers are tabular. Accent is for action, never decoration. One-shot re-run 2026-10-26: PASS - fresh agent given only prompt-pack + theme + overrides built an account onboarding page (single-file build), identity-faithful; headless check clean: zero console errors, no document overflow at 1280/390/360."
 }

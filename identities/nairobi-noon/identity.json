@@ -62,5 +62,5 @@
     "states"
   ],
   "registry": "@uiforagents/nairobi-noon",
-  "notes": "Warm relaxed product UI. Terracotta is for action. Lilita One carries headings with its own personality - never letterspace it tight, never use it for body. Warm neutrals everywhere; no cool blues."
+  "notes": "Warm relaxed product UI. Terracotta is for action. Lilita One carries headings with its own personality - never letterspace it tight, never use it for body. Warm neutrals everywhere; no cool blues. One-shot re-run 2026-10-26: PASS - fresh agent given only prompt-pack + theme + overrides built a travel itinerary page (single-file build), identity-faithful; headless check clean: zero console errors, no document overflow at 1280/390/360."
 }

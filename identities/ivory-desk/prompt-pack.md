@@ -4,6 +4,11 @@ One-shot record: PASS 2026-10-12 - a fresh agent built a product changelog
 page from only this pack and `foundation.css`; identity-faithful, premium,
 no design improvisation.
 
+One-shot re-run 2026-10-26: PASS - a fresh agent built a research notes
+library page from only this pack and `foundation.css`; identity-faithful,
+premium, no design improvisation; headless check clean (zero console errors,
+no document overflow at 1280/390/360).
+
 You are building with the **ivory-desk** design identity: the calm light AI
 console for self-contained HTML artifacts - assistant workspaces, research
 answer documents, briefs, comparison pages, landing pages for AI products.

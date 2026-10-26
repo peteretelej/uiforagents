@@ -4,6 +4,11 @@ One-shot record: PASS 2026-10-12 - a fresh agent built a tutorial index
 with a step-by-step guide from only this pack and `foundation.css`;
 identity-faithful, premium, no design improvisation.
 
+One-shot re-run 2026-10-26: PASS - a fresh agent built a getting-started
+documentation page from only this pack and `foundation.css`; identity-
+faithful, premium, no design improvisation; headless check clean (zero
+console errors, no document overflow at 1280/390/360).
+
 You are building with the **dither-lab** design identity: the 1-bit
 workshop for self-contained HTML artifacts - creative-tool pages, dev-tool
 landings, release-notes zines, jam and event pages. A blue-black canvas, a

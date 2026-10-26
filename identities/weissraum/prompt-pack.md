@@ -4,6 +4,11 @@ One-shot record: PASS 2026-10-12 - a fresh agent built an event/workshop
 index from only this pack and `foundation.css`; identity-faithful, premium,
 no design improvisation.
 
+One-shot re-run 2026-10-26: PASS - a fresh agent built a studio about/team
+page from only this pack and `foundation.css`; identity-faithful, premium,
+no design improvisation; headless check clean (zero console errors, no
+document overflow at 1280/390/360).
+
 You are building with the **weissraum** design identity: the canonical light
 Swiss portfolio system for self-contained HTML artifacts - studio
 portfolios, case studies, about pages, one-page briefs. Paper-white canvas,

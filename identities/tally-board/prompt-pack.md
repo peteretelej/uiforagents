@@ -1,5 +1,10 @@
 # tally-board - Agent Prompt-Pack
 
+One-shot re-run 2026-10-26: PASS - a fresh agent built a personal budget
+tracker page from only this pack and `foundation.css`; identity-faithful,
+premium, no design improvisation; headless check clean (zero console errors,
+no document overflow at 1280/390/360).
+
 You are building with the **tally-board** design identity: a warm-light
 personal tracking identity for self-contained HTML artifacts - habit boards,
 budgets, training weeks, streak pages, weekly reviews, family or chama

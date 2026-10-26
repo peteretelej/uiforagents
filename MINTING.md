@@ -133,12 +133,28 @@ Aiaia (audio brand), Heep (band), Jeroboam (perfumes), Randalls
 (supermarket), Laputa (Spanish profanity), Bunbury (real city),
 Winkie (real localities), Argos, Jotun, Barchester (real companies).
 
+## Headless check
+
+Every minted or changed identity, both lanes, passes the headless
+check: zero console errors and no horizontal document overflow at
+~1280px, ~390px, and ~360px widths. Run it on the identity's page (the
+artifact demo, or the built page under validation) with:
+
+```
+node tooling/check-mobile.mjs identities/<slug>/demo.html
+```
+
+The checker ships with no kit dependency: playwright resolves from the
+machine's global npm root. A page may pan inside a contained scroll
+area; the document itself must not overflow.
+
 ## One-shot gate
 
 Before an identity lands, it passes the one-shot test: a fresh agent
 receives only the prompt-pack and tokens/foundation and builds a page
 type with no pre-made block. PASS = identity-faithful, premium, no
-design improvisation (AGENTS.md, "Artifact-lane governance"). The
+design improvisation (AGENTS.md, "Artifact-lane governance"), and the
+one-shot output passes the headless check (above), ~390px included. The
 one-shot page type must differ from the demo's page type; the differing
 page is what proves the system generalizes.
 

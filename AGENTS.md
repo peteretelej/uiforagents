@@ -57,7 +57,9 @@ dependency, and no required JavaScript.
 - Any change to an artifact identity updates its prompt-pack AND its demo,
   and re-runs the one-shot test: a fresh agent gets only the prompt-pack +
   `foundation.css` and builds a page type with no pre-made block. PASS =
-  identity-faithful, premium, no design improvisation.
+  identity-faithful, premium, no design improvisation, and the output
+  passes the headless check (~390px included). The changed demo passes it
+  too: `node tooling/check-mobile.mjs identities/<slug>/demo.html`.
 - The CSS file is canonical and hand-curated. If drift ever matters, add a
   checker, never a generator.
 - The catalogue presents artifact identities as themselves: an identity's
@@ -73,7 +75,13 @@ dependency, and no required JavaScript.
   vibe-derived and brand-neutral, then validate with the one-shot test:
   a fresh agent gets only the prompt-pack + theme + overrides and builds a
   page type with no pre-made block. PASS = identity-faithful, premium, no
-  design improvisation. Record the result in the identity's entry.
+  design improvisation, and the output passes the headless check (~390px
+  included). Record the result in the identity's entry.
+- Headless check (both lanes): every minted or changed identity passes
+  it - zero console errors and no horizontal document overflow at
+  ~1280px, ~390px, and ~360px widths - via
+  `node tooling/check-mobile.mjs <page.html>` (playwright from the
+  machine's global npm root; the checker adds no kit dependency).
 - Regenerate registry payloads after any change:
   `node tooling/build-registry.mjs <slug>`
 - Releases are version-bump-and-push: set `package.json` version, push main,

@@ -1,5 +1,10 @@
 # night-ops - Agent Prompt-Pack
 
+One-shot re-run 2026-10-26: PASS - a fresh agent built an on-call handover
+page from only this pack and `foundation.css`; identity-faithful, premium,
+no design improvisation; headless check clean (zero console errors, no
+document overflow at 1280/390/360).
+
 You are building with the **night-ops** design identity: a dark ops console
 for operational, data-dense, self-contained HTML artifacts - service
 dashboards, incident views, log and cost consoles, CI/deploy boards, NOC

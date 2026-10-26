@@ -1,5 +1,10 @@
 # espresso-panel - Agent Prompt-Pack
 
+One-shot re-run 2026-10-26: PASS - a fresh agent built a single-asset detail
+page from only this pack and `foundation.css`; identity-faithful, premium,
+no design improvisation; headless check clean (zero console errors, no
+document overflow at 1280/390/360).
+
 You are building with the **espresso-panel** design identity: an amber
 instrument panel for self-contained HTML artifacts - ticker and price
 watchers, market feeds, machine-room walls, readout dashboards,

@@ -1,5 +1,10 @@
 # midnight-bulletin - Agent Prompt-Pack
 
+One-shot re-run 2026-10-26: PASS - a fresh agent built an incident
+postmortem briefing from only this pack and `foundation.css`; identity-
+faithful, premium, no design improvisation; headless check clean (zero
+console errors, no document overflow at 1280/390/360).
+
 You are building with the **midnight-bulletin** design identity: a dark-first
 briefing bulletin for data-dense, self-contained HTML artifacts - system
 briefings, status one-pagers, incident reports, model notes, lab writeups.
