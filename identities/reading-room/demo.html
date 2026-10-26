@@ -96,6 +96,7 @@
     padding: 0.25rem 0.6rem; cursor: pointer; white-space: nowrap;
   }
   .rr-theme-toggle:hover { color: var(--ink); border-color: var(--faint); }
+  .rr-theme-toggle--icon { padding: 0.4rem 0.5rem; line-height: 0; }
 
   /* ---------- Hero ---------- */
   .rr-hero { max-width: 1080px; margin: 0 auto; padding: 3.5rem 1.5rem 2.5rem; }
@@ -288,6 +289,16 @@
     }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch. */
+  @media (pointer: coarse) {
+    .rr-theme-toggle--icon { width: 44px; height: 44px; padding: 0; }
+    .rr-toc a { padding: 1rem 0; }
+    .rr-toc-mobile summary { padding: 1rem 1rem; }
+    .rr-toc-mobile a { padding: 0.9rem 1.2rem; }
+    .rr-toc-mobile ol ol a { padding: 0.9rem 1.2rem 0.9rem 2.1rem; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }
@@ -309,6 +320,18 @@
    every other link's underline nowhere. Unlayered rules win over
    the foundation layer without !important. */
 a.rr-kicker { text-decoration: none; }
+
+/* phone frame chrome for the 390 proof (screen only) */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line); border-radius: 16px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+@media print { #mobile { display: none; } }
 </style>
 </head>
 <body>
@@ -316,7 +339,7 @@ a.rr-kicker { text-decoration: none; }
 <header class="rr-masthead">
   <div class="rr-masthead-inner">
     <a class="rr-kicker" href="https://uiforagents.com/">uiforagents</a>
-    <button class="rr-theme-toggle" id="theme-toggle" type="button">Dark theme</button>
+    <button class="rr-theme-toggle rr-theme-toggle--icon" id="theme-toggle" type="button" aria-label="Toggle dark theme"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M11.5 8.6A5 5 0 0 1 5.4 2.5 5 5 0 1 0 11.5 8.6Z" fill="currentColor"/></svg></button>
   </div>
 </header>
 
@@ -559,7 +582,7 @@ a.rr-kicker { text-decoration: none; }
         <dl>
           <dt>Links</dt><dd><a href="#sheet">A text link</a> deepens on hover;
           focus draws the same accent.</dd>
-          <dt>Toggle</dt><dd><button class="rr-theme-toggle" type="button">Theme</button>
+          <dt>Toggle</dt><dd><button class="rr-theme-toggle rr-theme-toggle--icon" type="button" aria-label="Toggle dark theme"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M11.5 8.6A5 5 0 0 1 5.4 2.5 5 5 0 1 0 11.5 8.6Z" fill="currentColor"/></svg></button>
           the only button chrome, and it ships with the page, not the content.</dd>
           <dt>Chips</dt><dd><span class="rr-chip rr-chip--ok">Healthy</span>
           <span class="rr-chip rr-chip--warn">Risky</span>
@@ -610,8 +633,9 @@ a.rr-kicker { text-decoration: none; }
         <li><strong>One stylesheet.</strong> The first <code>&lt;style&gt;</code>
           block above is <code>foundation.css</code> pasted in verbatim; the only
           page CSS is a one-line unlayered override that removes the underline
-          from the linked masthead kicker, using the escape hatch the pack
-          reserves for page-specific needs. Nothing else styles this page, so it
+          from the linked masthead kicker, plus the phone-frame chrome for the
+          390 proof below - both using the escape hatch the pack reserves for
+          page-specific needs. Nothing else styles this page, so it
           renders identically pasted into a single file or served next to a
           linked copy.</li>
         <li><strong>The theme toggle is the only JavaScript.</strong> It flips
@@ -636,6 +660,34 @@ a.rr-kicker { text-decoration: none; }
       </ul>
     </section>
 
+    <section class="rr-section" id="mobile">
+      <h2><span class="rr-secnum">Proof</span>The 390 proof</h2>
+      <p>The masthead keeps the icon-only theme toggle reachable at every width, the
+      TOC becomes the <code>&lt;details&gt;</code> block below 900px, and on touch
+      the toggle and TOC links hold a 44px hit target. Same classes, no re-styling.</p>
+      <div class="phone">
+        <div class="notch"><i></i></div>
+        <div style="padding-bottom: 1.25rem;">
+          <header class="rr-masthead" style="border-bottom: 1px solid var(--line);">
+            <div class="rr-masthead-inner" style="padding: 0.9rem 1.1rem;">
+              <span class="rr-kicker">Field notes</span>
+              <button class="rr-theme-toggle rr-theme-toggle--icon" type="button" aria-label="Toggle dark theme"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M11.5 8.6A5 5 0 0 1 5.4 2.5 5 5 0 1 0 11.5 8.6Z" fill="currentColor"/></svg></button>
+            </div>
+          </header>
+          <div style="padding: 0 1.1rem;">
+            <p class="rr-lede" style="margin: 1.1rem 0 0;">The reading column holds its
+            measure, the callout keeps its left rule, and nothing overflows the
+            column at phone width.</p>
+            <div class="rr-callout" style="margin-top: 1.1rem;">
+              <p style="margin: 0;">A callout carries the aside: same type, one rule,
+              no chrome added for the small screen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="rr-pill-note">390px frame · icon toggle in the masthead, one column, no overflow · same classes, no re-styling</p>
+    </section>
+
   </main>
 </div>
 
@@ -654,7 +706,6 @@ a.rr-kicker { text-decoration: none; }
     btn.addEventListener('click', function () {
       var goingLight = root.style.colorScheme === 'dark';
       root.style.colorScheme = goingLight ? 'light' : 'dark';
-      btn.textContent = goingLight ? 'Dark theme' : 'Light theme';
     });
   })();
 </script>

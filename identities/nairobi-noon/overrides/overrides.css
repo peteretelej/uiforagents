@@ -75,3 +75,16 @@
     box-shadow: 1px 0 0 var(--border);
   }
 }
+
+/* Thumb floor: controls hold a 44px hit target on touch. The wrapping
+   header nav becomes 44px rows under the same pointer. */
+@media (pointer: coarse) {
+  [data-identity="nairobi-noon"] [data-slot="button"] {
+    min-height: 44px;
+  }
+  [data-identity="nairobi-noon"] header nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

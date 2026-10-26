@@ -314,6 +314,14 @@
   .tb-btn--primary:hover { background: color-mix(in oklab, var(--accent-deep) 88%, var(--ink)); }
   .tb-btn--ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
   .tb-btn--ghost:hover { border-color: var(--faint); }
+  .tb-theme-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; padding: 0; color: var(--muted);
+  }
+  .tb-theme-toggle:hover { color: var(--ink); }
+  .tb-theme-toggle .tb-moon { display: none; }
+  html[style*="dark"] .tb-theme-toggle .tb-moon { display: block; }
+  html[style*="dark"] .tb-theme-toggle .tb-sun { display: none; }
   .tb-btn--quiet { background: none; color: var(--accent-deep); padding-left: 4px; padding-right: 4px; }
   .tb-btn--quiet:hover { text-decoration: underline; }
   .tb-btn[disabled] { background: var(--sunken); color: var(--faint); box-shadow: none; cursor: not-allowed; }
@@ -372,6 +380,15 @@
     .tb-cols { grid-template-columns: 1fr; }
     .tb-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
     .tb-date { display: none; }
+  }
+
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; mice keep the
+     compact rhythm. */
+  @media (pointer: coarse) {
+    .tb-btn { min-height: 44px; padding: 13px 18px; }
+    .tb-period span { min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; }
+    button.tb-pill { min-height: 44px; padding: 12px 16px; }
   }
 
   /* ---------- Print: a light section, modestly ----------
@@ -464,7 +481,7 @@
   <div class="tb-top">
     <span class="tb-brand">uiforagents <span>·</span> tally-board</span>
     <div class="tb-right">
-      <button class="tb-btn tb-btn--ghost tb-noprint" id="theme-toggle" type="button">Dark theme</button>
+      <button class="tb-btn tb-btn--ghost tb-noprint tb-theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme"><svg class="tb-moon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 9.8A6.2 6.2 0 0 1 6.2 2.4a6.2 6.2 0 1 0 7.4 7.4Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><svg class="tb-sun" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.2v1.8M8 13v1.8M1.2 8H3M13 8h1.8M3.2 3.2l1.3 1.3M11.5 11.5l1.3 1.3M12.8 3.2l-1.3 1.3M4.5 11.5l-1.3 1.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
     </div>
   </div>
 
@@ -1050,7 +1067,7 @@
     btn.addEventListener('click', function () {
       var goingLight = root.style.colorScheme === 'dark';
       root.style.colorScheme = goingLight ? 'light' : 'dark';
-      btn.textContent = goingLight ? 'Dark theme' : 'Light theme';
+      btn.setAttribute('aria-label', goingLight ? 'Switch to dark theme' : 'Switch to light theme');
     });
   })();
 </script>

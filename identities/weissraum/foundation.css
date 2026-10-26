@@ -153,10 +153,10 @@
   .wr-nav a:hover::after, .wr-nav a.on::after { transform: scaleX(1); }
   .wr-nav a.on { color: var(--accent-ink); }
   .wr-toggle {
-    font-family: var(--font-mono); font-size: var(--text-micro);
-    text-transform: uppercase; letter-spacing: 0.08em;
+    font-family: var(--font-body); font-size: 1.05rem; line-height: 1;
     color: var(--muted); background: none; border: 1px solid var(--line);
-    padding: 0.35rem 0.7rem; cursor: pointer; white-space: nowrap;
+    padding: 0; width: 2.75rem; height: 2.75rem; cursor: pointer;
+    display: inline-grid; place-items: center;
     transition: color .16s ease-out, border-color .16s ease-out;
   }
   .wr-toggle:hover { color: var(--ink); border-color: var(--ink); }
@@ -388,6 +388,14 @@
     .wr-row .wr-cat { display: none; }
     .wr-row .wr-title { font-size: 1.15rem; }
     .wr-skel-row { grid-template-columns: 2.4rem minmax(0, 1fr) 3.5rem; }
+  }
+
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; mice keep the
+     compact rhythm. The toggle is already a 44px square. */
+  @media (pointer: coarse) {
+    .wr-nav a { padding: 1rem 0.25rem 1rem 0; }
+    .wr-btn { padding: 0.95rem 1.4rem; }
   }
 
   /* ---------- Print ---------- */

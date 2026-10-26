@@ -306,6 +306,14 @@
   .tb-btn--primary:hover { background: color-mix(in oklab, var(--accent-deep) 88%, var(--ink)); }
   .tb-btn--ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
   .tb-btn--ghost:hover { border-color: var(--faint); }
+  .tb-theme-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; padding: 0; color: var(--muted);
+  }
+  .tb-theme-toggle:hover { color: var(--ink); }
+  .tb-theme-toggle .tb-moon { display: none; }
+  html[style*="dark"] .tb-theme-toggle .tb-moon { display: block; }
+  html[style*="dark"] .tb-theme-toggle .tb-sun { display: none; }
   .tb-btn--quiet { background: none; color: var(--accent-deep); padding-left: 4px; padding-right: 4px; }
   .tb-btn--quiet:hover { text-decoration: underline; }
   .tb-btn[disabled] { background: var(--sunken); color: var(--faint); box-shadow: none; cursor: not-allowed; }
@@ -364,6 +372,15 @@
     .tb-cols { grid-template-columns: 1fr; }
     .tb-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
     .tb-date { display: none; }
+  }
+
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; mice keep the
+     compact rhythm. */
+  @media (pointer: coarse) {
+    .tb-btn { min-height: 44px; padding: 13px 18px; }
+    .tb-period span { min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; }
+    button.tb-pill { min-height: 44px; padding: 12px 16px; }
   }
 
   /* ---------- Print: a light section, modestly ----------

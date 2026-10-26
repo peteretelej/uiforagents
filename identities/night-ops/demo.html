@@ -631,6 +631,20 @@
     .no-tbl tbody tr:hover td:first-child { background: var(--surface-2); }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; mice keep the
+     compact console rhythm. */
+  @media (pointer: coarse) {
+    .no-btn, .no-btn.sm { min-height: 44px; }
+    .no-btn.icon { min-width: 44px; }
+    .no-chip { min-height: 44px; }
+    .no-tab { min-height: 44px; }
+    .no-pag button { min-width: 44px; min-height: 44px; }
+    .no-input, .no-sel select { height: 36px; }
+    .no-switch { width: 42px; height: 24px; }
+    .no-switch:checked::after { translate: 18px 0; }
+  }
+
   /* ---------- Print ----------
      One line re-inks the whole identity for paper: the light-dark()
      tokens follow the light scheme, so every panel, chip, chart and LED
@@ -672,6 +686,20 @@
 }
 .scheme-light { color-scheme: light; }
 .gap { margin-bottom: 14px; }
+
+/* phone frame chrome for the 390 proof (screen only) */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+  box-shadow: 0 10px 30px oklch(0.10 0.01 260 / 0.35);
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line-soft);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+.mob-note { text-align: center; color: var(--faint); font-size: 12px; margin: 10px 0 0; }
+
 </style>
 </head>
 <body>
@@ -682,7 +710,7 @@
   <div class="no-right">
     <span class="no-sync"><span class="no-led ok" aria-hidden="true"></span>synced 12s ago</span>
     <span class="no-clock">fri oct 09 2026 · 09:41 eat</span>
-    <button class="no-btn sm ghost no-print" id="theme-toggle" type="button">Light theme</button>
+    <button class="no-btn sm ghost icon no-print" id="theme-toggle" type="button" aria-label="toggle dark or light scheme">&#9684;</button>
   </div>
 </header>
 
@@ -1348,6 +1376,7 @@
         <div class="no-ph"><h3>theme toggle</h3><span class="no-meta">the only sanctioned JS</span></div>
         <div class="no-spec-col" style="align-items:stretch; gap:7px; color:var(--muted); font-size:12.5px">
           <div>· One click flips <code class="no-mono">html.style.colorScheme</code> between dark and light; every token re-resolves.</div>
+          <div>· The toggle is icon-only - one ◐ glyph with an <code class="no-mono">aria-label</code>, never a text label.</div>
           <div>· The page renders fully with the script removed - the toggle is a convenience, never a dependency.</div>
           <div>· No class swapping, no duplicate token lists, no data-theme attributes.</div>
         </div>
@@ -1384,6 +1413,47 @@
     </div>
   </section>
 
+  <!-- ==================== MOBILE 390 (screen only) ==================== -->
+  <section class="sec no-print" id="mobile">
+    <p class="no-k">mobile · 390</p>
+    <p class="sec-dek">The top bar wraps to short rows, KPIs drop to 2-up, log rows re-flow -
+    and the icon-only scheme toggle stays reachable at every width. Same classes, no re-styling;
+    on coarse pointers controls hold a 44px hit target.</p>
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div style="padding-bottom:16px">
+        <header class="no-top" style="padding:10px 14px">
+          <span class="no-brand">uiforagents<i>/</i>night-ops</span>
+          <span class="no-env">artifact</span>
+          <div class="no-right">
+            <span class="no-sync"><span class="no-led ok" aria-hidden="true"></span>synced 12s ago</span>
+            <button class="no-btn sm ghost icon" type="button" aria-label="toggle dark or light scheme">&#9684;</button>
+          </div>
+        </header>
+        <div class="no-wrap" style="padding:12px 14px 0">
+          <div class="no-kpis">
+            <div class="no-kpi">
+              <div class="no-k">requests · 24h</div>
+              <div class="no-v">8.42M</div>
+              <div class="no-d no-pos">&#9650; 3.1% vs tue</div>
+            </div>
+            <div class="no-kpi">
+              <div class="no-k">error rate</div>
+              <div class="no-v">0.42%</div>
+              <div class="no-d no-neg">&#9650; 0.09pt</div>
+            </div>
+          </div>
+          <div class="no-panel" style="margin-top:10px">
+            <div class="no-ph"><h3>event log</h3><span class="no-meta">rows re-flow under 720px</span></div>
+            <div class="no-lrow"><time>14:02:18.442</time><span class="no-lvl info">info</span><span class="no-src">api-gateway</span><span class="no-msg">GET /v2/streams 200 &#183; 12ms</span></div>
+            <div class="no-lrow"><time>14:02:21.900</time><span class="no-lvl warn">warn</span><span class="no-src">ingest-pipeline</span><span class="no-msg">backpressure: queue depth 8.1k</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="mob-note">390px frame &#183; wrapped top bar, 2-up KPIs, re-flowed log rows &#183; same classes, no re-styling</p>
+  </section>
+
   <footer class="foot">
     night-ops v1 · an artifact identity from the uiforagents catalogue · dark ops console with an
     azure instrument accent and LED status grammar · synthetic kestrel fleet data, no real brands ·
@@ -1400,7 +1470,6 @@
     btn.addEventListener('click', function () {
       var goingDark = root.style.colorScheme === 'light';
       root.style.colorScheme = goingDark ? 'dark' : 'light';
-      btn.textContent = goingDark ? 'Light theme' : 'Dark theme';
     });
   })();
 </script>

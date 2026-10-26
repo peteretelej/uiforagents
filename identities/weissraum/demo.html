@@ -161,10 +161,10 @@
   .wr-nav a:hover::after, .wr-nav a.on::after { transform: scaleX(1); }
   .wr-nav a.on { color: var(--accent-ink); }
   .wr-toggle {
-    font-family: var(--font-mono); font-size: var(--text-micro);
-    text-transform: uppercase; letter-spacing: 0.08em;
+    font-family: var(--font-body); font-size: 1.05rem; line-height: 1;
     color: var(--muted); background: none; border: 1px solid var(--line);
-    padding: 0.35rem 0.7rem; cursor: pointer; white-space: nowrap;
+    padding: 0; width: 2.75rem; height: 2.75rem; cursor: pointer;
+    display: inline-grid; place-items: center;
     transition: color .16s ease-out, border-color .16s ease-out;
   }
   .wr-toggle:hover { color: var(--ink); border-color: var(--ink); }
@@ -398,6 +398,14 @@
     .wr-skel-row { grid-template-columns: 2.4rem minmax(0, 1fr) 3.5rem; }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; mice keep the
+     compact rhythm. The toggle is already a 44px square. */
+  @media (pointer: coarse) {
+    .wr-nav a { padding: 1rem 0.25rem 1rem 0; }
+    .wr-btn { padding: 0.95rem 1.4rem; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }
@@ -417,6 +425,20 @@
   }
 }
 </style>
+<style>
+/* page CSS (unlayered): this document's only page CSS - the phone frame
+   chrome for the 390 proof (screen only). */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line); border-radius: 20px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+.mob-note { text-align: center; color: var(--faint); font-size: 12px; margin: 10px 0 0; }
+</style>
 </head>
 <body>
 
@@ -430,7 +452,7 @@
         <li><a href="#contact"><span class="wr-no">03</span>Contact</a></li>
       </ul>
     </nav>
-    <button class="wr-toggle wr-noprint" id="wr-toggle" type="button">Dark</button>
+    <button class="wr-toggle wr-noprint" id="wr-toggle" type="button" aria-label="Switch to dark theme">&#9680;&#xFE0E;</button>
   </div>
 </header>
 
@@ -781,9 +803,56 @@
         weissraum v1, an artifact identity from the uiforagents catalogue. This
         page is the identity demo: a fictional Zürich studio, generic content,
         no real brands. One stylesheet (<code>foundation.css</code>) styles
-        everything above; no page CSS was needed.
+        the studio page; the framed 390 proof below carries this document's
+        only page CSS.
       </p>
     </section>
+  </div>
+</section>
+
+<section class="wr-appendix wr-noprint" id="mobile">
+  <div class="wr-wrap">
+    <span class="wr-kicker"><span class="wr-no">B</span>Appendix — the 390 proof</span>
+    <p class="wr-sub" style="max-width: 60ch;">
+      The top bar wraps, the grid collapses to one column, index rows drop
+      their category column, and the 44px scheme toggle stays reachable.
+      Same classes, no re-styling.
+    </p>
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div style="padding: 0 0 1.25rem;">
+        <div class="wr-top">
+          <div class="wr-top-inner" style="padding: 0.9rem 1.25rem;">
+            <span class="wr-brand">Studio Seldwyla</span>
+            <nav class="wr-nav" aria-label="Mobile proof">
+              <a href="#work"><span class="wr-no">01</span>Work</a>
+              <a href="#studio"><span class="wr-no">02</span>Studio</a>
+            </nav>
+            <button class="wr-toggle" type="button" aria-label="Switch to dark theme">&#9680;&#xFE0E;</button>
+          </div>
+        </div>
+        <div style="padding: 1.1rem 1.25rem 0;">
+          <h2 class="wr-pull" style="margin: 0 0 0.9rem;">Whitespace is the structure.</h2>
+          <p class="wr-sub" style="margin: 0 0 1.1rem;">Every grid child spans full width under 640px;
+          nothing clips, nothing shrinks below legibility.</p>
+        </div>
+        <div class="wr-index">
+          <a class="wr-row" href="#work">
+            <span class="wr-no">01</span>
+            <span class="wr-title">Almanac 16</span>
+            <span class="wr-cat">Editorial design</span>
+            <span class="wr-arrow">→</span>
+          </a>
+          <a class="wr-row" href="#work">
+            <span class="wr-no">02</span>
+            <span class="wr-title">Kabinett am See</span>
+            <span class="wr-cat">Type system</span>
+            <span class="wr-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <p class="mob-note">390px frame · wrapped top bar, full-width grid, glyph toggle · same classes, no re-styling</p>
   </div>
 </section>
 
@@ -795,7 +864,8 @@
       btn.addEventListener('click', function () {
         var goingLight = root.style.colorScheme === 'dark';
         root.style.colorScheme = goingLight ? 'light' : 'dark';
-        btn.textContent = goingLight ? 'Dark' : 'Light';
+        btn.textContent = goingLight ? '\u25D0\uFE0E' : '\u25D1\uFE0E';
+        btn.setAttribute('aria-label', goingLight ? 'Switch to dark theme' : 'Switch to light theme');
       });
     }
     if ('IntersectionObserver' in window) {

@@ -436,6 +436,16 @@
     .dl-log { font-size: 18px; }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: links hold a 48px hit target on touch, matching the
+     identity's 48px buttons; inline padding grows the tap area, not the
+     layout. */
+  @media (pointer: coarse) {
+    .dl-nav a { padding: 15px 0 13px; }
+    .dl-footer a { display: inline-block; padding: 15px 0; }
+    .dl-err a { padding: 16px 0; }
+  }
+
   /* ---------- Print ----------
      Dark-only identity prints as ink on paper: the print block re-inks
      the tokens to paper values, drops the patterns (dither, scanlines,
@@ -466,6 +476,20 @@
     .dl-btn:hover, .dl-btn:focus-visible { transform: none; }
   }
 }
+</style>
+<style>
+/* page CSS (unlayered): this document's only page CSS - the phone frame
+   chrome for the 390 proof (screen only). */
+.phone {
+  width: 390px; max-width: 100%; border: 2px solid var(--line); border-radius: 18px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 2px solid var(--line);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+.mob-note { text-align: center; color: var(--muted); font-size: 12px; margin: 10px 0 0; }
 </style>
 </head>
 <body>
@@ -643,6 +667,57 @@
         <span class="dl-load"><i style="--w:62%"></i></span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Mobile 390 proof (screen only) -->
+<section class="dl-section dl-noprint" id="mobile">
+  <div class="dl-wrap">
+    <span class="dl-kicker">05 · The 390 proof</span>
+    <h2 class="dl-h2">Phones</h2>
+    <p class="dl-sub">The top bar wraps instead of clipping, stats keep their
+    numbers big, and nav links hold a 48px hit target on touch - matching the
+    buttons. Same classes, no re-styling.</p>
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div style="padding-bottom: 18px;">
+        <div class="dl-top">
+          <div class="dl-top-inner" style="padding: 10px 14px;">
+            <a class="dl-brand" href="#mobile">BIT<b>WELL</b></a>
+            <nav class="dl-nav" aria-label="Mobile proof">
+              <a href="#mobile" class="on">sprites</a>
+              <a href="#mobile">export</a>
+            </nav>
+            <span class="dl-badge">v0.9.2</span>
+          </div>
+        </div>
+        <div style="padding: 12px 14px 0;">
+          <div class="dl-stats">
+            <div class="dl-stat">
+              <span class="n">128</span>
+              <span class="l">Sprites exported</span>
+            </div>
+            <div class="dl-stat wait">
+              <span class="n">62%</span>
+              <span class="l">Library sync</span>
+              <span class="dl-load"><i style="--w:62%"></i></span>
+            </div>
+          </div>
+          <div class="dl-console" style="margin-top: 12px;">
+            <div class="dl-titlebar">
+              export.log
+              <span class="dl-badge">1bpp</span>
+            </div>
+            <div class="dl-log" style="font-size: 16px;">
+              <span class="dl-line"><span class="p">&gt;</span> balnibarbi export sprites/ --dither bayer2</span>
+              <span class="dl-line"><span class="dim">dither pass ................ ok</span></span>
+              <span class="dl-line"><span class="p">&gt;</span> balnibarbi serve --watch <span class="dl-cursor" aria-hidden="true"></span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="mob-note">390px frame · wrapped top bar, 2-up stats, console at reading size · same classes, no re-styling</p>
   </div>
 </section>
 

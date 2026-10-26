@@ -93,3 +93,17 @@
     box-shadow: 1px 0 0 var(--border);
   }
 }
+
+/* Thumb floor: a 44px hit target on touch, superseding the draft's 40px
+   number; the 36-40px desktop interactive-row law keeps holding for mice.
+   Covers the sticky strip's inline nav (sm+) and the mono tab dock. */
+@media (pointer: coarse) {
+  [data-identity="graphite-terminal"] [data-slot="button"] {
+    min-height: 44px;
+  }
+  [data-identity="graphite-terminal"] header nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

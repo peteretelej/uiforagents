@@ -318,6 +318,14 @@
   .ep-chartpan { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .ep-chartpan .ep-chart { min-width: 640px; }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; the band wraps. */
+  @media (pointer: coarse) {
+    .ep-btn { min-height: 44px; padding: 12px 10px; }
+    .ep-chip { height: 44px; }
+    .ep-input, .ep-sel select { height: 36px; }
+  }
+
   /* ---------- Print ----------
      One line re-inks the whole identity for paper: the light-dark()
      tokens follow the light scheme, so every readout, bracket and dot
@@ -395,7 +403,7 @@
   <div class="ep-top">
     <span class="ep-brand">uiforagents <i>//</i> espresso-panel</span>
     <span class="ep-right">
-      <button class="ep-btn ep-noprint" id="theme-toggle" type="button">light scheme</button>
+      <button class="ep-btn ep-noprint" id="theme-toggle" type="button" aria-label="switch to dark scheme">&#9790;</button>
     </span>
   </div>
 
@@ -844,7 +852,8 @@
     btn.addEventListener('click', function () {
       var goingDark = root.style.colorScheme === 'light';
       root.style.colorScheme = goingDark ? 'dark' : 'light';
-      btn.textContent = goingDark ? 'light scheme' : 'dark scheme';
+      btn.textContent = goingDark ? '\u2600' : '\u263E';
+      btn.setAttribute('aria-label', goingDark ? 'switch to light scheme' : 'switch to dark scheme');
     });
   })();
 </script>

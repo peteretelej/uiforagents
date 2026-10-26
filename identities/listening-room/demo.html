@@ -103,11 +103,16 @@
   .lr-crumb { color: var(--faint); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .lr-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
   .lr-theme-toggle {
-    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
-    color: var(--muted); background: none; border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 4px 10px; cursor: pointer; white-space: nowrap;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; padding: 0;
+    font-size: 0; /* any stray text label stays invisible */
   }
-  .lr-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
+  .lr-theme-toggle::before {
+    content: "\263E"; /* moon: dark is the lead scheme */
+    font-size: 15px; line-height: 1; color: var(--muted);
+  }
+  html[style*="light"] .lr-theme-toggle::before { content: "\2600"; /* sun */ }
+  .lr-theme-toggle:hover::before { color: var(--ink); }
 
   /* ---------- Hero ---------- */
   .lr-hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line-soft); }
@@ -378,7 +383,9 @@
   }
   @media (max-width: 640px) {
     .lr-wrap { padding: 0 18px; }
-    .lr-topbar nav { display: none; }
+    /* links yield, the scheme escape never hides: the toggle stays in */
+    .lr-topbar nav { display: flex; gap: 10px; }
+    .lr-topbar nav a { display: none; }
     .lr-wave { height: 44px; }
     .lr-time { margin-left: 0; width: 100%; order: 5; }
     .lr-trole { min-width: 0; }
@@ -406,6 +413,17 @@
     }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; negative
+     margins grow timestamps without shifting the baseline grid. */
+  @media (pointer: coarse) {
+    .lr-theme-toggle { width: 44px; height: 44px; }
+    .lr-tbtn { min-height: 44px; min-width: 44px; }
+    .lr-mini .lr-tbtn { height: 44px; }
+    .lr-chip { min-height: 44px; padding: 9px 13px; }
+    .lr-tstamp { padding: 15px 10px; margin: -15px 0 -15px -10px; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }
@@ -426,6 +444,19 @@
   .lr-quicklinks{display:flex;gap:14px;margin:18px 0 0;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.05em}
   .lr-quicklinks a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line-soft)}
   .lr-quicklinks a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+  /* phone frame chrome for the 390 proof (screen only) */
+  .phone {
+    width: 390px; max-width: 100%; border: 1px solid var(--line-soft); border-radius: 20px;
+    background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+  }
+  .phone .notch {
+    height: 26px; display: flex; align-items: center; justify-content: center;
+    background: var(--bg); border-bottom: 1px solid var(--line-soft);
+  }
+  .phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+  .mob-note { text-align: center; color: var(--faint); font-size: 12px; margin: 10px 0 0; }
+  @media print { #mobile { display: none; } }
 </style>
 </head>
 <body>
@@ -434,7 +465,7 @@
   <div class="lr-wrap">
     <span class="lr-brand">listening-room</span>
     <span class="lr-crumb">a listening surface for spoken audio</span>
-    <nav><button type="button" class="lr-theme-toggle">Light</button></nav>
+    <nav><button type="button" class="lr-theme-toggle" aria-label="Switch to light"></button></nav>
   </div>
 </header>
 
@@ -827,6 +858,51 @@
   </section>
 </div>
 
+<!-- ==================== MOBILE 390 (screen only) ==================== -->
+<section class="lr-section" id="mobile">
+  <div class="lr-wrap">
+    <p class="lr-kicker">the 390 proof</p>
+    <p class="lr-dek" style="margin: 0 0 18px;">The scheme toggle stays reachable at every width -
+    links yield under 640px, the toggle never hides, and on touch it holds a 44px hit target.
+    Transcript lines wrap, chapters stack. Same classes, no re-styling.</p>
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div style="padding-bottom: 18px;">
+        <header class="lr-topbar">
+          <div class="lr-wrap" style="padding: 0 14px;">
+            <span class="lr-brand">listening-room</span>
+            <span class="lr-crumb">a listening surface for spoken audio</span>
+            <nav><button type="button" class="lr-theme-toggle" aria-label="Switch to light"></button></nav>
+          </div>
+        </header>
+        <div style="padding: 14px 14px 0;">
+          <ul class="lr-chapters" style="margin: 0;">
+            <li><button type="button" class="lr-chbtn" data-start="0" data-title="The loop closes">
+              <span class="lr-chnum">Chapter 1</span>
+              <span class="lr-chttl">The loop closes</span>
+              <span class="lr-chtime">0:00</span>
+            </button></li>
+            <li><button type="button" class="lr-chbtn" data-start="855" data-title="The ladder shakes">
+              <span class="lr-chnum">Chapter 2</span>
+              <span class="lr-chttl">The ladder shakes</span>
+              <span class="lr-chtime">14:15</span>
+            </button></li>
+          </ul>
+          <p class="lr-tp" style="margin: 12px 0 0;" data-role="host">
+            <span class="lr-trole">Host</span><button class="lr-tstamp" type="button">0:18</button>
+            <span class="lr-ttext">Which is why this week reads like two headlines stapled together: the strongest evidence yet, and the first hard numbers.</span>
+          </p>
+          <p class="lr-tp" data-start="34.54" data-role="corr">
+            <span class="lr-trole">Correspondent</span><button class="lr-tstamp" type="button">0:34</button>
+            <span class="lr-ttext">And this is a week worth your time, because the loop closed - models stopped just answering questions and started running experiments.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <p class="mob-note">390px frame · toggle reachable, chapters stacked, transcript wrapped · same classes, no re-styling</p>
+  </div>
+</section>
+
 <footer class="lr-footer">
   <div class="lr-wrap">
     Episode: "The Loop and the Ladder" - Distill, 2026-10-19, by Peter Etelej. License: CC0. Audio self-hosted on the Internet Archive.<br>
@@ -851,7 +927,7 @@
     btn.addEventListener('click', function () {
       var toLight = document.documentElement.style.colorScheme !== 'light';
       document.documentElement.style.colorScheme = toLight ? 'light' : 'dark';
-      btn.textContent = toLight ? 'Dark' : 'Light';
+      btn.setAttribute('aria-label', toLight ? 'Switch to dark' : 'Switch to light');
       window.dispatchEvent(new CustomEvent('lr:theme'));
     });
   })();

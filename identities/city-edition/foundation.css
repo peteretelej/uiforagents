@@ -626,6 +626,16 @@
     }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: nav, filters and buttons hold a 44px hit target on
+     touch; inline padding grows the tap area without moving the layout. */
+  @media (pointer: coarse) {
+    .ce-nav a { padding: 1rem 0.15rem 0.9rem; }
+    .ce-nav .ce-nav-cta { padding: 1rem 0.9rem; }
+    .ce-filter a { padding: 1rem 0.2rem 0.9rem; }
+    .ce-btn { min-height: 44px; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     body { background: #FFFFFF; color: #000000; font-size: 11pt; }

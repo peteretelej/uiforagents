@@ -428,6 +428,16 @@
     .dl-log { font-size: 18px; }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: links hold a 48px hit target on touch, matching the
+     identity's 48px buttons; inline padding grows the tap area, not the
+     layout. */
+  @media (pointer: coarse) {
+    .dl-nav a { padding: 15px 0 13px; }
+    .dl-footer a { display: inline-block; padding: 15px 0; }
+    .dl-err a { padding: 16px 0; }
+  }
+
   /* ---------- Print ----------
      Dark-only identity prints as ink on paper: the print block re-inks
      the tokens to paper values, drops the patterns (dither, scanlines,

@@ -110,3 +110,16 @@
     box-shadow: none;
   }
 }
+
+/* Thumb floor: controls hold a 44px hit target on touch. Covers the
+   floating bar's inline nav (sm+) and the pill dock (below sm). */
+@media (pointer: coarse) {
+  [data-identity="frost-field"] [data-slot="button"] {
+    min-height: 44px;
+  }
+  [data-identity="frost-field"] header nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

@@ -634,6 +634,16 @@
     }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: nav, filters and buttons hold a 44px hit target on
+     touch; inline padding grows the tap area without moving the layout. */
+  @media (pointer: coarse) {
+    .ce-nav a { padding: 1rem 0.15rem 0.9rem; }
+    .ce-nav .ce-nav-cta { padding: 1rem 0.9rem; }
+    .ce-filter a { padding: 1rem 0.2rem 0.9rem; }
+    .ce-btn { min-height: 44px; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     body { background: #FFFFFF; color: #000000; font-size: 11pt; }
@@ -650,6 +660,20 @@
     .ce-skel { animation: none; opacity: 0.8; }
   }
 }
+</style>
+<style>
+/* page CSS (unlayered): this document's only page CSS - the phone frame
+   chrome for the 390 proof (screen only). */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+.mob-note { text-align: center; color: var(--faint); font-size: 12px; margin: 10px 0 0; }
 </style>
 </head>
 <body>
@@ -1137,6 +1161,52 @@
       </div>
     </section>
 
+  </div>
+</section>
+
+<!-- ==================== MOBILE 390 (screen only) ==================== -->
+<section class="ce-colophon" id="mobile" aria-label="The 390 proof">
+  <div class="ce-colophon-inner">
+    <section id="mobile-proof">
+      <span class="ce-kicker">Colophon &middot; the 390 proof</span>
+      <h3>Phones</h3>
+      <p style="max-width: 72ch;">The masthead stacks its dateline rows, the nav pans in its
+      strip, band heads wrap, and on touch every nav link, filter and button holds a 44px
+      hit target. Same classes, no re-styling.</p>
+      <div class="phone">
+        <div class="notch"><i></i></div>
+        <div style="padding-bottom: 1.2rem;">
+          <div class="ce-masthead-top" style="padding: 0.7rem 1rem 0.4rem;">
+            <span>LINDALINO, TUESDAY, OCTOBER 13, 2026</span>
+            <span>LATE CITY EDITION - $2.50</span>
+            <span>87 - CLEAR</span>
+          </div>
+          <h1 class="ce-nameplate" style="text-align: center;"><a href="#mobile-proof" style="text-decoration: none; color: inherit;">The Lindalino Chronicle</a></h1>
+          <nav class="ce-nav" style="border-top: 3px solid var(--ink); padding: 0 1rem;" aria-label="Mobile proof">
+            <a href="#mobile-proof">Front page</a>
+            <a href="#mobile-proof" class="on">Metro</a>
+            <a href="#mobile-proof">Culture</a>
+            <a class="ce-nav-cta" href="#mobile-proof">Subscribe</a>
+          </nav>
+          <div style="padding: 0.8rem 1rem 0;">
+            <div class="ce-band-head">
+              <h2 class="ce-band-title" style="margin: 0;">Metro</h2>
+              <a class="ce-band-more" href="#mobile-proof">Back to the front page</a>
+            </div>
+            <div class="ce-table-scroll" style="margin-top: 0.6rem;">
+              <table class="ce-table">
+                <thead><tr><th>Line</th><th>Due</th><th>Note</th></tr></thead>
+                <tbody>
+                  <tr><td>Harbor Line</td><td>6 min</td><td>on time</td></tr>
+                  <tr><td>Crosstown</td><td>11 min</td><td>late</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="mob-note">390px frame · stacked dateline, panning nav strip, wrapped band head · same classes, no re-styling</p>
+    </section>
   </div>
 </section>
 

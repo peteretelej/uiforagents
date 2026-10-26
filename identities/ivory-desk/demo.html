@@ -557,6 +557,22 @@
     .iv-mobilenav .iv-new { margin: 0.6rem 0; }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; inline
+     padding grows the tap area without moving the baseline grid. */
+  @media (pointer: coarse) {
+    .iv-act, .iv-copy { padding: 1rem 0.9rem; font-size: var(--text-small); }
+    .iv-actions { flex-wrap: wrap; }
+    .iv-cite { padding: 1rem 0.5rem; margin: 0 -0.5rem; }
+    .iv-chip { padding: 0.85rem 0.9rem; }
+    .iv-btn, .iv-new { min-height: 44px; }
+    .iv-attach { width: 2.75rem; height: 2.75rem; }
+    .iv-send { width: 2.75rem; height: 2.75rem; }
+    .iv-modelchip { padding: 0.85rem 0.9rem; }
+    .iv-mobilenav > summary { padding: 1rem 0; }
+    .iv-mobilenav .iv-thread { padding: 0.85rem 0.6rem; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }
@@ -580,6 +596,20 @@
   @keyframes iv-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
   @keyframes iv-fade { from { opacity: 0; transform: translateY(-2px); } }
 }
+</style>
+<style>
+/* page CSS (unlayered): this document's only page CSS - the phone frame
+   chrome for the 390 proof (screen only). */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line); border-radius: 16px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+.mob-note { text-align: center; color: var(--faint); font-size: 12px; margin: 10px 0 0; }
 </style>
 </head>
 <body>
@@ -1099,7 +1129,8 @@ print(crossover(4.75, 9.10))  # -&gt; (2028, 4.61)</code></pre>
             ivory-desk v1, an artifact identity from the uiforagents catalogue. This
             page is the identity demo: a fictional research agent (Glubbdubdrib), generic
             content, no real brands. One stylesheet (<code>foundation.css</code>)
-            styles everything above; no page CSS was needed.
+            styles the workspace; the framed 390 proof below carries this
+            document's only page CSS.
           </p>
         </section>
 
@@ -1108,6 +1139,45 @@ print(crossover(4.75, 9.10))  # -&gt; (2028, 4.61)</code></pre>
 
   </div>
 </div>
+
+<!-- ==================== MOBILE 390 (screen only) ==================== -->
+<section class="iv-appendix" id="mobile">
+  <div class="iv-k">the 390 proof</div>
+  <p class="iv-mut iv-measure">The rail hands over to the zero-JS threads disclosure, the
+  doctitle ellipsizes, and on touch every micro-control (acts, citations, composer buttons)
+  holds a 44px hit target. Same classes, no re-styling.</p>
+  <div class="phone">
+    <div class="notch"><i></i></div>
+    <div style="padding-bottom: 1.25rem;">
+      <header class="iv-top" style="padding: 0.9rem 1.1rem;">
+        <a class="iv-brand" href="#mobile">Glubbdubdrib</a>
+        <span class="iv-doctitle">Precision fermentation: cost curve to 2030</span>
+      </header>
+      <details class="iv-mobilenav" style="display: block; padding: 0 1.1rem;">
+        <summary>Threads</summary>
+        <a class="iv-new" href="#mobile">+ New research</a>
+        <nav aria-label="Mobile proof threads">
+          <a class="iv-thread" href="#mobile">
+            <span class="t">Precision fermentation: cost curve to 2030</span>
+            <span class="when">14:22 · 38 turns</span>
+          </a>
+        </nav>
+      </details>
+      <div style="padding: 1.1rem;">
+        <h2 style="margin: 0 0 0.6rem;">Answer</h2>
+        <p style="margin: 0 0 0.9rem; color: var(--ink);">Costs fall on a learning curve
+        near 18% per doubling; the 2030 band lands between $4.10 and $5.60 per kg
+        <a class="iv-cite" href="#mobile">[3]</a>.</p>
+        <div class="iv-actions" style="opacity: 1; margin-left: 0;">
+          <button class="iv-act" type="button">copy</button>
+          <button class="iv-act" type="button">retry</button>
+          <button class="iv-act" type="button">branch</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="mob-note">390px frame · threads disclosure, 44px micro-controls · same classes, no re-styling</p>
+</section>
 
 </body>
 </html>

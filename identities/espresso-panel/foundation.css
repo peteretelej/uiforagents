@@ -310,6 +310,14 @@
   .ep-chartpan { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .ep-chartpan .ep-chart { min-width: 640px; }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; the band wraps. */
+  @media (pointer: coarse) {
+    .ep-btn { min-height: 44px; padding: 12px 10px; }
+    .ep-chip { height: 44px; }
+    .ep-input, .ep-sel select { height: 36px; }
+  }
+
   /* ---------- Print ----------
      One line re-inks the whole identity for paper: the light-dark()
      tokens follow the light scheme, so every readout, bracket and dot

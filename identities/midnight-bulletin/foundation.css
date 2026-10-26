@@ -87,11 +87,16 @@
   .mb-crumb { color: var(--faint); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mb-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
   .mb-theme-toggle {
-    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
-    color: var(--muted); background: none; border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 4px 10px; cursor: pointer; white-space: nowrap;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; padding: 0;
+    font-size: 0; /* any stray text label stays invisible */
   }
-  .mb-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
+  .mb-theme-toggle::before {
+    content: "\263E"; /* moon: dark is the lead scheme */
+    font-size: 15px; line-height: 1; color: var(--muted);
+  }
+  html[style*="light"] .mb-theme-toggle::before { content: "\2600"; /* sun */ }
+  .mb-theme-toggle:hover::before { color: var(--ink); }
 
   /* ---------- Hero ---------- */
   .mb-hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line-soft); }
@@ -301,7 +306,9 @@
   }
   @media (max-width: 640px) {
     .mb-wrap { padding: 0 18px; }
-    .mb-topbar nav { display: none; }
+    /* links yield, the scheme escape never hides: the toggle stays in */
+    .mb-topbar nav { display: flex; gap: 10px; }
+    .mb-topbar nav a { display: none; }
     .mb-statstrip { grid-template-columns: repeat(2, 1fr); }
     .mb-outcome { grid-template-columns: 1fr; }
   }
@@ -353,6 +360,17 @@
     }
     .mb-mobilenav nav a:hover { color: var(--ink); }
     .mb-mobilenav nav a:last-child { border-bottom: none; }
+  }
+
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; negative
+     margins grow topbar links without moving the 44px bar. */
+  @media (pointer: coarse) {
+    .mb-theme-toggle { width: 44px; height: 44px; }
+    .mb-topbar a { padding: 15px 4px; margin: -15px -4px; }
+    .mb-share-row a, .mb-share-row button { min-height: 44px; padding: 12px 14px; }
+    .mb-mobilenav summary { padding: 15px 18px; }
+    .mb-mobilenav nav a { min-height: 44px; display: flex; align-items: center; }
   }
 
   /* ---------- Print ---------- */

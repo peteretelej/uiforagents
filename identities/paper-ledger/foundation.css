@@ -294,6 +294,7 @@
   .pl-btn[disabled] { color: var(--faint); background: var(--surface); border-color: var(--line); cursor: not-allowed; }
   .pl-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .pl-btnrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 6px 0; }
+  .pl-toggle { padding: 8px 10px; line-height: 0; }
 
   /* ---------- Inputs ---------- */
   .pl-field { max-width: 340px; padding: 6px 0; }
@@ -400,6 +401,17 @@
       box-shadow: inset -1px 0 0 var(--line-strong);
     }
     .pl-tbl--simple tbody tr:last-child td:first-child { border-bottom: 3px double var(--line-strong); }
+  }
+
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; mice keep the
+     compact ledger rhythm. */
+  @media (pointer: coarse) {
+    .pl-btn { min-height: 44px; padding: 12px 18px; }
+    .pl-toggle { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0 15px; }
+    .pl-tabs span { min-height: 44px; display: inline-flex; align-items: center; padding: 0 14px; }
+    .pl-chip { min-height: 44px; }
+    .pl-pager .pl-page { min-width: 44px; min-height: 44px; }
   }
 
   /* ---------- Print: the signature ----------

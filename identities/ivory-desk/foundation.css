@@ -549,6 +549,22 @@
     .iv-mobilenav .iv-new { margin: 0.6rem 0; }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; inline
+     padding grows the tap area without moving the baseline grid. */
+  @media (pointer: coarse) {
+    .iv-act, .iv-copy { padding: 1rem 0.9rem; font-size: var(--text-small); }
+    .iv-actions { flex-wrap: wrap; }
+    .iv-cite { padding: 1rem 0.5rem; margin: 0 -0.5rem; }
+    .iv-chip { padding: 0.85rem 0.9rem; }
+    .iv-btn, .iv-new { min-height: 44px; }
+    .iv-attach { width: 2.75rem; height: 2.75rem; }
+    .iv-send { width: 2.75rem; height: 2.75rem; }
+    .iv-modelchip { padding: 0.85rem 0.9rem; }
+    .iv-mobilenav > summary { padding: 1rem 0; }
+    .iv-mobilenav .iv-thread { padding: 0.85rem 0.6rem; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }

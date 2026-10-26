@@ -80,3 +80,16 @@
     box-shadow: 1px 0 0 var(--border);
   }
 }
+
+/* Thumb floor: controls hold a 44px hit target on touch. The wrapping
+   header nav becomes 44px rows under the same pointer. */
+@media (pointer: coarse) {
+  [data-identity="ocean-calm"] [data-slot="button"] {
+    min-height: 44px;
+  }
+  [data-identity="ocean-calm"] header nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

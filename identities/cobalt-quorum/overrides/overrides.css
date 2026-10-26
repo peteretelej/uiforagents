@@ -98,3 +98,17 @@
 [data-identity="cobalt-quorum"] .table-scroll thead th:first-child {
   z-index: 1;
 }
+
+/* Thumb floor: controls hold a 44px hit target on touch; mice keep the
+   compact console rhythm. Covers the header nav (dock row below md, inline
+   at md+) and every button slot. */
+@media (pointer: coarse) {
+  [data-identity="cobalt-quorum"] [data-slot="button"] {
+    min-height: 44px;
+  }
+  [data-identity="cobalt-quorum"] header nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

@@ -149,3 +149,19 @@
 [data-identity="portico-row"] .table-scroll thead th:first-child {
   z-index: 1;
 }
+
+/* The 44px law holds at every width: header links are touch-sized even
+   before a coarse pointer appears (pack: interactive targets 44px or
+   taller). */
+[data-identity="portico-row"] header nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Thumb floor: controls hold a 44px hit target on touch. */
+@media (pointer: coarse) {
+  [data-identity="portico-row"] [data-slot="button"] {
+    min-height: 44px;
+  }
+}

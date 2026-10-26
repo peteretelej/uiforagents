@@ -91,11 +91,16 @@
   .lr-crumb { color: var(--faint); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .lr-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
   .lr-theme-toggle {
-    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
-    color: var(--muted); background: none; border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 4px 10px; cursor: pointer; white-space: nowrap;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; padding: 0;
+    font-size: 0; /* any stray text label stays invisible */
   }
-  .lr-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
+  .lr-theme-toggle::before {
+    content: "\263E"; /* moon: dark is the lead scheme */
+    font-size: 15px; line-height: 1; color: var(--muted);
+  }
+  html[style*="light"] .lr-theme-toggle::before { content: "\2600"; /* sun */ }
+  .lr-theme-toggle:hover::before { color: var(--ink); }
 
   /* ---------- Hero ---------- */
   .lr-hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line-soft); }
@@ -366,7 +371,9 @@
   }
   @media (max-width: 640px) {
     .lr-wrap { padding: 0 18px; }
-    .lr-topbar nav { display: none; }
+    /* links yield, the scheme escape never hides: the toggle stays in */
+    .lr-topbar nav { display: flex; gap: 10px; }
+    .lr-topbar nav a { display: none; }
     .lr-wave { height: 44px; }
     .lr-time { margin-left: 0; width: 100%; order: 5; }
     .lr-trole { min-width: 0; }
@@ -392,6 +399,17 @@
       border: 1px solid var(--line-soft); border-radius: var(--radius);
       padding: 2px 6px; pointer-events: none;
     }
+  }
+
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; negative
+     margins grow timestamps without shifting the baseline grid. */
+  @media (pointer: coarse) {
+    .lr-theme-toggle { width: 44px; height: 44px; }
+    .lr-tbtn { min-height: 44px; min-width: 44px; }
+    .lr-mini .lr-tbtn { height: 44px; }
+    .lr-chip { min-height: 44px; padding: 9px 13px; }
+    .lr-tstamp { padding: 15px 10px; margin: -15px 0 -15px -10px; }
   }
 
   /* ---------- Print ---------- */

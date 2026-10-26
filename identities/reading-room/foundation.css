@@ -88,6 +88,7 @@
     padding: 0.25rem 0.6rem; cursor: pointer; white-space: nowrap;
   }
   .rr-theme-toggle:hover { color: var(--ink); border-color: var(--faint); }
+  .rr-theme-toggle--icon { padding: 0.4rem 0.5rem; line-height: 0; }
 
   /* ---------- Hero ---------- */
   .rr-hero { max-width: 1080px; margin: 0 auto; padding: 3.5rem 1.5rem 2.5rem; }
@@ -278,6 +279,16 @@
       background: var(--bg);
       box-shadow: inset -1px 0 0 var(--line);
     }
+  }
+
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch. */
+  @media (pointer: coarse) {
+    .rr-theme-toggle--icon { width: 44px; height: 44px; padding: 0; }
+    .rr-toc a { padding: 1rem 0; }
+    .rr-toc-mobile summary { padding: 1rem 1rem; }
+    .rr-toc-mobile a { padding: 0.9rem 1.2rem; }
+    .rr-toc-mobile ol ol a { padding: 0.9rem 1.2rem 0.9rem 2.1rem; }
   }
 
   /* ---------- Print ---------- */

@@ -623,6 +623,20 @@
     .no-tbl tbody tr:hover td:first-child { background: var(--surface-2); }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; mice keep the
+     compact console rhythm. */
+  @media (pointer: coarse) {
+    .no-btn, .no-btn.sm { min-height: 44px; }
+    .no-btn.icon { min-width: 44px; }
+    .no-chip { min-height: 44px; }
+    .no-tab { min-height: 44px; }
+    .no-pag button { min-width: 44px; min-height: 44px; }
+    .no-input, .no-sel select { height: 36px; }
+    .no-switch { width: 42px; height: 24px; }
+    .no-switch:checked::after { translate: 18px 0; }
+  }
+
   /* ---------- Print ----------
      One line re-inks the whole identity for paper: the light-dark()
      tokens follow the light scheme, so every panel, chip, chart and LED

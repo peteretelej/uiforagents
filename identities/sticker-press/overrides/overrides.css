@@ -136,3 +136,16 @@
   background: var(--secondary);
   z-index: 1;
 }
+
+/* Thumb floor: controls hold a 44px hit target on touch. Covers the header
+   nav (dock row below md, inline at md+) and every button slot. */
+@media (pointer: coarse) {
+  [data-identity="sticker-press"] [data-slot="button"] {
+    min-height: 44px;
+  }
+  [data-identity="sticker-press"] header nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

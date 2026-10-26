@@ -95,11 +95,16 @@
   .mb-crumb { color: var(--faint); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mb-topbar nav { margin-left: auto; display: flex; align-items: center; gap: 14px; }
   .mb-theme-toggle {
-    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
-    color: var(--muted); background: none; border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 4px 10px; cursor: pointer; white-space: nowrap;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; padding: 0;
+    font-size: 0; /* any stray text label stays invisible */
   }
-  .mb-theme-toggle:hover { color: var(--ink); border-color: var(--line); }
+  .mb-theme-toggle::before {
+    content: "\263E"; /* moon: dark is the lead scheme */
+    font-size: 15px; line-height: 1; color: var(--muted);
+  }
+  html[style*="light"] .mb-theme-toggle::before { content: "\2600"; /* sun */ }
+  .mb-theme-toggle:hover::before { color: var(--ink); }
 
   /* ---------- Hero ---------- */
   .mb-hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line-soft); }
@@ -309,7 +314,9 @@
   }
   @media (max-width: 640px) {
     .mb-wrap { padding: 0 18px; }
-    .mb-topbar nav { display: none; }
+    /* links yield, the scheme escape never hides: the toggle stays in */
+    .mb-topbar nav { display: flex; gap: 10px; }
+    .mb-topbar nav a { display: none; }
     .mb-statstrip { grid-template-columns: repeat(2, 1fr); }
     .mb-outcome { grid-template-columns: 1fr; }
   }
@@ -363,6 +370,17 @@
     .mb-mobilenav nav a:last-child { border-bottom: none; }
   }
 
+  /* ---------- Coarse pointers ----------
+     Thumb floor: controls hold a 44px hit target on touch; negative
+     margins grow topbar links without moving the 44px bar. */
+  @media (pointer: coarse) {
+    .mb-theme-toggle { width: 44px; height: 44px; }
+    .mb-topbar a { padding: 15px 4px; margin: -15px -4px; }
+    .mb-share-row a, .mb-share-row button { min-height: 44px; padding: 12px 14px; }
+    .mb-mobilenav summary { padding: 15px 18px; }
+    .mb-mobilenav nav a { min-height: 44px; display: flex; align-items: center; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }
@@ -376,6 +394,21 @@
     html { scroll-behavior: auto; }
   }
 }
+</style>
+<style>
+/* page CSS (unlayered): this document's only page CSS - the phone frame
+   chrome for the 390 proof (screen only). */
+.phone {
+  width: 390px; max-width: 100%; border: 1px solid var(--line-soft); border-radius: 14px;
+  background: var(--bg); overflow: hidden; margin: 18px auto 6px;
+}
+.phone .notch {
+  height: 26px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-bottom: 1px solid var(--line-soft);
+}
+.phone .notch i { width: 74px; height: 5px; border-radius: 99px; background: var(--line); }
+.mob-note { text-align: center; color: var(--faint); font-size: 12px; margin: 10px 0 0; }
+@media print { #mobile { display: none; } }
 </style>
 </head>
 <body>
@@ -393,7 +426,7 @@
       <a href="#sheet">Components</a>
       <a href="#states">States</a>
       <a href="#lab">Lab</a>
-      <button class="mb-theme-toggle" id="theme-toggle" type="button">Light theme</button>
+      <button class="mb-theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme"></button>
     </nav>
   </div>
 </header>
@@ -668,7 +701,7 @@ comment = <span class="mb-k">"# everything else stays full ink on --sunken"</spa
       <div class="mb-panel">
         <span class="mb-tag">CONTROLS</span>
         <div class="mb-row" style="margin-top:0">
-          <button class="mb-theme-toggle" type="button">Light theme</button>
+          <button class="mb-theme-toggle" type="button" aria-label="Switch to light theme"></button>
           <div class="mb-share-row" style="padding:0">
             <button type="button">Copy link</button>
             <a href="#sheet">Print</a>
@@ -767,6 +800,46 @@ comment = <span class="mb-k">"# everything else stays full ink on --sunken"</spa
   </div>
 </section>
 
+<!-- ==================== MOBILE 390 (screen only) ==================== -->
+<section class="mb-section" id="mobile">
+  <div class="mb-wrap">
+    <span class="mb-snum">12 / THE 390 PROOF</span>
+    <h2>Phones</h2>
+    <p class="mb-lede">The top bar keeps the icon-only scheme toggle reachable at every width -
+    links yield under 640px, the toggle never hides. The stat strip folds to 2x2 and the
+    outcome grid stacks. Same classes, no re-styling; on coarse pointers controls hold a
+    44px hit target.</p>
+    <div class="phone">
+      <div class="notch"><i></i></div>
+      <div style="padding-bottom: 18px;">
+        <div class="mb-topbar">
+          <div class="mb-wrap" style="padding: 0 14px;">
+            <span class="mb-brand">uiforagents/mb</span>
+            <span class="mb-crumb">the 390 proof</span>
+            <nav>
+              <a href="#rationale">Rationale</a>
+              <button class="mb-theme-toggle" type="button" aria-label="Switch to light theme"></button>
+            </nav>
+          </div>
+        </div>
+        <div style="padding: 14px 14px 0;">
+          <div class="mb-statstrip" style="margin: 0;">
+            <div class="mb-stat"><b>04</b> <span>papers read</span></div>
+            <div class="mb-stat"><b>11</b> <span>claims held</span></div>
+            <div class="mb-stat"><b>02</b> <span>broken</span></div>
+            <div class="mb-stat"><b>07</b> <span>days</span></div>
+          </div>
+          <div class="mb-row" style="margin-top: 12px;">
+            <label style="flex:none">verdict</label>
+            <span class="mb-pill mb-pill--ok">WORTH THE READ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="mob-note">390px frame · glyph toggle in the bar, 2x2 stat strip · same classes, no re-styling</p>
+  </div>
+</section>
+
 <div class="mb-wrap">
   <div class="mb-sharebar">
     <span class="mb-small">SHARE /</span>
@@ -805,7 +878,7 @@ comment = <span class="mb-k">"# everything else stays full ink on --sunken"</spa
     btn.addEventListener('click', function () {
       var goingDark = root.style.colorScheme === 'light';
       root.style.colorScheme = goingDark ? 'dark' : 'light';
-      btn.textContent = goingDark ? 'Light theme' : 'Dark theme';
+      btn.setAttribute('aria-label', goingDark ? 'Switch to light theme' : 'Switch to dark theme');
     });
   })();
 </script>
