@@ -91,6 +91,10 @@ visual design.
   (panning at readable size, never shrinking), pins its first column
   (opaque card fill, 2px-rule edge), and carries a one-line "SCROLL →"
   affordance. Charts, diagrams, and code obey the same 640px pan floor.
+- Decorative edge overlays (seals, badges, stickers bleeding off a card
+  edge) stay inside the viewport: negative `right`/`left` offsets are
+  the classic 390px document-widener - clip the overlay to its card or
+  pull the offset in at narrow widths.
 - Every interactive target is at least 44x44 CSS px on touch; coarse
   pointers (`@media (pointer: coarse)`) floor the small ones at 44px.
 - The theme pins `color-scheme: light` and ships one scheme - no toggle

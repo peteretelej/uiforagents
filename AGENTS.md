@@ -76,7 +76,11 @@ dependency, and no required JavaScript.
   a fresh agent gets only the prompt-pack + theme + overrides and builds a
   page type with no pre-made block. PASS = identity-faithful, premium, no
   design improvisation, and the output passes the headless check (~390px
-  included). Record the result in the identity's entry.
+  included). Record the result in the identity's entry. For shadcn-lane
+  identities the one-shot may be rendered as a single HTML file (the
+  pack + theme + overrides pasted in, layout written to the pack's
+  rules) so the headless check can run - that render form is the test
+  fixture, not a shipped block.
 - Headless check (both lanes): every minted or changed identity passes
   it - zero console errors and no horizontal document overflow at
   ~1280px, ~720px, ~390px, and ~360px widths - via

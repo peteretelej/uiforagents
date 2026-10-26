@@ -154,6 +154,13 @@ a phone-frame proof) where media queries cannot reach.
   document scroll.
 - The `.tb-top` bar wraps (`flex-wrap: wrap` from day one); never
   replace it with a nowrap row, and a header never widens the document.
+- Heat grids pan instead of shrinking: `.tb-heat` scrolls inside its
+  card when a scale exceeds the width (a year is 53 columns, ~740px) -
+  keep the authored 11px cell and let the card contain it; a heat grid
+  never widens the document.
+- Record chips (`.tb-record`) keep their flag text length-bounded or
+  wrapped inside their stat card - a long flag string never spills its
+  card and never drags the document wide.
 - The bar carries no nav today; when a page-level nav lands, it stays
   reachable at every width: a flat app-shell nav pans as a contained
   scroll dock, a long-form section nav uses a zero-JS `<details>`
