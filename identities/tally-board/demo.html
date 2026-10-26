@@ -222,6 +222,10 @@
   /* ---------- Charts ---------- */
   .tb-chart { display: block; width: 100%; height: auto; }
   .tb-figcap { font: 700 11px/1.5 var(--sans); color: var(--faint); margin-top: 6px; }
+  /* Charts pan at readable size instead of shrinking below legibility;
+     opt a chart in by wrapping it in .tb-chartbox. */
+  .tb-chartbox { overflow-x: auto; }
+  .tb-chartbox .tb-chart { min-width: 640px; }
 
   /* ---------- Budget-vs-actual: a friendly table ----------
      Small tables only. Hairlines, generous padding, mini tracks under the
@@ -612,6 +616,7 @@
         <p class="tb-take">Sunday long runs are carrying the month - the 8th set your distance
         record at 12.4 km.</p>
         <div class="tb-v">62.4<small>km this month</small><span class="tb-record">record 12.4 km</span></div>
+        <div class="tb-chartbox">
         <svg class="tb-chart" viewBox="0 0 720 190" role="img" aria-label="Smooth line chart of kilometres run each day in October, rising to a record 12.4 kilometre long run on the eighth">
           <line x1="44" y1="125" x2="704" y2="125" stroke="var(--chart-grid)" stroke-dasharray="2 5"/>
           <line x1="44" y1="60" x2="704" y2="60" stroke="var(--chart-grid)" stroke-dasharray="2 5"/>
@@ -628,6 +633,7 @@
           <text x="539" y="181" text-anchor="middle" font-size="10" fill="var(--chart-label)">07</text>
           <text x="704" y="181" text-anchor="middle" font-size="10" fill="var(--chart-label)">09</text>
         </svg>
+        </div>
         <p class="tb-figcap">daily km · rest days sit on the floor on purpose</p>
       </div>
       <div class="tb-stack">
@@ -718,6 +724,7 @@
       <h3>Habit loops · by week</h3>
       <p class="tb-take">Week 3 caught the flu and still landed 19. Week 2 was a perfect 28 -
       the only full board this quarter.</p>
+      <div class="tb-chartbox">
       <svg class="tb-chart" viewBox="0 0 720 176" role="img" aria-label="Bar chart of habit loops completed per week in October against a target of twenty-eight; week two hit the target, week three fell short">
         <line x1="44" y1="26.25" x2="704" y2="26.25" stroke="var(--accent-deep)" stroke-width="1.5" stroke-dasharray="5 4"/>
         <text x="704" y="18" text-anchor="end" font-size="10.5" font-weight="700" fill="var(--accent-deep)">target 28</text>
@@ -735,6 +742,7 @@
         <text x="475" y="158" text-anchor="middle" font-size="10.5" fill="var(--chart-label)">wk 3</text>
         <text x="655" y="158" text-anchor="middle" font-size="10.5" fill="var(--chart-label)">wk 4</text>
       </svg>
+      </div>
       <p class="tb-figcap">28 loops = 4 daily habits × 7 days · green full, amber short</p>
     </div>
   </section>

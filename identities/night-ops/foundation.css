@@ -605,6 +605,12 @@
     .no-brow { grid-template-columns: 16px 88px 1fr 56px; gap: 8px; }
   }
 
+  /* Charts keep a readable floor and pan instead of shrinking. */
+  @media (max-width: 720px) {
+    .no-panel:has(> .no-chart) { overflow-x: auto; }
+    .no-chart { min-width: 640px; }
+  }
+
   /* ---------- Print ----------
      One line re-inks the whole identity for paper: the light-dark()
      tokens follow the light scheme, so every panel, chip, chart and LED

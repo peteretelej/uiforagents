@@ -31,7 +31,7 @@ export function LandingShell({
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b-2 border-border bg-background">
-        <div className="mx-auto flex h-16 max-w-[1120px] items-center gap-8 px-6">
+        <div className="mx-auto flex min-h-16 max-w-[1120px] items-center gap-4 px-6">
           <span className="font-display text-[2rem] leading-none">{brand}</span>
           <nav className="ml-auto hidden items-center gap-7 md:flex">
             {nav.map((n) => (

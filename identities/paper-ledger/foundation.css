@@ -135,6 +135,11 @@
   .pl-fig { padding: 4px 0 6px; break-inside: avoid; }
   .pl-chart { display: block; width: 100%; height: auto; }
   .pl-figcap { font: 10.5px/1.6 var(--mono); letter-spacing: 0.04em; color: var(--faint); margin-top: 6px; }
+  /* Wide figures pan at readable size instead of shrinking below legibility;
+     charts authored narrow opt out with pl-chart--narrow. */
+  .pl-fig { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .pl-fig .pl-chart { min-width: 640px; max-width: none; }
+  .pl-fig .pl-chart--narrow { min-width: 0; max-width: 100%; }
 
   /* ---------- Tables: shared grammar ---------- */
   .pl-tblwrap { overflow-x: auto; margin-top: 6px; }

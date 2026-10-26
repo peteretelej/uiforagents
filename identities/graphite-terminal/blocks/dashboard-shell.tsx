@@ -22,12 +22,12 @@ export function DashboardShell({
           <span className="min-w-0 truncate font-display text-[16px] font-bold tracking-[-0.01em]">
             {title}
           </span>
-          <nav className="ml-auto flex shrink-0 items-center gap-4 sm:gap-5">
+          <nav className="ml-auto hidden shrink-0 items-center gap-4 sm:flex sm:gap-5">
             {nav.map((n) => (
               <a
                 key={n.label}
                 href="#"
-                className={`text-[13px] font-medium transition-colors ${
+                className={`py-2 text-[13px] font-medium transition-colors ${
                   n.active ? "font-semibold text-foreground" : "text-muted-foreground hover:text-primary"
                 }`}
               >
@@ -36,8 +36,21 @@ export function DashboardShell({
               </a>
             ))}
           </nav>
-          {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
+          {actions && <div className="ml-auto flex shrink-0 items-center gap-2 sm:ml-0">{actions}</div>}
         </div>
+        <nav aria-label="Sections" className="flex items-center gap-1 overflow-x-auto px-4 pb-2 sm:hidden">
+          {nav.map((n) => (
+            <a
+              key={n.label}
+              href="#"
+              className={`shrink-0 rounded-sm px-3 py-1.5 font-mono text-[12px] uppercase tracking-[0.06em] transition-colors ${
+                n.active ? "bg-secondary text-foreground" : "text-muted-foreground"
+              }`}
+            >
+              {n.label}
+            </a>
+          ))}
+        </nav>
       </header>
 
       <main className="mx-auto max-w-[1120px] px-6 py-8">

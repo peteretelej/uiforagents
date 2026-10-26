@@ -28,16 +28,16 @@ export function DashboardShell({
   return (
     <div className="min-h-screen">
       <header className="sticky top-4 z-40 mx-auto max-w-[1120px] px-4 sm:px-6">
-        <div className="glass-strong flex h-[60px] items-center gap-4 rounded-[20px] px-5">
+        <div className="glass-strong flex min-h-[60px] flex-wrap items-center gap-x-4 gap-y-1 rounded-[20px] px-5 py-2 sm:h-[60px] sm:flex-nowrap sm:py-0">
           <span className="min-w-0 truncate font-display text-[19px] font-bold tracking-[-0.01em]">
             {title}
           </span>
-          <nav className="ml-auto flex shrink-0 items-center gap-4 sm:gap-6">
+          <nav className="ml-auto hidden shrink-0 items-center gap-4 sm:flex sm:gap-6">
             {nav.map((n) => (
               <a
                 key={n.label}
                 href="#"
-                className={`text-sm transition-colors ${
+                className={`py-2 text-sm transition-colors ${
                   n.active ? "font-semibold text-foreground" : "font-medium text-muted-foreground hover:text-primary"
                 }`}
               >
@@ -45,8 +45,21 @@ export function DashboardShell({
               </a>
             ))}
           </nav>
-          {actions && <div className="flex shrink-0 items-center gap-3">{actions}</div>}
+          {actions && <div className="ml-auto hidden shrink-0 items-center gap-3 sm:flex">{actions}</div>}
         </div>
+        <nav aria-label="Sections" className="glass-strong mt-2 flex items-center gap-1 overflow-x-auto rounded-[20px] p-1.5 sm:hidden">
+          {nav.map((n) => (
+            <a
+              key={n.label}
+              href="#"
+              className={`shrink-0 rounded-full px-4 py-2 text-sm transition-colors ${
+                n.active ? "bg-primary font-semibold text-primary-foreground" : "text-muted-foreground"
+              }`}
+            >
+              {n.label}
+            </a>
+          ))}
+        </nav>
       </header>
 
       <main className="mx-auto max-w-[1120px] px-6 py-10">

@@ -18,11 +18,11 @@ export function DashboardShell({
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-border/80 bg-card/85 backdrop-blur-md">
-        <div className="mx-auto flex h-[60px] max-w-[1120px] items-center gap-4 px-6 sm:gap-6">
+        <div className="mx-auto flex min-h-[60px] max-w-[1120px] flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 sm:flex-nowrap sm:px-6 sm:py-0">
           <span className="min-w-0 truncate font-display text-[19px] font-extrabold tracking-[-0.02em]">
             {title}
           </span>
-          <nav className="ml-auto flex shrink-0 items-center gap-4 sm:gap-6">
+          <nav className="ml-auto flex min-w-0 flex-wrap items-center justify-end gap-x-4 gap-y-1 sm:gap-x-6">
             {nav.map((n) => (
               <a
                 key={n.label}
@@ -36,7 +36,7 @@ export function DashboardShell({
               </a>
             ))}
           </nav>
-          {actions && <div className="flex shrink-0 items-center gap-3">{actions}</div>}
+          {actions && <div className="flex min-w-0 flex-wrap items-center gap-3">{actions}</div>}
         </div>
       </header>
 

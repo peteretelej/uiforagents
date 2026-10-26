@@ -32,8 +32,8 @@ export function LandingShell({
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 bg-[var(--navy)]">
-        <div className="mx-auto flex h-[72px] max-w-[1120px] items-center gap-8 px-6">
-          <a href="#" className="font-display text-[22px] tracking-[-0.01em] text-white">
+        <div className="mx-auto flex min-h-[72px] max-w-[1120px] flex-wrap items-center gap-x-8 gap-y-1 px-6 py-2 md:h-[72px] md:flex-nowrap md:py-0">
+          <a href="#" className="font-display text-[22px] tracking-[-0.01em] text-white max-md:me-auto">
             {brand}
           </a>
           <nav className="ml-auto hidden items-center gap-7 md:flex" aria-label="Primary">
@@ -57,9 +57,26 @@ export function LandingShell({
               variant="outline"
               className="h-11 border-white/40 bg-transparent px-4 text-[14px] text-white hover:border-white hover:bg-white/10 hover:text-white"
             >
-              {cta}
+              <span className="sm:hidden">Consult</span>
+              <span className="hidden sm:inline">{cta}</span>
             </Button>
           </div>
+          <nav className="w-full border-t border-white/25 pt-1 md:hidden" aria-label="Primary mobile">
+            {nav.map((n) => (
+              <a
+                key={n.label}
+                href={n.href ?? "#"}
+                aria-current={n.active ? "page" : undefined}
+                className={`inline-flex min-h-[44px] items-center text-[15px] ${
+                  n.active
+                    ? "font-semibold text-white underline underline-offset-8"
+                    : "text-white/80"
+                }`}
+              >
+                {n.label}
+              </a>
+            ))}
+          </nav>
         </div>
       </header>
 

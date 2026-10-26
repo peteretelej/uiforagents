@@ -292,6 +292,13 @@
   @media (max-width: 800px) {
     .mb-cols { grid-template-columns: 1fr; }
   }
+  @media (max-width: 780px) and (min-width: 640px) {
+    .mb-topbar .mb-wrap {
+      flex-wrap: wrap; height: auto; min-height: 44px;
+      padding-top: 8px; padding-bottom: 8px; row-gap: 4px;
+    }
+    .mb-topbar nav { flex-wrap: wrap; row-gap: 4px; }
+  }
   @media (max-width: 640px) {
     .mb-wrap { padding: 0 18px; }
     .mb-topbar nav { display: none; }

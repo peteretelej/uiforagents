@@ -143,6 +143,11 @@
   .pl-fig { padding: 4px 0 6px; break-inside: avoid; }
   .pl-chart { display: block; width: 100%; height: auto; }
   .pl-figcap { font: 10.5px/1.6 var(--mono); letter-spacing: 0.04em; color: var(--faint); margin-top: 6px; }
+  /* Wide figures pan at readable size instead of shrinking below legibility;
+     charts authored narrow opt out with pl-chart--narrow. */
+  .pl-fig { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .pl-fig .pl-chart { min-width: 640px; max-width: none; }
+  .pl-fig .pl-chart--narrow { min-width: 0; max-width: 100%; }
 
   /* ---------- Tables: shared grammar ---------- */
   .pl-tblwrap { overflow-x: auto; margin-top: 6px; }
@@ -1299,7 +1304,7 @@
 
         <div class="pl-h"><h3>revenue by quarter</h3><small>$M</small></div>
         <figure class="pl-fig">
-          <svg class="pl-chart" viewBox="0 0 358 150" role="img" aria-label="Mini bar chart of quarterly revenue across five quarters, rising from 3.64 million to a record 5.57 million dollars">
+          <svg class="pl-chart pl-chart--narrow" viewBox="0 0 358 150" role="img" aria-label="Mini bar chart of quarterly revenue across five quarters, rising from 3.64 million to a record 5.57 million dollars">
             <line x1="8" y1="120" x2="350" y2="120" stroke="var(--chart-axis)"/>
             <rect x="26"  y="55.1" width="34" height="64.9" fill="var(--chart-series)" opacity="0.45"/>
             <rect x="94"  y="47.7" width="34" height="72.3" fill="var(--chart-series)" opacity="0.45"/>

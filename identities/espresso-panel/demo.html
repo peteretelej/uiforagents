@@ -313,6 +313,11 @@
     .ep-wrap { padding: 0 12px 20px; }
   }
 
+  /* ---------- Chart pan ----------
+     Wide charts pan at readable size instead of shrinking (incident pattern). */
+  .ep-chartpan { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ep-chartpan .ep-chart { min-width: 640px; }
+
   /* ---------- Print ----------
      One line re-inks the whole identity for paper: the light-dark()
      tokens follow the light scheme, so every readout, bracket and dot
@@ -513,6 +518,7 @@
       <div class="ep-panel">
         <div class="ep-ph">luggnagg composite · intraday<small>utc · 5m steps</small></div>
         <p class="ep-take">open gap filled by 10:00 · session high 1,418 into the close · 13:42 halt on bight</p>
+        <div class="ep-chartpan">
         <svg class="ep-chart" viewBox="0 0 720 220" role="img" aria-label="Stepped line chart of the luggnagg composite index intraday, recovering from an early dip to close near the session high of 1,418">
           <defs>
             <pattern id="dm-grid" width="4" height="4" patternUnits="userSpaceOnUse">
@@ -538,6 +544,7 @@
           <text x="521" y="210" text-anchor="middle" font-size="9" fill="var(--chart-label)">15:00</text>
           <text x="704" y="210" text-anchor="end" font-size="9" fill="var(--chart-label)">16:58</text>
         </svg>
+        </div>
       </div>
       <div class="ep-stack">
         <div class="ep-panel">

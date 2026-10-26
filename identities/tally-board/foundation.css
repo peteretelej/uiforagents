@@ -214,6 +214,10 @@
   /* ---------- Charts ---------- */
   .tb-chart { display: block; width: 100%; height: auto; }
   .tb-figcap { font: 700 11px/1.5 var(--sans); color: var(--faint); margin-top: 6px; }
+  /* Charts pan at readable size instead of shrinking below legibility;
+     opt a chart in by wrapping it in .tb-chartbox. */
+  .tb-chartbox { overflow-x: auto; }
+  .tb-chartbox .tb-chart { min-width: 640px; }
 
   /* ---------- Budget-vs-actual: a friendly table ----------
      Small tables only. Hairlines, generous padding, mini tracks under the

@@ -479,6 +479,9 @@
   .ce-figure .plate { display: block; width: 100%; height: auto; }
   .ce-figure.r32 .plate { aspect-ratio: 3 / 2; }
   .ce-figure.r169 .plate { aspect-ratio: 16 / 9; }
+  /* Plates pan at reading size instead of shrinking below legibility. */
+  .ce-plate-pan { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ce-plate-pan .plate { min-width: 640px; }
   .ce-caption {
     font-family: var(--font-mono);
     font-size: 0.68rem;
@@ -616,6 +619,8 @@
     .ce-cols.c4 > :first-child { border-top: 0; padding-top: 0; }
     .ce-news-form { flex-direction: column; }
     .ce-body { font-size: 16.5px; }
+    .ce-band-head, .ce-modhead { flex-wrap: wrap; gap: 0.3rem 1rem; }
+    .ce-band-more { white-space: normal; }
   }
 
   /* ---------- Print ---------- */
@@ -672,6 +677,7 @@
           Riders say the commute is ten minutes shorter; the city says the tab came in under the bond.</p>
           <span class="ce-byline"><strong>By Mara Ellison</strong> &middot; Lindalino City &mdash; Oct. 13</span>
           <figure class="ce-figure r169">
+            <div class="ce-plate-pan">
             <svg class="plate" viewBox="0 0 640 360" role="img" aria-label="Diagram of the rebuilt harbor line: eight stations from Union to Point Annex, with the drawbridge segment shown as new">
               <rect x="0" y="0" width="640" height="360" fill="#FFFFFF"/>
               <line x1="40" y1="196" x2="600" y2="196" stroke="#DDD9CF" stroke-width="1"/>
@@ -702,6 +708,7 @@
               </g>
               <text x="600" y="336" text-anchor="end" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#8A857A">Plate: Lindalino Chronicle graphics</text>
             </svg>
+            </div>
             <figcaption class="ce-caption"><b>The rebuilt harbor line.</b> The drawbridge span (dashed) carried the
             last of the work; dotted stations reopened Monday. Source: Harbor Authority schedule, Oct. 12.</figcaption>
           </figure>
@@ -871,6 +878,7 @@
           1.4 million hours a year. The riders say it is finally boring, which is the point.</p>
           <span class="ce-byline"><strong>By Mara Ellison</strong> &middot; Lindalino City &mdash; Oct. 13</span>
           <figure class="ce-figure r32">
+            <div class="ce-plate-pan">
             <svg class="plate" viewBox="0 0 480 320" role="img" aria-label="Average weekday boardings by station on the harbor line, with Union and Point Annex highest">
               <rect x="0" y="0" width="480" height="320" fill="#FFFFFF"/>
               <g font-family="'IBM Plex Mono', monospace" font-size="10" fill="#5D5A52">
@@ -899,6 +907,7 @@
               </g>
               <text x="36" y="296" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#8A857A">Avg weekday boardings, first morning &middot; Harbor Authority</text>
             </svg>
+            </div>
             <figcaption class="ce-caption"><b>Where the riders get on.</b> Union and Point Annex
             carry nearly half the first morning&rsquo;s boardings.</figcaption>
           </figure>

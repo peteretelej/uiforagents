@@ -105,3 +105,20 @@
     animation: none;
   }
 }
+
+/* Mobile masthead (<=767px): the bar grows instead of clipping, the brand
+   keeps its 2rem Archivo floor on its own line, the CTA row wraps below. */
+@media (max-width: 767px) {
+  [data-identity="sticker-press"] header > div {
+    height: auto;
+    min-height: 4rem;
+    flex-wrap: wrap;
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  [data-identity="sticker-press"] header .font-display {
+    overflow-wrap: break-word;
+  }
+}

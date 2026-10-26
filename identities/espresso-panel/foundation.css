@@ -305,6 +305,11 @@
     .ep-wrap { padding: 0 12px 20px; }
   }
 
+  /* ---------- Chart pan ----------
+     Wide charts pan at readable size instead of shrinking (incident pattern). */
+  .ep-chartpan { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ep-chartpan .ep-chart { min-width: 640px; }
+
   /* ---------- Print ----------
      One line re-inks the whole identity for paper: the light-dark()
      tokens follow the light scheme, so every readout, bracket and dot

@@ -471,6 +471,9 @@
   .ce-figure .plate { display: block; width: 100%; height: auto; }
   .ce-figure.r32 .plate { aspect-ratio: 3 / 2; }
   .ce-figure.r169 .plate { aspect-ratio: 16 / 9; }
+  /* Plates pan at reading size instead of shrinking below legibility. */
+  .ce-plate-pan { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ce-plate-pan .plate { min-width: 640px; }
   .ce-caption {
     font-family: var(--font-mono);
     font-size: 0.68rem;
@@ -608,6 +611,8 @@
     .ce-cols.c4 > :first-child { border-top: 0; padding-top: 0; }
     .ce-news-form { flex-direction: column; }
     .ce-body { font-size: 16.5px; }
+    .ce-band-head, .ce-modhead { flex-wrap: wrap; gap: 0.3rem 1rem; }
+    .ce-band-more { white-space: normal; }
   }
 
   /* ---------- Print ---------- */
