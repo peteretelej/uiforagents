@@ -71,7 +71,7 @@
   code {
     font-family: var(--font-mono); font-size: 0.88em; color: var(--ink);
     background: var(--sunken); border: 1px solid var(--line-soft);
-    border-radius: var(--radius); padding: 1px 5px; white-space: nowrap;
+    border-radius: var(--radius); padding: 1px 5px; overflow-wrap: anywhere;
   }
   .mb-wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
 

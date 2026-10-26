@@ -10,7 +10,10 @@ visual design.
 
 - **The field**: every page sits on the fixed aurora gradient (`--field`,
   applied to the body, `background-attachment: fixed`). It is the identity's
-  only glow - never add glows, neons, or gradient ornaments of your own. An
+  only glow - never add glows, neons, or gradient ornaments of your own. On
+  touch devices the field scrolls with the page (the overrides ship
+  `background-attachment: scroll` under `pointer: coarse`; mobile WebKit
+  detaches fixed backgrounds). An
   optional `.field-drift` class sways it slowly; it is flavor and
   `prefers-reduced-motion` stills it.
 - **Fill discipline is law** (Liquid Glass regular-glass recipe):

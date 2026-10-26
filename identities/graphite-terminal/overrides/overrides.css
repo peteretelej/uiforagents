@@ -83,15 +83,15 @@
   border-color: oklch(25% 0.012 255 / 0.35);
 }
 
-/* Phones: the id column holds while the table pans; hairline edge marks it. */
-@media (max-width: 640px) {
-  [data-identity="graphite-terminal"] table th:first-child,
-  [data-identity="graphite-terminal"] table td:first-child {
-    position: sticky;
-    left: 0;
-    background: var(--card);
-    box-shadow: 1px 0 0 var(--border);
-  }
+/* Tables pan on narrow screens; the id column holds while the table
+   pans, with a hairline edge marking it. Unconditional, matching the
+   other react siblings: sticky is inert when the table doesn't pan. */
+[data-identity="graphite-terminal"] table th:first-child,
+[data-identity="graphite-terminal"] table td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--card);
+  box-shadow: 1px 0 0 var(--border);
 }
 
 /* Thumb floor: a 44px hit target on touch, superseding the draft's 40px

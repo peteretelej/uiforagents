@@ -150,6 +150,15 @@
   z-index: 1;
 }
 
+/* Anchors land clear of the wrapped sticky header: below md the band
+   grows to the two-row height, so the scroll container pads hash
+   navigation by it. */
+@media (max-width: 767px) {
+  [data-identity="portico-row"] {
+    scroll-padding-top: 120px;
+  }
+}
+
 /* The 44px law holds at every width: header links are touch-sized even
    before a coarse pointer appears (pack: interactive targets 44px or
    taller). */

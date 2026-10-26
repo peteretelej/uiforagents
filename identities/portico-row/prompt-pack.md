@@ -75,8 +75,9 @@ improvise visual design.
   flat app-shell nav may instead pan as a contained scroll dock; a
   long-form section nav uses a zero-JS `<details>` disclosure. Deleting
   navigation is not a mobile strategy. Sections that anchor into the
-  page need `scroll-mt-28` so the taller sticky band never covers the
-  target.
+  page land clear of the wrapped sticky band: the theme ships
+  `scroll-padding-top` below `md`, so hash navigation never hides a
+  target under the header.
 - Data tables pan inside an `overflow-x-auto` frame at a
   `min-w-[640px]` floor with the first column sticky on the card ground
   behind an engraved hairline, and a visible cue that the table pans.

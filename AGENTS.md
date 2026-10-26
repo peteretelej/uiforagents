@@ -79,7 +79,7 @@ dependency, and no required JavaScript.
   included). Record the result in the identity's entry.
 - Headless check (both lanes): every minted or changed identity passes
   it - zero console errors and no horizontal document overflow at
-  ~1280px, ~390px, and ~360px widths - via
+  ~1280px, ~720px, ~390px, and ~360px widths - via
   `node tooling/check-mobile.mjs <page.html>` (playwright from the
   machine's global npm root; the checker adds no kit dependency).
 - Regenerate registry payloads after any change:

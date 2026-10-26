@@ -53,7 +53,10 @@ visual design.
   760px - never let nav links push the brand out or drag the document
   wide. A flat app-shell nav may instead pan as a contained scroll
   dock; a long-form section nav uses a zero-JS `<details>` disclosure.
-  Deleting navigation is not a mobile strategy.
+  Deleting navigation is not a mobile strategy. Sections that anchor
+  into the page land clear of the wrapped sticky band: the theme ships
+  `scroll-padding-top` below 760px, so hash navigation never hides a
+  target under the header.
 - Keep every grid track `minmax(0, ...)` so long words cannot force
   sideways scroll.
 - Wrap wide tables in an `overflow-x-auto` card with a `min-w-[640px]`

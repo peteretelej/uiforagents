@@ -52,7 +52,10 @@ pack exactly and ship product. Do not improvise visual design.
   760px; never ship a single-row masthead that assumes desktop width. A
   flat app-shell nav may instead pan as a contained scroll dock; a
   long-form section nav uses a zero-JS `<details>` disclosure. Deleting
-  navigation is not a mobile strategy.
+  navigation is not a mobile strategy. Sections that anchor into the
+  page land clear of the wrapped sticky band: the theme ships
+  `scroll-padding-top` below 760px, so hash navigation never hides a
+  target under the header.
 - Every grid track stays `minmax(0, ...)` so long words cannot force
   sideways scroll.
 - Wide tables sit in an `overflow-x-auto` card with a `min-w-[640px]`

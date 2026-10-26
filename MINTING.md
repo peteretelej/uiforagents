@@ -137,7 +137,7 @@ Winkie (real localities), Argos, Jotun, Barchester (real companies).
 
 Every minted or changed identity, both lanes, passes the headless
 check: zero console errors and no horizontal document overflow at
-~1280px, ~390px, and ~360px widths. Run it on the identity's page (the
+~1280px, ~720px, ~390px, and ~360px widths. Run it on the identity's page (the
 artifact demo, or the built page under validation) with:
 
 ```
@@ -158,12 +158,11 @@ one-shot output passes the headless check (above), ~390px included. The
 one-shot page type must differ from the demo's page type; the differing
 page is what proves the system generalizes.
 
-Record the result in both places before committing the identity:
-
-- the README catalogue row, as `One-shot PASS <date>, <page type>` in
-  the row's description
-- the identity's entry (prompt-pack header note for artifact-lane
-  identities; `identity.json` notes for shadcn-lane identities)
+Record the result in the identity's entry before committing it: the
+prompt-pack header note for artifact-lane identities, `identity.json`
+notes for shadcn-lane identities (AGENTS.md governs the venue; README
+catalogue rows stay one-line vibe descriptions and carry no one-shot
+records).
 
 ## Tag vocabulary
 

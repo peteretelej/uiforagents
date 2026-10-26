@@ -112,8 +112,13 @@
 }
 
 /* Thumb floor: controls hold a 44px hit target on touch. Covers the
-   floating bar's inline nav (sm+) and the pill dock (below sm). */
+   floating bar's inline nav (sm+) and the pill dock (below sm). Mobile
+   WebKit detaches fixed body backgrounds, so the field scrolls with the
+   page under a coarse pointer. */
 @media (pointer: coarse) {
+  body {
+    background-attachment: scroll;
+  }
   [data-identity="frost-field"] [data-slot="button"] {
     min-height: 44px;
   }

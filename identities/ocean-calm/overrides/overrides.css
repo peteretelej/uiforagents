@@ -81,6 +81,14 @@
   }
 }
 
+/* Anchors land clear of the wrapped sticky header: the scroll container
+   pads hash navigation by the two-row band height. */
+@media (max-width: 759px) {
+  [data-identity="ocean-calm"] {
+    scroll-padding-top: 120px;
+  }
+}
+
 /* Thumb floor: controls hold a 44px hit target on touch. The wrapping
    header nav becomes 44px rows under the same pointer. */
 @media (pointer: coarse) {
