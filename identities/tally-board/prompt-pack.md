@@ -149,6 +149,10 @@ a phone-frame proof) where media queries cannot reach.
   document scroll.
 - The `.tb-top` bar wraps (`flex-wrap: wrap` from day one); never
   replace it with a nowrap row, and a header never widens the document.
+- The bar carries no nav today; when a page-level nav lands, it stays
+  reachable at every width: a flat app-shell nav pans as a contained
+  scroll dock, a long-form section nav uses a zero-JS `<details>`
+  disclosure, and deleting navigation is not a mobile strategy.
 - Charts on narrow containers: a wide chart never shrinks past
   legibility. Wrap any chart whose viewBox is wider than ~600 units in
   `<div class="tb-chartbox">` - it pans at full size inside the card,

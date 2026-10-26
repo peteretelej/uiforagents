@@ -189,7 +189,10 @@ top bar wraps.
 - When composing beyond the shipped classes, keep the same laws:
   `minmax(0, 1fr)` tracks with `min-width: 0` children, clamped type
   with a 44px display floor and `overflow-wrap: break-word`. A header
-  wraps; it never widens the document.
+  wraps; it never widens the document. The same law holds for
+  `.wr-nav`: a flat app-shell nav pans as a contained scroll dock, a
+  long-form section nav uses a zero-JS `<details>` disclosure, and
+  deleting navigation is not a mobile strategy.
 - Pan wrappers (`overflow-x: auto`) around anything wider than the
   measure - a table in `.wr-tablewrap`, a foreign chart or diagram, a
   code block - hold a `min-width: 640px` floor so they pan at readable

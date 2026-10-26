@@ -150,6 +150,11 @@ breakpoints for its components.
   reach. The demo's phone-frame section is the reference.
 - `.pl-masthead` wraps (`flex-wrap: wrap`); any header you add wraps or
   stacks the same way and never widens the document.
+- The masthead carries no nav today; when a page-level nav lands, it
+  stays reachable at every width: a flat app-shell nav pans as a
+  contained scroll dock, a long-form section nav uses a zero-JS
+  `<details>` disclosure, and deleting navigation is not a mobile
+  strategy.
 - Author statement charts with a `viewBox` no wider than ~360 and the
   `pl-chart--narrow` class, or wrap wide figures in `.pl-fig` and let
   them pan at a `min-width: 640px` floor - never let a wide viewBox

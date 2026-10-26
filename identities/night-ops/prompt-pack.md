@@ -248,6 +248,10 @@ so they inherit this behavior.
 - The `.no-top` bar wraps by contract: never replace it with a nowrap
   single row, and never let a header drag the document wider than the
   viewport.
+- The bar carries no nav today; when a page-level nav lands, it stays
+  reachable at every width: a flat app-shell nav pans as a contained
+  scroll dock, a long-form section nav uses a zero-JS `<details>`
+  disclosure, and deleting navigation is not a mobile strategy.
 - Keep every chart inside a panel that pans: below 720px a chart holds
   a `min-width: 640px` floor and the panel scrolls horizontally, so
   labels stay at their designed size - never shrink a chart to fit a

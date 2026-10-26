@@ -185,7 +185,10 @@ motion is inside a pan (`.dl-tablewrap`) or the marquee.
   overflowing stat cells, nothing important out of reach.
 - The top bar wraps by design (`.dl-top-inner` and `.dl-nav` are
   `flex-wrap: wrap`); keep them wrapping and never hide links to fit a
-  phone. A header never widens the document.
+  phone. Nav stays reachable at every width: a flat app-shell nav pans
+  as a contained scroll dock, a long-form section nav uses a zero-JS
+  `<details>` disclosure, and deleting navigation is not a mobile
+  strategy. A header never widens the document.
 - Wide tables pan inside `.dl-tablewrap` with a `min-width: 640px`
   floor - they pan at readable size, columns never crush. While a wide
   table pans, its first column pins on `--surface` behind a hairline

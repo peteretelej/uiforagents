@@ -218,6 +218,10 @@ padding. Do not re-implement any of that. Your obligations:
   of reach.
 - `.ep-top` wraps (`flex-wrap: wrap`), it never scrolls: keep the band
   to brand + right context and it wraps instead of widening the page.
+- The band carries no nav today; when a page-level nav lands, it ships
+  reachable at every width: a flat app-shell nav pans as a contained
+  scroll dock, a long-form section nav uses a zero-JS `<details>`
+  disclosure, and deleting navigation is not a mobile strategy.
 - Charts pan, never shrink: any chart with a viewBox wider than ~500
   units rides in `.ep-chartpan` (an `overflow-x` container with a
   `min-width: 640px` floor) so the 9px axis labels keep their designed

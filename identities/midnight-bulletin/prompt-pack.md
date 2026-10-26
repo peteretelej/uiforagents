@@ -198,7 +198,11 @@ and outcome grid under 640px; content rules are yours:
   out of reach (700px is the band where an over-long topbar nav
   overflows).
 - Cap the topbar nav at six mono links and let it wrap rather than
-  clip; the 640px pass keeps the theme toggle on phones. A header never
+  clip; the 640px pass keeps the theme toggle on phones. Nav stays
+  reachable at every width: a flat app-shell nav pans as a contained
+  scroll dock, and the topbar's section links - long-form nav - keep
+  their phone home in a zero-JS `<details>` disclosure, the sanctioned
+  form. Deleting navigation is not a mobile strategy. A header never
   widens the document.
 - Keep every data table in `.mb-tblwrap` and every chart in
   `.mb-figure`: both pan at the shipped `min-width: 640px` floor
