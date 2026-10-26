@@ -32,14 +32,17 @@ export function LandingShell({
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-[1120px] items-center gap-8 px-6">
+        <div className="mx-auto flex min-h-16 max-w-[1120px] items-center gap-x-8 gap-y-1 px-6 max-md:flex-wrap">
           <span className="font-display text-[19px] font-bold tracking-[-0.02em]">{brand}</span>
-          <nav className="ml-auto hidden items-center gap-7 md:flex">
+          <nav
+            className="ml-auto flex items-center gap-7 overflow-x-auto max-md:order-last max-md:w-full max-md:border-t max-md:border-border max-md:pt-2"
+            aria-label="Main"
+          >
             {nav.map((n) => (
               <a
                 key={n.label}
                 href="#"
-                className={`text-[14px] transition-colors ${
+                className={`shrink-0 whitespace-nowrap text-[14px] transition-colors ${
                   n.active
                     ? "font-semibold text-primary"
                     : "font-medium text-muted-foreground hover:text-foreground"

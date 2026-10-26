@@ -33,12 +33,15 @@ export function LandingShell({
       <header className="sticky top-0 z-40 border-b-2 border-border bg-background">
         <div className="mx-auto flex min-h-16 max-w-[1120px] items-center gap-4 px-6">
           <span className="font-display text-[2rem] leading-none">{brand}</span>
-          <nav className="ml-auto hidden items-center gap-7 md:flex">
+          <nav
+            className="ml-auto flex items-center gap-7 overflow-x-auto max-md:order-last max-md:w-full max-md:border-t-2 max-md:border-border max-md:pt-2"
+            aria-label="Main"
+          >
             {nav.map((n) => (
               <a
                 key={n.label}
                 href="#"
-                className={`font-mono text-[12px] font-bold uppercase tracking-[0.06em] ${
+                className={`shrink-0 whitespace-nowrap font-mono text-[12px] font-bold uppercase tracking-[0.06em] ${
                   n.active
                     ? "-rotate-2 bg-primary px-1.5 py-0.5 text-primary-foreground shadow-[var(--shadow-chip)]"
                     : "text-muted-foreground hover:text-foreground"

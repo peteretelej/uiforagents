@@ -386,6 +386,26 @@
     .lr-mini { gap: 8px; padding-left: 10px; padding-right: 10px; }
   }
 
+  /* Tables pan in .lr-tblwrap: the lead column sticks on the page ground
+     behind a hairline edge, and a flat chip marks the pan. */
+  @media (max-width: 640px) {
+    .lr-tblwrap { position: relative; -webkit-overflow-scrolling: touch; }
+    .lr-tblwrap td:first-child, .lr-tblwrap th:first-child {
+      position: sticky; left: 0; z-index: 1;
+      background: var(--bg);
+      box-shadow: inset -1px 0 0 var(--line-soft);
+    }
+    .lr-tblwrap th:first-child { background: var(--sunken); }
+    .lr-tblwrap::after {
+      content: "pan \2192";
+      position: absolute; top: 6px; right: 8px;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+      color: var(--faint); background: var(--bg);
+      border: 1px solid var(--line-soft); border-radius: var(--radius);
+      padding: 2px 6px; pointer-events: none;
+    }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }

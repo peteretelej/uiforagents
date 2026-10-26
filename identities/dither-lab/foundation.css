@@ -393,6 +393,16 @@
   }
   .dl-table td { padding: 10px 16px 10px 0; vertical-align: top; border-bottom: 1px solid var(--line-soft); }
 
+  /* Wide tables (4+ columns, tagged .wide) pan at a readable floor and the
+     first column stays pinned on the ground with a hairline edge. */
+  .dl-tablewrap { -webkit-overflow-scrolling: touch; }
+  .dl-tablewrap.wide .dl-table { min-width: 640px; }
+  .dl-tablewrap.wide th:first-child, .dl-tablewrap.wide td:first-child {
+    position: sticky; left: 0;
+    background: var(--bg);
+    box-shadow: inset -1px 0 0 var(--line);
+  }
+
   /* ---------- States gallery cell ---------- */
   .dl-statecell { border: 2px solid var(--line); background: var(--surface); padding: 20px; }
   .dl-statecell > .dl-kicker { margin-bottom: 12px; }

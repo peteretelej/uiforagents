@@ -122,3 +122,17 @@
     overflow-wrap: break-word;
   }
 }
+
+/* Wide tables pan inside the bordered card; the first column stays pinned
+   with an ink hairline so row identity survives the pan. */
+[data-identity="sticker-press"] table th:first-child,
+[data-identity="sticker-press"] table td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--card);
+  box-shadow: 2px 0 0 0 var(--border);
+}
+[data-identity="sticker-press"] table thead th:first-child {
+  background: var(--secondary);
+  z-index: 1;
+}

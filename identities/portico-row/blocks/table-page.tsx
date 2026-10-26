@@ -54,7 +54,7 @@ export function TablePage({
         <p className="mt-4 max-w-[62ch] text-[19px] leading-[1.65] text-muted-foreground">
           {rows.length} recent matters of record, most recent first.
         </p>
-        <div className="mt-10 overflow-x-auto border border-border bg-card">
+        <div className="table-scroll mt-10 overflow-x-auto border border-border bg-card">
           <table className="w-full min-w-[640px] text-[16px]">
             <thead>
               <tr>

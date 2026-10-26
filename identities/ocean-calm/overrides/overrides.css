@@ -68,3 +68,15 @@
 [data-identity="ocean-calm"] select {
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
+
+/* Tables pan on narrow screens; keep the first column pinned. */
+@media (max-width: 759px) {
+  [data-identity="ocean-calm"] table th:first-child,
+  [data-identity="ocean-calm"] table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--card);
+    box-shadow: 1px 0 0 var(--border);
+  }
+}

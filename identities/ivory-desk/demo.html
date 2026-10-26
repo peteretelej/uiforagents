@@ -518,6 +518,45 @@
     .iv-turn.user { padding: 0.9rem 1rem 1rem; }
   }
 
+  /* Tables pan in .iv-tablewrap: the mono first column sticks on the page
+     ground behind a hairline edge, and cells tighten while it pans. */
+  @media (max-width: 720px) {
+    .iv-tablewrap { -webkit-overflow-scrolling: touch; }
+    .iv-answer table, .iv-appendix table { min-width: 640px; }
+    .iv-answer th:first-child, .iv-answer td:first-child,
+    .iv-appendix th:first-child, .iv-appendix td:first-child {
+      position: sticky; left: 0; z-index: 1;
+      background: var(--bg);
+      box-shadow: inset -1px 0 0 var(--line);
+    }
+    .iv-answer th, .iv-appendix th { padding-right: 0.6rem; }
+    .iv-answer td, .iv-appendix td { padding-right: 0.6rem; }
+  }
+
+  /* Mobile nav: below 960px the rail hides, so rail pages carry a zero-JS
+     disclosure repeating the rail's threads - the rail never deletes
+     navigation without a replacement. */
+  .iv-mobilenav { display: none; }
+  @media (max-width: 960px) {
+    .iv-mobilenav {
+      display: block; background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      padding: 0 clamp(1.25rem, 4vw, 2rem);
+    }
+    .iv-mobilenav > summary {
+      cursor: pointer; list-style: none;
+      padding: 0.7rem 0;
+      font-family: var(--font-mono); font-size: var(--text-micro);
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+    }
+    .iv-mobilenav > summary::-webkit-details-marker { display: none; }
+    .iv-mobilenav > summary::before { content: "\25B8"; margin-right: 0.5rem; }
+    .iv-mobilenav[open] > summary::before { content: "\25BE"; }
+    .iv-mobilenav[open] > summary { border-bottom: 1px solid var(--line-soft); }
+    .iv-mobilenav .iv-thread { padding-left: 0; }
+    .iv-mobilenav .iv-new { margin: 0.6rem 0; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }
@@ -591,6 +630,34 @@
         <a class="iv-btn" href="#compose">Export</a>
       </div>
     </header>
+
+    <!-- Mobile nav: the rail's threads, revealed by the foundation below 960px -->
+    <details class="iv-mobilenav">
+      <summary>Threads</summary>
+      <a class="iv-new" href="#compose">+ New research</a>
+      <nav aria-label="Thread list">
+        <a class="iv-thread" href="#">
+          <span class="t">Precision fermentation: cost curve to 2030</span>
+          <span class="when">14:22 · 38 turns</span>
+        </a>
+        <a class="iv-thread" href="#">
+          <span class="t">Enzyme suppliers, EU vs US</span>
+          <span class="when">11:05 · 6 turns</span>
+        </a>
+        <a class="iv-thread" href="#">
+          <span class="t">Beanless protein: LCA review</span>
+          <span class="when">Tue · 21 turns</span>
+        </a>
+        <a class="iv-thread" href="#">
+          <span class="t">RFQ terms checklist</span>
+          <span class="when">Mon · 4 turns</span>
+        </a>
+        <a class="iv-thread" href="#">
+          <span class="t">Cultivated fat: tallow economics</span>
+          <span class="when">Oct 3 · 44 turns</span>
+        </a>
+      </nav>
+    </details>
 
     <main class="iv-stream">
 

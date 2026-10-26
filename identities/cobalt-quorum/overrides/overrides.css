@@ -85,3 +85,16 @@
 [data-identity="cobalt-quorum"] select {
   transition: border-color 200ms ease, box-shadow 200ms ease;
 }
+
+/* Tables pan inside the console card; the first column stays pinned on the
+   card fill with a hairline edge so row identity survives the pan. */
+[data-identity="cobalt-quorum"] .table-scroll th:first-child,
+[data-identity="cobalt-quorum"] .table-scroll td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--card);
+  box-shadow: inset -1px 0 0 var(--border);
+}
+[data-identity="cobalt-quorum"] .table-scroll thead th:first-child {
+  z-index: 1;
+}

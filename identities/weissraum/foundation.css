@@ -336,6 +336,15 @@
     border-bottom: 1px solid var(--line-soft);
   }
 
+  /* While a wide table pans, the first column stays pinned on the page
+     ground with a hairline edge. */
+  .wr-table th:first-child, .wr-table td:first-child {
+    position: sticky; left: 0;
+    background: var(--bg);
+    box-shadow: 1px 0 0 var(--line);
+  }
+  .wr-table thead th:first-child { z-index: 1; }
+
   /* ---------- Contact footer ---------- */
   .wr-contact { padding: clamp(3.5rem, 8vw, 6rem) 0 2.5rem; }
   .wr-contact .wr-display { font-size: var(--text-title); margin-bottom: 1.5rem; }

@@ -63,3 +63,15 @@
 [data-identity="nairobi-noon"] select {
   transition: border-color 180ms ease, box-shadow 180ms ease;
 }
+
+/* Tables pan on narrow screens; keep the first column pinned. */
+@media (max-width: 759px) {
+  [data-identity="nairobi-noon"] table th:first-child,
+  [data-identity="nairobi-noon"] table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--card);
+    box-shadow: 1px 0 0 var(--border);
+  }
+}

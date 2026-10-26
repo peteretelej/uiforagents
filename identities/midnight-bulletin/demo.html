@@ -314,6 +314,55 @@
     .mb-outcome { grid-template-columns: 1fr; }
   }
 
+  /* Tables pan in .mb-tblwrap: the first column sticks on the page ground
+     behind a hairline edge, and a flat chip marks the pan. */
+  @media (max-width: 640px) {
+    .mb-tblwrap { position: relative; -webkit-overflow-scrolling: touch; }
+    .mb-tblwrap td:first-child, .mb-tblwrap th:first-child {
+      position: sticky; left: 0; z-index: 1;
+      background: var(--bg);
+      box-shadow: inset -1px 0 0 var(--line-soft);
+    }
+    .mb-tblwrap th:first-child { background: var(--sunken); }
+    .mb-tblwrap::after {
+      content: "pan \2192";
+      position: absolute; top: 6px; right: 8px;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+      color: var(--faint); background: var(--bg);
+      border: 1px solid var(--line-soft); border-radius: var(--radius);
+      padding: 2px 6px; pointer-events: none;
+    }
+  }
+
+  /* Mobile nav: below 640px the topbar's section links keep their phone home
+     in a zero-JS disclosure - deleting navigation is not a mobile strategy. */
+  .mb-mobilenav { display: none; }
+  @media (max-width: 640px) {
+    .mb-mobilenav {
+      display: block;
+      border-bottom: 1px solid var(--line-soft);
+      background: var(--bg);
+    }
+    .mb-mobilenav summary {
+      cursor: pointer; list-style: none;
+      padding: 12px 18px;
+      font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .mb-mobilenav summary::-webkit-details-marker { display: none; }
+    .mb-mobilenav summary::before { content: "\25B8"; margin-right: 8px; }
+    .mb-mobilenav[open] summary::before { content: "\25BE"; }
+    .mb-mobilenav[open] summary { border-bottom: 1px solid var(--line-soft); }
+    .mb-mobilenav nav { display: flex; flex-direction: column; padding: 6px 18px 12px; }
+    .mb-mobilenav nav a {
+      font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
+      color: var(--muted); text-decoration: none;
+      padding: 10px 0; border-bottom: 1px solid var(--line-soft);
+    }
+    .mb-mobilenav nav a:hover { color: var(--ink); }
+    .mb-mobilenav nav a:last-child { border-bottom: none; }
+  }
+
   /* ---------- Print ---------- */
   @media print {
     :root { color-scheme: light; }
@@ -348,6 +397,20 @@
     </nav>
   </div>
 </header>
+
+<details class="mb-mobilenav">
+  <summary>Sections</summary>
+  <nav aria-label="Sections">
+    <a href="#rationale">Rationale</a>
+    <a href="#tokens">Tokens</a>
+    <a href="#typography">Type</a>
+    <a href="#evidence">Evidence</a>
+    <a href="#debate">Debate</a>
+    <a href="#sheet">Components</a>
+    <a href="#states">States</a>
+    <a href="#lab">Lab</a>
+  </nav>
+</details>
 
 <header class="mb-hero" id="top">
   <div class="mb-wrap">

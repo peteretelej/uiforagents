@@ -547,6 +547,11 @@
   }
   .ce-table td:first-child { color: var(--ink); }
 
+  /* Table pan: the wrapper keeps the document unwidened, the table holds a
+     readable floor, and the first column sticks behind a hairline edge. */
+  .ce-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ce-table-scroll .ce-table { min-width: 640px; }
+
   /* ---------- Footer and colophon ---------- */
   .ce-footer {
     margin-top: 2.6rem;
@@ -613,6 +618,12 @@
     .ce-body { font-size: 16.5px; }
     .ce-band-head, .ce-modhead { flex-wrap: wrap; gap: 0.3rem 1rem; }
     .ce-band-more { white-space: normal; }
+    .ce-table th, .ce-table td { padding: 0.4rem 0.45rem 0.4rem 0; }
+    .ce-table th:first-child, .ce-table td:first-child {
+      position: sticky; left: 0;
+      background: var(--bg);
+      box-shadow: inset -1px 0 0 var(--line);
+    }
   }
 
   /* ---------- Print ---------- */

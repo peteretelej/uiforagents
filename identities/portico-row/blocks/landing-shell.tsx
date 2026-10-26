@@ -36,13 +36,16 @@ export function LandingShell({
           <a href="#" className="font-display text-[22px] tracking-[-0.01em] text-white max-md:me-auto">
             {brand}
           </a>
-          <nav className="ml-auto hidden items-center gap-7 md:flex" aria-label="Primary">
+          <nav
+            className="ml-auto flex items-center gap-7 overflow-x-auto max-md:order-last max-md:w-full max-md:border-t max-md:border-white/25 max-md:pt-1"
+            aria-label="Primary"
+          >
             {nav.map((n) => (
               <a
                 key={n.label}
                 href={n.href ?? "#"}
                 aria-current={n.active ? "page" : undefined}
-                className={`text-[15px] transition-colors ${
+                className={`inline-flex min-h-[44px] shrink-0 items-center whitespace-nowrap text-[15px] transition-colors ${
                   n.active
                     ? "font-semibold text-white underline underline-offset-8"
                     : "text-white/80 hover:text-white"
@@ -61,22 +64,6 @@ export function LandingShell({
               <span className="hidden sm:inline">{cta}</span>
             </Button>
           </div>
-          <nav className="w-full border-t border-white/25 pt-1 md:hidden" aria-label="Primary mobile">
-            {nav.map((n) => (
-              <a
-                key={n.label}
-                href={n.href ?? "#"}
-                aria-current={n.active ? "page" : undefined}
-                className={`inline-flex min-h-[44px] items-center text-[15px] ${
-                  n.active
-                    ? "font-semibold text-white underline underline-offset-8"
-                    : "text-white/80"
-                }`}
-              >
-                {n.label}
-              </a>
-            ))}
-          </nav>
         </div>
       </header>
 

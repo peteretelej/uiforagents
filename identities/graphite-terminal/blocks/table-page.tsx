@@ -49,7 +49,7 @@ export function TablePage({
     <DashboardShell title={title} nav={nav} stats={stats}>
       <h2 className="mb-3 font-display text-[19px] font-bold tracking-[-0.01em]">{heading}</h2>
       <div className="overflow-x-auto rounded-lg border border-border bg-card">
-        <table className="w-full min-w-[560px] text-[13px]">
+        <table className="w-full min-w-[640px] text-[13px]">
           <thead className="bg-secondary/50">
             <tr>
               {columns.map((h, i) => (

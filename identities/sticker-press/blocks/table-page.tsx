@@ -84,7 +84,7 @@ export function TablePage({
           </dl>
           <h2 className="pb-3 pt-5 font-display text-[2rem] leading-none">{heading}</h2>
           <div className="overflow-x-auto border-2 border-border bg-card">
-            <table className="w-full min-w-[560px] text-[13px]">
+            <table className="w-full min-w-[640px] text-[13px]">
               <thead className="bg-secondary">
                 <tr>
                   {columns.map((h, i) => (
@@ -171,6 +171,7 @@ export function TablePage({
               </tbody>
             </table>
           </div>
+          <p className="mono-label mt-2 text-[10.5px] text-muted-foreground sm:hidden">Scroll &rarr;</p>
         </WindowFrame>
       </div>
     </div>

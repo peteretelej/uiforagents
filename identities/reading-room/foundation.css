@@ -269,6 +269,15 @@
     .rr-card { padding: 1.1rem 1.1rem; }
     .rr-card dl { grid-template-columns: 1fr; gap: 0.1rem; }
     .rr-card dt { margin-top: 0.5rem; }
+    /* Tables pan in .rr-table-wrap: the first column sticks on the page
+       ground behind a hairline edge. */
+    .rr-table-wrap { -webkit-overflow-scrolling: touch; }
+    .rr-table-wrap th:first-child,
+    .rr-table-wrap td:first-child {
+      position: sticky; left: 0;
+      background: var(--bg);
+      box-shadow: inset -1px 0 0 var(--line);
+    }
   }
 
   /* ---------- Print ---------- */

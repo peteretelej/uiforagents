@@ -89,8 +89,8 @@ export function TablePage({
             ))}
           </dl>
           <h2 className="pb-3 pt-5 font-display text-[18px] font-bold tracking-[-0.015em]">{heading}</h2>
-          <div className="overflow-x-auto rounded-lg border border-border bg-card">
-            <table className="w-full min-w-[560px] text-[13px]">
+          <div className="table-scroll overflow-x-auto rounded-lg border border-border bg-card">
+            <table className="w-full min-w-[640px] text-[13px]">
               <thead className="bg-muted/60">
                 <tr>
                   {columns.map((h, i) => (

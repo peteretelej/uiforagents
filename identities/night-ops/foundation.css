@@ -611,6 +611,18 @@
     .no-chart { min-width: 640px; }
   }
 
+  /* Tables pan in .no-twrap: the first column holds and a hairline edge
+     marks the pan edge on touch. */
+  @media (max-width: 720px) {
+    .no-twrap { -webkit-overflow-scrolling: touch; }
+    .no-tbl th:first-child, .no-tbl td:first-child {
+      position: sticky; left: 0; z-index: 1;
+      background: var(--surface);
+      box-shadow: 1px 0 0 var(--line-soft);
+    }
+    .no-tbl tbody tr:hover td:first-child { background: var(--surface-2); }
+  }
+
   /* ---------- Print ----------
      One line re-inks the whole identity for paper: the light-dark()
      tokens follow the light scheme, so every panel, chip, chart and LED

@@ -390,6 +390,18 @@
     .pl-kpi:first-child { border-top: 0; }
   }
 
+  /* Tables pan in .pl-tblwrap: the label column sticks on the page ground
+     behind a hairline edge, so the figures scroll while the row stays named. */
+  @media (max-width: 560px) {
+    .pl-tblwrap { -webkit-overflow-scrolling: touch; }
+    .pl-tbl th:first-child, .pl-tbl td:first-child {
+      position: sticky; left: 0;
+      background: var(--bg);
+      box-shadow: inset -1px 0 0 var(--line-strong);
+    }
+    .pl-tbl--simple tbody tr:last-child td:first-child { border-bottom: 3px double var(--line-strong); }
+  }
+
   /* ---------- Print: the signature ----------
      A4 statement pagination: the screen document is the printout. The
      scheme pins light at the root (a dark-lead derivative flips here),

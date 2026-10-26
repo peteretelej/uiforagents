@@ -555,6 +555,11 @@
   }
   .ce-table td:first-child { color: var(--ink); }
 
+  /* Table pan: the wrapper keeps the document unwidened, the table holds a
+     readable floor, and the first column sticks behind a hairline edge. */
+  .ce-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ce-table-scroll .ce-table { min-width: 640px; }
+
   /* ---------- Footer and colophon ---------- */
   .ce-footer {
     margin-top: 2.6rem;
@@ -621,6 +626,12 @@
     .ce-body { font-size: 16.5px; }
     .ce-band-head, .ce-modhead { flex-wrap: wrap; gap: 0.3rem 1rem; }
     .ce-band-more { white-space: normal; }
+    .ce-table th, .ce-table td { padding: 0.4rem 0.45rem 0.4rem 0; }
+    .ce-table th:first-child, .ce-table td:first-child {
+      position: sticky; left: 0;
+      background: var(--bg);
+      box-shadow: inset -1px 0 0 var(--line);
+    }
   }
 
   /* ---------- Print ---------- */
@@ -1028,10 +1039,11 @@
     <section id="colophon-tokens">
       <span class="ce-kicker">Colophon &middot; token reference</span>
       <h3>Tokens</h3>
-      <table class="ce-table">
-        <thead>
-          <tr><th>Token</th><th>Value</th><th>Role</th></tr>
-        </thead>
+      <div class="ce-table-scroll">
+        <table class="ce-table">
+          <thead>
+            <tr><th>Token</th><th>Value</th><th>Role</th></tr>
+          </thead>
         <tbody>
           <tr><td>--bg</td><td>#F8F7F3</td><td>Flat newsprint canvas</td></tr>
           <tr><td>--surface</td><td>#FFFFFF</td><td>Boxed cards and modules, ruled never elevated</td></tr>
@@ -1050,7 +1062,8 @@
           <tr><td>--font-mono</td><td>IBM Plex Mono</td><td>Datelines, captions, agate</td></tr>
           <tr><td>--measure</td><td>66ch</td><td>Article measure</td></tr>
         </tbody>
-      </table>
+        </table>
+      </div>
     </section>
 
     <section id="colophon-dodont">

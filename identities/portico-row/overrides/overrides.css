@@ -127,3 +127,25 @@
 [data-identity="portico-row"] [data-slot="dialog-close"] {
   color: var(--band-foreground);
 }
+
+/* A panning table says so: the numbered first column sticks and an
+   engraved hairline marks the pan edge. */
+[data-identity="portico-row"] .table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+[data-identity="portico-row"] .table-scroll th:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--secondary);
+  box-shadow: inset -1px 0 0 var(--border);
+}
+[data-identity="portico-row"] .table-scroll td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--card);
+  box-shadow: inset -1px 0 0 var(--border);
+}
+[data-identity="portico-row"] .table-scroll thead th:first-child {
+  z-index: 1;
+}

@@ -240,6 +240,15 @@
   .tb-tbl .num small { font: 600 11px/1 var(--sans); color: var(--faint); }
   .tb-tbl th.num { text-align: right; font-family: var(--sans); }
 
+  /* While a wide table pans, the category column stays pinned on the
+     surface with a hairline edge. */
+  .tb-tbl th:first-child, .tb-tbl td:first-child {
+    position: sticky; left: 0;
+    background: var(--surface);
+    box-shadow: 1px 0 0 var(--line);
+  }
+  .tb-tbl thead th:first-child { z-index: 1; }
+
   /* ---------- Soft pills: ok / warn only ---------- */
   .tb-pill {
     display: inline-block; font: 800 11px/1 var(--sans); border-radius: 99px;
