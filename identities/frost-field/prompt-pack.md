@@ -59,6 +59,30 @@ visual design.
 - Never paint section backgrounds over the field - transparency is the
   material. Alternate rhythm with spacing and card grouping, not bands.
 
+## Narrow screens
+
+- Verify every build at 390x844 (and 360px) before delivering; the page
+  must not scroll horizontally as a document, and nothing important is
+  out of reach.
+- The dashboard header switches under `sm:` from the floating glass
+  bar's inline nav to a scrollable strong-fill pill dock
+  (`dashboard-shell` ships both; do not re-improve them per project).
+  That pill dock is the sanctioned contained scroll dock for a flat
+  app-shell nav; a long-form section nav uses a zero-JS `<details>`
+  disclosure. Headers wrap or stack, never widen the document; deleting
+  navigation is not a mobile strategy.
+- Wide artifacts pan instead of shrinking: a chart line drawing, a code
+  block, any fixed-width element rides in an `overflow-x-auto` wrapper
+  with a `min-w-[640px]` floor. Tables are banned here (the log grammar
+  is the data surface); if one is ever unavoidable, it obeys the same
+  pan rule - sticky first column on an opaque fill behind a hairline
+  edge, with a visible scroll cue.
+- On coarse pointers (`@media (pointer: coarse)`) controls hold a 44px
+  hit target (`min-h-[44px]` on buttons, padded nav links).
+- Light-only by contract, so no scheme toggle exists; when a dark
+  variant and its toggle land, they ship icon-only (moon/sun glyph,
+  never a text label) and reachable at every width.
+
 ## Component choices (do not substitute)
 
 - Mood/scale input → five pill faces, selected pill in action violet.

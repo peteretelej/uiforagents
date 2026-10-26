@@ -171,6 +171,33 @@ body prints light at 11.5pt, and cards and callouts avoid page breaks. Do not
 add print overrides. `prefers-reduced-motion`
 disables smooth scrolling; the identity has no other motion.
 
+## Narrow screens
+
+The foundation collapses the shell under 900px - `.rr-toc` hides and the
+`.rr-toc-mobile` `<details>` appears - and that swap is the sanctioned
+long-form nav pattern: ship both, and never delete the TOC without it.
+Deleting navigation is not a mobile strategy.
+
+- Check the finished page at 390px (and 360px) before delivering: no
+  horizontal document scroll, nothing important out of reach.
+- The masthead is two short items (kicker, toggle); any header you add
+  wraps or stacks and never widens the document.
+- Images and charts are not in the component inventory; when an
+  artifact truly needs one, wrap it in `.rr-fig` with a `.rr-figcap`
+  line. The frame caps media at the column and pans wide SVG at a
+  `min-width: 640px` floor instead of shrinking it below legibility;
+  `img { max-width: 100% }` is law. Diagrams and code obey the same
+  640px pan floor.
+- Tables pan inside `.rr-table-wrap` at the shipped `min-width: 640px`
+  floor, the first column sticky on `--bg` behind a hairline edge, with
+  a visible scroll cue.
+- On coarse pointers (`@media (pointer: coarse)`) controls hold a 44px
+  touch floor: the toggle and the `.rr-toc-mobile` summary and links
+  included.
+- The toggle is icon-only: a moon/sun glyph in the
+  `.rr-theme-toggle--icon` variant with `aria-label="Toggle dark
+  theme"`, never a text label, and reachable at every width.
+
 ## Do not
 
 - Do not add fonts, shadows, gradients, borders thicker than 2px, or new

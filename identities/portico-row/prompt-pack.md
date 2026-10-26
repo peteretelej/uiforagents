@@ -61,6 +61,36 @@ improvise visual design.
 - Forms: labels above inputs, 2px-corner inputs with the engraved hairline,
   compliance microcopy under the submit button.
 
+## Narrow screens
+
+- The blocks are responsive by construction: single-column grids at the
+  base stepping up through `sm:`/`md:`/`lg:`, fluid `clamp()` display
+  sizes. Keep it law: no fixed pixel widths, no `whitespace-nowrap`
+  runs, no desktop-only grids.
+- Check every page at 390px (and 360px) before delivering: nothing
+  wider than the viewport, every CTA reachable, no horizontal document
+  scroll.
+- Below `md` the header wraps into a brand/CTA row plus a 44px-tall
+  link row (`landing-shell.tsx`); a header never widens the document. A
+  flat app-shell nav may instead pan as a contained scroll dock; a
+  long-form section nav uses a zero-JS `<details>` disclosure. Deleting
+  navigation is not a mobile strategy. Sections that anchor into the
+  page need `scroll-mt-28` so the taller sticky band never covers the
+  target.
+- Data tables pan inside an `overflow-x-auto` frame at a
+  `min-w-[640px]` floor with the first column sticky on the card ground
+  behind an engraved hairline, and a visible cue that the table pans.
+  Charts and diagrams are not identity vocabulary; if one is
+  unavoidable, it pans in an `overflow-x-auto` frame with the same
+  640px floor - never shrinks below legibility. Code obeys the same
+  rule.
+- Interactive targets stay 44px or taller on coarse pointers (`@media
+  (pointer: coarse)`) - the accessibility law holds on touch.
+- The theme pins `color-scheme: light` and ships one scheme, so there
+  is no toggle; when a variant with a scheme toggle lands, it ships
+  icon-only (moon/sun glyph, never a text label) and reachable at every
+  width.
+
 ## Component choices (do not substitute)
 
 - Practices / services: 3-6 plain-language cards, numbered 01-06 in the

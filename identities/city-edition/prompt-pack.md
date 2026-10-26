@@ -173,6 +173,32 @@ and set the `viewBox` to match the ratio. Every plate gets a
 weekday boardings, Union highest"). Plates are diagrams, not
 decorations: if a chart says nothing, cut it.
 
+## Narrow screens
+
+The paper folds, it does not shrink: at phone widths the front page is
+still a broadsheet, stacked, never a sideways document.
+
+- Check the finished page at 390px and 360px before delivering: no
+  horizontal document scroll, nothing important out of reach.
+- The masthead stacks three layers by design; any header row you add
+  wraps or stacks the same way. A header never widens the document.
+- Tables and plates pan, they never shrink: ride tables in
+  `.ce-table-scroll` and plates in `.ce-plate-pan` - `overflow-x`
+  containers whose contents keep a `min-width: 640px` floor, so agate
+  and plate labels stay at reading size. A panning `.ce-table` pins its
+  first column on `--bg` behind a hairline edge, and the pan is
+  visible, not a guess. Code and diagrams obey the same 640px pan
+  floor.
+- On coarse pointers (`@media (pointer: coarse)`) every control holds a
+  44px hit row: `.ce-nav a`, `.ce-filter a`, `.ce-btn`, `.ce-input`.
+- The `.ce-nav` strip is the sanctioned app-shell pattern: links pan
+  inside their own overflow strip and stay reachable. Long-form section
+  lists use a zero-JS `<details>` disclosure. Deleting nav on mobile is
+  not a strategy.
+- Light is the only theme, so there is no scheme toggle to reach; when
+  a variant with a toggle ever lands, it ships icon-only (moon/sun
+  glyph, never a text label) and reachable at every width.
+
 ## Page-type recipes
 
 - **Front page**: `.ce-masthead`, then `.ce-front` - main column with

@@ -140,6 +140,31 @@ content and page-specific layout only.
   tables). The page itself also stacks via the 860px/560px rules.
 - Utilities: `.pl-noprint` (hide chrome in print).
 
+## Narrow screens
+
+The foundation stacks at 860px and 560px; do not add your own
+breakpoints for its components.
+
+- Keep every page usable at 390px (and 360px) and check before
+  delivering: no horizontal document scroll, nothing important out of
+  reach. The demo's phone-frame section is the reference.
+- `.pl-masthead` wraps (`flex-wrap: wrap`); any header you add wraps or
+  stacks the same way and never widens the document.
+- Author statement charts with a `viewBox` no wider than ~360 and the
+  `pl-chart--narrow` class, or wrap wide figures in `.pl-fig` and let
+  them pan at a `min-width: 640px` floor - never let a wide viewBox
+  shrink below legibility. Diagrams and code obey the same 640px pan
+  floor.
+- Long tables scroll inside `.pl-tblwrap` with the first column sticky
+  on `--bg` behind a hairline edge and a visible scroll cue; keep the
+  label column narrow so the figure columns have room.
+- Give controls their coarse-pointer padding (`@media (pointer:
+  coarse)`) toward the 44px touch floor: `.pl-btn`, `.pl-tabs span`,
+  `.pl-chip`, `.pl-pager .pl-page`.
+- The toggle is icon-only: a moon/sun glyph in the
+  `.pl-btn--secondary` with `aria-label="Toggle dark theme"`, never a
+  text label, and it stays reachable at every width.
+
 ## Building charts and figures (inline SVG, zero JS)
 
 Charts are hand-authored inline SVG styled entirely from foundation custom

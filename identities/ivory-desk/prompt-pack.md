@@ -266,6 +266,33 @@ inline the needed weights as base64 woff2 `@font-face` blocks in the
 more than the three families. Never let the page depend on a font
 arriving: fallbacks must hold the layout.
 
+## Narrow screens
+
+The foundation collapses the shell under 960px (`.iv-rail` hides) and
+tunes chrome under 720px; content rules are yours:
+
+- Every artifact carries `<meta name="viewport"
+  content="width=device-width, initial-scale=1">` and is re-rendered at
+  390px (and 360px) before delivery: no horizontal document scroll,
+  nothing important out of reach.
+- A rail page also ships `<details class="iv-mobilenav">` immediately
+  after `.iv-top` inside `.iv-main`, repeating the rail's `.iv-new` and
+  `.iv-thread` links inside; the foundation reveals it only under
+  960px. A rail page without `.iv-mobilenav` is incomplete on phones -
+  the zero-JS `<details>` disclosure is the sanctioned long-form nav,
+  and deleting the rail without a replacement is not a mobile strategy.
+- Every data table sits inside `.iv-tablewrap` and every chart or
+  diagram inside `.iv-chartwrap`: both pan in an `overflow-x` container
+  with a `min-width: 640px` floor instead of shrinking. A panning table
+  pins its first column on `--bg` behind a hairline edge with a visible
+  scroll cue. Avoid fixed widths above 21rem outside those wrappers.
+- `.iv-act`, `.iv-copy`, and `.iv-cite` are enlarged under 720px and on
+  coarse pointers (`@media (pointer: coarse)`) toward the 44px touch
+  floor; do not shrink them back.
+- Light is the only theme and no toggle may exist; when a variant with
+  a scheme toggle ever lands, it ships icon-only (moon/sun glyph, never
+  a text label) and reachable at every width.
+
 ## Print and reduced motion
 
 Print rules ship in the file: rail, composer, actions, picker, and appendix

@@ -57,6 +57,28 @@ pack exactly and ship product. Do not improvise visual design.
   check lists with green checks, trust microcopy under every tier CTA.
 - Forms: labels above inputs, trust microcopy under the submit button.
 
+## Narrow screens
+
+- Every page passes at 390px and 360px: no horizontal document scroll,
+  nothing important out of reach. Check before delivering.
+- The sticky header wraps under pressure instead of widening the page.
+  Below `md` it shows brand, the menu disclosure, and the CTA - nav
+  links are never display-none. A flat app-shell nav may instead pan as
+  a contained scroll dock; a long-form section nav uses a zero-JS
+  `<details>` disclosure. Deleting navigation is not a mobile strategy.
+- Grids step `grid-cols-1` up through `sm:`/`md:`/`lg:`; never fix a
+  row's width in px.
+- Wide content pans, never shrinks: data tables - and any chart,
+  diagram, or code block a page adds - sit in an `overflow-x-auto`
+  wrapper with a `min-w-[640px]` floor. A panning table pins its first
+  column (opaque card background, hairline edge) and shows a visible
+  scroll cue.
+- Interactive targets hold a 44px floor on coarse pointers (`@media
+  (pointer: coarse)`); primary CTAs stay `h-11`/`h-[50px]`.
+- The theme pins `color-scheme: light`, so there is no toggle today.
+  When a variant with a scheme toggle lands, it ships icon-only
+  (moon/sun glyph, never a text label) and reachable at every width.
+
 ## Component choices (do not substitute)
 
 - Billing period → segmented pill toggle (Annual active by default), never a

@@ -70,6 +70,33 @@ visual design.
   ALL-CAPS Archivo wordmark (3rem+). The wordmark is decorative; keep an
   h2 somewhere carrying the real content.
 
+## Narrow screens
+
+- Narrow screens are the first layout, not the last: every grid starts
+  `grid-cols-1` and only upgrades at `sm:`/`md:`/`lg:`; no header, bar,
+  or row gets a fixed height (`min-h-*` so wrapped content can grow).
+- Test the canonical landing at 390px (and 360px) before shipping:
+  nothing wider than the viewport, every CTA reachable, no clipped
+  words, no horizontal document scroll.
+- The header bar grows instead of clipping: the brand may wrap to two
+  lines (never below its 2rem floor, never truncated mid-word), and
+  below 768px (`md`) the inline link row is replaced, never silently
+  removed - a bordered disclosure button (mono uppercase "MENU") opens
+  the links stacked full-width, each a 44px row. That disclosure is the
+  sanctioned long-form nav pattern; a flat app-shell nav may instead
+  pan as a contained scroll dock. Deleting navigation is not a mobile
+  strategy.
+- Tables on narrow screens: any table that needs more than ~340px keeps
+  the `overflow-x-auto` bordered card and a `min-w-[640px]` floor
+  (panning at readable size, never shrinking), pins its first column
+  (opaque card fill, 2px-rule edge), and carries a one-line "SCROLL →"
+  affordance. Charts, diagrams, and code obey the same 640px pan floor.
+- Every interactive target is at least 44x44 CSS px on touch; coarse
+  pointers (`@media (pointer: coarse)`) floor the small ones at 44px.
+- The theme pins `color-scheme: light` and ships one scheme - no toggle
+  today; when one lands it ships icon-only (moon/sun glyph, never a
+  text label) and reachable at every width.
+
 ## Component choices (do not substitute)
 
 - Badges/chips → bordered mono uppercase chips with the 2px shadow rung.

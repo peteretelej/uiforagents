@@ -157,6 +157,29 @@ Listening components (the extension):
 Do not invent new visual components. If a page needs more, use plain
 semantic HTML styled from the token vocabulary.
 
+## Narrow screens
+
+- The gates already demand the ~390px headless check; hold it at 360px
+  too: no horizontal document scroll, and nothing important - the theme
+  toggle included - out of reach.
+- The `.lr-topbar` is the whole masthead: brand, crumb, toggle. The
+  crumb ellipsizes; the bar never widens the document.
+- The theme toggle stays reachable at every width - the 640px density
+  pass hides topbar links, never the toggle - and renders icon-only: a
+  moon or sun glyph, never a Light/Dark text label. A phone that cannot
+  reach the toggle is a defect, because the page pins its lead scheme
+  and the OS preference cannot override it.
+- Tables pan inside `.lr-tblwrap` at the shipped `min-width: 640px`
+  floor; the first column pins on `--bg` behind a hairline edge and the
+  pan carries a visible scroll cue (the flat law: a label, not a
+  gradient). Charts, diagrams, and code follow the same 640px pan floor
+  if a page adds them.
+- On coarse pointers (`@media (pointer: coarse)`) every control holds
+  the 44px floor: the mini-player buttons, the floating `.lr-chip` (the
+  only visible Read Along off-switch on phones), and the `.lr-tstamp`
+  buttons included. Follow controls already activate on `pointerdown`
+  for touch; never downgrade them to click-only.
+
 ## Player module contract (`listening-player.js`)
 
 - ADOPTS the first player's native `<audio>` element as the page's one

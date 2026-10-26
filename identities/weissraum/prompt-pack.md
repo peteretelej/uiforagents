@@ -177,6 +177,32 @@ Compose the classes above; new page regions are sections, not bespoke boxes.
   → numbered sections (`.wr-sec-head` kickers) → decision list → contact
   footer.
 
+## Narrow screens
+
+The file handles the geometry: the split stacks under 900px, grids
+collapse and index rows drop their category column under 640px, and the
+top bar wraps.
+
+- Check the page at 390px (and 360px) before shipping: flush left
+  holds, nothing overflows, no clipped words, no horizontal document
+  scroll.
+- When composing beyond the shipped classes, keep the same laws:
+  `minmax(0, 1fr)` tracks with `min-width: 0` children, clamped type
+  with a 44px display floor and `overflow-wrap: break-word`. A header
+  wraps; it never widens the document.
+- Pan wrappers (`overflow-x: auto`) around anything wider than the
+  measure - a table in `.wr-tablewrap`, a foreign chart or diagram, a
+  code block - hold a `min-width: 640px` floor so they pan at readable
+  size instead of shrinking. A panning `.wr-table` pins its first
+  column on `--bg` behind a hairline edge, with a visible scroll cue.
+- Controls are at least 44px tall on coarse pointers (`@media (pointer:
+  coarse)`): `.wr-nav a`, `.wr-toggle`, `.wr-btn`.
+- The toggle stays reachable at every width and carries a single text
+  glyph, never a word: `◐` in the dark scheme, `◑` in the light -
+  typography, never an icon font, never inline SVG (the
+  arrows-are-glyphs law), with an `aria-label` naming the scheme it
+  switches to.
+
 ## States grammar
 
 - **Empty**: `.wr-empty` well - name the void in a kicker, one true muted

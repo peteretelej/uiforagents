@@ -176,6 +176,29 @@ section: kicker, `h2`, muted sub, then the block (sprite grid, console,
 patch rows, stats). Two-column moments use `.dl-cols2`. New page regions
 are sections, not bespoke boxes.
 
+## Narrow screens
+
+The page never scrolls sideways as a document; the only horizontal
+motion is inside a pan (`.dl-tablewrap`) or the marquee.
+
+- Check the finished page at 390px and 360px: no clipped badges, no
+  overflowing stat cells, nothing important out of reach.
+- The top bar wraps by design (`.dl-top-inner` and `.dl-nav` are
+  `flex-wrap: wrap`); keep them wrapping and never hide links to fit a
+  phone. A header never widens the document.
+- Wide tables pan inside `.dl-tablewrap` with a `min-width: 640px`
+  floor - they pan at readable size, columns never crush. While a wide
+  table pans, its first column pins on `--surface` behind a hairline
+  edge, and the pan carries a visible scroll cue. Charts, diagrams, and
+  code obey the same 640px pan floor if a page ever adds them: pan
+  inside an `overflow-x` container instead of shrinking below
+  legibility.
+- On coarse pointers (`@media (pointer: coarse)`) controls hold a 44px
+  hit row: `.dl-nav a`, `.dl-err a`, and `.dl-footer a` included.
+- Dark is the only theme and no toggle ships; when a variant with a
+  scheme toggle lands, it ships icon-only (moon/sun glyph, never a text
+  label) and reachable at every width.
+
 ## Structure of a creative-tool page
 
 1. `.dl-top` (wordmark, nav, version badge).

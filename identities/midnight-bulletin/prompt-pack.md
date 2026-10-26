@@ -187,6 +187,32 @@ Flip `color-scheme` on `html` only. No class swapping, no stylesheet swap,
 no localStorage requirement (persistence is allowed but optional). The page
 must fully render with this script removed.
 
+## Narrow screens
+
+The foundation collapses `.mb-cols` under 800px and folds the stat strip
+and outcome grid under 640px; content rules are yours:
+
+- Carry `<meta name="viewport" content="width=device-width,
+  initial-scale=1">`. Before delivery, render at 390px, 360px, and
+  700px and confirm: no horizontal document scroll, nothing important
+  out of reach (700px is the band where an over-long topbar nav
+  overflows).
+- Cap the topbar nav at six mono links and let it wrap rather than
+  clip; the 640px pass keeps the theme toggle on phones. A header never
+  widens the document.
+- Keep every data table in `.mb-tblwrap` and every chart in
+  `.mb-figure`: both pan at the shipped `min-width: 640px` floor
+  instead of shrinking - a bare `<svg>` outside `.mb-figure` is a
+  defect, and a panning table pins its first column on `--bg` behind a
+  hairline edge with a visible scroll cue. Code pans the same way
+  (`.mb-pre`).
+- The theme toggle is icon-only: a moon or sun glyph in
+  `.mb-theme-toggle`, never a "Light theme" text label, and reachable
+  at every width - the page pins its lead scheme, so the toggle is the
+  only path to the other side.
+- On coarse pointers (`@media (pointer: coarse)`) controls hold a 44px
+  touch floor: topbar links and `.mb-share-row` buttons included.
+
 ## Print and reduced motion
 
 Print rules ship in the file: chrome (topbar nav, share bar) drops out, the

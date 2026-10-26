@@ -207,6 +207,31 @@ Flip `color-scheme` on `html` only. No class swapping, no stylesheet swap,
 no localStorage requirement (persistence is allowed but optional). The page
 must fully render with this script removed.
 
+## Narrow screens
+
+The foundation collapses itself under 860px: `.ep-readout` becomes hero
++ 2x2, `.ep-cols`/`.ep-grid2`/`.ep-sheet` stack, `.ep-wrap` tightens
+padding. Do not re-implement any of that. Your obligations:
+
+- Verify the artifact at 390x844 (and 360px) before delivering: no
+  horizontal scroll as a document at any width, nothing important out
+  of reach.
+- `.ep-top` wraps (`flex-wrap: wrap`), it never scrolls: keep the band
+  to brand + right context and it wraps instead of widening the page.
+- Charts pan, never shrink: any chart with a viewBox wider than ~500
+  units rides in `.ep-chartpan` (an `overflow-x` container with a
+  `min-width: 640px` floor) so the 9px axis labels keep their designed
+  size. Diagrams and code follow the same 640px pan floor. If a page
+  truly needs a data table, it pans whole inside an `overflow-x`
+  wrapper at the same floor - first column pinned on an opaque ground
+  behind a hairline edge, visible scroll cue - never clipping mid-word.
+- Controls stay thumb-usable: on coarse pointers (`@media (pointer:
+  coarse)`) control sizes lift toward the 44px touch floor - do not
+  shrink `.ep-btn`, `.ep-chip`, `.ep-input`, or `.ep-sel select` back.
+- The theme toggle stays reachable at every width and renders
+  icon-only: a moon/sun glyph in the `.ep-btn` bracket button, never a
+  text label.
+
 ## Print and reduced motion
 
 Print rules ship in the file: the print media query re-inks every token to

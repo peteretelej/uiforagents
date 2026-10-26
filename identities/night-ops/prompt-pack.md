@@ -235,6 +235,32 @@ chrome drops out, panels and tables avoid page breaks, and motion dies.
 `prefers-reduced-motion` disables the pulse, shimmer, and transitions. Do
 not add print overrides.
 
+## Narrow screens
+
+The foundation ships two breakpoints you must not fight: at 960px
+`.no-cols` and `.no-sheet` collapse to one column and the KPI strip goes
+2-up; at 720px paddings tighten, alerts stack, log rows re-wrap, and
+inputs go full-width. Compose new page regions only from `.no-` classes
+so they inherit this behavior.
+
+- Check the console at 390px and 360px before shipping: no horizontal
+  document scroll, nothing important out of reach.
+- The `.no-top` bar wraps by contract: never replace it with a nowrap
+  single row, and never let a header drag the document wider than the
+  viewport.
+- Keep every chart inside a panel that pans: below 720px a chart holds
+  a `min-width: 640px` floor and the panel scrolls horizontally, so
+  labels stay at their designed size - never shrink a chart to fit a
+  phone. Diagrams and code obey the same 640px pan floor.
+- Tables pan in `.no-twrap`; the first column pins on the surface
+  behind a hairline edge and the pan carries a visible affordance.
+- On touch, controls lift on coarse pointers (`@media (pointer:
+  coarse)`) toward the 44px floor; do not reintroduce smaller targets
+  in page CSS.
+- The theme toggle is icon-only (moon/sun glyph,
+  `aria-label="Toggle dark or light scheme"`), never a text label, and
+  stays reachable at every width.
+
 ## Do not
 
 - Do not use green/amber/red as decoration, link color, or body text; they

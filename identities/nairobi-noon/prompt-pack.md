@@ -43,6 +43,31 @@ visual design.
 - Forms: labels above inputs, 12px gaps in pairs, segmented controls for 2-4
   mutually exclusive options, toggles for single switches.
 
+## Narrow screens
+
+- Narrow viewports are a first-class target, not an afterthought. The
+  same rules must hold at 390px and 360px: check every page before
+  delivering - no horizontal document scroll, nothing important out of
+  reach.
+- The top header wraps to two rows (brand row, then nav row) below
+  760px - never let nav links push the brand out or drag the document
+  wide. A flat app-shell nav may instead pan as a contained scroll
+  dock; a long-form section nav uses a zero-JS `<details>` disclosure.
+  Deleting navigation is not a mobile strategy.
+- Keep every grid track `minmax(0, ...)` so long words cannot force
+  sideways scroll.
+- Wrap wide tables in an `overflow-x-auto` card with a `min-w-[640px]`
+  floor; the first column sticks on the card ground behind a hairline
+  edge and the pan shows a visible scroll cue. Charts, diagrams, and
+  code obey the same 640px pan floor if a page introduces them - pan
+  instead of shrinking.
+- Give every link, button, and control a 44px minimum touch row on
+  coarse pointers (`@media (pointer: coarse)`).
+- The theme pins `color-scheme: light` and ships one scheme, so no
+  toggle exists; when a dark variant and its toggle land, they ship
+  icon-only (moon/sun glyph, never a text label) and reachable at every
+  width.
+
 ## Component choices (do not substitute)
 
 - Mutually exclusive options → Segmented Control, never dropdowns.

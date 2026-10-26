@@ -138,6 +138,32 @@ and page-specific layout only.
   rules.
 - Utilities: `.tb-noprint` (hide chrome in print).
 
+## Narrow screens
+
+The 860px/560px rules stack the grids on their own; apply `.tb-mob` when
+the board renders inside a narrow *container* (a card column, an embed,
+a phone-frame proof) where media queries cannot reach.
+
+- Check the board at 390px (and 360px) before shipping: no clipped
+  words, no card spill, every pill and chip tappable, no horizontal
+  document scroll.
+- The `.tb-top` bar wraps (`flex-wrap: wrap` from day one); never
+  replace it with a nowrap row, and a header never widens the document.
+- Charts on narrow containers: a wide chart never shrinks past
+  legibility. Wrap any chart whose viewBox is wider than ~600 units in
+  `<div class="tb-chartbox">` - it pans at full size inside the card,
+  with the `.tb-figcap` below it as the scroll hint. Diagrams and code
+  obey the same 640px pan floor; rings and short heat ladders may stay
+  fluid (components, not scaled SVGs).
+- Tables pan inside `.tb-tblwrap` with the first column pinned on
+  `--surface` behind a hairline edge and a visible scroll cue.
+- Controls are thumb-sized on coarse pointers (`@media (pointer:
+  coarse)`) toward the 44px floor: `.tb-btn`, `.tb-period` chips,
+  `button.tb-pill`.
+- The toggle is an icon button, never a text label: a 44x44px ghost
+  button carrying a single moon or sun glyph with `aria-label` kept in
+  sync with the scheme, reachable at every width.
+
 ## Building charts (inline SVG, zero JS)
 
 Charts are hand-authored inline SVG styled entirely from foundation custom

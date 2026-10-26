@@ -68,6 +68,29 @@ improvise visual design.
   the card; wide diagrams keep a readable min-width inside a pan wrapper
   instead of shrinking; reading pagers stack vertically.
 
+## Narrow screens
+
+- Verify every build at 390x844 (and 360px) before delivering; no
+  horizontal page scroll at any width, nothing important out of reach.
+- The shell's inline nav collapses under `sm:` to a scrollable mono tab
+  row inside the sticky strip (`dashboard-shell` ships both forms) - a
+  contained scroll dock, the sanctioned app-shell pattern. A long-form
+  section nav uses a zero-JS `<details>` disclosure instead. The header
+  wraps or stacks; it never widens the document, and deleting nav is
+  not a mobile strategy.
+- Wide tables keep the shipped pattern: the 8px-bordered wrap pans
+  (`overflow-x-auto`) with a `min-w-[640px]` floor, the first column
+  sticks on the card ground behind a hairline edge, and the pan carries
+  a visible affordance. Any chart or diagram wider than ~500px of
+  content pans in an `overflow-x-auto` wrap with the same 640px floor
+  instead of shrinking; code obeys the same rule.
+- Console chrome keeps the 36-40px interactive-row law on desktop, but
+  coarse pointers (`@media (pointer: coarse)`) lift controls to a 44px
+  floor: nav links carry vertical padding, buttons hold the floor.
+- Dark-only by contract, so no toggle ships; when a light variant
+  lands, its scheme toggle is icon-only (moon/sun glyph, never a text
+  label) and reachable at every width.
+
 ## Component choices (do not substitute)
 
 - Mutually exclusive options → Segmented Control, never dropdowns.
