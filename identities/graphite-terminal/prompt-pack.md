@@ -49,12 +49,24 @@ improvise visual design.
   lime) → h2 → one-sentence support.
 - Landing heroes: left copy / right visual. The visual is the one sanctioned
   gradient (150deg, lime → deep green `oklch(22% 0.06 155)`) with the
-  identity signature: a mono prompt line (`~/ops $ ...`).
+  identity signature: a mono prompt line (`~/ops $ ...`). The gradient
+  belongs to that signature pair - when the visual is a real image asset
+  (share card, screenshot, chart export), frame it in a media card instead,
+  never a recolored gradient.
+- Media cards: flat card (8px radius, hairline border, 12px matte); the
+  image fills the matte with a 4px radius; captions are one mono uppercase
+  10.5px muted line, meta right-aligned in tabular mono. Linked cards
+  strengthen their border on hover; they never lift or grow shadows.
 - Dashboards: stat cards (uppercase 10.5px labels, 22px mono numbers), dense
   hairline tables in 8px-bordered wraps, sticky 52px header with backdrop
   blur.
 - Forms: labels above inputs, 8px gaps in pairs, segmented controls for 2-4
   mutually exclusive options, toggles for single switches.
+- Narrow screens: mastheads wrap to two rows (brand + controls row, then
+  nav) so nothing of the header scrolls out of reach; wide data tables pin
+  their first column over an opaque background while the body pans inside
+  the card; wide diagrams keep a readable min-width inside a pan wrapper
+  instead of shrinking; reading pagers stack vertically.
 
 ## Component choices (do not substitute)
 
@@ -65,6 +77,8 @@ improvise visual design.
 - Feedback → Toast, bottom-center, one at a time.
 - Navigation → top header for marketing and shells; sidebars only when a
   dashboard truly needs a second nav level.
+- Figures, share cards, screenshots → MediaCard, never a bare `img` and
+  never a gradient mat.
 
 ## Copy voice
 
@@ -79,6 +93,12 @@ improvise visual design.
 
 - Do not add gradients except the sanctioned hero panel; no glows except the
   primary hover and focus ring.
+- Do not recolor component classes with element-wide rules: a page layer
+  that styles generic anchors (`a { color: ... }`) outranks button classes
+  and turns anchor-styled primary buttons into unreadable pairs (light
+  accent text on the lime ground in the dark scheme). Scope link colors to
+  prose containers (`.prose a`) or exclude component classes
+  (`a:not(.btn):not(.media-card)`).
 - Do not use lime as decoration, large fill, or background wash.
 - Do not use light sections, pure black surfaces, glassmorphism, bounce
   easing, or transitions above 180ms.
@@ -125,11 +145,12 @@ only, token names never change. Everything else in the identity inherits.
 - **Density**: 15px base, 36-40px interactive rows, the 4px spacing grid.
   A denser variant is a density retune (base size, row heights, section
   gaps) - never a component redesign. Dense means efficient, not cramped.
-- **Scheme lead**: the theme pins `color-scheme: dark` and ships one
-  scheme. Leading light instead is a whole-block retune: re-derive every
-  value against a light ground (lime drops in lightness so action text
-  stays dark-on-lime, the graphite steps invert) and pin
-  `color-scheme: light`.
+- **Scheme lead**: the theme leads dark and ships an optional light scheme:
+  set `data-scheme="light"` on the identity root to activate it. Re-tuning
+  either scheme is a whole-block retune: re-derive every value against its
+  ground (in light, lime drops in lightness so action text stays
+  dark-on-lime, the graphite steps invert, hairlines darken) and keep
+  `color-scheme` truthful.
 - **What inherits untouched**: the blocks' component structure, the layout
   rules and section-header grammar, the pack's decision logic (component
   choices, copy voice, the do-nots, the contrast floor), and the lane

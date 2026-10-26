@@ -81,6 +81,46 @@
   color-scheme: dark;
 }
 
+/* Light scheme (optional): set data-scheme="light" on the same element as
+   data-theme/data-identity. Dark is the lead scheme; the light block
+   re-derives every value against a light ground - lime drops in lightness
+   (74%) so action text stays dark-on-lime, the graphite steps invert to
+   cool whites, hairlines darken, and the hero gradient's deep green stays
+   a deliberate dark end on the light field. */
+[data-theme="graphite-terminal"][data-scheme="light"],
+[data-identity="graphite-terminal"][data-scheme="light"] {
+  --background: oklch(97.5% 0.004 255);
+  --foreground: oklch(22% 0.012 255);
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(22% 0.012 255);
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(22% 0.012 255);
+  --primary: oklch(74% 0.13 118);
+  --primary-foreground: oklch(15% 0.02 118);
+  --secondary: oklch(58% 0.11 118 / 0.14);
+  --secondary-foreground: oklch(30% 0.03 145);
+  --muted: oklch(94% 0.005 255);
+  --muted-foreground: oklch(42% 0.012 255);
+  --accent: oklch(58% 0.11 118 / 0.14);
+  --accent-foreground: oklch(38% 0.08 145);
+  --destructive: oklch(52% 0.17 25);
+  --destructive-foreground: oklch(99% 0.005 25);
+  --ok: oklch(52% 0.12 155);
+  --ok-soft: oklch(52% 0.12 155 / 0.12);
+  --ok-foreground: oklch(40% 0.10 155);
+  --warn: oklch(58% 0.12 85);
+  --warn-soft: oklch(58% 0.12 85 / 0.12);
+  --warn-foreground: oklch(42% 0.10 75);
+  --danger-soft: oklch(52% 0.17 25 / 0.10);
+  --danger-soft-foreground: oklch(45% 0.15 25);
+  --border: oklch(25% 0.012 255 / 0.18);
+  --input: oklch(25% 0.012 255 / 0.18);
+  --ring: oklch(52% 0.12 145);
+  --shadow-identity: 0 1px 2px oklch(0% 0 0 / 0.12);
+  --identity-gradient-to: oklch(32% 0.06 155);
+  color-scheme: light;
+}
+
 /* Identity signatures: mono display on headings, tabular mono data, flat fast motion. */
 [data-theme="graphite-terminal"] h1, [data-identity="graphite-terminal"] h1,
 [data-theme="graphite-terminal"] h2, [data-identity="graphite-terminal"] h2,

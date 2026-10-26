@@ -70,3 +70,15 @@
 [data-identity="graphite-terminal"] select {
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
+
+/* Media cards: hover strengthens the border on linked cards, it never lifts
+   (matches the card hover rule above; the figure grammar lives in the block). */
+[data-identity="graphite-terminal"] a.gt-media-card {
+  transition: border-color 120ms cubic-bezier(0, 0, 0.2, 1);
+}
+[data-identity="graphite-terminal"] a.gt-media-card:hover {
+  border-color: oklch(88% 0.006 255 / 0.45);
+}
+[data-scheme="light"][data-identity="graphite-terminal"] a.gt-media-card:hover {
+  border-color: oklch(25% 0.012 255 / 0.35);
+}

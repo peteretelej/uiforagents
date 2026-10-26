@@ -120,7 +120,7 @@ identities/ocean-calm/
 ├── identity.json     # spec: meta, tokens, block list, tested versions
 ├── theme/            # shadcn CSS variables + Tailwind v4 @theme
 ├── overrides/        # opinionated treatments layered on shadcn components
-├── blocks/           # composed sections: hero, auth, dashboard shell, table page, article
+├── blocks/           # composed sections: hero, auth, dashboard shell, table page, article, media card
 ├── prompt-pack.md    # the agent contract - design decisions, encoded
 └── registry/         # generated shadcn registry payload (registry:base)
 ```
