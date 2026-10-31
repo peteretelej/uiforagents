@@ -123,7 +123,8 @@ and page-specific layout only.
 - `.no-oc-row`: on-call roster row (`.no-who`, `.no-role`, `.no-nm`,
   `.no-till`).
 - Controls: `.no-btn` (`pri`/`ghost`/`danger`/`sm`/`icon`, disabled),
-  `.no-input` (`.bad` invalid), `.no-sel`, `.no-switch` + `.no-ctl`,
+  `.no-input` (`.bad` invalid), `.no-textarea` (multi-line paste/code
+  field, mono, `.bad` invalid), `.no-sel`, `.no-switch` + `.no-ctl`,
   `.no-chip`, `.no-kbd`, `.no-state` and `.no-tag` status markers, `.no-crumb`
   breadcrumbs, `.no-tabs` > `.no-tab` (+ `.no-cnt` badge), `.no-pag`.
 - Floating layers (render statically in artifacts): `.no-tipwrap` +

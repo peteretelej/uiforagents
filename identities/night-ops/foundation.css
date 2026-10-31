@@ -231,6 +231,19 @@
   .no-input.bad { border-color: var(--danger); box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 14%, transparent); }
   .no-iwrap .no-input { width: 220px; padding-right: 30px; }
   .no-iwrap .no-kbd { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); }
+
+  /* Multi-line paste/code field: everything a paste-first console imports
+     (tokens, JSON, log excerpts) is a code path, so it counts in mono and
+     carries the same sunken well and focus ring as .no-input. */
+  .no-textarea {
+    width: 100%; min-height: 72px; resize: vertical; padding: 8px 10px;
+    background: var(--sunken); color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    font: 500 12px/1.5 var(--mono); box-sizing: border-box;
+  }
+  .no-textarea::placeholder { color: var(--faint); }
+  .no-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent); }
+  .no-textarea.bad { border-color: var(--danger); box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 14%, transparent); }
   .no-sel { position: relative; display: inline-flex; }
   .no-sel select {
     appearance: none; height: 28px; padding: 0 26px 0 10px; background: var(--sunken); color: var(--ink);
