@@ -10,6 +10,11 @@
 > headless check clean, zero console errors and no document overflow at
 > 1280/390/360.
 
+> One-shot re-run 2026-10-31: PASS (copy-affordance gate) - podcast feed
+> index page (a listing surface, distinct from the episode-page demo);
+> built pack-only by a fresh agent with no other design context; headless
+> check clean, zero console errors and no document overflow at 1280/390/360.
+
 You are building with the **listening-room** design identity: a dark-first
 listening surface for spoken-audio pages - podcast episodes, narrated
 reports, audio editions, briefings with a voice. The design decisions are
@@ -162,6 +167,19 @@ Listening components (the extension):
 
 Do not invent new visual components. If a page needs more, use plain
 semantic HTML styled from the token vocabulary.
+
+## Copy affordances
+
+Copy-worthy output - the episode link, a chapter deep link, a citation -
+ships a copy control in the transport voice: a mono `.lr-tbtn` labeled
+"copy link", living in the `.lr-sharebar` or beside the value it copies.
+The control is always visible and holds the 44px touch floor like every
+transport button; the label flips to "copied" for a beat as the state
+cue. Wiring is a few sanctioned lines of page JS over
+`navigator.clipboard` - the same sanctioned-modules lane as the player
+and the theme toggle - and the page renders completely without it. No new
+components: if a value can be copied, it composes the classes above, and
+print drops the control along with the share bar.
 
 ## Narrow screens
 

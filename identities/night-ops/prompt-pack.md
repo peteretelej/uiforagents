@@ -1,9 +1,9 @@
 # night-ops - Agent Prompt-Pack
 
-One-shot re-run 2026-10-26: PASS - a fresh agent built an on-call handover
-page from only this pack and `foundation.css`; identity-faithful, premium,
-no design improvisation; headless check clean (zero console errors, no
-document overflow at 1280/390/360).
+One-shot re-run 2026-10-31: PASS - a fresh agent built a CI/deploy board
+for a release train from only this pack and `foundation.css`; identity-
+faithful, premium, no design improvisation; headless check clean (zero
+console errors, no document overflow at 1280/390/360).
 
 You are building with the **night-ops** design identity: a dark ops console
 for operational, data-dense, self-contained HTML artifacts - service
@@ -43,11 +43,11 @@ and page-specific layout only.
   scheme is dark: cool near-black ground (`--bg` hue 255-260), raised
   surfaces (`--surface`, `--surface-2`), sunken wells (`--sunken`). Azure
   (`--accent`) is the instrument accent: live series, sparklines, active
-  controls, the primary action, and metric end-labels. It never decorates
-  and never marks state. Green (`--ok`), amber (`--warn`), and red
-  (`--danger`) appear ONLY where they encode real state - LEDs, status
-  chips, semantic deltas, threshold fills, error washes. A rising number is
-  not green; fewer errors is.
+  controls, the primary action, metric end-labels, and content links. It
+  never decorates and never marks state. Green (`--ok`), amber (`--warn`),
+  and red (`--danger`) appear ONLY where they encode real state - LEDs,
+  status chips, semantic deltas, threshold fills, error washes. A rising
+  number is not green; fewer errors is.
 - **Deltas are semantic, not directional.** `.no-pos` / `.no-neg` /
   `.no-neu` encode good/bad/neutral, never the arrow direction. `▲` on an
   error rate is red. Every delta names its comparison window ("vs tue").
@@ -185,6 +185,22 @@ properties via presentation attributes (`stroke="var(--chart-series)"`).
 Never restyle components for a section; compose the classes above. New page
 regions are panels, not bespoke boxes.
 
+## Copy affordances
+
+Any copy-worthy rendered output - a token value, a minted grant, a code
+path, a share link - ships a copy control built from the existing classes:
+a `.no-btn.sm` (`.ghost` when it sits in a tools row) labeled `Copy`,
+living on the surface that renders the value (a `.no-tools` slot, a
+`.no-tbl-tools` row, or inline beside the value). On pointers the control
+may surface with its row or panel hover - the same wash grammar as log
+rows - but it is always visible below 720px and on coarse pointers: a copy
+action never hides behind hover on touch. Copy confirms in the status
+grammar - the label flips to `Copied` for a beat, or a one-line
+`.no-toast` - never a browser alert. Wiring is a few sanctioned lines of
+page JS over `navigator.clipboard`; the page must render completely
+without it. Mark the control `.no-print`. Never invent a copy component:
+if a value can be copied, it composes the classes above.
+
 ## Tuning surface
 
 Retuning happens in the `:root` token block only; everything below inherits.
@@ -275,8 +291,8 @@ so they inherit this behavior.
 
 - Do not use green/amber/red as decoration, link color, or body text; they
   encode state only, in the components above. Accent marks live data,
-  active controls, and the primary action - links and breadcrumbs stay
-  muted/ink.
+  active controls, the primary action, and content links; nav and meta
+  chrome (breadcrumbs, top bar) stays muted/ink.
 - Do not add fonts, gradients, or new colors. If a color is missing, the
   answer is a token from the reference table in `demo.html` or a
   `color-mix()` over one - never a hex code.

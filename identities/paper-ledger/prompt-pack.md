@@ -1,9 +1,9 @@
 # paper-ledger - Agent Prompt-Pack
 
-One-shot re-run 2026-10-26: PASS - a fresh agent built a monthly financial
-statement report from only this pack and `foundation.css`; identity-
-faithful, premium, no design improvisation; headless check clean (zero
-console errors, no document overflow at 1280/390/360).
+One-shot re-run 2026-10-31: PASS - a fresh agent built a single-client
+invoice from only this pack and `foundation.css`; identity-faithful,
+premium, no design improvisation; headless check clean (zero console
+errors, no document overflow at 1280/390/360).
 
 You are building with the **paper-ledger** design identity: a light
 print-precision analytics identity for self-contained HTML artifacts that
@@ -47,10 +47,11 @@ content and page-specific layout only.
   (`--ink`), softening to `--muted`/`--faint`. The deep ink-blue
   `--accent` is reserved for the document's rubric voice: the brand
   separator, footnote markers, favorable/positive figures, sparklines and
-  end-labels, quiet actions, and the focus ring. It never decorates and
-  never fills panels. Green (`--ok`), amber (`--warn`), and red (`--danger`)
-  appear ONLY where they encode state - badges, dots, variance. There are no
-  shadows and no gradients anywhere; elevation is a rule.
+  end-labels, quiet actions, content links, and the focus ring. It never
+  decorates and never fills panels. Green (`--ok`), amber (`--warn`), and
+  red (`--danger`) appear ONLY where they encode state - badges, dots,
+  variance. There are no shadows and no gradients anywhere; elevation is a
+  rule.
 - **The rule hierarchy is arithmetic notation, not decoration.** A hairline
   (`--line`) separates rows; a strong rule (`--line-strong`) bounds blocks,
   column groups, and statement sections; the single accounting rule
@@ -226,6 +227,19 @@ vocabulary:
 Never restyle components for a section; compose the classes above. New page
 regions are statement sections, not bespoke boxes.
 
+## Copy affordances
+
+Copy-worthy rendered output - a reference code, a report permalink, a
+figure source - ships a copy control built from the existing controls: a
+`.pl-btn--quiet` labeled "copy" on the row, note zone, or source line that
+renders the value. The control is always visible - no hover-only reveal -
+and stays a quiet accent action, never a state color and never a new
+component. Confirmation is textual: the label flips to "copied" for a
+beat. Wiring is a few sanctioned lines of page JS over
+`navigator.clipboard`; the document must render completely without it.
+Copy controls are screen furniture: mark them `.pl-noprint` so the printed
+statement stays the statement.
+
 ## Tuning surface
 
 Retuning happens in the `:root` token block only; everything below inherits.
@@ -308,4 +322,4 @@ the stylesheet paginate.
   without a comparison basis.
 - Do not use green/amber/red as decoration or for links; they encode state
   only, in the components above. Accent marks rubric voice, favorable
-  figures, and quiet actions - body text stays ink.
+  figures, content links, and quiet actions - body text stays ink.

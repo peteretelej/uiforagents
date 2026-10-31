@@ -292,6 +292,24 @@
   .ep-sp { flex: 1; }
   .ep-stamp { display: inline-flex; align-items: center; gap: 7px; font: 11px/1 var(--mono); color: var(--muted); }
 
+  /* ---------- Table ----------
+     A readout in columns: tracked caps head on a --line rule, hairline row
+     rules, tabular figures, one hover wash. Pans whole in .ep-twrap. */
+  .ep-twrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ep-tbl { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .ep-tbl th {
+    text-align: left; font-weight: 600; font-size: 9.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 7px 12px; border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  .ep-tbl td {
+    padding: 6px 12px; border-bottom: 1px solid var(--line-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .ep-tbl tbody tr:last-child td { border-bottom: 0; }
+  .ep-tbl td.num, .ep-tbl th.num { text-align: right; }
+  .ep-tbl tbody tr:hover td { background: var(--surface-2); }
+
   /* ---------- Component sheet ---------- */
   .ep-sheet { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
   .ep-spec { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px 16px; }
@@ -303,6 +321,11 @@
     .ep-cols, .ep-cols.flip, .ep-grid2 { grid-template-columns: 1fr; }
     .ep-sheet { grid-template-columns: 1fr; }
     .ep-wrap { padding: 0 12px 20px; }
+    .ep-tbl th:first-child, .ep-tbl td:first-child {
+      position: sticky; left: 0; z-index: 1; background: var(--surface);
+      box-shadow: 1px 0 0 var(--line-soft);
+    }
+    .ep-tbl tbody tr:hover td:first-child { background: var(--surface-2); }
   }
 
   /* ---------- Chart pan ----------

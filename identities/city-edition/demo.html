@@ -506,6 +506,31 @@
     margin: 0 0 0.5rem;
   }
   .ce-empty a { font-family: var(--font-mono); font-size: 0.72rem; }
+
+  /* ---------- Copy affordance (screen chrome; dropped in print) ---------- */
+  .ce-shareline {
+    margin: 1.4rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .ce-copy {
+    font: inherit;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .ce-copy:hover { text-decoration-thickness: 2px; }
+  @media print {
+    .ce-shareline { display: none; }
+  }
   .ce-wire { list-style: none; margin: 0; padding: 0; }
   .ce-wire li {
     display: grid;
@@ -1000,6 +1025,7 @@
       dissent at Monday&rsquo;s council session was about the operating subsidy, not the
       concrete: two members argued the line&rsquo;s books should stand alone by 2031.</p>
       <p class="ce-jumpline">Continued on page A8 &raquo;</p>
+      <p class="ce-shareline">Share this story &middot; <button class="ce-copy" type="button" data-copy="https://chronicle.example/2026/10/13/harbor-line-reopens">Copy link</button></p>
     </div>
   </section>
 
@@ -1210,5 +1236,15 @@
   </div>
 </section>
 
+<script>
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (navigator.clipboard) navigator.clipboard.writeText(b.getAttribute('data-copy'));
+      var old = b.textContent;
+      b.textContent = 'copied';
+      setTimeout(function () { b.textContent = old; }, 1200);
+    });
+  });
+</script>
 </body>
 </html>

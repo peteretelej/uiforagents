@@ -856,6 +856,16 @@
     </p>
     </div>
   </section>
+
+  <section class="lr-section">
+    <span class="lr-snum">03 - Share</span>
+    <h2>Take it with you</h2>
+    <div class="lr-sharebar" style="padding: 0;">
+      <div class="lr-share-row">
+        <button class="lr-tbtn" type="button" data-copy="https://archive.example/distill/the-loop-and-the-ladder">copy link</button>
+      </div>
+    </div>
+  </section>
 </div>
 
 <!-- ==================== MOBILE 390 (screen only) ==================== -->
@@ -1694,6 +1704,18 @@
 
   paint();
 })();
+</script>
+
+<script>
+  // Copy affordance: the page renders completely without this.
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (navigator.clipboard) navigator.clipboard.writeText(b.getAttribute('data-copy'));
+      var old = b.textContent;
+      b.textContent = 'copied';
+      setTimeout(function () { b.textContent = old; }, 1200);
+    });
+  });
 </script>
 
 </body>

@@ -600,6 +600,7 @@
         <a href="#console">Retry export</a>
       </div>
     </div>
+    <p style="margin: 16px 0 0;"><button class="dl-btn dl-noprint" type="button" data-copy="balnibarbi export sprites/ --dither bayer2">Copy the export command</button></p>
   </div>
 </section>
 
@@ -919,5 +920,15 @@
   </div>
 </section>
 
+<script>
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (navigator.clipboard) navigator.clipboard.writeText(b.getAttribute('data-copy'));
+      var old = b.textContent;
+      b.textContent = 'Copied';
+      setTimeout(function () { b.textContent = old; }, 1200);
+    });
+  });
+</script>
 </body>
 </html>

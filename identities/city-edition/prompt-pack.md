@@ -9,6 +9,11 @@ from only this pack and `foundation.css`; identity-faithful, premium, no
 design improvisation; headless check clean (zero console errors, no document
 overflow at 1280/390/360).
 
+One-shot re-run 2026-10-31: PASS - a fresh agent built a press-release page
+from only this pack and `foundation.css`; identity-faithful, premium, no
+design improvisation; headless check clean (zero console errors, no
+document overflow at 1280/390/360).
+
 You are building with the **city-edition** design identity: the dense
 morning daily for self-contained HTML artifacts - front pages, section
 fronts, article pages, digests, press and announcement pages, publication
@@ -244,6 +249,20 @@ States speak newspaper, not spinner:
   underline red when active. The subscribe button darkens one step.
 - Focus is always visible: a 2px red outline offset 2px, and the input
   rings inside its border.
+
+## Copy affordances
+
+A story link, a coupon code, a listing reference - anything a reader
+copies - carries a copy control in the paper's agate voice: a plain
+button or link with `.ce-mono`, ink at agate size in the paper's tracked
+caps, no box and no red (press red keeps its four sanctioned jobs and its
+one appearance per card). The control is always visible - no hover-only
+reveal - and holds the 44px touch row like every control. Wiring is a few
+sanctioned lines of page JS over `navigator.clipboard`; the page renders
+completely without it. Copy controls are screen chrome: drop them in
+print with a page-level print rule so paper never reads the word "copy".
+No new components - if a value can be copied, it composes the label stack
+and mono grammar above.
 
 ## Tuning surface
 

@@ -1,9 +1,9 @@
 # espresso-panel - Agent Prompt-Pack
 
-One-shot re-run 2026-10-26: PASS - a fresh agent built a single-asset detail
-page from only this pack and `foundation.css`; identity-faithful, premium,
-no design improvisation; headless check clean (zero console errors, no
-document overflow at 1280/390/360).
+One-shot re-run 2026-10-31: PASS - a fresh agent built a render-farm
+machine-room wall from only this pack and `foundation.css`; identity-
+faithful, premium, no design improvisation; headless check clean (zero
+console errors, no document overflow at 1280/390/360).
 
 You are building with the **espresso-panel** design identity: an amber
 instrument panel for self-contained HTML artifacts - ticker and price
@@ -105,6 +105,12 @@ and page-specific layout only.
   accent-filled action, `[disabled]`), `.ep-iwrap` + `.ep-input` (bracket
   input), `.ep-sel` (select), `.ep-chip` (`.on` active), `.ep-kbd`,
   `.ep-bar` (control strip inside a panel), `.ep-sp`, `.ep-stamp`.
+- `.ep-twrap` + `.ep-tbl`: the small instrument table - tracked caps head
+  on a `--line` rule, hairline `--line-soft` row rules, `td.num`
+  right-aligned tabular figures, one `--surface-2` hover wash. A readout
+  in columns, not an ops grid: no sort/filter/pagination machinery. Wide
+  tables pan whole in `.ep-twrap`; under 860px the first column pins on
+  `--surface` behind a hairline edge.
 - `.ep-sheet` > `.ep-spec`: component sheet cells.
 - Utilities: `.ep-acc`, `.ep-mut`, `.ep-dim`, `.ep-k`, `.ep-sp`,
   `.ep-noprint` (hide chrome in print).
@@ -230,10 +236,10 @@ padding. Do not re-implement any of that. Your obligations:
 - Charts pan, never shrink: any chart with a viewBox wider than ~500
   units rides in `.ep-chartpan` (an `overflow-x` container with a
   `min-width: 640px` floor) so the 9px axis labels keep their designed
-  size. Diagrams and code follow the same 640px pan floor. If a page
-  truly needs a data table, it pans whole inside an `overflow-x`
-  wrapper at the same floor - first column pinned on an opaque ground
-  behind a hairline edge, visible scroll cue - never clipping mid-word.
+  size. Diagrams and code follow the same 640px pan floor. Data tables
+  ride `.ep-twrap`: they pan whole at the same floor - first column
+  pinned on an opaque ground behind a hairline edge, visible scroll
+  cue - never clipping mid-word.
 - Controls stay thumb-usable: on coarse pointers (`@media (pointer:
   coarse)`) control sizes lift toward the 44px touch floor - do not
   shrink `.ep-btn`, `.ep-chip`, `.ep-input`, or `.ep-sel select` back.

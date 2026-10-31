@@ -9,6 +9,11 @@ documentation page from only this pack and `foundation.css`; identity-
 faithful, premium, no design improvisation; headless check clean (zero
 console errors, no document overflow at 1280/390/360).
 
+One-shot re-run 2026-10-31: PASS - a fresh agent built a jam/event page
+from only this pack and `foundation.css`; identity-faithful, premium, no
+design improvisation; headless check clean (zero console errors, no
+document overflow at 1280/390/360).
+
 You are building with the **dither-lab** design identity: the 1-bit
 workshop for self-contained HTML artifacts - creative-tool pages, dev-tool
 landings, release-notes zines, jam and event pages. A blue-black canvas, a
@@ -249,6 +254,20 @@ motion is inside a pan (`.dl-tablewrap`) or the marquee.
   in the file).
 - **Disabled**: faint text and border, no hover response, `cursor:
   default`.
+
+## Copy affordances
+
+Copy-worthy output - an install command, a share link, a version tag -
+ships a copy control in the workshop voice: a `.dl-btn` (never `.fill` -
+the fill is the one primary action) labeled with a short sentence-case
+verb phrase ("Copy the command"), placed on the row or block that renders
+the value, in the section's own bit-color. Hover jumps one step like
+every button; the label flips to "Copied" for a beat, then back - a
+stepped state, never an eased fade. Wiring is a few sanctioned lines of
+page JS over `navigator.clipboard`; the page renders completely without
+it. Mark the control `.dl-noprint`. No new components, and bitmap type
+stays out of controls - the label is body-face caps like every
+`.dl-btn`.
 
 ## Tuning surface
 

@@ -776,7 +776,7 @@
       dashboard decisions and starts shipping one. The dark ground is the product: ops consoles
       are watched for hours in dim rooms, phosphor-cool hue 255 keeps long sessions calm, and
       elevation is expressed by hairlines and luminance steps - never shadows, which belong to
-      the four floating layers only (tooltip, modal, toast, palette).</p>
+      <a href="#controls">the four floating layers</a> only (tooltip, modal, toast, palette).</p>
       <p class="no-take">Color is disciplined to two jobs. Azure is the instrument voice: live
       series, active controls, the one primary action. Green, amber, and red are a status
       vocabulary that only ever encodes real state - an LED, a lifecycle chip, a semantic delta,
@@ -812,7 +812,7 @@
             <tr><td class="mono">--faint</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--faint)"></i></td><td class="mono num">oklch(0.56 0.010 255)</td><td class="mono num">oklch(0.48 0.010 255)</td><td>micro labels, axis text, timestamps</td></tr>
             <tr><td class="mono">--line</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--line)"></i></td><td class="mono num">oklch(0.895 0.008 255)</td><td class="mono num">oklch(0.29 0.010 255)</td><td>panel borders, axes, strong rules</td></tr>
             <tr><td class="mono">--line-soft</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--line-soft)"></i></td><td class="mono num">oklch(0.930 0.006 255)</td><td class="mono num">oklch(0.24 0.009 255)</td><td>hairlines: row rules, grids, seams</td></tr>
-            <tr><td class="mono">--accent</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--accent)"></i></td><td class="mono num">oklch(0.50 0.115 255)</td><td class="mono num">oklch(0.72 0.115 255)</td><td>azure instrument: live series, active controls, primary action</td></tr>
+            <tr><td class="mono">--accent</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--accent)"></i></td><td class="mono num">oklch(0.50 0.115 255)</td><td class="mono num">oklch(0.72 0.115 255)</td><td>azure instrument: live series, active controls, content links, primary action</td></tr>
             <tr><td class="mono">--accent-ink</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--accent)"></i></td><td class="mono num">oklch(0.995 0 0)</td><td class="mono num">oklch(0.15 0.02 255)</td><td>text on accent and severity fills</td></tr>
             <tr><td class="mono">--accent-soft</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--accent)"></i></td><td class="mono num">accent @ 10% wash</td><td class="mono num">accent @ 10% wash</td><td>active-control wash (derived, follows accent)</td></tr>
             <tr><td class="mono">--ok</td><td><i style="display:inline-block;width:34px;height:14px;border-radius:2px;border:1px solid var(--line-soft);background:var(--ok)"></i></td><td class="mono num">oklch(0.52 0.11 155)</td><td class="mono num">oklch(0.72 0.13 155)</td><td>state green: healthy, positive delta</td></tr>
@@ -1201,6 +1201,7 @@
           <button class="no-btn pri" type="button">Deploy</button>
           <button class="no-btn" type="button">Restart</button>
           <button class="no-btn ghost" type="button">Runbook</button>
+          <a class="no-btn" href="#fleet">Open fleet</a>
           <button class="no-btn danger" type="button">Drain</button>
           <button class="no-btn sm" type="button">Small</button>
           <button class="no-btn icon" type="button" aria-label="More">⋯</button>
@@ -1241,6 +1242,14 @@
           <button class="no-chip add" type="button">+ filter</button>
           <span class="no-dim no-mono" style="font-size:11px">keys:</span>
           <span class="no-kbd">⌘K</span><span class="no-kbd">/</span><span class="no-kbd">esc</span><span class="no-kbd">↵</span>
+        </div>
+      </div>
+      <div class="no-panel">
+        <div class="no-ph"><h3>copy affordance</h3><span class="no-meta">always visible under 720px</span></div>
+        <div class="no-spec no-print">
+          <span class="no-k">minted grant</span>
+          <code class="no-mono" style="font-size:12px">flt-7c31-a9</code>
+          <button class="no-btn sm ghost" type="button" data-copy="flt-7c31-a9">Copy</button>
         </div>
       </div>
       <div class="no-panel">
@@ -1470,6 +1479,14 @@
     btn.addEventListener('click', function () {
       var goingDark = root.style.colorScheme === 'light';
       root.style.colorScheme = goingDark ? 'dark' : 'light';
+    });
+    document.querySelectorAll('[data-copy]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (navigator.clipboard) navigator.clipboard.writeText(b.getAttribute('data-copy'));
+        var old = b.textContent;
+        b.textContent = 'Copied';
+        setTimeout(function () { b.textContent = old; }, 1200);
+      });
     });
   })();
 </script>
