@@ -1,6 +1,6 @@
 {
   "name": "uiforagents",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Design system factory: opinionated, agent-ready design identities - shadcn/ui kits and pure-CSS artifact systems - each with a prompt-pack, theme or foundation stylesheet, and a derive contract. Run npx uiforagents list.",
   "license": "Apache-2.0",
   "type": "module",
