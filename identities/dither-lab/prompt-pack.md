@@ -266,7 +266,7 @@ every button; the label flips to "Copied" for a beat, then back - a
 stepped state, never an eased fade. Wiring is a few sanctioned lines of
 page JS over `navigator.clipboard`; the page renders completely without
 it. Mark the control `.dl-noprint`. No new components, and bitmap type
-stays out of controls - the label is body-face caps like every
+stays out of controls - the label is plain body-face type like every
 `.dl-btn`.
 
 ## Tuning surface
